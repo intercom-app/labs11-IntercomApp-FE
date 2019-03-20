@@ -1,0 +1,16 @@
+PODS:
+  - TwilioVoice (2.0.7)
+
+DEPENDENCIES:
+  - TwilioVoice (~> 2.0.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - TwilioVoice
+
+SPEC CHECKSUMS:
+  TwilioVoice: c0eacff80ee4d9b1e5f8c789ce8c5747c09e6140
+
+PODFILE CHECKSUM: d21965e170b2db6adeb826f6aff6236073360a90
+
+COCOAPODS: 1.6.0

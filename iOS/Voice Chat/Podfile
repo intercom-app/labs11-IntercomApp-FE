@@ -1,0 +1,11 @@
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+workspace 'Voce Chat'
+
+abstract_target 'Voce Chat' do
+  pod 'TwilioVoice',
+  use_frameworks!
+
+
+end
