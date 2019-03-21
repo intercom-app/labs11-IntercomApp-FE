@@ -16,6 +16,7 @@ class App extends Component {
           <header>
             <nav>
               <NavLink to="/team">Team Members</NavLink>
+              <NavLink to="/users">Registration</NavLink>
             </nav>
           </header>
           <main>
