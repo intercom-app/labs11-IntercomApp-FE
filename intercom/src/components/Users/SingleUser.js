@@ -8,13 +8,13 @@ class SingleUser extends Component {
         super(props);
         this.state = { 
             id: this.props.match.params.id,
-            users: {}
+            users: []
          }
     }
 
     componentDidMount() {
         axios
-        .get(`${host}/api/user/:id`)
+        .get(`${host}/api/users/${this.state.id}`)
         .then(res => {
           this.setState({users: res.data})
         })
@@ -23,16 +23,17 @@ class SingleUser extends Component {
         })
     }
 
-    render() { 
-        return ( 
-            <div>
-                buusds
-                {/* this.state.users.map(user => {
-                    <Link to={`/users/${user.id}`}><div key={user.id}> {user.firstName} {user.lastName}</div></Link>
-                }) */}
-            </div>
-         );
+    render() {
+        return (
+          <div>
+            {console.log(this.state.users)}
+
+                <div key={this.state.users.id}>
+                 {this.state.users.id} {this.state.users.firstName} {this.state.users.lastName} {this.state.users.displayName} {this.state.users.phoneNumber}
+                </div>
+          </div>
+        );
+      }
     }
-}
  
 export default SingleUser;
