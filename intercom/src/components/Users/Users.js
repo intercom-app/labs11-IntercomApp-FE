@@ -10,7 +10,14 @@ class Users extends Component {
     }
 
     componentDidMount() {
-        
+        axios
+        .get("https://intercom.netlify.com/api/users")
+        .then(res => {
+          this.setState({users: res.data})
+        })
+        .catch(err => {
+            console.error(err);
+        })
     }
 
     render() { 
