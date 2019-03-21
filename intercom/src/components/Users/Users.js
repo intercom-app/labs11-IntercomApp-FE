@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import host from "../../Host.js"
+import host from "../../host.js"
 
 class Users extends Component {
     constructor(props) {
