@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
+import Auth from './Auth/Auth';
+
 import Users from './components/Users/Users';
 import SingleUser from './components/Users/SingleUser';
 import Intro from './components/Intro/Intro';
@@ -11,6 +13,8 @@ import './App.css';
 
 class App extends Component {
   render() {
+    const auth = new Auth();
+    auth.login();
     return (
       <Router>
         <div className="App">
