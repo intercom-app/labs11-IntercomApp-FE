@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import host from "../../Host.js"
 
 class Users extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class Users extends Component {
 
     componentDidMount() {
         axios
-        .get("https://intercom-be.herokuapp.com/api/users")
+        .get(`${host}/api/user`)
         .then(res => {
           this.setState({users: res.data})
         })
@@ -24,9 +25,9 @@ class Users extends Component {
         return ( 
             <div>
                 buusds
-                {this.state.users.map(user => {
+                {/* this.state.users.map(user => {
                     return <h1>{user}</h1>
-                })}
+                }) */}
             </div>
          );
     }
