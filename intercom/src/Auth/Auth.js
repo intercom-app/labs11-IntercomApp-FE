@@ -1,6 +1,5 @@
 import auth0 from 'auth0-js';
 import history from '../history';
-import { AUTH_CONFIG } from './authVars';
 
 export default class Auth {
   accessToken;
@@ -8,9 +7,9 @@ export default class Auth {
   expiresAt;
 
   auth0 = new auth0.WebAuth({
-    domain: AUTH_CONFIG.domain,
-    clientID: AUTH_CONFIG.clientID,
-    redirectUri: AUTH_CONFIG.redirectUri,
+    domain: 'voicechatroom.auth0.com',
+    clientID: 'hbi2AUNG4AwK4eVjRf6wIzmWgdpXT337',
+    redirectUri: 'http://localhost:3000/authenticating',
     responseType: 'token id_token',
     scope: 'openid'
   });
