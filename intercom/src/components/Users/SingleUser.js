@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import host from "../../host.js";
+import { Link } from "react-router-dom";
 
 class SingleUser extends Component {
     constructor(props) {
