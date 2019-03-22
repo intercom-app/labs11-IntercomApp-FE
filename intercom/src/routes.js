@@ -7,6 +7,10 @@ import Auth from './Auth/Auth';
 import Authenticating from './Auth/Authenticating';
 import Intro from './components/Intro/Intro';
 
+import Team from './components/Team/Team';
+import Users from './components/Users/Users';
+import SingleUser from './components/Users/SingleUser';
+
 const auth = new Auth();
 
 const handleAuthentication = (nextState, replace) => {
@@ -25,6 +29,11 @@ export const makeMainRoutes = () => {
           handleAuthentication(props);
           return <Authenticating {...props} /> 
         }}/>
+        
+        <Route path="/team" render={(props) => <Team auth={auth} {...props} />} />
+        <Route exact path="/users" render={(props) => <Users auth={auth} {...props} />} />
+        <Route exact path="/users/:id" render={(props) => <SingleUser auth={auth} {...props} />} />
+
       </div>
     </Router>
   );
