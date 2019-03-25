@@ -1,11 +1,27 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { NavLink } from 'react-router-dom';
 
 class Intro extends Component {
     login = () => {
         this.props.auth.login();
-    }
+=======
 
+
+class Intro extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {  }
+>>>>>>> 8bfec73f91dffcf2a3b38e9562ef3f70eeb313c0
+    }
+    render() { 
+        return ( 
+            <header className="App-header">
+                <p>
+                    Welcome to Intercom!
+                </p>
+
+<<<<<<< HEAD
     render() {
         const { isAuthenticated } = this.props.auth;
         return (
@@ -31,7 +47,11 @@ class Intro extends Component {
                 }
             </div>
         );
+=======
+            </header>
+         );
+>>>>>>> 8bfec73f91dffcf2a3b38e9562ef3f70eeb313c0
     }
 }
-
+ 
 export default Intro;
