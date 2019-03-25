@@ -25,10 +25,10 @@ class Users extends Component {
   render() {
     return (
       <div>
-        {console.log(this.state.users)}
+        {/* {console.log(this.state.users)} */}
         {this.state.users.map(user => (
-          <Link to={`/users/${user.id}`}>
-            <div key={user.id}>
+          <Link to={`/users/${user.id}`} key={user.id}>
+            <div>
              {user.id} {user.firstName} {user.lastName} {user.displayName} {user.phoneNumber}
             </div>
           </Link>
