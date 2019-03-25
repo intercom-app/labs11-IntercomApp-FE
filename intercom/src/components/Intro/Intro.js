@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Route, NavLink } from 'react-router-dom';
-
-import Users from '../Users/Users';
-import SingleUser from '../Users/SingleUser';
-import Team from '../Team/Team';
+import { NavLink } from 'react-router-dom';
 
 class Intro extends Component {
-    login() {
+    login = () => {
         this.props.auth.login();
     }
 
@@ -16,26 +12,19 @@ class Intro extends Component {
             <div>
                 {
                     isAuthenticated() && (
-                        <div>
-                            <header>
-                                <nav>
-                                    <NavLink to="/team">Team Members </NavLink>
-                                    <NavLink to="/users">Users </NavLink>
-                                </nav>
-                            </header>
-                            <main>
-                                <Route path="/team" component={Team} />
-                                <Route exact path="/users" component={Users} />
-                                <Route exact path="/users/:id" component={SingleUser} />
-                            </main>
-                        </div>
+                        <header>
+                            <nav>
+                                <NavLink to="/team">Team Members </NavLink>
+                                <NavLink to="/users">Users </NavLink>
+                            </nav>
+                        </header>
                     )
                 }
                 {
                     !isAuthenticated() && (
                         <h4> You are not logged in!
-                        <button onClick={this.login.bind(this)} >
-                                Log In
+                        <button onClick={this.login} >
+                            Log In
                         </button>
                         </h4>
                     )
