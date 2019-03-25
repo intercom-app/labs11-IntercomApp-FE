@@ -5,10 +5,18 @@ import 'jest-dom/extend-expect';
 
 import SingleUser from './SingleUser';
 
-describe('<Users />', () => {
+describe('<SingleUser />', () => {
+
+  const props = {
+    match: {
+      params: {
+        id: 1
+      }
+    }
+  }
 
   it('renders without crashing', () => {
-    render(<SingleUser />);
+    render(<SingleUser {...props} />);
   });
 
 })
