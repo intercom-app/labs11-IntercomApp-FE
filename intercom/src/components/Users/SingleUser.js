@@ -25,8 +25,6 @@ class SingleUser extends Component {
     render() {
         return (
           <div>
-            {console.log(this.state.users)}
-
                 <div key={this.state.users.id}>
                  {this.state.users.id} {this.state.users.firstName} {this.state.users.lastName} {this.state.users.displayName} {this.state.users.phoneNumber}
                 </div>
