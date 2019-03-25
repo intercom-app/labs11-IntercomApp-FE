@@ -4,19 +4,19 @@ import './App.css';
 
 class App extends Component {
 
-  goTo(route) {
+  goTo = () => {
     this.props.history.replace(`/intro`)
   }
 
-  login() {
+  login = () => {
     this.props.auth.login();
   }
 
-  logout() {
+  logout = () => {
     this.props.auth.logout();
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     const { renewSession } = this.props.auth;
 
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -31,19 +31,19 @@ class App extends Component {
     return (
 
       <div>
-        <button onClick={this.goTo.bind(this)}>
+        <button onClick={this.goTo}>
           Home
         </button>
         {
           !isAuthenticated() && (
-            <button onClick={this.login.bind(this)}>
+            <button onClick={this.login}>
               Log In
             </button>
           )
         }
         {
           isAuthenticated() && (
-            <button onClick={this.logout.bind(this)}>
+            <button onClick={this.logout}>
               Log Out
             </button>
           )
