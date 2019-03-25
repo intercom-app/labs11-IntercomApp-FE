@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
-
+import { NavLink } from 'react-router-dom';
 
 class Intro extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
+    login = () => {
+        this.props.auth.login();
     }
-    render() { 
-        return ( 
-            <header className="App-header">
-                <p>
-                    Welcome to Intercom!
-                </p>
 
-            </header>
-         );
+    render() { 
+        const { isAuthenticated } = this.props.auth;
+        return (
+            <div>
+                {
+                    isAuthenticated() && (
+                        <header>
+                            <nav>
+                                <NavLink to="/team">Team Members </NavLink>
+                                <NavLink to="/users">Users </NavLink>
+                            </nav>
+                        </header>
+                    )
+                }
+                {
+                    !isAuthenticated() && (
+                        <h4> You are not logged in!
+                        <button onClick={this.login} >
+                            Log In
+                        </button>
+                        </h4>
+                    )
+                }
+            </div>
+        );
     }
 }
  
