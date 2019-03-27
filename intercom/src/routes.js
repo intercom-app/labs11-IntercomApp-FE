@@ -15,6 +15,9 @@ import Intro from './components/Intro/Intro';
 import Team from './components/Team/Team';
 import Users from './components/Users/Users';
 import SingleUser from './components/Users/SingleUser';
+import Groups from './components/Groups/Groups';
+import SingleGroup from './components/Groups/SingleGroup';
+
 
 // Create new Auth session
 const auth = new Auth();
@@ -39,7 +42,8 @@ export const makeMainRoutes = () => {
         <Route path="/team" render={(props) => <Team auth={auth} {...props} />} />
         <Route exact path="/users" render={(props) => <Users auth={auth} {...props} />} />
         <Route exact path="/users/:id" render={(props) => <SingleUser auth={auth} {...props} />} />
-
+        <Route exact path="/groups" render={(props) => <Groups auth={auth} {...props} />} />
+        <Route exact path="/groups/:id" render={(props) => <SingleGroup auth={auth} {...props} />} />
       </div>
     </Router>
   );

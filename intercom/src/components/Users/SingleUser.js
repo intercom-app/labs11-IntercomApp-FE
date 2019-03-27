@@ -8,7 +8,7 @@ class SingleUser extends Component {
         super(props);
         this.state = { 
             id: this.props.match.params.id,
-            users: []
+            user: []
          }
     }
 
@@ -20,7 +20,7 @@ class SingleUser extends Component {
             // console.log(this.state.id)
         .then(res => {
             console.log(res)
-          this.setState({users: res.data})
+          this.setState({user: res.data})
         })
         .catch(err => {
             console.error(err);
@@ -30,10 +30,10 @@ class SingleUser extends Component {
     render() {
         return (
           <div>
-            {console.log(this.state.users)}
+            {console.log(this.state.user)}
 
-                <div key={this.state.users.id}>
-                    {this.state.users.id} {this.state.users.firstName} {this.state.users.lastName} {this.state.users.displayName} {this.state.users.phoneNumber} {this.state.users.email}
+                <div key={this.state.user.id}>
+                    {this.state.user.id} {this.state.user.firstName} {this.state.user.lastName} {this.state.user.displayName} {this.state.user.phoneNumber} {this.state.user.email}
                 </div>
           </div>
         );
