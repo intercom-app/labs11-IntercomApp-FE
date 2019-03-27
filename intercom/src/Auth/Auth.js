@@ -25,7 +25,8 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         localStorage.setItem('nickname', authResult.idTokenPayload.nickname);
-        axios.post('http://localhost:3300/test', authResult.idTokenPayload)
+        console.log(authResult.idTokenPayload)
+        axios.post('http://localhost:3300/api/users', authResult.idTokenPayload)
         this.setSession(authResult);
 
       } else if (err) {
