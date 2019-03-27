@@ -13,6 +13,7 @@ class Intro extends Component {
                 {
                     isAuthenticated() && (
                         <header>
+                            <div>Hello, {localStorage.getItem('nickname')}</div>
                             <nav>
                                 <NavLink to="/team">Team Members </NavLink>
                                 <NavLink to="/users">Users </NavLink>
