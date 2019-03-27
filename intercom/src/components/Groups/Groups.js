@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import host from "../../host.js";
 import { NavLink } from "react-router-dom";
-import { Table } from 'reactstrap';
+import { Table, Button} from 'reactstrap';
+import GroupForm from './GroupForm';
+
 
 class Groups extends Component {
     constructor(props) {
@@ -26,7 +28,9 @@ class Groups extends Component {
     render() {
         return (
             <div>
+                
                 {console.log(this.state.groups)}
+                <GroupForm />
                 <Table>
                     <thead>
                         <tr>
@@ -50,6 +54,7 @@ class Groups extends Component {
                         </tbody>
                 ))}
                 </Table>
+                
                 
             </div>
         );
