@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js';
 import history from '../history';
 import { AUTH_CONFIG } from './authVars';
+import axios from 'axios';
 
 export default class Auth {
   accessToken;
@@ -23,7 +24,11 @@ export default class Auth {
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+        localStorage.setItem('nickname', authResult.idTokenPayload.nickname);
+        console.log(authResult.idTokenPayload)
+        axios.post('http://localhost:3300/api/users', authResult.idTokenPayload)
         this.setSession(authResult);
+
       } else if (err) {
         history.replace('/intro');
         console.log(err);
@@ -43,7 +48,7 @@ export default class Auth {
   setSession = (authResult) => {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
-
+    
     // Set the time that the access token will expire at
     let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     this.accessToken = authResult.accessToken;
@@ -74,7 +79,8 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
-
+    localStorage.removeItem('nickname');
+    
     // navigate to the home route
     history.replace('/intro');
   }
