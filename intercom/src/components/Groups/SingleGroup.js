@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import host from "../../host.js";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Table } from 'reactstrap';
 
 class SingleGroup extends Component {
     constructor(props) {
@@ -17,7 +18,6 @@ class SingleGroup extends Component {
             .get(`${host}/api/groups/${this.state.id}`)
             // .get(`http://localhost:3300/api/group/${this.state.id}`)
 
-            // console.log(this.state.id)
             .then(res => {
                 console.log(res)
                 this.setState({ group: res.data })
@@ -32,9 +32,29 @@ class SingleGroup extends Component {
             <div>
                 {console.log(this.state.group)}
 
-                <div key={this.state.group.id}>
-                    {this.state.group.id} 
-                </div>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Group Name</th>
+                            <th>Group Phone #</th>
+                            <th>Call Status</th>
+                            <th>Time Stamp</th>
+                        </tr>
+                    </thead>
+
+
+                        <tbody>
+                            <tr>
+                                <td>{this.state.group.id}</td>
+                                <td>{this.state.group.name}</td>
+                                <td>{this.state.group.phoneNumber}</td>
+                                <td>{this.state.group.callStatus}</td>
+                                <td>{this.state.group.createdAt}</td>
+                            </tr>
+
+                        </tbody>
+                </Table>
             </div>
         );
     }
