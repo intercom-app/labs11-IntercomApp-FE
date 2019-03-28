@@ -1,6 +1,6 @@
 let redirectUri;
 
-process.env.REACT_APP_AUTH_ENV === 'production' 
+process.env.NODE_ENV === 'production' 
     ? redirectUri = `${process.env.REACT_APP_AUTH_CB_PROD}`
     : redirectUri = `${process.env.REACT_APP_AUTH_CB_DEV}`
 

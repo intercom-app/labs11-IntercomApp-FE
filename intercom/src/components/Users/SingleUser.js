@@ -2,21 +2,27 @@ import React, { Component } from 'react';
 import axios from "axios";
 import host from "../../host.js";
 import { Link } from "react-router-dom";
+import GroupForm from '../Groups/GroupForm';
+
 
 class SingleUser extends Component {
     constructor(props) {
         super(props);
         this.state = { 
             id: this.props.match.params.id,
-            users: []
+            user: []
          }
     }
 
     componentDidMount() {
         axios
         .get(`${host}/api/users/${this.state.id}`)
+            // .get(`http://localhost:3300/api/users/${this.state.id}`)
+        
+            // console.log(this.state.id)
         .then(res => {
-          this.setState({users: res.data})
+            // console.log(res)
+          this.setState({user: res.data})
         })
         .catch(err => {
             console.error(err);
@@ -26,9 +32,13 @@ class SingleUser extends Component {
     render() {
         return (
           <div>
-                <div key={this.state.users.id}>
-                 {this.state.users.id} {this.state.users.firstName} {this.state.users.lastName} {this.state.users.displayName} {this.state.users.phoneNumber}
+            {/* {console.log(this.state.user)} */}
+
+                <div key={this.state.user.id}>
+                    {this.state.user.id} {this.state.user.firstName} {this.state.user.lastName} {this.state.user.displayName} {this.state.user.phoneNumber} {this.state.user.email}
                 </div>
+                <GroupForm id={this.state.id}/>
+                
           </div>
         );
       }

@@ -28,7 +28,7 @@ class Users extends Component {
         {/* {console.log(this.state.users)} */}
         {this.state.users.map(user => (
           <Link to={`/users/${user.id}`} key={user.id}>
-            <div>
+            <div >
              {user.id} {user.firstName} {user.lastName} {user.displayName} {user.phoneNumber}
             </div>
           </Link>
