@@ -5,15 +5,15 @@ import { NavLink } from "react-router-dom";
 import { Table } from 'reactstrap';
 
 
-class GroupsBelonged extends Component {
+class GroupsInvited extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = {}
     }
-    render() { 
-        return ( <div>
-            {/* {console.log(this.props.groupsBelonged)} */}
-            <h2>Groups Belonged To</h2>
+    render() {
+        return (<div>
+            {/* {console.log(this.props.groupsInvited)} */}
+            <h2>Groups Invited To</h2>
             <Table>
                 <thead>
                     <tr>
@@ -21,7 +21,7 @@ class GroupsBelonged extends Component {
                         <th>Group Name</th>
                     </tr>
                 </thead>
-                {this.props.groupsBelonged.map((group, key) => (
+                {this.props.groupsInvited.map((group, key) => (
                     <tbody key={key}>
                         <tr>
                             <NavLink to={`/groups/${group.groupId}`} >
@@ -32,8 +32,8 @@ class GroupsBelonged extends Component {
                     </tbody>
                 ))}
             </Table>
-        </div> );
+        </div>);
     }
 }
- 
-export default GroupsBelonged;
+
+export default GroupsInvited;
