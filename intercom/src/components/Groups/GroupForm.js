@@ -34,17 +34,48 @@ class GroupForm extends Component {
         }));
     }
 
-    createGroup =  async (event) => {
+    createGroup = async (event) => {
         event.preventDefault();
-        const userId = {userId: localStorage.getItem('userId')}
+        const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
         event.preventDefault();
         const groupData = {
             name: this.state.group.name
         }
-        
 
-       
+
+        try {
+            const group = await axios.post(`${host}/api/groups`, groupData)
+            if (group) {
+                await this.setState({ group: group.data })
+                axios
+                    .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
+                    .then(groupOwner => {
+                        console.log(groupOwner)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                axios
+                    .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
+                    .then(groupMember => {
+                        console.log(groupMember)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                axios
+                    .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+                    .then(activity => {
+                        console.log(activity)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        } catch (err) {
+            console.log(err);
+        };
 
 
         // this.setState({

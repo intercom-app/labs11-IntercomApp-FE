@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
 import host from '../../host';
+
 
 class User extends Component {
     state = {
@@ -31,7 +34,12 @@ class User extends Component {
                     ? <p>Error retrieving user!</p>
                     : <div>
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
-                        <GroupForm id={this.state.id} />                        
+                        <GroupForm id={this.state.id} />
+
+                        <Link to={`/group/${1}`}>
+                            Group 1
+                        </Link>
+
                     </div>
                 }
             </>
