@@ -17,6 +17,7 @@ class Intro extends Component {
                             <nav>
                                 <NavLink to="/team">Team Members </NavLink>
                                 <NavLink to="/users">Users </NavLink>
+                                <NavLink to="/groups">Groups </NavLink>                                
                             </nav>
                         </header>
                     )
@@ -24,9 +25,9 @@ class Intro extends Component {
                 {
                     !isAuthenticated() && (
                         <h4> You are not logged in!
-                        <button onClick={this.login} >
+                        {/* <button onClick={this.login} >
                             Log In
-                        </button>
+                        </button> */}
                         </h4>
                     )
                 }
