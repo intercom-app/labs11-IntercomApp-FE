@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from "axios";
 import host from "../../host.js";
 import { Link } from "react-router-dom";
+import GroupForm from '../Groups/GroupForm';
+
 
 class SingleUser extends Component {
     constructor(props) {
@@ -19,7 +21,7 @@ class SingleUser extends Component {
         
             // console.log(this.state.id)
         .then(res => {
-            console.log(res)
+            // console.log(res)
           this.setState({user: res.data})
         })
         .catch(err => {
@@ -30,11 +32,13 @@ class SingleUser extends Component {
     render() {
         return (
           <div>
-            {console.log(this.state.user)}
+            {/* {console.log(this.state.user)} */}
 
                 <div key={this.state.user.id}>
                     {this.state.user.id} {this.state.user.firstName} {this.state.user.lastName} {this.state.user.displayName} {this.state.user.phoneNumber} {this.state.user.email}
                 </div>
+                <GroupForm id={this.state.id}/>
+                
           </div>
         );
       }

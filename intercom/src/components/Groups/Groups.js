@@ -3,7 +3,6 @@ import axios from "axios";
 import host from "../../host.js";
 import { NavLink } from "react-router-dom";
 import { Table, Button} from 'reactstrap';
-import GroupForm from './GroupForm';
 
 
 class Groups extends Component {
@@ -30,7 +29,6 @@ class Groups extends Component {
             <div>
                 
                 {console.log(this.state.groups)}
-                <GroupForm />
                 <Table>
                     <thead>
                         <tr>

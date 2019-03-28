@@ -2,8 +2,10 @@ import auth0 from 'auth0-js';
 import history from '../history';
 import { AUTH_CONFIG } from './authVars';
 import axios from 'axios';
+import host from '../host';
 
 export default class Auth {
+
   accessToken;
   idToken;
   expiresAt;
@@ -22,17 +24,25 @@ export default class Auth {
   }
 
   handleAuthentication = () => {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0.parseHash(async (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        localStorage.setItem('nickname', authResult.idTokenPayload.nickname);
-        console.log(authResult)
-        axios.post('http://localhost:3300/api/users', authResult.idTokenPayload)
-        this.setSession(authResult);
+        try {
+          const user = await axios.post(`${host}/api/users`, authResult.idTokenPayload)
+          const id = user.data.id;
+          if (user && id) {
+            localStorage.setItem('userId', id)
+            const route = `/user/${id} `
+            this.setSession(authResult, route)
+          }
+        } catch (err) {
+          console.log(err);
+          alert(`Error: ${err.error}.Check the console for further details.`);
+        }
 
       } else if (err) {
-        history.replace('/intro');
+        history.replace('/');
         console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+        alert(`Error: ${err.error}.Check the console for further details.`);
       }
     });
   }
@@ -45,29 +55,32 @@ export default class Auth {
     return this.idToken;
   }
 
-  setSession = (authResult) => {
+  setSession = (authResult, route) => {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
-    
+
     // Set the time that the access token will expire at
     let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
-    // navigate to the home route
-    history.replace('/intro');
+    // Navigate to the route only if route passed. Stops renew session to redirect back to home
+    if (route) {
+      history.replace(route);
+    }
+
   }
 
   renewSession = () => {
     this.auth0.checkSession({}, (err, authResult) => {
-       if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
-       } else if (err) {
-         this.logout();
-         console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-       }
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        this.logout();
+        console.log(err);
+        alert(`Could not get a new token(${err.error}: ${err.error_description}).`);
+      }
     });
   }
 
@@ -79,10 +92,10 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('nickname');
-    
+    localStorage.removeItem('userId');
+
     // navigate to the home route
-    history.replace('/intro');
+    history.replace('/');
   }
 
   isAuthenticated = () => {
