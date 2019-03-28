@@ -9,12 +9,7 @@ import App from './App';
 // Auth Routes
 import Auth from './Auth/Auth';
 import Authenticating from './Auth/Authenticating';
-import Intro from './components/Intro/Intro';
-
-// App Routes
-import Team from './components/Team/Team';
-import Users from './components/Users/Users';
-import SingleUser from './components/Users/SingleUser';
+import User from './components/User/User'
 
 // Create new Auth session
 const auth = new Auth();
@@ -30,15 +25,11 @@ export const makeMainRoutes = () => {
     <Router history={history} component={App}>
       <div>
         <Route path="/" render={(props) => <App auth={auth} {...props} />} />
-        <Route path="/intro" render={(props) => <Intro auth={auth} {...props} />} />
-        <Route path="/authenticating" render={(props) => {
+        <Route exact path="/authenticating" render={(props) => {
           handleAuthentication(props);
-          return <Authenticating {...props} /> 
-        }}/>
-        
-        <Route path="/team" render={(props) => <Team auth={auth} {...props} />} />
-        <Route exact path="/users" render={(props) => <Users auth={auth} {...props} />} />
-        <Route exact path="/users/:id" render={(props) => <SingleUser auth={auth} {...props} />} />
+          return <Authenticating {...props} />
+        }} />
+        <Route exact path="/user/:id" render={(props) => <User auth={auth} {...props} />} />
 
       </div>
     </Router>
