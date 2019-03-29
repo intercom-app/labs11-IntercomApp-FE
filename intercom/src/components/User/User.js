@@ -19,6 +19,7 @@ class User extends Component {
 
         axios.get(userEndpoint)
             .then(res => {
+                // console.log(res.data)
                 this.setState({ user: res.data })
             })
             .catch(err => {
@@ -34,7 +35,6 @@ class User extends Component {
         const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
         
-       
         axios.get(groupsInvitedTo)
             .then(res => {
                 this.setState({ groupsInvitedTo: res.data })
@@ -63,6 +63,7 @@ class User extends Component {
     render() {
         // console.log('belongs',this.state.groupsBelongedTo)
         // console.log('invited', this.state.groupsInvitedTo)
+            // console.log(this.props.groupQuantity)
         
         return (
             <>
@@ -70,7 +71,8 @@ class User extends Component {
                     ? <p>Error retrieving user!</p>
                     : <div>
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
-                        <GroupForm id={this.state.id} /> 
+                        <p>billing type: {this.state.user.billingSubcription}</p>
+                        <GroupForm id={this.state.id} groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
                     </div>
