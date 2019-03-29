@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import host from '../../host';
-import history from '../../history'
 
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
@@ -15,6 +14,7 @@ class GroupChatroomView extends Component {
         user: {},
         groupId: this.props.match.params.id,
         group: {},
+        groupName: '',
         activities: [],
         participants: [],
         isOwner: false,
@@ -154,11 +154,22 @@ class GroupChatroomView extends Component {
         }
     }
 
+    handleInputChange = e => {
+        e.preventDefault()
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    handleGroupUpdate = e => {
+        e.preventDefault()
+        this.updateGroup({ name: this.state.groupName })
+        this.setState({ groupName: '' })
+    }
+
     handleCallButton = async () => {
         const userOnCall = (this.state.user.callStatus === 1)
         const groupOnCall = (this.state.group.callStatus === 1)
         // TWILIO CODE HERE FOR PHONE NUMBER
-        const phoneNumber = "+15555555555"
+        const phoneNumber = '+15555555555'
 
         switch (true) {
             case (!userOnCall && !groupOnCall): // Start Call
@@ -175,7 +186,7 @@ class GroupChatroomView extends Component {
                 this.updateUser({ callStatus: false });
                 const participants = await this.deleteParticipant(this.state.userId);
                 if (participants === undefined) { // Terminate Call: if no more particates
-                    this.addActivity("Ended Call");
+                    this.addActivity('Ended Call');
                     this.updateGroup({ callStatus: false, phoneNumber: null });
                 }
                 break;
@@ -202,13 +213,31 @@ class GroupChatroomView extends Component {
                         </Link>
 
                         {isOwner ? 
-                        <button onClick={this.deleteGroup}>
-                            Delete Group
-                        </button>
+                        <>
+                            <button onClick={this.deleteGroup}>
+                                Delete Group
+                            </button>
+
+                            <form onSubmit={this.handleGroupUpdate}>
+                                Update Group Name:
+                                <input 
+                                    onChange={this.handleInputChange} 
+                                    type='text' 
+                                    id='groupName'
+                                    name='groupName' 
+                                    value={this.state.groupName} 
+                                    placeholder='New Group Name Here...'
+                                ></input>
+                                <input type='submit' value='Submit'></input>
+                            </form>
+
+                        </>
                         : 
-                        <button onClick={this.leaveGroup}>
-                            Leave Group
-                        </button>
+                        <>
+                            <button onClick={this.leaveGroup}>
+                                Leave Group
+                            </button>
+                        </>
                         }
 
                         <GroupChatroomCall
