@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-
+import GroupMembersView from './components/GroupMembers/GroupMembersView';
+import AccountSettings from './components/AccountSettings/AccountSettings';
 import history from './history';
 
 // Main Router  
@@ -30,7 +31,9 @@ export const makeMainRoutes = () => {
           return <Authenticating {...props} />
         }} />
         <Route exact path="/user/:id" render={(props) => <User auth={auth} {...props} />} />
-        <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />        
+        <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />
+        <Route exact path="/user/:id/account" render={(props) => <AccountSettings auth={auth} {...props} />} />        
+        <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />    
       </div>
     </Router>
   );
