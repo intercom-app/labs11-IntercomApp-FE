@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-
+import { NavLink } from "react-router-dom";
 import './App.css';
 
 class App extends Component {
-
-  goTo = () => {
-    this.props.history.replace(`/intro`)
-  }
 
   login = () => {
     this.props.auth.login();
@@ -16,24 +12,22 @@ class App extends Component {
     this.props.auth.logout();
   }
 
-  // componentDidMount = () => {
-  //   const { renewSession } = this.props.auth;
+  componentDidMount = () => {
+    const { renewSession } = this.props.auth;
 
-  //   if (localStorage.getItem('isLoggedIn') === 'true') {
-  //     renewSession();
-  //   }
-  // }
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      renewSession();
+    }
+  }
 
   render() {
 
     const { isAuthenticated } = this.props.auth;
+    const id = localStorage.getItem('userId');
 
     return (
 
       <div>
-        <button onClick={this.goTo}>
-          Home
-        </button>
         {
           !isAuthenticated() && (
             <button onClick={this.login}>
@@ -43,11 +37,18 @@ class App extends Component {
         }
         {
           isAuthenticated() && (
-            <button onClick={this.logout}>
-              Log Out
+            <>
+              <NavLink to={`/user/${id}`}>
+                Home
+            </NavLink>
+
+              <button onClick={this.logout}>
+                Log Out
             </button>
+            </>
           )
         }
+        
       </div>
 
     )
