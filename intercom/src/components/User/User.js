@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
 import { NavLink } from "react-router-dom";
@@ -6,6 +8,7 @@ import AccountSettings from '../AccountSettings/AccountSettings';
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import host from '../../host';
+
 
 class User extends Component {
     state = {

@@ -24,7 +24,7 @@ class GroupsInvited extends Component {
                 {this.props.groupsInvited.map((group, key) => (
                     <tbody key={key}>
                         <tr>
-                            <NavLink to={`/groups/${group.groupId}`} >
+                            <NavLink to={`/group/${group.groupId}`} >
                                 <td>{group.groupId}</td></NavLink>
                             <td>{group.GroupName}</td>
 
