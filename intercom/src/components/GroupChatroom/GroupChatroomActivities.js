@@ -1,35 +1,17 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
-import host from '../../host';
 
 class GroupChatroomActivities extends Component {
-    state = {
-        activities: [],
-        error: null,
-    }
-
-    componentDidMount = async () => {
-        const activities = `${host}/api/groups/${this.props.groupId}/activities`;
-        try {
-            const res = await axios.get(activities)
-            this.setState({ activities: res.data })
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-
-    }
 
     getDateTime = (date) => {
-        const dateStr = new Date(date).toLocaleDateString('en-GB', {  
-            day : 'numeric',
-            month : 'short',
-            year : 'numeric'
+        const dateStr = new Date(date).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
         });
-        const today = new Date().toLocaleDateString('en-GB', {  
-            day : 'numeric',
-            month : 'short',
-            year : 'numeric'
+        const today = new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
         });
         if (dateStr !== today) {
             return dateStr
@@ -43,23 +25,20 @@ class GroupChatroomActivities extends Component {
 
     render() {
 
+        const { activities } = this.props
+
         return (
             <>
-                {this.state.error
-                    ? <p>{this.state.error}</p>
-                    : <>
-                        <h4>Latest Activities</h4>
-                        <ul>
-                            {this.state.activities.map(activity =>
-                                <li key={activity.id}>
-                                    {activity.displayName} {': '}
-                                    {activity.activity} {' '}
-                                    {this.getDateTime(activity.createdAt)}
-                                </li>
-                            )}
-                        </ul>
-                    </>
-                }
+                <h4>Latest Activities</h4>
+                <ul>
+                    {activities.map(activity =>
+                        <li key={activity.id}>
+                            {activity.displayName} {': '}
+                            {activity.activity} {' '}
+                            {this.getDateTime(activity.createdAt)}
+                        </li>
+                    )}
+                </ul>
             </>
         )
     }
