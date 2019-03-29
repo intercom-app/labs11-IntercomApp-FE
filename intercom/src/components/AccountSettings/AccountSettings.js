@@ -26,14 +26,13 @@ class AccountSettings extends Component {
                 console.log(err);
             });
             this.props.auth.logout()
-
         }
         
         render() {
-            // console.log(this.props.auth.logout)
 
         return (<div>
             <h2>Account Settings</h2>
+            <p></p>
             <Button color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
             
         </div>);
