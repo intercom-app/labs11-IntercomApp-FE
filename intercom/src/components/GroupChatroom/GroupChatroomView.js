@@ -21,13 +21,9 @@ class GroupChatroomView extends Component {
         const groupById = `${host}/api/groups/${this.state.groupId}`;
         try {
             const res = await axios.get(groupById)
-            this.setState(prevState => ({
-                ...prevState, group: res.data
-            }))
+            this.setState({ group: res.data })
         } catch (err) {
-            this.setState(prevState => ({
-                ...prevState, error: err.response.data.message,
-            }))
+            this.setState({ error: err.response.data.message })
         }
 
         this.checkIfOwner();
@@ -40,16 +36,10 @@ class GroupChatroomView extends Component {
             const res = await axios.get(groupOwners)
             const isOwner = res.data.filter(owner => owner.userId === this.state.userId)
             isOwner.length > 0
-                ? this.setState(prevState => ({
-                    ...prevState, isOwner: true
-                }))
-                : this.setState(prevState => ({
-                    ...prevState, isOwner: false
-                }))
+                ? this.setState({ isOwner: true })
+                : this.setState({ isOwner: false })
         } catch (err) {
-            this.setState(prevState => ({
-                ...prevState, error: err.response.data.message,
-            }))
+            this.setState({ error: err.response.data.message })
         }
 
     }
@@ -65,11 +55,11 @@ class GroupChatroomView extends Component {
                         <Link to={`/group/${this.state.groupId}/members`}>
                             {this.state.isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
-                        <br /><br />
+
                         <GroupChatroomCall
-                            group={this.state.group}
+                            groupId={this.state.groupId}
                         />
-                        <br /><br />
+                        
                         <GroupChatroomActivities
                             groupId={this.state.groupId}
                         />

@@ -13,13 +13,9 @@ class GroupChatroomActivities extends Component {
         const activities = `${host}/api/groups/${this.props.groupId}/activities`;
         try {
             const res = await axios.get(activities)
-            this.setState(prevState => ({
-                ...prevState, activities: res.data
-            }))
+            this.setState({ activities: res.data })
         } catch (err) {
-            this.setState(prevState => ({
-                ...prevState, error: err.response.data.message,
-            }))
+            this.setState({ error: err.response.data.message })
         }
 
     }
@@ -51,15 +47,18 @@ class GroupChatroomActivities extends Component {
             <>
                 {this.state.error
                     ? <p>{this.state.error}</p>
-                    : <ul>
-                        {this.state.activities.map(activity =>
-                            <li key={activity.id}>
-                                {activity.displayName} {': '}
-                                {activity.activity} {' '}
-                                {this.getDateTime(activity.createdAt)}
-                            </li>
-                        )}
-                    </ul>
+                    : <>
+                        <h4>Latest Activities</h4>
+                        <ul>
+                            {this.state.activities.map(activity =>
+                                <li key={activity.id}>
+                                    {activity.displayName} {': '}
+                                    {activity.activity} {' '}
+                                    {this.getDateTime(activity.createdAt)}
+                                </li>
+                            )}
+                        </ul>
+                    </>
                 }
             </>
         )

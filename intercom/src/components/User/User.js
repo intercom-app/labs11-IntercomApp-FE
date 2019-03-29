@@ -36,8 +36,8 @@ class User extends Component {
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
                         <GroupForm id={this.state.id} />
 
-                        <Link to={`/group/${1}`}>
-                            Group 1
+                        <Link to={`/group/${16}`}>
+                            Group 16
                         </Link>
 
                     </div>
