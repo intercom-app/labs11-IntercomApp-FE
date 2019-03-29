@@ -34,9 +34,13 @@ export const makeMainRoutes = () => {
           return <Authenticating {...props} />
         }} />
         <Route exact path="/user/:id" render={(props) => <User auth={auth} {...props} />} />
+<<<<<<< HEAD
         <Route exact path="/group/:id" render={(props) => <GroupChatroomView {...props} />} />
         <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />
 
+=======
+        <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />        
+>>>>>>> f52334b91df74f112296b5e1eeb4d7cd0b85e296
       </div>
     </Router>
   );
