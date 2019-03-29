@@ -12,6 +12,7 @@ import host from "../../host.js";
 class PricingPlan2 extends Component {
     constructor(props) {
         super(props);
+        this.state = {complete:false}
         this.submitPaymentHandler = this.submitPaymentHandler.bind(this);
     }
 
