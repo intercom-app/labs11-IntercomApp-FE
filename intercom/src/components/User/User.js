@@ -74,19 +74,10 @@ class User extends Component {
                     ? <p>Error retrieving user!</p>
                     : <div>
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
-<<<<<<< HEAD
-                        <GroupForm id={this.state.id} />
-
-                        <Link to={`/group/${16}`}>
-                            Group 16
-                        </Link>
-
-=======
                         <p>billing type: {this.state.user.billingSubcription}</p>
                         <GroupForm id={this.state.id} groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
->>>>>>> f52334b91df74f112296b5e1eeb4d7cd0b85e296
                     </div>
                 }
             </>

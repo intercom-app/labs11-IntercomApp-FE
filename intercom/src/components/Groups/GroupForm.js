@@ -43,12 +43,7 @@ class GroupForm extends Component {
         const groupData = {
             name: this.state.group.name
         }
-<<<<<<< HEAD
-
-
-=======
         
->>>>>>> f52334b91df74f112296b5e1eeb4d7cd0b85e296
         try {
             const group = await axios.post(`${host}/api/groups`, groupData)
             if (group) {
@@ -81,10 +76,7 @@ class GroupForm extends Component {
         } catch (err) {
             console.log(err);
         };
-<<<<<<< HEAD
-=======
        
->>>>>>> f52334b91df74f112296b5e1eeb4d7cd0b85e296
 
 
         // this.setState({
