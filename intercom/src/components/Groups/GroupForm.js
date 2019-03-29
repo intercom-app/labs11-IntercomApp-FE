@@ -78,7 +78,7 @@ class GroupForm extends Component {
         };
        
 
-
+        this.toggle()
         // this.setState({
         //     group: {
         //         name: '',
@@ -90,7 +90,8 @@ class GroupForm extends Component {
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        console.log(this.props.groupQuantity)
+        console.log(this.props.id)
+
         return (
             <div>
                 <Button color="info" onClick={this.toggle}>Create a new group</Button>
@@ -99,7 +100,7 @@ class GroupForm extends Component {
                     {this.props.groupQuantity > 0 ? (
                         <ModalBody>
                             <div>You need to upgrade your subscription to create more than 1 group.</div>
-                            <NavLink to={`user/${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
+                            <NavLink to={`${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
                         </ModalBody>
                     ) : (
                         <div>
