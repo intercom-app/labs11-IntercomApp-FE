@@ -30,7 +30,7 @@ export const makeMainRoutes = () => {
           return <Authenticating {...props} />
         }} />
         <Route exact path="/user/:id" render={(props) => <User auth={auth} {...props} />} />
-
+        <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />        
       </div>
     </Router>
   );

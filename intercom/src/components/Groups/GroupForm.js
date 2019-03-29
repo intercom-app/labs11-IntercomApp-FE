@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
@@ -89,11 +90,19 @@ class GroupForm extends Component {
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
+        console.log(this.props.groupQuantity)
         return (
             <div>
                 <Button color="info" onClick={this.toggle}>Create a new group</Button>
-                {/* <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
+                
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
+                    {this.props.groupQuantity > 0 ? (
+                        <ModalBody>
+                            <div>You need to upgrade your subscription to create more than 1 group.</div>
+                            <NavLink to={`users/${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
+                        </ModalBody>
+                    ) : (
+                        <div>
                     <ModalHeader>Create New Group</ModalHeader>
                     <ModalBody>
                         <Form>
@@ -105,7 +114,8 @@ class GroupForm extends Component {
                     <ModalFooter>
                         <Button color="primary" onClick={this.createGroup}>Create</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
+                                </ModalFooter></div>
+                    )}
                 </Modal>
             </div>
         );
