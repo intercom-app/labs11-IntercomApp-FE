@@ -5,7 +5,7 @@ const GroupChatroomCall = props => {
     return (
         <>
             <button>
-                {props.group.callStatus = 0 ? 'Start Chat' : 'Join Chat'}
+                {props.group.callStatus === 0 ? 'Start Chat' : 'Join Chat'}
             </button>
         </>
     )

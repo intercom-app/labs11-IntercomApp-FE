@@ -14,9 +14,10 @@ class GroupChatroomView extends Component {
         groupId: this.props.match.params.id,
         group: {},
         isOwner: false,
+        error: null,
     }
 
-    componentWillMount = async () => {
+    componentDidMount = async () => {
         const groupById = `${host}/api/groups/${this.state.groupId}`;
         try {
             const res = await axios.get(groupById)
@@ -64,13 +65,13 @@ class GroupChatroomView extends Component {
                         <Link to={`/group/${this.state.groupId}/members`}>
                             {this.state.isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
-                        <br/><br/>
-                        <GroupChatroomActivities
-                            group={this.state.group}
-                        />
-                        <br/><br/>
+                        <br /><br />
                         <GroupChatroomCall
                             group={this.state.group}
+                        />
+                        <br /><br />
+                        <GroupChatroomActivities
+                            groupId={this.state.groupId}
                         />
                     </>
                 }
