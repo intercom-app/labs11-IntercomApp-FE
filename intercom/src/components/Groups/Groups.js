@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import host from "../../host.js";
 import { NavLink } from "react-router-dom";
-import { Table, Button} from 'reactstrap';
+import { Table } from 'reactstrap';
 
 
 class Groups extends Component {
@@ -42,7 +42,7 @@ class Groups extends Component {
                     {this.state.groups.map((group, key) => (
                         <tbody key={key}>
                             <tr>
-                                <NavLink to={`/groups/${group.id}`} >
+                                <NavLink to={`/group/${group.id}`} >
                                 <td>{group.id}</td></NavLink>
                                 <td>{group.name}</td>
                                 <td>{group.phoneNumber}</td>
