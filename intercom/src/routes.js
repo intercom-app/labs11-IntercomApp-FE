@@ -1,6 +1,8 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-
+import GroupMembersView from './components/GroupMembers/GroupMembersView';
+import AccountSettings from './components/AccountSettings/AccountSettings';
+import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
 import history from './history';
 
 // Main Router  
@@ -11,9 +13,7 @@ import Auth from './Auth/Auth';
 import Authenticating from './Auth/Authenticating';
 import User from './components/User/User'
 
-// App Routes
-import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
-import GroupMembersView from './components/GroupMembers/GroupMembersView';
+
 
 // Create new Auth session
 const auth = new Auth();
@@ -34,9 +34,9 @@ export const makeMainRoutes = () => {
           return <Authenticating {...props} />
         }} />
         <Route exact path="/user/:id" render={(props) => <User auth={auth} {...props} />} />
+        <Route exact path="/user/:id/account" render={(props) => <AccountSettings auth={auth} {...props} />} />        
         <Route exact path="/group/:id" render={(props) => <GroupChatroomView {...props} />} />
         <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />
-
         <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />        
       </div>
     </Router>
