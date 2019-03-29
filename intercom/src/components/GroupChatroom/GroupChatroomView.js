@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 import host from '../../host';
+
+import GroupChatroomActivities from './GroupChatroomActivities';
+import GroupChatroomCall from './GroupChatroomCall';
 
 class GroupChatroomView extends Component {
     state = {
@@ -60,10 +64,14 @@ class GroupChatroomView extends Component {
                         <Link to={`/group/${this.state.groupId}/members`}>
                             {this.state.isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
-
-                        <button>
-                            {this.state.group.callStatus = 0 ? 'Start Chat' : 'Join Chat'}
-                        </button>
+                        <br/><br/>
+                        <GroupChatroomActivities
+                            group={this.state.group}
+                        />
+                        <br/><br/>
+                        <GroupChatroomCall
+                            group={this.state.group}
+                        />
                     </>
                 }
             </>

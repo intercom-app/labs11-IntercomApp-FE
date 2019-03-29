@@ -13,7 +13,7 @@ import User from './components/User/User'
 
 // App Routes
 import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
-import GroupMembersView from './components/GroupMembers/GroupMembersView'
+import GroupMembersView from './components/GroupMembers/GroupMembersView';
 
 // Create new Auth session
 const auth = new Auth();
