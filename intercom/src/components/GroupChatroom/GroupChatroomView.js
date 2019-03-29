@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import host from '../../host';
+import history from '../../history'
 
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
@@ -52,6 +53,27 @@ class GroupChatroomView extends Component {
         this.axiosPut(groupById, 'group', changes);
     }
 
+    deleteGroup = async () => {
+        const id = this.state.groupId;
+        const groupById = `${host}/api/groups/${id}`;   
+        const res = await this.axiosDel(groupById, 'group') 
+        if (res.count) {
+            const userId = localStorage.getItem('userId')
+            this.props.history.push(`/user/${userId}`)
+        }   
+    }
+
+    leaveGroup = async () => {
+        this.addActivity(`Left Group`);
+        const id = this.state.groupId;
+        const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
+        const res = await this.axiosDel(member, 'user')
+        if (res.length === 0) {
+            const userId = localStorage.getItem('userId')
+            this.props.history.push(`/user/${userId}`)
+        }  
+    }
+
     getActivities = id => {
         const activities = `${host}/api/groups/${id}/activities`;
         this.axiosGet(activities, 'activities');
@@ -86,8 +108,7 @@ class GroupChatroomView extends Component {
         const groupOwners = `${host}/api/groups/${id}/groupOwners`;
         try {
             const res = await axios.get(groupOwners)
-            const isOwner = res.data.filter(owner => owner.userId === this.state.userId)
-            isOwner.length > 0
+            res.data.length > 0
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {
@@ -127,6 +148,7 @@ class GroupChatroomView extends Component {
         try {
             const res = await axios.delete(call)
             this.setState({ [key]: res.data })
+            return res.data
         } catch (err) {
             this.setState({ error: err.response.data.message })
         }
@@ -178,6 +200,16 @@ class GroupChatroomView extends Component {
                         <Link to={`/group/${groupId}/members`}>
                             {isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
+
+                        {isOwner ? 
+                        <button onClick={this.deleteGroup}>
+                            Delete Group
+                        </button>
+                        : 
+                        <button onClick={this.leaveGroup}>
+                            Leave Group
+                        </button>
+                        }
 
                         <GroupChatroomCall
                             user={user}
