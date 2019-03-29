@@ -42,7 +42,7 @@ class Groups extends Component {
                     {this.state.groups.map((group, key) => (
                         <tbody key={key}>
                             <tr>
-                                <NavLink to={`/groups/${group.id}`} >
+                                <NavLink to={`/group/${group.id}`} >
                                 <td>{group.id}</td></NavLink>
                                 <td>{group.name}</td>
                                 <td>{group.phoneNumber}</td>

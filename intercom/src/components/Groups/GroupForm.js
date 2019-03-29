@@ -35,9 +35,9 @@ class GroupForm extends Component {
         }));
     }
 
-    createGroup =  async (event) => {
+    createGroup = async (event) => {
         event.preventDefault();
-        const userId = {userId: localStorage.getItem('userId')}
+        const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
         event.preventDefault();
         const groupData = {
