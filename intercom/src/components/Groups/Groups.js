@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import host from "../../host.js";
 import { NavLink } from "react-router-dom";
-import { Table, Button} from 'reactstrap';
+import { Table } from 'reactstrap';
 
 
 class Groups extends Component {
