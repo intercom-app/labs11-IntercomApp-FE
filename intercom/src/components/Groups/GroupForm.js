@@ -99,7 +99,7 @@ class GroupForm extends Component {
                     {this.props.groupQuantity > 0 ? (
                         <ModalBody>
                             <div>You need to upgrade your subscription to create more than 1 group.</div>
-                            <NavLink to={`users/${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
+                            <NavLink to={`user/${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
                         </ModalBody>
                     ) : (
                         <div>

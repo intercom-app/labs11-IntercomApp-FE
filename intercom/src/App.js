@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
-import PricingAndPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
 import './App.css';
 
 class App extends Component {
@@ -49,7 +48,7 @@ class App extends Component {
             </>
           )
         }
-        <PricingAndPurchasingOptions />
+        
       </div>
 
     )
