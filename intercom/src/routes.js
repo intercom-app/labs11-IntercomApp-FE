@@ -1,8 +1,10 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
+import PricingAndPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
 import GroupMembersView from './components/GroupMembers/GroupMembersView';
 import AccountSettings from './components/AccountSettings/AccountSettings';
 import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
+
 import history from './history';
 
 // Main Router  
@@ -37,7 +39,7 @@ export const makeMainRoutes = () => {
         <Route exact path="/user/:id/account" render={(props) => <AccountSettings auth={auth} {...props} />} />        
         <Route exact path="/group/:id" render={(props) => <GroupChatroomView {...props} />} />
         <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />
-        <Route exact path="/user/:id/billing" render={(props) => <User auth={auth} {...props} />} />        
+        <Route exact path="/user/:id/billing" render={(props) => <PricingAndPurchasingOptions auth={auth} {...props} />} />         
       </div>
     </Router>
   );
