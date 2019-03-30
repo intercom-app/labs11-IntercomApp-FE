@@ -85,12 +85,14 @@ class GroupForm extends Component {
         //         phoneNumber: ''
         //     }
         // });
-        history.replace(`/users/${userId.userId}`)
+        this.toggle()
+        // this.setState({ state: this.state });
+        history.replace(`/user/${userId.userId}/billing`)
     };
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        console.log(this.props.groupQuantity)
+        // console.log(this.props.groupQuantity)
         return (
             <div>
                 <Button color="info" onClick={this.toggle}>Create a new group</Button>
@@ -114,7 +116,7 @@ class GroupForm extends Component {
                     <ModalFooter>
                         <Button color="primary" onClick={this.createGroup}>Create</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                                </ModalFooter></div>
+                    </ModalFooter></div>
                     )}
                 </Modal>
             </div>

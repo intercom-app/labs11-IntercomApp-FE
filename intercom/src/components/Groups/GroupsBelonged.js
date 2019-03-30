@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import GroupForm from '../Groups/GroupForm';
 import { NavLink } from "react-router-dom";
 import { Table } from 'reactstrap';
@@ -23,11 +22,9 @@ class GroupsBelonged extends Component {
                 </thead>
                 {this.props.groupsBelonged.map((group, key) => (
                     <tbody key={key}>
-                        <tr>
-                            <NavLink to={`/group/${group.groupId}`} >
-                                <td>{group.groupId}</td></NavLink>
+                        <tr>   
+                            <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>
                             <td>{group.GroupName}</td>
-
                         </tr>
                     </tbody>
                 ))}

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
 import { NavLink } from "react-router-dom";
@@ -78,7 +76,7 @@ class User extends Component {
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
                         <p>billing type: {this.state.user.billingSubcription}</p>
                         <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink>
-                        <GroupForm id={this.state.id} groupQuantity={this.state.groupsBelongedTo.length} /> 
+                        <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
                     </div>
