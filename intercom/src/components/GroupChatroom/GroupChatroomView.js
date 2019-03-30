@@ -14,6 +14,7 @@ class GroupChatroomView extends Component {
         user: {},
         groupId: this.props.match.params.id,
         group: {},
+        groupName: '',
         activities: [],
         participants: [],
         isOwner: false,
@@ -52,6 +53,27 @@ class GroupChatroomView extends Component {
         this.axiosPut(groupById, 'group', changes);
     }
 
+    deleteGroup = async () => {
+        const id = this.state.groupId;
+        const groupById = `${host}/api/groups/${id}`;   
+        const res = await this.axiosDel(groupById, 'group') 
+        if (res.count) {
+            const userId = localStorage.getItem('userId')
+            this.props.history.push(`/user/${userId}`)
+        }   
+    }
+
+    leaveGroup = async () => {
+        this.addActivity(`Left Group`);
+        const id = this.state.groupId;
+        const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
+        const res = await this.axiosDel(member, 'user')
+        if (res.length === 0) {
+            const userId = localStorage.getItem('userId')
+            this.props.history.push(`/user/${userId}`)
+        }  
+    }
+
     getActivities = id => {
         const activities = `${host}/api/groups/${id}/activities`;
         this.axiosGet(activities, 'activities');
@@ -86,8 +108,7 @@ class GroupChatroomView extends Component {
         const groupOwners = `${host}/api/groups/${id}/groupOwners`;
         try {
             const res = await axios.get(groupOwners)
-            const isOwner = res.data.filter(owner => owner.userId === this.state.userId)
-            isOwner.length > 0
+            res.data.length > 0
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {
@@ -127,16 +148,28 @@ class GroupChatroomView extends Component {
         try {
             const res = await axios.delete(call)
             this.setState({ [key]: res.data })
+            return res.data
         } catch (err) {
             this.setState({ error: err.response.data.message })
         }
+    }
+
+    handleInputChange = e => {
+        e.preventDefault()
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    handleGroupUpdate = e => {
+        e.preventDefault()
+        this.updateGroup({ name: this.state.groupName })
+        this.setState({ groupName: '' })
     }
 
     handleCallButton = async () => {
         const userOnCall = (this.state.user.callStatus === 1)
         const groupOnCall = (this.state.group.callStatus === 1)
         // TWILIO CODE HERE FOR PHONE NUMBER
-        const phoneNumber = "+15555555555"
+        const phoneNumber = '+15555555555'
 
         switch (true) {
             case (!userOnCall && !groupOnCall): // Start Call
@@ -153,7 +186,7 @@ class GroupChatroomView extends Component {
                 this.updateUser({ callStatus: false });
                 const participants = await this.deleteParticipant(this.state.userId);
                 if (participants === undefined) { // Terminate Call: if no more particates
-                    this.addActivity("Ended Call");
+                    this.addActivity('Ended Call');
                     this.updateGroup({ callStatus: false, phoneNumber: null });
                 }
                 break;
@@ -178,6 +211,34 @@ class GroupChatroomView extends Component {
                         <Link to={`/group/${groupId}/members`}>
                             {isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
+
+                        {isOwner ? 
+                        <>
+                            <button onClick={this.deleteGroup}>
+                                Delete Group
+                            </button>
+
+                            <form onSubmit={this.handleGroupUpdate}>
+                                Update Group Name:
+                                <input 
+                                    onChange={this.handleInputChange} 
+                                    type='text' 
+                                    id='groupName'
+                                    name='groupName' 
+                                    value={this.state.groupName} 
+                                    placeholder='New Group Name Here...'
+                                ></input>
+                                <input type='submit' value='Submit'></input>
+                            </form>
+
+                        </>
+                        : 
+                        <>
+                            <button onClick={this.leaveGroup}>
+                                Leave Group
+                            </button>
+                        </>
+                        }
 
                         <GroupChatroomCall
                             user={user}
