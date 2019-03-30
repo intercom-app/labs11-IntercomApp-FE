@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {Elements, StripeProvider} from 'react-stripe-elements';
-import App from "../../App";
 import PricingPlan1 from './PricingPlan1';
 import PricingPlan2 from './PricingPlan2';
 

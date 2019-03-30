@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GroupForm from '../Groups/GroupForm';
 import { NavLink } from "react-router-dom";
 import { Table } from 'reactstrap';
 

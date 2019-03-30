@@ -1,13 +1,9 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import PricingAndPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
+import PricingPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
 import GroupMembersView from './components/GroupMembers/GroupMembersView';
 import AccountSettings from './components/AccountSettings/AccountSettings';
 import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
-<<<<<<< HEAD
-import PricingPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
-=======
->>>>>>> 284da55b232acd2b5e389fb551989718dda12faa
 
 import history from './history';
 

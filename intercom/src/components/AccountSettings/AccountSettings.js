@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
-import GroupForm from '../Groups/GroupForm';
-import { NavLink } from "react-router-dom";
-import { Button } from 'reactstrap';
+import { Button } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
-import history from '../../history';
 
 
 
