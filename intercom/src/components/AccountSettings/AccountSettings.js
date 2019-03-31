@@ -14,6 +14,16 @@ class AccountSettings extends Component {
     }
 
     deleteAccount = (id) => {
+        const activity = { userId: localStorage.getItem('userId'), activity: 'Left group due to account terminatio .' }        
+        // axios
+        //     .post(`${host}/api/groups/${this.state.group.id}/activities`, activity) //recekve group id
+        //     .then(activity => {
+        //         console.log(activity)
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
+
         axios
             .delete(`${host}/api/users/${id}`)
             .then(deletedUser => {
