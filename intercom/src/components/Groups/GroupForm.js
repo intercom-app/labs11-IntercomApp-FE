@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
-import history from '../../history';
+// import history from '../../history';
 
 
 

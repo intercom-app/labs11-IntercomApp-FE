@@ -74,7 +74,7 @@ class User extends Component {
                     : <div>
                         {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
                         <p>billing type: {this.state.user.billingSubcription}</p>
-                        <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink>
+                        {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
