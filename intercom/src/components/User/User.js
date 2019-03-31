@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import host from '../../host';
+import { Row, Card, CardText, CardBody, CardTitle, CardSubtitle, Button} from 'reactstrap';
 
 
 class User extends Component {
@@ -72,8 +73,16 @@ class User extends Component {
                 {this.state.error
                     ? <p>Error retrieving user!</p>
                     : <div>
-                        {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
-                        <p>billing type: {this.state.user.billingSubcription}</p>
+                        <Row>
+                            <Card>
+                                <CardBody>
+                                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
+                                    <CardSubtitle><strong>Nickname: </strong>{this.state.user.displayName}</CardSubtitle>
+                                    <CardSubtitle><strong>Email: </strong>{this.state.user.email}</CardSubtitle> 
+                                    <CardSubtitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardSubtitle>                                                                                                           
+                                </CardBody>
+                            </Card>
+                        </Row>
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
