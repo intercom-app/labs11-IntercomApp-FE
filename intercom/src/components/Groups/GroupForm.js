@@ -99,7 +99,7 @@ class GroupForm extends Component {
         // console.log(this.props.groupQuantity)
         return (
             <div>
-                <Button color="info" onClick={this.toggle}>Create a new group</Button>
+                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Create a new group</Button>
                 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
                     {this.props.groupQuantity > 0 ? (
