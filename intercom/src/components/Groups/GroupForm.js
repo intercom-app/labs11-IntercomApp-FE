@@ -85,9 +85,13 @@ class GroupForm extends Component {
         //         phoneNumber: ''
         //     }
         // });
-        this.toggle()
         // this.setState({ state: this.state });
-        history.replace(`/user/${userId.userId}/billing`)
+        // history.replace(`/user/${userId.userId}`)
+        setTimeout(
+            () => {
+                window.location.reload();
+            },1000
+        );
     };
 
     render() {
