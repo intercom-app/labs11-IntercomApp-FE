@@ -5,8 +5,6 @@ import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 
 
-
-
 class AccountSettings extends Component {
     constructor(props) {
         super(props);
