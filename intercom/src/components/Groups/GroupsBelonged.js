@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
+import host from "../../host.js";
+import axios from 'axios';
 
 
 class GroupsBelonged extends Component {
@@ -8,7 +10,8 @@ class GroupsBelonged extends Component {
         super(props);
         this.state = {  }
     }
-    render() { 
+
+     render() { 
         return ( <div className='mt-sm-3'>
             {/* {console.log(this.props.groupsBelonged)} */}
             <h2>Groups Belonged To</h2>
@@ -23,7 +26,7 @@ class GroupsBelonged extends Component {
                     <tbody key={key}>
                         <tr>   
                             <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>
-                            <td>{group.GroupName}</td>
+                            <td>{group.GroupName} </td>
                         </tr>
                     </tbody>
                 ))}

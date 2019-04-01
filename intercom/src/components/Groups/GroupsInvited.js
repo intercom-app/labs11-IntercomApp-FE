@@ -1,13 +1,73 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
-import { Table } from 'reactstrap';
-
+import { Table, Button } from 'reactstrap';
+import host from "../../host.js";
+import axios from 'axios';
 
 class GroupsInvited extends Component {
     constructor(props) {
         super(props);
         this.state = {}
     }
+
+    acceptInvite = (event) => {
+        event.preventDefault();
+        const userId = { userId: localStorage.getItem('userId') }
+        const activity = { userId: localStorage.getItem('userId'), activity: 'Joined group.' }
+        //delete the user from groupInvitees table
+        axios
+            .delete(`${host}/api/groups/${this.state.group.id}/groupInvitees/${userId}`)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        //add the user to the groupMembers table
+        axios
+            .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
+            .then(groupMember => {
+                console.log(groupMember)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        //add the activity to the group's log
+        axios
+            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+            .then(activity => {
+                console.log(activity)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+    }
+
+    declineInvite = (event) => {
+        event.preventDefault();
+        const userId = { userId: localStorage.getItem('userId') }
+        const activity = { userId: localStorage.getItem('userId'), activity: 'Declined to join to group.' }
+        //delete the user from groupInvitees table due to decline
+        axios
+            .delete(`${host}/api/groups/${this.state.group.id}/groupInvitees/${userId}`)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        //add the declining activity to the group's log
+        axios
+            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+            .then(activity => {
+                console.log(activity)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    } 
+
     render() {
         return (<div>
             {/* {console.log(this.props.groupsInvited)} */}
@@ -22,9 +82,12 @@ class GroupsInvited extends Component {
                 {this.props.groupsInvited.map((group, key) => (
                     <tbody key={key}>
                         <tr>
-                            <NavLink to={`/group/${group.groupId}`} >
-                                <td>{group.groupId}</td></NavLink>
-                            <td>{group.GroupName}</td>
+                            <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>                            
+                            <td>
+                                {group.GroupName}
+                                <Button onClick={this.acceptInvite} color='success'>Join</Button>
+                                <Button onClick={this.declineInvite} color='danger'>Decline</Button>
+                            </td>
 
                         </tr>
                     </tbody>
