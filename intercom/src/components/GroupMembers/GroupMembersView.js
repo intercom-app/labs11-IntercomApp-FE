@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from "axios";
-import { Table, Container, Row } from 'reactstrap';
+import { Table, Container, Row, Form, FormGroup, Input, Button } from 'reactstrap';
 
 
 
@@ -11,8 +11,36 @@ class GroupMembersView extends Component {
         this.state = {
             id: this.props.match.params.id,            
             members: [],
-            invitees: []
+            invitees: [],
+            inviteeId: ''
         };
+    }
+
+    handleInput = e => {
+        this.setState({
+                ...this.state,
+                [e.target.name]: e.target.value
+            }
+        )
+    }
+
+    inviteUser = async (e) => {
+        e.preventDefault();
+        const inviteeId = { userId: this.state.inviteeId }        
+        console.log(this.state.id)
+        try {
+        await axios.post(`${host}/api/groups/${this.state.id}/groupInvitees`, inviteeId)
+            .then(res => {
+                console.log(res)
+                this.setState({invitees: res.data})
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        } catch (err) {
+            console.log(err);
+        };
+
     }
 
     componentDidMount() {
@@ -29,15 +57,23 @@ class GroupMembersView extends Component {
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
             .then(res => {
                 this.setState({ invitees: res.data });
+
             })
             .catch(err => {
                 console.error(err);
             });
+
         
     }
     render() {
         return (
             <Container>
+                <Form>
+                    <FormGroup>
+                        <Input onChange={this.handleInput} type="text" name="inviteeId" value={this.state.inviteeId} id="inviteeId" placeholder="Invitee Id" />
+                    </FormGroup>
+                    <Button color="primary" onClick={this.inviteUser}>Invite</Button>{' '}                    
+                </Form>
                 <Row>
                     <h3>Group Members</h3>
                     <Table>
