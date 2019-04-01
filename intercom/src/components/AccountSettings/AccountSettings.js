@@ -12,7 +12,8 @@ class AccountSettings extends Component {
         super(props);
         this.state = {
             user: {},
-            id: this.props.id,                        
+            id: this.props.id,
+            groupsMember: [],
         }
     }
 
@@ -30,19 +31,42 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
+
+        this.getGroupsMemberOf(id);
+    }
+
+    getGroupsMemberOf = (id) => {
+        axios
+            .get(`${host}api/users/${id}/groupsBelongedTo`)
+            .then(res => {
+                this.setState({ groupsMember: res.data });
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
+
+    handleDelete = () => {
+        this.updateActivities();
+    }
+
+    updateActivities = () => {
+        const activity = { userId: this.state.id, activity: 'Left Voice Chatroom' }
+        const groups = this.state.groupsMember;
+        const groupsIds = groups.map(group => group.groupId);
+        groupsIds.forEach( id => {
+            axios
+            .post(`${host}/api/groups/${id}/activities`, activity)
+            .then(res => {
+                this.setState({ groupsMember: [] });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        })
     }
 
     deleteAccount = (id) => {
-        const activity = { userId: localStorage.getItem('userId'), activity: 'Left group due to account termination.' }        
-        // axios
-        //     .post(`${host}/api/groups/${this.state.group.id}/activities`, activity) //recekve group id
-        //     .then(activity => {
-        //         console.log(activity)
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
-
         axios
             .delete(`${host}/api/users/${id}`)
             .then(deletedUser => {
@@ -50,22 +74,22 @@ class AccountSettings extends Component {
             .catch(err => {
                 console.log(err);
             });
-            this.props.auth.logout()
-        }
-        
-        render() {
+        this.props.auth.logout()
+    }
+
+    render() {
 
         return (<Container>
             <>
                 <h2>Account Settings</h2>
-                <Button className='float-sm-right' color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
-                <AccountUpdateForm user={this.state.user}/>              
+                <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(this.state.id)}>Delete Account</Button>
+                <AccountUpdateForm user={this.state.user} />
                 <CardBody>
                     <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
                     <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
                     <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>   
-                </CardBody> 
+                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
+                </CardBody>
             </>
         </Container>);
     }
