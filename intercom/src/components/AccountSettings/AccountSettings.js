@@ -34,12 +34,14 @@ class AccountSettings extends Component {
     }
 
     handleDelete = (id) => {
-        this.updateActivities(id);
+        this.addGroupsMemberActivities(id);
+        this.addGroupsInviteeActivities(id);
         this.deleteGroupsOwnerOf(id);
+        this.deleteAccount(id);
     }
 
-    updateActivities = (id) => {
-        const activity = { userId: id, activity: 'Left Voice Chatroom' }
+    addGroupsMemberActivities = (id) => {
+        const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
 
         let groupsMemberOf;
         axios
@@ -48,6 +50,24 @@ class AccountSettings extends Component {
         .catch(err => console.error(err));
 
         const groupsIds = groupsMemberOf.map(group => group.groupId);
+        groupsIds.forEach( id => {
+            axios
+            .post(`${host}/api/groups/${id}/activities`, activity)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err));
+        })
+    }
+
+    addGroupsInviteeActivities = (id) => {
+        const activity = { userId: id, activity: 'Declined invite. User left Voice Chatroom.' }
+
+        let groupsInviteesOf;
+        axios
+        .get(`${host}api/users/${id}/groupsInvitedTo`)
+        .then(res => groupsInviteesOf = res.data)
+        .catch(err => console.error(err));
+
+        const groupsIds = groupsInviteesOf.map(group => group.groupId);
         groupsIds.forEach( id => {
             axios
             .post(`${host}/api/groups/${id}/activities`, activity)
@@ -75,12 +95,10 @@ class AccountSettings extends Component {
     deleteAccount = (id) => {
         axios
             .delete(`${host}/api/users/${id}`)
-            .then(deletedUser => {
+            .then(res => {
+                this.props.auth.logout()
             })
-            .catch(err => {
-                console.log(err);
-            });
-        this.props.auth.logout()
+            .catch(err => console.log(err));
     }
 
     render() {
