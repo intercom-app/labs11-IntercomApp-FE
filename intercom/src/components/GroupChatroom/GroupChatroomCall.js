@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card } from 'reactstrap';
 
 class GroupChatroomCall extends Component {
 
@@ -30,15 +31,16 @@ class GroupChatroomCall extends Component {
         return (
             <>
 
-                <button onClick={handleCallButton}>
+                <button onClick={handleCallButton} className='mt-sm-4'>
                     {this.renderButton(user.callStatus, group.callStatus)}
                 </button>
-
-                <h5>Phone Number</h5>
-                {group.phoneNumber
-                    ? group.phoneNumber
-                    : 'No Active Phone Number'
-                }
+                <Card className='mt-sm-4 mb-sm-4'>
+                    <h5>Phone Number</h5>
+                    {group.phoneNumber
+                        ? group.phoneNumber
+                        : 'No Active Phone Number'
+                    }
+                </Card>
 
                 <h5>Call Participants</h5>
                 <ul>

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import { Jumbotron, Button, Row, Container, Card } from 'reactstrap';
 import axios from 'axios';
-
 import host from '../../host';
-
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
+
+
 
 class GroupChatroomView extends Component {
     state = {
@@ -203,22 +203,22 @@ class GroupChatroomView extends Component {
         let { user, group, groupId, isOwner, participants, activities, error } = this.state
 
         return (
-            <>
+            <Container>
                 {error
                     ? <p>{error}</p>
                     : <>
-                        <h3>{group.name}</h3>
-                        <Link to={`/group/${groupId}/members`}>
+                        <h3>Group Name: {group.name}</h3>
+                        <Link to={`/group/${groupId}/members`} className='mb-sm-4 float-sm-right'>
                             {isOwner ? 'Manage Members' : 'View Members'}
                         </Link>
 
                         {isOwner ? 
-                        <>
-                            <button onClick={this.deleteGroup}>
+                        <Card>
+                            <Button className='w-25' color='danger' onClick={this.deleteGroup}>
                                 Delete Group
-                            </button>
+                            </Button>
 
-                            <form onSubmit={this.handleGroupUpdate}>
+                                <form onSubmit={this.handleGroupUpdate} className='mt-sm-4'>
                                 Update Group Name:
                                 <input 
                                     onChange={this.handleInputChange} 
@@ -231,12 +231,12 @@ class GroupChatroomView extends Component {
                                 <input type='submit' value='Submit'></input>
                             </form>
 
-                        </>
+                        </Card>
                         : 
                         <>
-                            <button onClick={this.leaveGroup}>
+                            <Button color='danger' onClick={this.leaveGroup}>
                                 Leave Group
-                            </button>
+                            </Button>
                         </>
                         }
 
@@ -252,7 +252,7 @@ class GroupChatroomView extends Component {
                         />
                     </>
                 }
-            </>
+            </Container>
         )
     }
 }

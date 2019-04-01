@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ListGroup, ListGroupItem, Row, Container, Card} from 'reactstrap';
 
 class GroupChatroomActivities extends Component {
 
@@ -28,18 +29,18 @@ class GroupChatroomActivities extends Component {
         const { activities } = this.props
 
         return (
-            <>
+            <Card>
                 <h4>Latest Activities</h4>
                 <ul>
                     {activities.map((activity, ind) =>
-                        <li key={ind}>
+                        <ListGroupItem key={ind}>
                             {activity.displayName} {': '}
                             {activity.activity} {' '}
                             {this.getDateTime(activity.createdAt)}
-                        </li>
+                        </ListGroupItem>
                     )}
                 </ul>
-            </>
+            </Card>
         )
     }
 
