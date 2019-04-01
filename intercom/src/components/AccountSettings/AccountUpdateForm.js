@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
-
 
 
 class GroupForm extends Component {
@@ -11,8 +10,9 @@ class GroupForm extends Component {
         super(props);
         this.state = {
             modal: false,
-            group: {
-                name: ''
+            user: {
+                nickName: this.props.user.displayName,
+                billingSubcription: this.props.billingSubcription
             }
         };
 
@@ -42,7 +42,7 @@ class GroupForm extends Component {
         const groupData = {
             name: this.state.group.name
         }
-        
+
         try {
             const group = await axios.post(`${host}/api/groups`, groupData)
             if (group) {
@@ -75,7 +75,7 @@ class GroupForm extends Component {
         } catch (err) {
             console.log(err);
         };
-       
+
 
         this.toggle()
         // this.setState({
@@ -89,38 +89,37 @@ class GroupForm extends Component {
         setTimeout(
             () => {
                 window.location.reload();
-            },1000
+            }, 1000
         );
     };
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        // console.log(this.props.groupQuantity)
+        console.log(this.props.user)
         return (
             <div>
-                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Create a new group</Button>
-                
+                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
-                    {this.props.groupQuantity > 0 ? (
-                        <ModalBody>
-                            <div>You need to upgrade your subscription to create more than 1 group.</div>
-                            <NavLink to={`${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
-                        </ModalBody>
-                    ) : (
-                        <div>
-                    <ModalHeader>Create New Group</ModalHeader>
+                    <ModalHeader>Update Account</ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup>
-                                <Input onChange={this.handleGroupInput} type="text" name="name" value={this.state.group.name} id="name" placeholder="Group Name" />
+                                <Label>Nickname</Label>
+                                <Input onChange={this.handleGroupInput} type="text" name="nickname" value={this.props.user.displayName} id="nickname" placeholder="Nickname" />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Billing Type</Label>
+                                <Input onChange={this.handleGroupInput} type="select" name="billingSubcription" value={this.props.user.billingSubcription} id="billingSubcription" placeholder="Billing Type">
+                                    <option>{this.props.user.billingSubcription}</option>                                    
+                                    <option>premium</option>
+                                </Input>                                            
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.createGroup}>Create</Button>{' '}
+                        <Button color="primary" onClick={this.createGroup}>Update</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter></div>
-                    )}
+                    </ModalFooter>
                 </Modal>
             </div>
         );

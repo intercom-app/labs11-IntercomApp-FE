@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Row, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
+import AccountUpdateForm from './AccountUpdateForm';
+
 
 
 
@@ -52,11 +54,12 @@ class AccountSettings extends Component {
         }
         
         render() {
-            console.log(this.state.user)
+
         return (<Container>
             <>
                 <h2>Account Settings</h2>
                 <Button className='float-sm-right' color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
+                <AccountUpdateForm user={this.state.user}/>              
                 <CardBody>
                     <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
                     <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
