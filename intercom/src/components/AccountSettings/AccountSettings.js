@@ -13,7 +13,6 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             id: this.props.id,
-            groupsMember: [],
         }
     }
 
@@ -32,37 +31,31 @@ class AccountSettings extends Component {
                 });
             });
 
-        this.getGroupsMemberOf(id);
     }
 
-    getGroupsMemberOf = (id) => {
+    handleDelete = (id) => {
+        this.updateActivities(id);
+    }
+
+    updateActivities = (id) => {
+        const activity = { userId: id, activity: 'Left Voice Chatroom' }
+
+        let groupsMemberOf;
         axios
-            .get(`${host}api/users/${id}/groupsBelongedTo`)
-            .then(res => {
-                this.setState({ groupsMember: res.data });
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    };
+        .get(`${host}api/users/${id}/groupsBelongedTo`)
+        .then(res => {
+            groupsMemberOf = res.data;
+        })
+        .catch(err => {
+            console.error(err);
+        });
 
-    handleDelete = () => {
-        this.updateActivities();
-    }
-
-    updateActivities = () => {
-        const activity = { userId: this.state.id, activity: 'Left Voice Chatroom' }
-        const groups = this.state.groupsMember;
-        const groupsIds = groups.map(group => group.groupId);
+        const groupsIds = groupsMemberOf.map(group => group.groupId);
         groupsIds.forEach( id => {
             axios
             .post(`${host}/api/groups/${id}/activities`, activity)
-            .then(res => {
-                this.setState({ groupsMember: [] });
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err));
         })
     }
 
