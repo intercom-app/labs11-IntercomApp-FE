@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
@@ -10,32 +9,13 @@ class AccountUpdateForm extends Component {
         super(props);
         this.state = {
             modal: false,
-            user: {
-                nickName: '',
-                billingSubcription: ''
-            }
+            displayName: ''
         };
-
-    }
-
-    componentDidMount() {
-        this.setState({
-            user: {
-                nickName: this.props.user.displayName,
-                billingSubcription: this.props.user.billingSubcription
-            }
-        })
     }
 
     handleGroupInput = e => {
         e.preventDefault();
-        this.setState({
-            user: {
-                ...this.state.user,                
-                [e.target.name]: e.target.value
-            }
-        }
-        )
+        this.setState({ [e.target.name]: e.target.value })
     }
 
     toggle = () => {
@@ -44,42 +24,23 @@ class AccountUpdateForm extends Component {
         }));
     }
 
-    updateUser = async (event) => {
-        event.preventDefault();
-        const userId = localStorage.getItem('userId')
+    updateUser = async (e) => {
+        const id = localStorage.getItem('userId');
+        e.preventDefault();
         const userData = {
-            displayName: this.state.user.nickName,
-            billingSubcription: this.state.user.billingSubcription
+            displayName: this.state.displayName,
         }
-        console.log(userData)
-        console.log(`${host}/api/users/${userId}`)
-        
         try {
-               const res = await axios.put(`${host}/api/users/${this.state.user.id}`, userData)
-               console.log(res.data)     
-               .then(updatedUser => {
-                        console.log(updatedUser)
-                        
-                    })
+            const res = await axios.put(`${host}/api/users/${id}`, userData)
+            this.setState({ 
+                displayName: res.data.displayName
+            })
+            this.toggle()
         } catch (err) {
             console.log(err);
         };
 
-
-        this.toggle()
-        // this.setState({
-        //     group: {
-        //         name: '',
-        //         phoneNumber: ''
-        //     }
-        // });
-        // this.setState({ state: this.state });
-        // history.replace(`/user/${userId.userId}`)
-        // setTimeout(
-        //     () => {
-        //         window.location.reload();
-        //     }, 1000
-        // );
+        this.props.updateUser();
     };
 
     render() {
@@ -92,15 +53,15 @@ class AccountUpdateForm extends Component {
                     <ModalBody>
                         <Form>
                             <FormGroup>
-                                <Label>Nickname</Label>
-                                <Input onChange={this.handleGroupInput} type="text" name="nickName" value={this.state.user.nickName || ''} id="nickname" placeholder={this.props.user.displayName} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Billing Type</Label>
-                                <Input onChange={this.handleGroupInput} type="select" name="billingSubcription" value={this.state.user.billingSubcription || ''} id="billingSubcription" placeholder="Billing Type">
-                                    <option>free</option>                                    
-                                    <option>premium</option>
-                                </Input>                                            
+                                <Label>Display Name</Label>
+                                <Input 
+                                    onChange={this.handleGroupInput} 
+                                    type="text" 
+                                    name="displayName" 
+                                    id="displayName" 
+                                    value={this.state.displayName} 
+                                    placeholder="Enter new display name..."
+                                />
                             </FormGroup>
                         </Form>
                     </ModalBody>
