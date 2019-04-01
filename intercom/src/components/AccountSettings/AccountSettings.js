@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Container, CardBody, CardTitle } from 'reactstrap'
+import { Button, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
@@ -34,88 +34,82 @@ class AccountSettings extends Component {
     }
 
     handleDelete = (id) => {
-        this.addGroupsMemberActivities(id);
-        this.addGroupsInviteeActivities(id);
-        this.deleteGroupsOwnerOf(id);
-        this.deleteAccount(id);
+        this.addGroupsMemberActivities(id); // First updates activities for all groups user belonged to
+        // Second updates activities for all groups user was invited to
+        // Third deletes all groups user was owner of
+        // Last deletes user and logs out
     }
 
     addGroupsMemberActivities = (id) => {
         const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
-
-        let groupsMemberOf;
         axios
-        .get(`${host}api/users/${id}/groupsBelongedTo`)
-        .then(res => groupsMemberOf = res.data)
-        .catch(err => console.error(err));
-
-        const groupsIds = groupsMemberOf.map(group => group.groupId);
-        groupsIds.forEach( id => {
-            axios
-            .post(`${host}/api/groups/${id}/activities`, activity)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
-        })
+            .get(`${host}/api/users/${id}/groupsBelongedTo`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .post(`${host}/api/groups/${groupId}/activities`, activity)
+                        .then(() => this.addGroupsInviteeActivities(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
     }
 
     addGroupsInviteeActivities = (id) => {
         const activity = { userId: id, activity: 'Declined invite. User left Voice Chatroom.' }
-
-        let groupsInviteesOf;
         axios
-        .get(`${host}api/users/${id}/groupsInvitedTo`)
-        .then(res => groupsInviteesOf = res.data)
-        .catch(err => console.error(err));
-
-        const groupsIds = groupsInviteesOf.map(group => group.groupId);
-        groupsIds.forEach( id => {
-            axios
-            .post(`${host}/api/groups/${id}/activities`, activity)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
-        })
+            .get(`${host}/api/users/${id}/groupsInvitedTo`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .post(`${host}/api/groups/${groupId}/activities`, activity)
+                        .then(() => this.deleteGroupsOwnerOf(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
     }
 
     deleteGroupsOwnerOf = (id) => {
-        let groupsOwnerOf;
         axios
-        .get(`${host}api/users/${id}/groupsOwned`)
-        .then(res => groupsOwnerOf = res.data)
-        .catch(err => console.error(err));
-
-        const groupsIds = groupsOwnerOf.map(group => group.groupId);
-        groupsIds.forEach( id => {
-            axios
-            .delete(`${host}/api/groups/${id}`)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
-        })
+            .get(`${host}/api/users/${id}/groupsOwned`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .delete(`${host}/api/groups/${groupId}`)
+                        .then(() => this.deleteAccount(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
     }
 
     deleteAccount = (id) => {
         axios
             .delete(`${host}/api/users/${id}`)
-            .then(res => {
-                this.props.auth.logout()
-            })
+            .then(() => this.props.auth.logout())
             .catch(err => console.log(err));
     }
 
     render() {
 
-        return (<Container>
-            <>
-                <h2>Account Settings</h2>
-                <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(this.state.id)}>Delete Account</Button>
-                <AccountUpdateForm user={this.state.user} />
-                <CardBody>
-                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
-                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
-                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
-                </CardBody>
-            </>
-        </Container>);
+        return (
+            <Container>
+                <>
+                    <h2>Account Settings</h2>
+                    <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(this.state.user.id)}>Delete Account</Button>
+                    <AccountUpdateForm user={this.state.user} />
+                    <CardBody>
+                        <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
+                        <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
+                        <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
+                        <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
+                    </CardBody>
+                </>
+            </Container>);
     }
 }
 
