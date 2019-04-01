@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Container, CardBody, CardTitle } from 'reactstrap'
+import { Button, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
@@ -12,7 +12,7 @@ class AccountSettings extends Component {
         super(props);
         this.state = {
             user: {},
-            id: this.props.id,                        
+            id: this.props.id,
         }
     }
 
@@ -30,44 +30,86 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
+
+    }
+
+    handleDelete = (id) => {
+        this.addGroupsMemberActivities(id); // First updates activities for all groups user belonged to
+        // Second updates activities for all groups user was invited to
+        // Third deletes all groups user was owner of
+        // Last deletes user and logs out
+    }
+
+    addGroupsMemberActivities = (id) => {
+        const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
+        axios
+            .get(`${host}/api/users/${id}/groupsBelongedTo`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .post(`${host}/api/groups/${groupId}/activities`, activity)
+                        .then(() => this.addGroupsInviteeActivities(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
+    }
+
+    addGroupsInviteeActivities = (id) => {
+        const activity = { userId: id, activity: 'Declined invite. User left Voice Chatroom.' }
+        axios
+            .get(`${host}/api/users/${id}/groupsInvitedTo`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .post(`${host}/api/groups/${groupId}/activities`, activity)
+                        .then(() => this.deleteGroupsOwnerOf(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
+    }
+
+    deleteGroupsOwnerOf = (id) => {
+        axios
+            .get(`${host}/api/users/${id}/groupsOwned`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                groupsIds.forEach(groupId => {
+                    axios
+                        .delete(`${host}/api/groups/${groupId}`)
+                        .then(() => this.deleteAccount(id))
+                        .catch(err => console.log(err));
+                })
+            })
+            .catch(err => console.error(err));
     }
 
     deleteAccount = (id) => {
-        const activity = { userId: localStorage.getItem('userId'), activity: 'Left group due to account termination.' }        
-        // axios
-        //     .post(`${host}/api/groups/${this.state.group.id}/activities`, activity) //recekve group id
-        //     .then(activity => {
-        //         console.log(activity)
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
-
         axios
             .delete(`${host}/api/users/${id}`)
-            .then(deletedUser => {
-            })
-            .catch(err => {
-                console.log(err);
-            });
-            this.props.auth.logout()
-        }
-        
-        render() {
+            .then(() => this.props.auth.logout())
+            .catch(err => console.log(err));
+    }
 
-        return (<Container>
-            <>
-                <h2>Account Settings</h2>
-                <Button className='float-sm-right' color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
-                <AccountUpdateForm user={this.state.user}/>              
-                <CardBody>
-                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
-                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
-                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>   
-                </CardBody> 
-            </>
-        </Container>);
+    render() {
+
+        return (
+            <Container>
+                <>
+                    <h2>Account Settings</h2>
+                    <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(this.state.user.id)}>Delete Account</Button>
+                    <AccountUpdateForm user={this.state.user} />
+                    <CardBody>
+                        <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
+                        <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
+                        <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
+                        <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
+                    </CardBody>
+                </>
+            </Container>);
     }
 }
 
