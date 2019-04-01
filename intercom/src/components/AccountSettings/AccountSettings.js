@@ -35,6 +35,7 @@ class AccountSettings extends Component {
 
     handleDelete = (id) => {
         this.updateActivities(id);
+        this.deleteGroupsOwnerOf(id);
     }
 
     updateActivities = (id) => {
@@ -43,17 +44,29 @@ class AccountSettings extends Component {
         let groupsMemberOf;
         axios
         .get(`${host}api/users/${id}/groupsBelongedTo`)
-        .then(res => {
-            groupsMemberOf = res.data;
-        })
-        .catch(err => {
-            console.error(err);
-        });
+        .then(res => groupsMemberOf = res.data)
+        .catch(err => console.error(err));
 
         const groupsIds = groupsMemberOf.map(group => group.groupId);
         groupsIds.forEach( id => {
             axios
             .post(`${host}/api/groups/${id}/activities`, activity)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err));
+        })
+    }
+
+    deleteGroupsOwnerOf = (id) => {
+        let groupsOwnerOf;
+        axios
+        .get(`${host}api/users/${id}/groupsOwned`)
+        .then(res => groupsOwnerOf = res.data)
+        .catch(err => console.error(err));
+
+        const groupsIds = groupsOwnerOf.map(group => group.groupId);
+        groupsIds.forEach( id => {
+            axios
+            .delete(`${host}/api/groups/${id}`)
             .then(res => console.log(res.data))
             .catch(err => console.log(err));
         })
