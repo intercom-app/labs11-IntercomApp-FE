@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
-import { NavLink } from "react-router-dom";
-import AccountSettings from '../AccountSettings/AccountSettings';
+// import { NavLink } from "react-router-dom";
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import host from '../../host';
+import { Row, Card, CardBody, CardTitle, Container} from 'reactstrap';
 
 
 class User extends Component {
@@ -71,19 +69,27 @@ class User extends Component {
             // console.log(this.props.groupQuantity)
         
         return (
-            <>
+            <Container>
                 {this.state.error
                     ? <p>Error retrieving user!</p>
                     : <div>
-                        {this.state.user.id} {this.state.user.displayName} {this.state.user.email}
-                        <p>billing type: {this.state.user.billingSubcription}</p>
-                        <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink>
-                        <GroupForm id={this.state.id} groupQuantity={this.state.groupsBelongedTo.length} /> 
+                        <Row className='mt-sm-4 ml-sm-2'>
+                            <Card>
+                                <CardBody>
+                                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
+                                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
+                                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle> 
+                                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>                                                                                                           
+                                </CardBody>
+                            </Card>
+                        </Row>
+                        {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
+                        <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
-                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
+                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                         
                     </div>
                 }
-            </>
+            </Container>
         );
     }
 }

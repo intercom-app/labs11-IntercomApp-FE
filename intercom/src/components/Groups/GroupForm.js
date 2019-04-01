@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
-import history from '../../history';
 
 
 
@@ -39,7 +38,6 @@ class GroupForm extends Component {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
-        event.preventDefault();
         const groupData = {
             name: this.state.group.name
         }
@@ -85,16 +83,21 @@ class GroupForm extends Component {
         //         phoneNumber: ''
         //     }
         // });
-        history.replace(`/users/${userId.userId}`)
+        // this.setState({ state: this.state });
+        // history.replace(`/user/${userId.userId}`)
+        setTimeout(
+            () => {
+                window.location.reload();
+            },1000
+        );
     };
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        console.log(this.props.id)
-
+        // console.log(this.props.groupQuantity)
         return (
             <div>
-                <Button color="info" onClick={this.toggle}>Create a new group</Button>
+                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Create a new group</Button>
                 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
                     {this.props.groupQuantity > 0 ? (
@@ -115,7 +118,7 @@ class GroupForm extends Component {
                     <ModalFooter>
                         <Button color="primary" onClick={this.createGroup}>Create</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                                </ModalFooter></div>
+                    </ModalFooter></div>
                     )}
                 </Modal>
             </div>

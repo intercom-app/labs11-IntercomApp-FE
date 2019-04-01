@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
+import Navigation from './components/Navigation/Navigation';
+
 import './App.css';
 
 class App extends Component {
@@ -38,13 +40,10 @@ class App extends Component {
         {
           isAuthenticated() && (
             <>
-              <NavLink to={`/user/${id}`}>
-                Home
-            </NavLink>
+              <Navigation id={id} logout={this.logout}/>
+              {/* <NavLink to={`/user/${id}`}>Home</NavLink> */}
 
-              <button onClick={this.logout}>
-                Log Out
-            </button>
+              {/* <button onClick={this.logout}>Log Out</button> */}
             </>
           )
         }
