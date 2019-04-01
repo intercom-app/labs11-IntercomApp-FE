@@ -46,12 +46,15 @@ class AccountSettings extends Component {
             .get(`${host}/api/users/${id}/groupsBelongedTo`)
             .then(res => {
                 const groupsIds = res.data.map(group => group.groupId);
-                groupsIds.forEach(groupId => {
-                    axios
-                        .post(`${host}/api/groups/${groupId}/activities`, activity)
-                        .then(() => this.addGroupsInviteeActivities(id))
-                        .catch(err => console.log(err));
-                })
+                if (groupsIds.length === 0) { this.addGroupsInviteeActivities(id) }
+                else {
+                    groupsIds.forEach(groupId => {
+                        axios
+                            .post(`${host}/api/groups/${groupId}/activities`, activity)
+                            .then(() => this.addGroupsInviteeActivities(id))
+                            .catch(err => console.log(err));
+                    })
+                }
             })
             .catch(err => console.error(err));
     }
@@ -62,12 +65,15 @@ class AccountSettings extends Component {
             .get(`${host}/api/users/${id}/groupsInvitedTo`)
             .then(res => {
                 const groupsIds = res.data.map(group => group.groupId);
-                groupsIds.forEach(groupId => {
-                    axios
-                        .post(`${host}/api/groups/${groupId}/activities`, activity)
-                        .then(() => this.deleteGroupsOwnerOf(id))
-                        .catch(err => console.log(err));
-                })
+                if (groupsIds.length === 0) { this.deleteGroupsOwnerOf(id) }
+                else {
+                    groupsIds.forEach(groupId => {
+                        axios
+                            .post(`${host}/api/groups/${groupId}/activities`, activity)
+                            .then(() => this.deleteGroupsOwnerOf(id))
+                            .catch(err => console.log(err));
+                    })
+                }
             })
             .catch(err => console.error(err));
     }
@@ -77,12 +83,15 @@ class AccountSettings extends Component {
             .get(`${host}/api/users/${id}/groupsOwned`)
             .then(res => {
                 const groupsIds = res.data.map(group => group.groupId);
-                groupsIds.forEach(groupId => {
-                    axios
-                        .delete(`${host}/api/groups/${groupId}`)
-                        .then(() => this.deleteAccount(id))
-                        .catch(err => console.log(err));
-                })
+                if (groupsIds.length === 0) { this.deleteAccount(id) }
+                else {
+                    groupsIds.forEach(groupId => {
+                        axios
+                            .delete(`${host}/api/groups/${groupId}`)
+                            .then(() => this.deleteAccount(id))
+                            .catch(err => console.log(err));
+                    })
+                }
             })
             .catch(err => console.error(err));
     }
