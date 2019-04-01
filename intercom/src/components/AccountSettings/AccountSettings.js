@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap'
+import { Button, Row, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -9,12 +9,29 @@ class AccountSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.match.params.id,                        
+            user: {},
+            id: this.props.id,                        
         }
     }
 
+    componentWillMount() {
+        const id = localStorage.getItem('userId')
+        const userEndpoint = `${host}/api/users/${id}`;
+
+        axios.get(userEndpoint)
+            .then(res => {
+                this.setState({ user: res.data })
+            })
+            .catch(err => {
+                this.setState({
+                    error: err.response.data.message,
+                    user: {},
+                });
+            });
+    }
+
     deleteAccount = (id) => {
-        const activity = { userId: localStorage.getItem('userId'), activity: 'Left group due to account terminatio .' }        
+        const activity = { userId: localStorage.getItem('userId'), activity: 'Left group due to account termination.' }        
         // axios
         //     .post(`${host}/api/groups/${this.state.group.id}/activities`, activity) //recekve group id
         //     .then(activity => {
@@ -35,13 +52,19 @@ class AccountSettings extends Component {
         }
         
         render() {
-
-        return (<div>
-            <h2>Account Settings</h2>
-            <p></p>
-            <Button color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
-            
-        </div>);
+            console.log(this.state.user)
+        return (<Container>
+            <>
+                <h2>Account Settings</h2>
+                <Button className='float-sm-right' color="danger" onClick={() => this.deleteAccount(this.state.id)}>Delete Account</Button>
+                <CardBody>
+                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
+                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
+                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
+                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>   
+                </CardBody> 
+            </>
+        </Container>);
     }
 }
 

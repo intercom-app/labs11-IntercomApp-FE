@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Row, Container, Card} from 'reactstrap';
+import { ListGroupItem, Card} from 'reactstrap';
 
 class GroupChatroomActivities extends Component {
 

@@ -86,7 +86,7 @@ class User extends Component {
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
-                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                             
+                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                         
                     </div>
                 }
             </Container>

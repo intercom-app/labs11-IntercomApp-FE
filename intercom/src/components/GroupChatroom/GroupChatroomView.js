@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Jumbotron, Button, Row, Container, Card } from 'reactstrap';
+import { Button, Container, Card } from 'reactstrap';
 import axios from 'axios';
 import host from '../../host';
 import GroupChatroomActivities from './GroupChatroomActivities';
