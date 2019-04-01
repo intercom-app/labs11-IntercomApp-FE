@@ -10,11 +10,10 @@ class AccountSettings extends Component {
         super(props);
         this.state = {
             user: {},
-            id: this.props.id,
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const id = localStorage.getItem('userId')
         const userEndpoint = `${host}/api/users/${id}`;
 
@@ -29,6 +28,14 @@ class AccountSettings extends Component {
                 });
             });
 
+    }
+
+    handleUpdate = () => {
+        const id = this.state.user.id
+        axios
+            .get(`${host}/api/users/${id}`)
+            .then(res => this.setState({ user: res.data }))
+            .catch(err => console.log(err));
     }
 
     handleDelete = (id) => {
@@ -103,17 +110,19 @@ class AccountSettings extends Component {
 
     render() {
 
+        const { user } = this.state
+
         return (
             <Container>
                 <>
                     <h2>Account Settings</h2>
-                    <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(this.state.user.id)}>Delete Account</Button>
-                    <AccountUpdateForm user={this.state.user} />
+                    <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(user.id)}>Delete Account</Button>
+                    <AccountUpdateForm updateUser={this.handleUpdate}/>
                     <CardBody>
-                        <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
-                        <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
-                        <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                        <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
+                        <CardTitle><strong>Id: </strong>{user.id}</CardTitle>
+                        <CardTitle><strong>Nickname: </strong>{user.displayName}</CardTitle>
+                        <CardTitle><strong>Email: </strong>{user.email}</CardTitle>
+                        <CardTitle><strong>Billing Type: </strong>{user.billingSubcription}</CardTitle>
                     </CardBody>
                 </>
             </Container>);
