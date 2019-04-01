@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import host from '../../host';
-import { Row, Card, CardBody, CardTitle, CardSubtitle, Container} from 'reactstrap';
+import { Row, Card, CardBody, CardTitle, Container} from 'reactstrap';
 
 
 class User extends Component {

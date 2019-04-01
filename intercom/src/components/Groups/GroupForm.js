@@ -38,7 +38,6 @@ class GroupForm extends Component {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
-        event.preventDefault();
         const groupData = {
             name: this.state.group.name
         }

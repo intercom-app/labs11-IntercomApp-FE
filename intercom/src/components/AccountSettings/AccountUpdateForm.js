@@ -5,23 +5,33 @@ import host from "../../host.js";
 import axios from 'axios';
 
 
-class GroupForm extends Component {
+class AccountUpdateForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modal: false,
             user: {
-                nickName: this.props.user.displayName,
-                billingSubcription: this.props.billingSubcription
+                nickName: '',
+                billingSubcription: ''
             }
         };
 
     }
 
-    handleGroupInput = e => {
+    componentDidMount() {
         this.setState({
-            group: {
-                ...this.state.group,
+            user: {
+                nickName: this.props.user.displayName,
+                billingSubcription: this.props.user.billingSubcription
+            }
+        })
+    }
+
+    handleGroupInput = e => {
+        e.preventDefault();
+        this.setState({
+            user: {
+                ...this.state.user,                
                 [e.target.name]: e.target.value
             }
         }
@@ -34,44 +44,23 @@ class GroupForm extends Component {
         }));
     }
 
-    createGroup = async (event) => {
+    updateUser = async (event) => {
         event.preventDefault();
-        const userId = { userId: localStorage.getItem('userId') }
-        const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
-        event.preventDefault();
-        const groupData = {
-            name: this.state.group.name
+        const userId = localStorage.getItem('userId')
+        const userData = {
+            displayName: this.state.user.nickName,
+            billingSubcription: this.state.user.billingSubcription
         }
-
+        console.log(userData)
+        console.log(`${host}/api/users/${userId}`)
+        
         try {
-            const group = await axios.post(`${host}/api/groups`, groupData)
-            if (group) {
-                await this.setState({ group: group.data })
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
-                    .then(groupOwner => {
-                        console.log(groupOwner)
+               const res = await axios.put(`${host}/api/users/${this.state.user.id}`, userData)
+               console.log(res.data)     
+               .then(updatedUser => {
+                        console.log(updatedUser)
+                        
                     })
-                    .catch(err => {
-                        console.log(err);
-                    });
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
-                    .then(groupMember => {
-                        console.log(groupMember)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-                    .then(activity => {
-                        console.log(activity)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
         } catch (err) {
             console.log(err);
         };
@@ -86,16 +75,15 @@ class GroupForm extends Component {
         // });
         // this.setState({ state: this.state });
         // history.replace(`/user/${userId.userId}`)
-        setTimeout(
-            () => {
-                window.location.reload();
-            }, 1000
-        );
+        // setTimeout(
+        //     () => {
+        //         window.location.reload();
+        //     }, 1000
+        // );
     };
 
     render() {
         const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        console.log(this.props.user)
         return (
             <div>
                 <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
@@ -105,19 +93,19 @@ class GroupForm extends Component {
                         <Form>
                             <FormGroup>
                                 <Label>Nickname</Label>
-                                <Input onChange={this.handleGroupInput} type="text" name="nickname" value={this.props.user.displayName} id="nickname" placeholder="Nickname" />
+                                <Input onChange={this.handleGroupInput} type="text" name="nickName" value={this.state.user.nickName || ''} id="nickname" placeholder={this.props.user.displayName} />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Billing Type</Label>
-                                <Input onChange={this.handleGroupInput} type="select" name="billingSubcription" value={this.props.user.billingSubcription} id="billingSubcription" placeholder="Billing Type">
-                                    <option>{this.props.user.billingSubcription}</option>                                    
+                                <Input onChange={this.handleGroupInput} type="select" name="billingSubcription" value={this.state.user.billingSubcription || ''} id="billingSubcription" placeholder="Billing Type">
+                                    <option>free</option>                                    
                                     <option>premium</option>
                                 </Input>                                            
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.createGroup}>Update</Button>{' '}
+                        <Button color="primary" onClick={this.updateUser}>Update</Button>{' '}
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
@@ -126,4 +114,4 @@ class GroupForm extends Component {
     }
 }
 
-export default GroupForm;
+export default AccountUpdateForm;
