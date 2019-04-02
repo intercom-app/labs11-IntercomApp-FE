@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import host from "../../host.js";
-import axios from "axios";
 import { Table, Container, Row, Form, FormGroup, Input, Button } from 'reactstrap';
-import SearchBar from '../Search/SearchBar';
+import axios from "axios";
+import Fuse from 'fuse.js';
 
+import host from "../../host.js";
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
 
 class GroupMembersView extends Component {
     constructor(props) {
@@ -18,15 +20,20 @@ class GroupMembersView extends Component {
         };
     }
 
-    handleInput = e => {
-        this.setState({
-                ...this.state,
-                [e.target.name]: e.target.value
-            }
-        )
-    }
+    // handleInput = e => {
+    //     this.setState({
+    //             ...this.state,
+    //             [e.target.name]: e.target.value
+    //         }
+    //     )
+    // }
 
     handleSearch = async (e) => {  
+        console.log("SEARCH", e.target.value)
+        this.setState({
+            search: e.target.value
+        });
+
         let users;      
         await axios
             .get(`${host}/api/users`)
@@ -48,11 +55,10 @@ class GroupMembersView extends Component {
                 ]
             };
             const fuse = new Fuse(users, options);
-            const results = fuse.search(e.target.value);
+            const results = fuse.search(this.state.search);
 
             this.setState({
                 users: results,
-                search: e.target.value
             });
         }
     }
@@ -105,9 +111,11 @@ class GroupMembersView extends Component {
                     inputValue={this.state.search}
                     updateSearch={this.handleSearch}
                 />
-                <SearchResults 
-                    users={ this.state.users }
-                />
+                { this.state.search.length >= 3
+                    ?   <SearchResults users={this.state.users}/>
+                    :   <></>
+                }
+                
                 {/* <Form>
                     <FormGroup>
                         <Input onChange={this.handleInput} type="text" name="inviteeId" value={this.state.inviteeId} id="inviteeId" placeholder="Invitee Id" />
