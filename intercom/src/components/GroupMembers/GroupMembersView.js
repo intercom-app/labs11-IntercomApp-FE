@@ -1,73 +1,114 @@
 import React, { Component } from 'react';
-import host from "../../host.js";
+import { Table, Container, Row, Button } from 'reactstrap';
 import axios from "axios";
-import { Table, Container, Row, Form, FormGroup, Input, Button } from 'reactstrap';
+import Fuse from 'fuse.js';
 
-
+import host from "../../host.js";
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
 
 class GroupMembersView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.match.params.id,            
+            id: this.props.match.params.id,
             members: [],
             invitees: [],
-            inviteeId: '',
+            users: [],
+            search: '',
             error: null
         };
     }
 
-    handleInput = e => {
-        this.setState({
-                ...this.state,
-                [e.target.name]: e.target.value
-            }
-        )
-    }
-
-    inviteUser = async (e) => {
-        e.preventDefault();
-        const inviteeId = { userId: this.state.inviteeId }        
-        console.log(this.state.id)
-        try {
-        await axios.post(`${host}/api/groups/${this.state.id}/groupInvitees`, inviteeId)
+    componentDidMount() {
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupMembers`)
             .then(res => {
-                console.log(res)
-                this.setState({invitees: res.data})
+                this.setState({
+                    members: res.data,
+                    search: '',
+                });
             })
-            .catch(err => {
-                console.log(err);
-            });
-        } catch (err) {
-            console.log(err);
-        };
+            .catch(err => console.error(err));
 
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
+            .then(res => {
+                this.setState({ invitees: res.data });
+            })
+            .catch(err => console.error(err));
     }
 
     isOwner = (id) => {
         return parseInt(localStorage.getItem('userId')) === id
     }
 
-    componentDidMount() {
-        const id = this.props.match.params.id;
-        axios
-            .get(`${host}/api/groups/${this.state.id}/groupMembers`)
-            .then(res => {
-                this.setState({ members: res.data });
-            })
-            .catch(err => {
-                console.error(err);
-            });
+    handleSearch = async (e) => {
+        this.setState({
+            search: e.target.value
+        });
 
-        axios
-            .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
-            .then(res => {
-                this.setState({ invitees: res.data });
+        let users;
+        await axios
+            .get(`${host}/api/users`)
+            .then(res => users = res.data)
+            .catch(err => console.error(err));
 
+        if (users) {
+            const options = {
+                shouldSort: true,
+                findAllMatches: true,
+                threshold: 0.2,
+                location: 0,
+                distance: 128,
+                maxPatternLength: 128,
+                minMatchCharLength: 3,
+                keys: [
+                    "displayName",
+                    "email"
+                ]
+            };
+            const fuse = new Fuse(users, options);
+            const results = fuse.search(this.state.search);
+
+            const usersUpdated = results.map(user => {
+                let buttonInvite = true
+                this.state.invitees.forEach(invitee => {
+                    if (invitee.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                this.state.members.forEach(member => {
+                    if (member.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                return { ...user, buttonInvite }
             })
-            .catch(err => {
-                console.error(err);
+
+            this.setState({
+                users: usersUpdated,
             });
+        }
+    }
+
+    inviteUser = (e, id) => {
+        e.preventDefault();
+        const users = this.state.users
+        const index = users.findIndex(user => user.id === id)
+
+        const user = this.state.users[index]
+        const userUpdated = { ...user, buttonInvite: false }
+        users.splice(index, 1, userUpdated)
+
+        axios.post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
+            .then(res => {
+                this.setState({
+                    users: users,
+                    invitees: res.data
+                })
+            })
+            .catch(err => console.error(err));
     }
 
 
@@ -79,19 +120,17 @@ class GroupMembersView extends Component {
             .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
             .then(res => {
                 this.setState({ members: res.data});
-                console.log(res)
+                // console.log(res)
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.error(err));
+
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
             .then(activity => {
-                console.log(activity)
+                // console.log(activity)
             })
-            .catch(err => {
-                console.log(err);
-            }); 
+            .catch(err => console.error(err));
+
     }
 
     removeInvitee = (e, id, userDisplayName) => {
@@ -102,30 +141,33 @@ class GroupMembersView extends Component {
             .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
             .then(res => {
                 this.setState({ invitees: res.data });
-                console.log(res)
+                // console.log(res)
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.error(err));
+
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
             .then(activity => {
-                console.log(activity)
+                // console.log(activity)
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.error(err));
     }
 
     render() {
         return (
             <Container>
-                <Form>
-                    <FormGroup>
-                        <Input onChange={this.handleInput} type="text" name="inviteeId" value={this.state.inviteeId} id="inviteeId" placeholder="Invitee Id" />
-                    </FormGroup>
-                    <Button color="primary" onClick={this.inviteUser}>Invite</Button>{' '}                    
-                </Form>
+                <SearchBar
+                    inputValue={this.state.search}
+                    updateSearch={this.handleSearch}
+                />
+                {this.state.search.length >= 3
+                    ? <SearchResults
+                        users={this.state.users}
+                        inviteUser={this.inviteUser}
+                    />
+                    : <></>
+                }
+
                 <Row>
                     <h3>Group Members</h3>
                     <Table>
@@ -145,7 +187,7 @@ class GroupMembersView extends Component {
                                     </td>
                                 </tr>
                             </tbody>
-                            
+
                         ))}
                     </Table>
                 </Row>
