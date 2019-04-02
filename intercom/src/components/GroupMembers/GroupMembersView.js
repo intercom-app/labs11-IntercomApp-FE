@@ -12,7 +12,9 @@ class GroupMembersView extends Component {
             id: this.props.match.params.id,            
             members: [],
             invitees: [],
-            inviteeId: ''
+            inviteeId: '',
+            users: [],
+            search: ''
         };
     }
 
@@ -22,6 +24,37 @@ class GroupMembersView extends Component {
                 [e.target.name]: e.target.value
             }
         )
+    }
+
+    handleSearch = async (e) => {  
+        let users;      
+        await axios
+            .get(`${host}/api/users`)
+            .then(res => users = res.data)
+            .catch(err => console.log(err));
+
+        if (users) { 
+            const options = {
+                shouldSort: true,
+                findAllMatches: true,
+                threshold: 0.3,
+                location: 0,
+                distance: 128,
+                maxPatternLength: 128,
+                minMatchCharLength: 3,
+                keys: [
+                    "displayName",
+                    "email"
+                ]
+            };
+            const fuse = new Fuse(users, options);
+            const results = fuse.search(e.target.value);
+
+            this.setState({
+                users: results,
+                search: e.target.value
+            });
+        }
     }
 
     inviteUser = async (e) => {
@@ -68,12 +101,19 @@ class GroupMembersView extends Component {
     render() {
         return (
             <Container>
-                <Form>
+                <SearchBar 
+                    input={this.state.search}
+                    updateSearch={this.handleSearch}
+                />
+                <SearchResults 
+                    users={ this.state.users }
+                />
+                {/* <Form>
                     <FormGroup>
                         <Input onChange={this.handleInput} type="text" name="inviteeId" value={this.state.inviteeId} id="inviteeId" placeholder="Invitee Id" />
                     </FormGroup>
                     <Button color="primary" onClick={this.inviteUser}>Invite</Button>{' '}                    
-                </Form>
+                </Form> */}
                 <Row>
                     <h3>Group Members</h3>
                     <Table>
