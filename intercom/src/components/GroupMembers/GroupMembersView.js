@@ -16,6 +16,7 @@ class GroupMembersView extends Component {
             invitees: [],
             users: [],
             search: '',
+            isOwner: false,
             error: null
         };
     }
@@ -37,10 +38,22 @@ class GroupMembersView extends Component {
                 this.setState({ invitees: res.data });
             })
             .catch(err => console.error(err));
+
+        this.checkIfOwner(this.state.id);
     }
 
-    isOwner = (id) => {
-        return parseInt(localStorage.getItem('userId')) === id
+    checkIfOwner = async (id) => {
+        const groupOwners = `${host}/api/groups/${id}/groupOwners`;
+        const userId = parseInt(localStorage.getItem('userId'));
+        try {
+            const res = await axios.get(groupOwners)
+            res.data[0].userId === userId
+                ? this.setState({ isOwner: true })
+                : this.setState({ isOwner: false })
+        } catch (err) {
+            this.setState({ error: err.response.data.message })
+        }
+
     }
 
     handleSearch = async (e) => {
@@ -111,7 +124,6 @@ class GroupMembersView extends Component {
             .catch(err => console.error(err));
     }
 
-
     removeUser = (e, id, userDisplayName) => {
         e.preventDefault();
         const ownerId = localStorage.getItem('userId')
@@ -119,7 +131,7 @@ class GroupMembersView extends Component {
         axios
             .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
             .then(res => {
-                this.setState({ members: res.data});
+                this.setState({ members: res.data });
                 // console.log(res)
             })
             .catch(err => console.error(err));
@@ -154,18 +166,27 @@ class GroupMembersView extends Component {
     }
 
     render() {
+
+        let { search, users, members, invitees, isOwner } = this.state
+
         return (
             <Container>
-                <SearchBar
-                    inputValue={this.state.search}
-                    updateSearch={this.handleSearch}
-                />
-                {this.state.search.length >= 3
-                    ? <SearchResults
-                        users={this.state.users}
-                        inviteUser={this.inviteUser}
-                    />
-                    : <></>
+
+                {isOwner
+                    ? <>
+                        <SearchBar
+                            inputValue={search}
+                            updateSearch={this.handleSearch}
+                        />
+                        {this.state.search.length >= 3
+                            ? <SearchResults
+                                users={users}
+                                inviteUser={this.inviteUser}
+                            />
+                            : null
+                        }
+                    </>
+                    : null
                 }
 
                 <Row>
@@ -174,17 +195,25 @@ class GroupMembersView extends Component {
                         <thead>
                             <tr>
                                 <th>Group Id</th>
+                                <th>User Id</th>
                                 <th>Member Name</th>
+                                {isOwner ? <th>Manage Member</th> : null}
                             </tr>
                         </thead>
-                        {this.state.members.map((member, key) => (
-                            <tbody key={key}>
+                        {members.map(member => (
+                            <tbody key={member.userId}>
                                 <tr>
                                     <td>{member.groupId}</td>
-                                    <td>{member.displayName} {!this.isOwner(member.userId) ? 
-                                        <Button color='danger' onClick={(e) => this.removeUser(e, member.userId, member.displayName)}>Remove user</Button> 
-                                        : null}
-                                    </td>
+                                    <td>{member.userId}</td>
+                                    <td>{member.displayName}</td>
+                                    {isOwner
+                                        ? <td><Button color='danger'
+                                        // onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
+                                        >
+                                            Remove Member
+                                        </Button></td>
+                                        : null
+                                    }
                                 </tr>
                             </tbody>
 
@@ -197,20 +226,27 @@ class GroupMembersView extends Component {
                         <thead>
                             <tr>
                                 <th>Group Id</th>
+                                <th>User Id</th>
                                 <th>Invitee Name</th>
+                                {isOwner ? <th>Manage Invitee</th> : null}
                             </tr>
                         </thead>
-                        {this.state.invitees.map((invitee, key) => (
-                            <tbody key={key}>
+                        {invitees.map(invitee => (
+                            <tbody key={invitee.userId}>
                                 <tr>
                                     <td>{invitee.groupId}</td>
-                                    <td>{invitee.displayName}
-                                        <Button color='danger' onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}>Remove user</Button>
-
-                                    </td>
+                                    <td>{invitee.userId}</td>
+                                    <td>{invitee.displayName}</td>
+                                    {isOwner
+                                        ? <td><Button color='danger'
+                                        // onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}
+                                        >
+                                            Remove Invitee
+                                            </Button></td>
+                                        : null
+                                    }
                                 </tr>
                             </tbody>
-
                         ))}
                     </Table>
                 </Row>
