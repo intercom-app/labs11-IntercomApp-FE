@@ -14,7 +14,11 @@ const SearchResults = (props) => {
                         <ListGroupItemText>
                             {user.email}
                         </ListGroupItemText>
-                        <Button color="primary" onClick={(e) => props.inviteUser(e, user.id)}>Invite</Button>
+                        { user.buttonInvite
+                        ? <Button color="primary" onClick={(e) => props.inviteUser(e, user.id)}>Invite</Button>
+                        : <Button color="secondary" disabled>Invited</Button>
+                        }
+                        
                     </ListGroupItem>
                 )
             })}

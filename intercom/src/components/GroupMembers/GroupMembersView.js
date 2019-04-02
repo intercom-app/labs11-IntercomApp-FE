@@ -14,7 +14,6 @@ class GroupMembersView extends Component {
             id: this.props.match.params.id,
             members: [],
             invitees: [],
-            inviteeId: '',
             users: [],
             search: ''
         };
@@ -118,12 +117,6 @@ class GroupMembersView extends Component {
                     : <></>
                 }
 
-                {/* <Form>
-                    <FormGroup>
-                        <Input onChange={this.handleInput} type="text" name="inviteeId" value={this.state.inviteeId} id="inviteeId" placeholder="Invitee Id" />
-                    </FormGroup>
-                    <Button color="primary" onClick={this.inviteUser}>Invite</Button>{' '}                    
-                </Form> */}
                 <Row>
                     <h3>Group Members</h3>
                     <Table>
