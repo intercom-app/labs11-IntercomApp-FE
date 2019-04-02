@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from "axios";
 import { Table, Container, Row, Form, FormGroup, Input, Button } from 'reactstrap';
-
+import SearchBar from '../Search/SearchBar';
 
 
 class GroupMembersView extends Component {
@@ -102,7 +102,7 @@ class GroupMembersView extends Component {
         return (
             <Container>
                 <SearchBar 
-                    input={this.state.search}
+                    inputValue={this.state.search}
                     updateSearch={this.handleSearch}
                 />
                 <SearchResults 
