@@ -16,7 +16,7 @@ class User extends Component {
         
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const id = localStorage.getItem('userId')
         const userEndpoint = `${host}/api/users/${id}`;
 
@@ -31,13 +31,14 @@ class User extends Component {
                     user: {},
                 });
             });
+            this.getGroupsInvitedTo(id);
+            this.getgroupsBelongedTo(id)
     }
 
-    componentDidMount() {
-        const id = localStorage.getItem('userId')        
-        const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
+
+    getGroupsInvitedTo = (id) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-        
+
         axios.get(groupsInvitedTo)
             .then(res => {
                 this.setState({ groupsInvitedTo: res.data })
@@ -48,7 +49,11 @@ class User extends Component {
                     groupsInvitedTo: []
                 });
             });
+    }
 
+    getgroupsBelongedTo = (id) => {
+        const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
+        
         axios.get(groupsBelongedTo)
             .then(res => {
                 this.setState({ groupsBelongedTo: res.data })
@@ -59,7 +64,13 @@ class User extends Component {
                     groupsBelongedTo: []
                 });
             });
+    }
 
+
+    updateGroups = () => {
+        const id = localStorage.getItem('userId')        
+        this.getGroupsInvitedTo(id);
+        this.getgroupsBelongedTo(id);
     }
     
 
@@ -86,7 +97,7 @@ class User extends Component {
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
-                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} />                                         
+                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>                                         
                     </div>
                 }
             </Container>
