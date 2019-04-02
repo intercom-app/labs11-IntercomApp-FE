@@ -68,10 +68,12 @@ class GroupChatroomView extends Component {
         const id = this.state.groupId;
         const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
         const res = await this.axiosDel(member, 'user')
-        if (res.length === 0) {
+        if (res) {
             const userId = localStorage.getItem('userId')
             this.props.history.push(`/user/${userId}`)
         }  
+        // this.props.history.push(`/user/${userId}`)
+        
     }
 
     getActivities = id => {
@@ -106,9 +108,10 @@ class GroupChatroomView extends Component {
 
     checkIfOwner = async (id) => {
         const groupOwners = `${host}/api/groups/${id}/groupOwners`;
+        const userId = localStorage.getItem('userId')
         try {
             const res = await axios.get(groupOwners)
-            res.data.length > 0
+            res.data[0].userId === userId 
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {

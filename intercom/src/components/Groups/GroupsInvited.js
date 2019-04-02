@@ -10,14 +10,16 @@ class GroupsInvited extends Component {
         this.state = {}
     }
 
-    acceptInvite = (event) => {
+    acceptInvite = (event, groupId) => {
         event.preventDefault();
+        // const groupId = this.props.
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Joined group.' }
         //delete the user from groupInvitees table
         axios
-            .delete(`${host}/api/groups/${this.state.group.id}/groupInvitees/${userId}`)
+            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
             .then(res => {
+                this.props.updateGroups();                
                 console.log(res)
             })
             .catch(err => {
@@ -25,8 +27,9 @@ class GroupsInvited extends Component {
             });
         //add the user to the groupMembers table
         axios
-            .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
+            .post(`${host}/api/groups/${groupId}/groupMembers`, userId)
             .then(groupMember => {
+                this.props.updateGroups();
                 console.log(groupMember)
             })
             .catch(err => {
@@ -34,24 +37,24 @@ class GroupsInvited extends Component {
             });
         //add the activity to the group's log
         axios
-            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+            .post(`${host}/api/groups/${groupId}/activities`, activity)
             .then(activity => {
                 console.log(activity)
             })
             .catch(err => {
                 console.log(err);
             });
-
     }
 
-    declineInvite = (event) => {
+    declineInvite = (event, groupId) => {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Declined to join to group.' }
         //delete the user from groupInvitees table due to decline
         axios
-            .delete(`${host}/api/groups/${this.state.group.id}/groupInvitees/${userId}`)
+            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
             .then(res => {
+                this.props.updateGroups(); 
                 console.log(res)
             })
             .catch(err => {
@@ -59,7 +62,7 @@ class GroupsInvited extends Component {
             });
         //add the declining activity to the group's log
         axios
-            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+            .post(`${host}/api/groups/${groupId}/activities`, activity)
             .then(activity => {
                 console.log(activity)
             })
@@ -85,8 +88,8 @@ class GroupsInvited extends Component {
                             <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>                            
                             <td>
                                 {group.GroupName}
-                                <Button onClick={this.acceptInvite} color='success'>Join</Button>
-                                <Button onClick={this.declineInvite} color='danger'>Decline</Button>
+                                <Button onClick={(e) => this.acceptInvite(e,group.groupId)} color='success'>Join</Button>
+                                <Button onClick={(e) => this.declineInvite(e,group.groupId)} color='danger'>Decline</Button>
                             </td>
 
                         </tr>
