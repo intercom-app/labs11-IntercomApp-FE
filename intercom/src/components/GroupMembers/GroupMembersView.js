@@ -28,9 +28,7 @@ class GroupMembersView extends Component {
                     search: '',
                 });
             })
-            .catch(err => {
-                console.error(err);
-            });
+            .catch(err => console.error(err));
 
         axios
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
@@ -38,13 +36,10 @@ class GroupMembersView extends Component {
                 this.setState({ invitees: res.data });
 
             })
-            .catch(err => {
-                console.error(err);
-            });
+            .catch(err => console.error(err));
     }
 
     handleSearch = async (e) => {
-        console.log("SEARCH", e.target.value)
         this.setState({
             search: e.target.value
         });
@@ -53,13 +48,13 @@ class GroupMembersView extends Component {
         await axios
             .get(`${host}/api/users`)
             .then(res => users = res.data)
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
 
         if (users) {
             const options = {
                 shouldSort: true,
                 findAllMatches: true,
-                threshold: 0.3,
+                threshold: 0.2,
                 location: 0,
                 distance: 128,
                 maxPatternLength: 128,
@@ -71,9 +66,17 @@ class GroupMembersView extends Component {
             };
             const fuse = new Fuse(users, options);
             const results = fuse.search(this.state.search);
+
             const usersUpdated = results.map(user => {
-                return { ...user, buttonInvite: true }
+                let buttonInvite = true
+                this.state.invitees.forEach(invitee => {
+                    if (invitee.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                return { ...user, buttonInvite }
             })
+
             this.setState({
                 users: usersUpdated,
             });
@@ -91,18 +94,15 @@ class GroupMembersView extends Component {
 
         axios.post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
             .then(res => {
-                console.log("INVITE", users)
-                console.log("INVITE", res.data)
                 this.setState({
                     users: users,
                     invitees: res.data
                 })
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     }
 
     render() {
-        console.log('USERS:', this.state.users)
         return (
             <Container>
                 <SearchBar

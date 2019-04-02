@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, FormGroup, Input } from 'reactstrap';
 
 const SearchBar = (props) => {
-    console.log("BAR", props)
     return (
         <Form>
             <FormGroup>

@@ -2,7 +2,6 @@ import React from 'react';
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Button } from 'reactstrap';
 
 const SearchResults = (props) => {
-    console.log("RESULTS", props.users)
     return (
         <ListGroup>
             {props.users.map((user) => {
