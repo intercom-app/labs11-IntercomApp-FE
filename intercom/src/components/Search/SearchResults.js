@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
+import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Button } from 'reactstrap';
 
 const SearchResults = (props) => {
     console.log("RESULTS", props.users)
@@ -7,13 +7,14 @@ const SearchResults = (props) => {
         <ListGroup>
             {props.users.map((user) => {
                 return (
-                    <ListGroupItem>
+                    <ListGroupItem key={user.id}>
                         <ListGroupItemHeading>
                             {user.displayName}
                         </ListGroupItemHeading>
                         <ListGroupItemText>
                             {user.email}
                         </ListGroupItemText>
+                        <Button color="primary" onClick={(e) => props.inviteUser(e, user.id)}>Invite</Button>
                     </ListGroupItem>
                 )
             })}
