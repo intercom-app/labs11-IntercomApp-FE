@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Container, Row } from 'reactstrap';
+import { Table, Container, Row, Button } from 'reactstrap';
 import axios from "axios";
 import Fuse from 'fuse.js';
 
@@ -75,6 +75,11 @@ class GroupMembersView extends Component {
                 let buttonInvite = true
                 this.state.invitees.forEach(invitee => {
                     if (invitee.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                this.state.members.forEach(member => {
+                    if (member.userId === user.id) {
                         buttonInvite = false
                     }
                 })
