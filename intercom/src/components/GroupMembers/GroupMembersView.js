@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Container, Row, Button } from 'reactstrap';
 import axios from "axios";
 import Fuse from 'fuse.js';
@@ -168,11 +169,15 @@ class GroupMembersView extends Component {
 
     render() {
 
-        let { search, users, members, invitees, isOwner } = this.state
+        let { id, search, users, members, invitees, isOwner } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
 
         return (
             <Container>
+
+                <Link to={`/group/${id}`}>
+                    Back to Group
+                </Link>
 
                 {isOwner
                     ? <>
