@@ -126,23 +126,19 @@ class GroupMembersView extends Component {
 
     removeUser = (e, id, userDisplayName) => {
         e.preventDefault();
-        const ownerId = localStorage.getItem('userId')
-        const activity = { userId: ownerId, activity: `Removed ${userDisplayName} from the group` }
-        axios
-            .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
-            .then(res => {
-                this.setState({ members: res.data });
-                // console.log(res)
-            })
-            .catch(err => console.error(err));
-
+        const userId = localStorage.getItem('userId')
+        const activity = { userId, activity: `Removed ${userDisplayName} from the group` }
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
-            .then(activity => {
-                // console.log(activity)
+            .then(() => {
+                axios
+                    .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
+                    .then(res => {
+                        this.setState({ members: res.data });
+                    })
+                    .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
-
     }
 
     removeInvitee = (e, id, userDisplayName) => {
@@ -207,11 +203,14 @@ class GroupMembersView extends Component {
                                     <td>{member.userId}</td>
                                     <td>{member.displayName}</td>
                                     {isOwner
-                                        ? <td><Button color='danger'
-                                        // onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
-                                        >
-                                            Remove Member
-                                        </Button></td>
+                                        ? <td>
+                                            <Button
+                                                color='danger'
+                                                onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
+                                            >
+                                                Remove Member
+                                            </Button>
+                                        </td>
                                         : null
                                     }
                                 </tr>
@@ -238,11 +237,14 @@ class GroupMembersView extends Component {
                                     <td>{invitee.userId}</td>
                                     <td>{invitee.displayName}</td>
                                     {isOwner
-                                        ? <td><Button color='danger'
-                                        // onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}
-                                        >
-                                            Remove Invitee
-                                            </Button></td>
+                                        ? <td>
+                                            <Button
+                                                color='danger'
+                                                onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}
+                                            >
+                                                Remove Invitee
+                                            </Button>
+                                        </td>
                                         : null
                                     }
                                 </tr>
