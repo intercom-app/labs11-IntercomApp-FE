@@ -4,6 +4,7 @@ import GroupForm from '../Groups/GroupForm';
 // import { NavLink } from "react-router-dom";
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
+import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
 import { Row, Card, CardBody, CardTitle, Container} from 'reactstrap';
 
@@ -32,18 +33,18 @@ class User extends Component {
                     user: {},
                 });
             });
+            this.getgroupsOwned(id);
             this.getGroupsInvitedTo(id);
             this.getgroupsBelongedTo(id);
-            this.getgroupsOwned(id);
     }
 
 
     getGroupsInvitedTo = (id) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-
+        
         axios.get(groupsInvitedTo)
-            .then(res => {
-                this.setState({ groupsInvitedTo: res.data })
+        .then(res => {
+            this.setState({ groupsInvitedTo: res.data })
             })
             .catch(err => {
                 this.setState({
@@ -94,9 +95,15 @@ class User extends Component {
     
 
     render() {
-        // console.log('belongs',this.state.groupsBelongedTo)
-        console.log('owned', this.state.groupsOwned)
-            // console.log(this.props.groupQuantity)
+        const groupsOwned = this.state.groupsOwned;
+        const groupsBelongedTo = this.state.groupsBelongedTo;
+        const groupOwned = this.state.groupsOwned.reduce((arr, group) => {
+            arr.push(group.groupId)
+            return arr
+        }, []);
+        const groupsNotOwned = groupsBelongedTo.filter(group => {
+            return !groupOwned.includes(group.groupId)}
+        )
         
         return (
             <Container>
@@ -115,7 +122,8 @@ class User extends Component {
                         </Row>
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsOwned.length} /> 
-                        <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
+                        <GroupsOwned groupsOwned={this.state.groupsOwned} />                        
+                        <GroupsBelonged groupsBelonged={groupsNotOwned}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>                                         
                     </div>
                 }

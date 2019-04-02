@@ -3,16 +3,16 @@ import { NavLink } from "react-router-dom";
 import { Table } from 'reactstrap';
 
 
-class GroupsBelonged extends Component {
+class GroupsOwned extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = {}
     }
 
-     render() { 
-        return ( <div className='mt-sm-3'>
-            {/* {console.log(this.props.groupsBelonged)} */}
-            <h2>Groups Belonged To</h2>
+    render() {
+        return (<div className='mt-sm-3'>
+            {/* {console.log(this.props.groupsOwned)} */}
+            <h2>Groups Owned</h2>
             <Table>
                 <thead>
                     <tr>
@@ -20,17 +20,17 @@ class GroupsBelonged extends Component {
                         <th>Group Name</th>
                     </tr>
                 </thead>
-                {this.props.groupsBelonged.map((group, key) => (
+                {this.props.groupsOwned.map((group, key) => (
                     <tbody key={key}>
-                        <tr>   
+                        <tr>
                             <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>
                             <td>{group.GroupName} </td>
                         </tr>
                     </tbody>
                 ))}
             </Table>
-        </div> );
+        </div>);
     }
 }
- 
-export default GroupsBelonged;
+
+export default GroupsOwned;
