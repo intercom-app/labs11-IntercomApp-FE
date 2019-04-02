@@ -12,7 +12,8 @@ class GroupMembersView extends Component {
             id: this.props.match.params.id,            
             members: [],
             invitees: [],
-            inviteeId: ''
+            inviteeId: '',
+            error: null
         };
     }
 
@@ -43,7 +44,12 @@ class GroupMembersView extends Component {
 
     }
 
+    isOwner = (id) => {
+        return parseInt(localStorage.getItem('userId')) === id
+    }
+
     componentDidMount() {
+        const id = this.props.match.params.id;
         axios
             .get(`${host}/api/groups/${this.state.id}/groupMembers`)
             .then(res => {
@@ -62,9 +68,33 @@ class GroupMembersView extends Component {
             .catch(err => {
                 console.error(err);
             });
+    }
 
+
+    removeUser = (e, id, userDisplayName) => {
+        e.preventDefault();
+        const ownerId = localStorage.getItem('userId')
+        const activity = { userId: ownerId, activity: `Removed ${userDisplayName} from the group` }
+        axios
+            .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
+            .then(res => {
+                this.setState({ members: res.data});
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        axios
+            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .then(activity => {
+                console.log(activity)
+            })
+            .catch(err => {
+                console.log(err);
+            });
         
     }
+
     render() {
         return (
             <Container>
@@ -79,7 +109,7 @@ class GroupMembersView extends Component {
                     <Table>
                         <thead>
                             <tr>
-                                <th>id</th>
+                                <th>Group Id</th>
                                 <th>Member Name</th>
                             </tr>
                         </thead>
@@ -87,7 +117,10 @@ class GroupMembersView extends Component {
                             <tbody key={key}>
                                 <tr>
                                     <td>{member.groupId}</td>
-                                    <td>{member.displayName}</td>
+                                    <td>{member.displayName} {!this.isOwner(member.userId) ? 
+                                        <Button color='danger' onClick={(e) => this.removeUser(e, member.userId, member.displayName)}>Remove user</Button> 
+                                        : null}
+                                    </td>
                                 </tr>
                             </tbody>
                             
@@ -99,7 +132,7 @@ class GroupMembersView extends Component {
                     <Table>
                         <thead>
                             <tr>
-                                <th>id</th>
+                                <th>Group Id</th>
                                 <th>Invitee Name</th>
                             </tr>
                         </thead>
