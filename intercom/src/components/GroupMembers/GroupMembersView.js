@@ -7,6 +7,8 @@ import Fuse from 'fuse.js';
 import host from "../../host.js";
 import SearchBar from '../Search/SearchBar';
 import SearchResults from '../Search/SearchResults';
+import GroupMembersList from './GroupMembersList.js';
+import GroupInviteesList from './GroupInviteesList.js';
 
 class GroupMembersView extends Component {
     constructor(props) {
@@ -196,78 +198,19 @@ class GroupMembersView extends Component {
                     : null
                 }
 
-                <Row>
-                    <h3>Group Members</h3>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Group Id</th>
-                                <th>User Id</th>
-                                <th>Member Name</th>
-                                {isOwner ? <th>Manage Member</th> : null}
-                            </tr>
-                        </thead>
-                        {members.map(member => (
-                            <tbody key={member.userId}>
-                                <tr>
-                                    <td>{member.groupId}</td>
-                                    <td>{member.userId}</td>
-                                    <td>{member.displayName}</td>
-                                    {isOwner
-                                        ? <td>
-                                            {member.userId === userId
-                                                ? <Button color="secondary" disabled>
-                                                    Owner
-                                                </Button>
-                                                : <Button
-                                                    color='danger'
-                                                    onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
-                                                >
-                                                    Remove Member
-                                                </Button>
-                                            }
-                                        </td>
-                                        : null
-                                    }
-                                </tr>
-                            </tbody>
+                <GroupMembersList
+                    isOwner={isOwner}
+                    members={members}
+                    userId={userId}
+                    removeUser={this.removeUser}
+                />
 
-                        ))}
-                    </Table>
-                </Row>
-                <Row>
-                    <h3>Group Invitees</h3>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Group Id</th>
-                                <th>User Id</th>
-                                <th>Invitee Name</th>
-                                {isOwner ? <th>Manage Invitee</th> : null}
-                            </tr>
-                        </thead>
-                        {invitees.map(invitee => (
-                            <tbody key={invitee.userId}>
-                                <tr>
-                                    <td>{invitee.groupId}</td>
-                                    <td>{invitee.userId}</td>
-                                    <td>{invitee.displayName}</td>
-                                    {isOwner
-                                        ? <td>
-                                            <Button
-                                                color='danger'
-                                                onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}
-                                            >
-                                                Remove Invitee
-                                            </Button>
-                                        </td>
-                                        : null
-                                    }
-                                </tr>
-                            </tbody>
-                        ))}
-                    </Table>
-                </Row>
+                <GroupInviteesList
+                    isOwner={isOwner}
+                    invitees={invitees}
+                    removeInvitee={this.removeInvitee}
+                />
+
             </Container>
         )
     }
