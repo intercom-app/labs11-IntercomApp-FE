@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -29,7 +30,11 @@ export default class Example extends React.Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href={`${this.props.id}/account`}>Account Settings</NavLink>
+                                <Link to={`/user/${this.props.id}/account`}>
+                                    <NavLink>
+                                        Account Settings
+                                    </NavLink>
+                                </Link>
                             </NavItem>
                             <NavItem>
                                 <NavLink onClick={this.props.logout}>Logout</NavLink>

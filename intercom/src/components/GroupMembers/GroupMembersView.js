@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Container, Row, Button } from 'reactstrap';
+import { Container } from 'reactstrap';
 import axios from "axios";
 import Fuse from 'fuse.js';
 
