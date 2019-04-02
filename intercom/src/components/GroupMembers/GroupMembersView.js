@@ -149,11 +149,11 @@ class GroupMembersView extends Component {
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
             .then(() => {
                 axios
-                .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
-                .then(res => {
-                    this.setState({ invitees: res.data });
-                })
-                .catch(err => console.error(err));
+                    .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
+                    .then(res => {
+                        this.setState({ invitees: res.data });
+                    })
+                    .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
     }
@@ -161,6 +161,7 @@ class GroupMembersView extends Component {
     render() {
 
         let { search, users, members, invitees, isOwner } = this.state
+        const userId = parseInt(localStorage.getItem('userId'));
 
         return (
             <Container>
@@ -201,12 +202,17 @@ class GroupMembersView extends Component {
                                     <td>{member.displayName}</td>
                                     {isOwner
                                         ? <td>
-                                            <Button
-                                                color='danger'
-                                                onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
-                                            >
-                                                Remove Member
-                                            </Button>
+                                            {member.userId === userId
+                                                ? <Button color="secondary" disabled>
+                                                    Owner
+                                                </Button>
+                                                : <Button
+                                                    color='danger'
+                                                    onClick={(e) => this.removeUser(e, member.userId, member.displayName)}
+                                                >
+                                                    Remove Member
+                                                </Button>
+                                            }
                                         </td>
                                         : null
                                     }
