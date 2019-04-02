@@ -15,7 +15,8 @@ class GroupMembersView extends Component {
             members: [],
             invitees: [],
             users: [],
-            search: ''
+            search: '',
+            error: null
         };
     }
 
@@ -34,9 +35,12 @@ class GroupMembersView extends Component {
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
             .then(res => {
                 this.setState({ invitees: res.data });
-
             })
             .catch(err => console.error(err));
+    }
+
+    isOwner = (id) => {
+        return parseInt(localStorage.getItem('userId')) === id
     }
 
     handleSearch = async (e) => {
@@ -102,6 +106,48 @@ class GroupMembersView extends Component {
             .catch(err => console.error(err));
     }
 
+
+    removeUser = (e, id, userDisplayName) => {
+        e.preventDefault();
+        const ownerId = localStorage.getItem('userId')
+        const activity = { userId: ownerId, activity: `Removed ${userDisplayName} from the group` }
+        axios
+            .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
+            .then(res => {
+                this.setState({ members: res.data});
+                // console.log(res)
+            })
+            .catch(err => console.error(err));
+
+        axios
+            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .then(activity => {
+                // console.log(activity)
+            })
+            .catch(err => console.error(err));
+
+    }
+
+    removeInvitee = (e, id, userDisplayName) => {
+        e.preventDefault();
+        const ownerId = localStorage.getItem('userId')
+        const activity = { userId: ownerId, activity: `Cancelled ${userDisplayName}'s invitation.` }
+        axios
+            .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
+            .then(res => {
+                this.setState({ invitees: res.data });
+                // console.log(res)
+            })
+            .catch(err => console.error(err));
+
+        axios
+            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .then(activity => {
+                // console.log(activity)
+            })
+            .catch(err => console.error(err));
+    }
+
     render() {
         return (
             <Container>
@@ -122,7 +168,7 @@ class GroupMembersView extends Component {
                     <Table>
                         <thead>
                             <tr>
-                                <th>id</th>
+                                <th>Group Id</th>
                                 <th>Member Name</th>
                             </tr>
                         </thead>
@@ -130,7 +176,10 @@ class GroupMembersView extends Component {
                             <tbody key={key}>
                                 <tr>
                                     <td>{member.groupId}</td>
-                                    <td>{member.displayName}</td>
+                                    <td>{member.displayName} {!this.isOwner(member.userId) ? 
+                                        <Button color='danger' onClick={(e) => this.removeUser(e, member.userId, member.displayName)}>Remove user</Button> 
+                                        : null}
+                                    </td>
                                 </tr>
                             </tbody>
 
@@ -142,7 +191,7 @@ class GroupMembersView extends Component {
                     <Table>
                         <thead>
                             <tr>
-                                <th>id</th>
+                                <th>Group Id</th>
                                 <th>Invitee Name</th>
                             </tr>
                         </thead>
@@ -150,7 +199,10 @@ class GroupMembersView extends Component {
                             <tbody key={key}>
                                 <tr>
                                     <td>{invitee.groupId}</td>
-                                    <td>{invitee.displayName}</td>
+                                    <td>{invitee.displayName}
+                                        <Button color='danger' onClick={(e) => this.removeInvitee(e, invitee.userId, invitee.displayName)}>Remove user</Button>
+
+                                    </td>
                                 </tr>
                             </tbody>
 

@@ -4,6 +4,7 @@ import GroupForm from '../Groups/GroupForm';
 // import { NavLink } from "react-router-dom";
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
+import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
 import { Row, Card, CardBody, CardTitle, Container} from 'reactstrap';
 
@@ -12,7 +13,8 @@ class User extends Component {
     state = {
         user: {},
         groupsBelongedTo: [],
-        groupsInvitedTo: []
+        groupsInvitedTo: [], 
+        groupsOwned: []
         
     }
 
@@ -31,17 +33,18 @@ class User extends Component {
                     user: {},
                 });
             });
+            this.getgroupsOwned(id);
             this.getGroupsInvitedTo(id);
-            this.getgroupsBelongedTo(id)
+            this.getgroupsBelongedTo(id);
     }
 
 
     getGroupsInvitedTo = (id) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-
+        
         axios.get(groupsInvitedTo)
-            .then(res => {
-                this.setState({ groupsInvitedTo: res.data })
+        .then(res => {
+            this.setState({ groupsInvitedTo: res.data })
             })
             .catch(err => {
                 this.setState({
@@ -66,6 +69,23 @@ class User extends Component {
             });
     }
 
+    getgroupsOwned = (id) => {
+        const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
+
+        axios.get(groupsOwned)
+            .then(res => {
+                this.setState({ groupsOwned: res.data })
+            })
+            .catch(err => {
+                this.setState({
+                    error: err.response.data.message,
+                    groupsOwned: []
+                });
+            });
+    }
+
+
+
 
     updateGroups = () => {
         const id = localStorage.getItem('userId')        
@@ -75,9 +95,15 @@ class User extends Component {
     
 
     render() {
-        // console.log('belongs',this.state.groupsBelongedTo)
-        // console.log('invited', this.state.groupsInvitedTo)
-            // console.log(this.props.groupQuantity)
+        const groupsOwned = this.state.groupsOwned;
+        const groupsBelongedTo = this.state.groupsBelongedTo;
+        const groupOwned = this.state.groupsOwned.reduce((arr, group) => {
+            arr.push(group.groupId)
+            return arr
+        }, []);
+        const groupsNotOwned = groupsBelongedTo.filter(group => {
+            return !groupOwned.includes(group.groupId)}
+        )
         
         return (
             <Container>
@@ -95,8 +121,9 @@ class User extends Component {
                             </Card>
                         </Row>
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
-                        <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
-                        <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
+                        <GroupForm  groupQuantity={this.state.groupsOwned.length} /> 
+                        <GroupsOwned groupsOwned={this.state.groupsOwned} />                        
+                        <GroupsBelonged groupsBelonged={groupsNotOwned}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>                                         
                     </div>
                 }
