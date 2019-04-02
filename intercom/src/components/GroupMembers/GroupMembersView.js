@@ -143,20 +143,17 @@ class GroupMembersView extends Component {
 
     removeInvitee = (e, id, userDisplayName) => {
         e.preventDefault();
-        const ownerId = localStorage.getItem('userId')
-        const activity = { userId: ownerId, activity: `Cancelled ${userDisplayName}'s invitation.` }
-        axios
-            .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
-            .then(res => {
-                this.setState({ invitees: res.data });
-                // console.log(res)
-            })
-            .catch(err => console.error(err));
-
+        const userId = localStorage.getItem('userId')
+        const activity = { userId, activity: `Cancelled ${userDisplayName}'s invitation.` }
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
-            .then(activity => {
-                // console.log(activity)
+            .then(() => {
+                axios
+                .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
+                .then(res => {
+                    this.setState({ invitees: res.data });
+                })
+                .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
     }
