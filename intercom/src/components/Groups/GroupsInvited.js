@@ -52,8 +52,9 @@ class GroupsInvited extends Component {
         const activity = { userId: localStorage.getItem('userId'), activity: 'Declined to join to group.' }
         //delete the user from groupInvitees table due to decline
         axios
-            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId}`)
+            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
             .then(res => {
+                this.props.updateGroups(); 
                 console.log(res)
             })
             .catch(err => {
