@@ -12,7 +12,8 @@ class User extends Component {
     state = {
         user: {},
         groupsBelongedTo: [],
-        groupsInvitedTo: []
+        groupsInvitedTo: [], 
+        groupsOwned: []
         
     }
 
@@ -32,7 +33,8 @@ class User extends Component {
                 });
             });
             this.getGroupsInvitedTo(id);
-            this.getgroupsBelongedTo(id)
+            this.getgroupsBelongedTo(id);
+            this.getgroupsOwned(id);
     }
 
 
@@ -66,6 +68,23 @@ class User extends Component {
             });
     }
 
+    getgroupsOwned = (id) => {
+        const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
+
+        axios.get(groupsOwned)
+            .then(res => {
+                this.setState({ groupsOwned: res.data })
+            })
+            .catch(err => {
+                this.setState({
+                    error: err.response.data.message,
+                    groupsOwned: []
+                });
+            });
+    }
+
+
+
 
     updateGroups = () => {
         const id = localStorage.getItem('userId')        
@@ -76,7 +95,7 @@ class User extends Component {
 
     render() {
         // console.log('belongs',this.state.groupsBelongedTo)
-        // console.log('invited', this.state.groupsInvitedTo)
+        console.log('owned', this.state.groupsOwned)
             // console.log(this.props.groupQuantity)
         
         return (
@@ -95,7 +114,7 @@ class User extends Component {
                             </Card>
                         </Row>
                         {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
-                        <GroupForm  groupQuantity={this.state.groupsBelongedTo.length} /> 
+                        <GroupForm  groupQuantity={this.state.groupsOwned.length} /> 
                         <GroupsBelonged groupsBelonged={this.state.groupsBelongedTo}/>
                         <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>                                         
                     </div>
