@@ -114,12 +114,20 @@ class GroupMembersView extends Component {
         const userUpdated = { ...user, buttonInvite: false }
         users.splice(index, 1, userUpdated)
 
-        axios.post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
-            .then(res => {
-                this.setState({
-                    users: users,
-                    invitees: res.data
-                })
+        const userId = localStorage.getItem('userId')
+        const activity = { userId, activity: `Invited ${user.displayName} to the group` }
+        axios
+            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .then(() => {
+                axios
+                    .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
+                    .then(res => {
+                        this.setState({
+                            users: users,
+                            invitees: res.data
+                        })
+                    })
+                    .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
     }
