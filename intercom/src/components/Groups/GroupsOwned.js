@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 import CallParticipants from './CallParticipants';
 import CallStatus from './CallStatus';
@@ -24,7 +25,8 @@ class GroupsOwned extends Component {
                                 </h1>
 
                                 {this.props.groupsOwned.map( group => (
-                                    <div className="row blogu" key={group.groupId}>
+                                    <Link to={`/group/${group.groupId}`} key={group.groupId}>
+                                    <div className="row blogu">
                                         <div className="col-sm-8 col-md-8">
                                             <h2 className="blog-title">
                                                 {group.GroupName}
@@ -38,6 +40,7 @@ class GroupsOwned extends Component {
                                         </div>
                                         <hr></hr>
                                     </div>
+                                    </Link>
                                     
                                 ))}
     
