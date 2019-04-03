@@ -12,13 +12,9 @@ class GroupsOwned extends Component {
     render() {
         return (
             <>
-
                 <div data-spy="scroll">
-
-                    {/* <!-- Page Content --> */}
                     <section className="container blog">
                         <div className="row">
-                            {/* <!-- Blog Column --> */}
                             <div className="col-md-8">
                                 <h1 className="page-header sidebar-title">
                                     Groups Owned
