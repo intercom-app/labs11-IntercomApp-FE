@@ -15,14 +15,13 @@ class CallStatus extends Component {
         this.getParticipants();
     }
 
-    getParticipants = (id) => {
+    getParticipants = () => {
         const callStatus = `${host}/api/groups/${this.props.groupId}/callStatus`;
         axios.get(callStatus)
             .then(res => {
                 this.setState({ callStatus: res.data.callStatus })
             })
             .catch(err => {
-                console.log(err)
                 this.setState({
                     error: err.response.data.message,
                     callStatus: ''
@@ -32,7 +31,7 @@ class CallStatus extends Component {
 
     render() {
         return (
-            <td>{this.state.callStatus === 1 ? 'active' : 'inactive'}</td>
+            <>Call Status:  {this.state.callStatus === 1 ? 'Active' : 'Inactive'}</>
         );
     }
 }
