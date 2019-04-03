@@ -72,8 +72,6 @@ class GroupChatroomView extends Component {
             const userId = localStorage.getItem('userId')
             this.props.history.push(`/user/${userId}`)
         }  
-        // this.props.history.push(`/user/${userId}`)
-        
     }
 
     getActivities = id => {
@@ -108,7 +106,7 @@ class GroupChatroomView extends Component {
 
     checkIfOwner = async (id) => {
         const groupOwners = `${host}/api/groups/${id}/groupOwners`;
-        const userId = localStorage.getItem('userId')
+        const userId = parseInt(localStorage.getItem('userId'));
         try {
             const res = await axios.get(groupOwners)
             res.data[0].userId === userId 
