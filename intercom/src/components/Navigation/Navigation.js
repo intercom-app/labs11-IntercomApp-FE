@@ -32,7 +32,7 @@ export default class Example extends React.Component {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <a className="navbar-brand" href="index.html"><img src="images/logo.png" alt="company logo" /></a>
+                            <a className="navbar-brand" href="index.html">VC</a>
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav navbar-right custom-menu">

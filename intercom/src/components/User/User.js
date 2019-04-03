@@ -120,17 +120,27 @@ class User extends Component {
                                     <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
                                 </CardBody>
                             </Card>
-                        </Row>
+                        </Row> */}
 
-                        <GroupForm groupQuantity={this.state.groupsOwned.length} /> */}
+                        {/* <GroupForm groupQuantity={this.state.groupsOwned.length} /> */}
 
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
+
+                                    <div>
+                                        <h2>Welcome {this.state.user.displayName}!</h2>
+                                        <h4>{this.state.user.email}</h4>
+                                    </div>
+
                                     <GroupsOwned groupsOwned={this.state.groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsNotOwned} />
                                     <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups} />
+                                
                                 </div>
+
+                                <GroupForm groupQuantity={this.state.groupsOwned.length} />
+                            
                             </div>
                         </section>
 

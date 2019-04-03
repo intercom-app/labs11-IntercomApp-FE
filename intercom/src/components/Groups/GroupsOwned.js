@@ -17,18 +17,17 @@ class GroupsOwned extends Component {
                     <Link to={`/group/${group.groupId}`} key={group.groupId}>
                         <div className="row blogu">
                             <div className="col-sm-8 col-md-8">
-                                <h2 className="blog-title">
+                                <h3 className="blog-title">
                                     {group.GroupName}
-                                </h2>
-                                <p>
-                                    <span className="comments-padding"></span>
+                                </h3>
+                                <>
                                     <CallStatus groupId={group.groupId} />
                                     <span className="comments-padding"></span>
                                     <CallParticipants groupId={group.groupId} />
-                                </p>
+                                </>
                             </div>
-                            <hr></hr>
                         </div>
+                        <hr></hr>
                     </Link>
 
                 ))}
