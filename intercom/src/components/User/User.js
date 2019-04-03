@@ -8,6 +8,9 @@ import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
 import { Row, Card, CardBody, CardTitle, Container} from 'reactstrap';
 
+require('../../styling/css/bootstrap.min.css');
+require('../../styling/css/patros.css');
+
 
 class User extends Component {
     state = {
@@ -120,11 +123,20 @@ class User extends Component {
                                 </CardBody>
                             </Card>
                         </Row>
-                        {/* <NavLink to={`/user/${localStorage.getItem('userId')}/account`}>Account Settings</NavLink> */}
                         <GroupForm  groupQuantity={this.state.groupsOwned.length} /> 
-                        <GroupsOwned groupsOwned={this.state.groupsOwned} />                        
-                        <GroupsBelonged groupsBelonged={groupsNotOwned}/>
-                        <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>                                         
+                        
+                        <div data-spy="scroll">
+                            <section className="container blog">
+                                <div className="row">
+                                    <div className="col-md-8">
+                                    <GroupsOwned groupsOwned={this.state.groupsOwned} />                        
+                                    <GroupsBelonged groupsBelonged={groupsNotOwned}/>
+                                    <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups}/>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                                       
                     </div>
                 }
             </Container>
