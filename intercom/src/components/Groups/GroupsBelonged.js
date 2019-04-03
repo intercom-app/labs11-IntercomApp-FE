@@ -15,12 +15,14 @@ class GroupsBelonged extends Component {
                 </h1>
 
                 {this.props.groupsBelonged.map(group => (
-                    <Link to={`/group/${group.groupId}`} key={group.groupId}>
-                        <div className="row blogu">
+                    <div key={group.groupId}>
+                        <div className="row blogu" >
                             <div className="col-sm-8 col-md-8">
-                                <h2 className="blog-title">
-                                    {group.GroupName}
-                                </h2>
+                                <Link to={`/group/${group.groupId}`} >
+                                    <h3 className="blog-title">
+                                        {group.GroupName}
+                                    </h3>
+                                </Link>
                                 <>
                                     <CallStatus groupId={group.groupId} />
                                     <span className="comments-padding"></span>
@@ -29,7 +31,7 @@ class GroupsBelonged extends Component {
                             </div>
                         </div>
                         <hr></hr>
-                    </Link>
+                    </div>
 
                 ))}
 

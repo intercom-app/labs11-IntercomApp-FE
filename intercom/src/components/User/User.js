@@ -111,19 +111,6 @@ class User extends Component {
                 {this.state.error
                     ? <p>Error retrieving user!</p>
                     : <div>
-                        {/* <Row className='mt-sm-4 ml-sm-2'>
-                            <Card>
-                                <CardBody>
-                                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
-                                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
-                                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
-                                </CardBody>
-                            </Card>
-                        </Row> */}
-
-                        {/* <GroupForm groupQuantity={this.state.groupsOwned.length} /> */}
-
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
