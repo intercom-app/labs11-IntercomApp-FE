@@ -29,8 +29,12 @@ class GroupsOwned extends Component {
                                             <h2 className="blog-title">
                                                 {group.GroupName}
                                             </h2>
-                                            <CallParticipants groupId={group.groupId} />
-                                            <CallStatus groupId={group.groupId} />
+                                            <p>
+                                                <span className="comments-padding"></span>
+                                                <CallStatus groupId={group.groupId} />
+                                                <span className="comments-padding"></span>
+                                                <CallParticipants groupId={group.groupId} />
+                                            </p>
                                         </div>
                                         <hr></hr>
                                     </div>
