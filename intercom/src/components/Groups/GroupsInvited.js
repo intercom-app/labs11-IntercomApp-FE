@@ -3,11 +3,16 @@ import { NavLink } from "react-router-dom";
 import { Table, Button } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
+import CallParticipants from './CallParticipants';
+import CallStatus from './CallStatus';
+
 
 class GroupsInvited extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            groupId: ''            
+        }
     }
 
     acceptInvite = (event, groupId) => {
@@ -80,6 +85,8 @@ class GroupsInvited extends Component {
                     <tr>
                         <th>id</th>
                         <th>Group Name</th>
+                        <th>Participants</th>  
+                        <th>Call Status</th>                                                                                                                                        
                     </tr>
                 </thead>
                 {this.props.groupsInvited.map((group, key) => (
@@ -91,7 +98,8 @@ class GroupsInvited extends Component {
                                 <Button onClick={(e) => this.acceptInvite(e,group.groupId)} color='success'>Join</Button>
                                 <Button onClick={(e) => this.declineInvite(e,group.groupId)} color='danger'>Decline</Button>
                             </td>
-
+                            <CallParticipants groupId={group.groupId} />
+                            <CallStatus groupId={group.groupId} />                            
                         </tr>
                     </tbody>
                 ))}
