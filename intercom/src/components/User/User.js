@@ -95,7 +95,7 @@ class User extends Component {
     
 
     render() {
-        const groupsOwned = this.state.groupsOwned;
+        // const groupsOwned = this.state.groupsOwned;
         const groupsBelongedTo = this.state.groupsBelongedTo;
         const groupOwned = this.state.groupsOwned.reduce((arr, group) => {
             arr.push(group.groupId)
