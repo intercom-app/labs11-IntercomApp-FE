@@ -1,44 +1,43 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
-import { Table } from 'reactstrap';
+import { Link } from "react-router-dom";
+
 import CallParticipants from './CallParticipants';
 import CallStatus from './CallStatus';
 
 
 class GroupsBelonged extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            groupId: ''            
-         }
-    }
 
-     render() { 
-        return ( <div className='mt-sm-3'>
-            {/* {console.log(this.props.groupsBelonged)} */}
-            <h2>Groups Belonged To</h2>
-            <Table>
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>Group Name</th>
-                        <th>Participants</th>    
-                        <th>Call Status</th>                                                                                                                                      
-                    </tr>
-                </thead>
-                {this.props.groupsBelonged.map((group, key) => (
-                    <tbody key={key}>
-                        <tr>   
-                            <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>
-                            <td>{group.GroupName} </td>
-                            <CallParticipants groupId={group.groupId} />   
-                            <CallStatus groupId={group.groupId} />                                                                                 
-                        </tr>
-                    </tbody>
+    render() {
+        return (
+            <>
+                <h1 className="page-header sidebar-title">
+                    Groups Belonged To
+                </h1>
+
+                {this.props.groupsBelonged.map(group => (
+                    <Link to={`/group/${group.groupId}`} key={group.groupId}>
+                        <div className="row blogu">
+                            <div className="col-sm-8 col-md-8">
+                                <h2 className="blog-title">
+                                    {group.GroupName}
+                                </h2>
+                                <p>
+                                    <span className="comments-padding"></span>
+                                    <CallStatus groupId={group.groupId} />
+                                    <span className="comments-padding"></span>
+                                    <CallParticipants groupId={group.groupId} />
+                                </p>
+                            </div>
+                            <hr></hr>
+                        </div>
+                    </Link>
+
                 ))}
-            </Table>
-        </div> );
+
+            </>
+
+        );
     }
 }
- 
+
 export default GroupsBelonged;

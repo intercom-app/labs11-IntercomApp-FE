@@ -14,13 +14,10 @@ class CallParticipants extends Component {
         this.getParticipants();
     }
 
-    getParticipants = (id) => {
-        // console.log(this.state.groupId)
-        // console.log(`${host}/api/groups/${this.state.groupId}/callParticipants`)
+    getParticipants = () => {
         const callParticipants = `${host}/api/groups/${this.props.groupId}/callParticipants`;
         axios.get(callParticipants)
             .then(res => {
-                // console.log(res.data)
                 this.setState({ callParticipants: res.data })
             })
             .catch(err => {
@@ -33,8 +30,8 @@ class CallParticipants extends Component {
 
     render() { 
         return ( 
-            <td>{this.state.callParticipants.length}</td>
-         );
+            <>On Call:  {this.state.callParticipants.length}</>
+        );
     }
 }
  
