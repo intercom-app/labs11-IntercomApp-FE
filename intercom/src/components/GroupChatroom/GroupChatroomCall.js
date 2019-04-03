@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import { Card } from 'reactstrap';
+import { Button, Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
 class GroupChatroomCall extends Component {
 
-    renderButton = (userCallStatus, groupCallStatus) => {
+    renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
         const userOnCall = (userCallStatus === 1)
         const groupOnCall = (groupCallStatus === 1)
-        let text = ''
-        switch(true) {
+        switch (true) {
             case (!userOnCall && !groupOnCall):
-                text = 'Start Call'
-                break;
+                return (
+                    <Button onClick={handleCallButton} color='success' >
+                        Start Call
+                    </Button>
+                )
             case (!userOnCall && groupOnCall):
-                text = 'Join Call'
-                break;
+                return (
+                    <Button onClick={handleCallButton} outline color='success' >
+                        Join Call
+                    </Button>
+                )
             case (userOnCall && groupOnCall):
-                text = 'Leave Call'
-                break;
+                return (
+                    <Button onClick={handleCallButton} outline color='danger' >
+                        Leave Call
+                    </Button>
+                )
             default:
-                break;
+                return (
+                    <Button disabled color='secondary' >
+                        On another group call
+                    </Button>
+                )
         }
-        return text;
 
     }
 
@@ -31,25 +42,28 @@ class GroupChatroomCall extends Component {
         return (
             <>
 
-                <button onClick={handleCallButton} className='mt-sm-4'>
-                    {this.renderButton(user.callStatus, group.callStatus)}
-                </button>
-                <Card className='mt-sm-4 mb-sm-4'>
-                    <h5>Phone Number</h5>
-                    {group.phoneNumber
-                        ? group.phoneNumber
-                        : 'No Active Phone Number'
-                    }
-                </Card>
+                {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
 
-                <h5>Call Participants</h5>
-                <ul>
-                    {participants.map(user =>
-                        <li key={user.userId}>
-                            {user.displayName}
-                        </li>
-                    )}
-                </ul>
+                <Card className='mt-sm-4 mb-sm-4'>
+                    <CardBody>
+                        <CardTitle><strong>Phone Number</strong></CardTitle>
+                        <CardText>
+                            {group.phoneNumber
+                                ? group.phoneNumber
+                                : 'No Active Phone Number'
+                            }
+                        </CardText>
+
+                        <CardTitle><strong>Call Participants</strong></CardTitle>
+                        <CardText>
+                            {participants.map(user =>
+                                <span key={user.userId}>
+                                    {user.displayName}{' '}
+                                </span>
+                            )}
+                        </CardText>
+                    </CardBody>
+                </Card>
             </>
 
         )
