@@ -108,8 +108,7 @@ class User extends Component {
                                 <div className="col-md-8">
 
                                     <div>
-                                        <img className="media-object pull-left avatar-img" src={require('../../images/avatar1.png')} alt="" />  
-                                        <span className="comments-padding"></span>                                                                              
+                                        <img className="pull-left avatar-img-lg" src={require('../../images/avatar1.png')} alt="" />  
                                         <h2>Welcome {user.displayName}!</h2>
                                         <span>{user.email}</span>
                                     </div>
