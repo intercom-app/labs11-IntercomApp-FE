@@ -124,6 +124,13 @@ class AccountSettings extends Component {
                                 <div className="col-md-12">
                                     <div className="col-md-4">
                                         <h3 style={{ marginTop: "0px" }}>Profile</h3>
+                                        <button
+                                            className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
+                                            type="button"
+                                            onClick={() => this.handleDelete(user.id)}
+                                        >
+                                            Delete Account
+                                        </button>
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
