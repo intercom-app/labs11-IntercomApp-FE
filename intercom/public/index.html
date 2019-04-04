@@ -11,15 +11,19 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+    
     <title>React App</title>
 
 		<!-- Bootstrap Core CSS -->
-		<link href="/src/styling/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/src/styling/css/bootstrap.min.css" rel="stylesheet" type="text/html">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    
+       
 		<!-- Custom Fonts -->
-		<link href="/src/styling/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="/src/styling/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/html">
 		<!-- Custom CSS -->
-		<link rel="stylesheet" href="/src/styling/css/patros.css" >
+		<link rel="stylesheet" href="/src/styling/css/patros.css"  type="text/html">
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -38,17 +42,21 @@
     <script src="https://js.stripe.com/v3/"></script>
     
   </head>
-	<body data-spy="scroll" id="root">
- 
+	<body data-spy="scroll">
+      
+    <div id="root"></div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
       <!-- jQuery -->
-      <script src="/src/styling/js/jquery.js"></script>
-      <!-- Bootstrap Core JavaScript -->
-      <script src="/src/styling/js/bootstrap.min.js"></script>
+      <link src="/src/styling/js/jquery.js"></link>
+      <!-- Bootstrap Core Javalink -->
+      <link src="/src/styling/js/bootstrap.min.js"></link>
    
       <!-- Portfolio -->
-      <script src="/src/styling/js/jquery.quicksand.js"></script>	    
+      <link src="/src/styling/js/jquery.quicksand.js"></link>	    
   
       <!--Jquery Smooth Scrolling-->
+      
       <script>
         $(document).ready(function(){
           $('.custom-menu a[href^="#"], .intro-scroller .inner-link').on('click',function (e) {
@@ -115,10 +123,10 @@
       $(document).ready(gallery);
       </script>
   
-  
+      
       <script type="text/javascript">
     $(document).ready(function(){
-      inicializemap()
+      // inicializemap()
   
       $('#contactForm').on('submit', function(e){
         e.preventDefault();
@@ -178,201 +186,8 @@
       });
     });
   
-    var map = null;
-     var latitude;
-     var longitude;
-     function inicializemap(){
-       latitude = 41.3349509; 
-       longitude = 19.8217028;
-  
-      var egglabs = new google.maps.LatLng(latitude, longitude);
-      var egglabs1 = new google.maps.LatLng(43.0630171, 89.2296082);
-      var egglabs2 = new google.maps.LatLng(13.0630171, 80.2296082 );
-  
-  
-      var image = new google.maps.MarkerImage('images/marker.png', new google.maps.Size(84,56), new google.maps.Point(0,0), new google.maps.Point(42,56));
-      var mapCoordinates = new google.maps.LatLng(latitude, longitude);
-      var mapOptions = {
-       backgroundColor: '#ffffff',
-       zoom: 10,
-       disableDefaultUI: true,
-       center: mapCoordinates,
-       mapTypeId: google.maps.MapTypeId.ROADMAP,
-       scrollwheel: true,
-       draggable: true, 
-       zoomControl: false,
-       disableDoubleClickZoom: true,
-       mapTypeControl: false,
-       styles: [
-            {
-              "featureType": "all",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#1f242f"
-                }
-              ]
-            },
-            {
-              "featureType": "all",
-              "elementType": "labels.icon",
-              "stylers": [
-                {
-                  "hue": "#ff9d00"
-                }
-              ]
-            },
-            {
-              "featureType": "landscape.man_made",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#fef8ef"
-                }
-              ]
-            },
-            {
-              "featureType": "poi.medical",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "hue": "#ff0000"
-                }
-              ]
-            },
-            {
-              "featureType": "poi.park",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#c9d142"
-                },
-                {
-                  "lightness": "0"
-                },
-                {
-                  "visibility": "on"
-                },
-                {
-                  "weight": "1"
-                },
-                {
-                  "gamma": "1.98"
-                }
-              ]
-            },
-            {
-              "featureType": "road",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "weight": "1.00"
-                }
-              ]
-            },
-            {
-              "featureType": "road",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#d7b19c"
-                },
-                {
-                  "weight": "1"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "visibility": "on"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "weight": "4.03"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "visibility": "off"
-                },
-                {
-                  "color": "#ffed00"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway.controlled_access",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "visibility": "on"
-                }
-              ]
-            },
-            {
-              "featureType": "road.arterial",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "visibility": "on"
-                }
-              ]
-            },
-            {
-              "featureType": "road.local",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "visibility": "on"
-                }
-              ]
-            },
-            {
-              "featureType": "transit.line",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#cbcbcb"
-                }
-              ]
-            },
-            {
-              "featureType": "water",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#0b727f"
-                }
-              ]
-            }
-          ]
-              };
-  
-      map = new google.maps.Map(document.getElementById('map-canvas-holder'),mapOptions);
-      marker = new google.maps.Marker({position: egglabs, raiseOnDrag: false, icon: image, map: map, draggable: false,  title: 'ATIS1'}); 
-      marker = new google.maps.Marker({position: egglabs1, raiseOnDrag: false, icon: image, map: map, draggable: false,  title: 'ATIS2'}); 
-      marker = new google.maps.Marker({position: egglabs2, raiseOnDrag: false, icon: image, map: map, draggable: false,  title: 'ATIS3'}); 
-      google.maps.event.addListener(map, 'zoom_changed', function() {
-       var center = map.getCenter();
-       google.maps.event.trigger(map, 'resize');
-       map.setCenter(center);
-      });
-     }
   
       </script>
-  
   
   </body>
 </html>

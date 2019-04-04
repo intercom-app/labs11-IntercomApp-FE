@@ -39,7 +39,7 @@ class App extends Component {
         {
           // isAuthenticated() && (
             <>
-            <Navigation id={id} logout={this.logout} isAuthenticated={this.props.auth}/>
+            <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated}/>
               {/* <NavLink to={`/user/${id}`}>Home</NavLink> */}
 
               {/* <button onClick={this.logout}>Log Out</button> */}
