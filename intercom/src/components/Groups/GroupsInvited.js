@@ -9,6 +9,17 @@ import axios from 'axios';
 
 class GroupsInvited extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            groupsInvited: [],
+        }
+    }
+
+    componentDidMount() {
+        this.setState({ groupsInvited: this.props.groupsInvited });
+    }
+
     acceptInvite = (event, groupId) => {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
@@ -76,7 +87,7 @@ class GroupsInvited extends Component {
                     Groups Invited To
                 </h1>
 
-                {this.props.groupsInvited.map(group => (
+                {this.state.groupsInvited.map(group => (
                     <div key={group.groupId}>
                         <div className="row blogu">
                             <div className="col-sm-8 col-md-8">

@@ -11,7 +11,6 @@ class GroupsBelonged extends Component {
         super(props);
         this.state = {
             groupsBelonged: [],
-            error: ''
         }
     }
 
