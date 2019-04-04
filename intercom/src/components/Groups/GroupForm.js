@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
+// import { NavLink } from "react-router-dom";
+// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -93,7 +93,7 @@ class GroupForm extends Component {
     };
 
     render() {
-        const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
+        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         // console.log(this.props.groupQuantity)
         return (
             <>

@@ -1,12 +1,12 @@
 import React from 'react';
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    Nav,
-    NavItem,
-    NavLink
-} from 'reactstrap';
+// import {
+//     Collapse,
+//     Navbar,
+//     NavbarToggler,
+//     Nav,
+//     NavItem,
+//     NavLink
+// } from 'reactstrap';
 
 export default class Example extends React.Component {
     constructor(props) {
