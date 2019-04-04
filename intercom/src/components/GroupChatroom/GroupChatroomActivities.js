@@ -29,18 +29,27 @@ class GroupChatroomActivities extends Component {
         const { activities } = this.props
 
         return (
-            <Card>
+            <div className="comments1">            
                 <h4>Latest Activities</h4>
-                <ul>
+                <div className="media">
+                    <a className="pull-left" href="#">
+                        <img className="media-object" src="..styling/images/avatar1.png" alt=""/>
+					</a>
                     {activities.map((activity, ind) =>
-                        <ListGroupItem key={ind}>
-                            {activity.displayName} {': '}
-                            {activity.activity} {' '}
-                            {this.getDateTime(activity.createdAt)}
-                        </ListGroupItem>
+                    <div key={ind} className="media-body">
+                            <p>
+                                <i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}
+		                        <span className="comments-padding"></span>
+                                <strong>{activity.displayName} {': '}</strong>
+                                {activity.activity} {' '}
+		                    </p>
+
+                    </div>
+                    
                     )}
-                </ul>
-            </Card>
+                </div>
+            </div>
+            
         )
     }
 

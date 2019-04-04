@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
 class GroupChatroomCall extends Component {
 
@@ -31,8 +30,8 @@ class GroupChatroomCall extends Component {
             default:
                 return (
                     <button
-                        className="btn btn-seconday"
-                        type="button">Start Call</button>
+                        className="btn btn-secondary"
+                        type="button">In Call</button>
                 )
         }
 
@@ -44,26 +43,27 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
-                <aside className="col-md-4 sidebar-padding">
-                    <div className="blog-sidebar">
-                {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
+                <aside className="col-md-8 sidebar-padding">
+                    <div className="">
+                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
                         <hr></hr>
-                        <CardTitle><strong>Phone Number</strong></CardTitle>
-                        <CardText>
+                        <h4 className="sidebar-title">Phone Number</h4>
+                        <p>
                             {group.phoneNumber
                                 ? group.phoneNumber
                                 : 'No Active Phone Number'
                             }
-                        </CardText>
+                        </p>
 
-                        <CardTitle><strong>Call Participants</strong></CardTitle>
-                        <CardText>
+                        <h4 className="sidebar-title">Call Participants</h4>
+                        
+                        <p>
                             {participants.map(user =>
                                 <span key={user.userId}>
                                     {user.displayName}{' '}
                                 </span>
                             )}
-                        </CardText>
+                        </p>
                     </div>
                 </aside>
             </>

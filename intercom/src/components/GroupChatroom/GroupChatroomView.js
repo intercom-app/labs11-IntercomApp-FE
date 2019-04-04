@@ -211,52 +211,59 @@ class GroupChatroomView extends Component {
                     ? <p>{error}</p>
                     : <>
                         <h3>Group Name: {group.name}</h3>
-                        <Link to={`/group/${groupId}/members`} className='mb-sm-4 float-sm-right'>
-                            {isOwner ? 'Manage Members' : 'View Members'}
-                        </Link>
-
-                        {isOwner ? 
-                        <Card>
-                            <Button className='w-25' color='danger' onClick={this.deleteGroup}>
-                                Delete Group
-                            </Button>
-
-                                <form onSubmit={this.handleGroupUpdate} className='mt-sm-4'>
-                                Update Group Name:
-                                <input 
-                                    onChange={this.handleInputChange} 
-                                    type='text' 
+                        <GroupChatroomCall
+                            user={user}
+                            group={group}
+                            participants={participants}
+                            handleCallButton={this.handleCallButton}
+                        />
+                    </>
+                }   
+                    </div>
+                    {isOwner ?
+                        <div className='sidebar-padding'>
+                            <div className="blog-sidebar">
+                        
+                            <Link to={`/group/${groupId}/members`} className='blog-title'>
+                                {isOwner ? 'Manage Members' : 'View Members'}
+                            </Link>
+                            <hr/>
+                            <button className="btn btn-danger"
+                                type="button" onClick={this.deleteGroup}>Delete Group
+                            </button>
+                            <br/>
+                            <h4 className="sidebar-title">Update Group Name:</h4>
+                            <div className="input-group">
+                                <input
+                                    className='form-control'
+                                    onChange={this.handleInputChange}
+                                    type='text'
                                     id='groupName'
-                                    name='groupName' 
-                                    value={this.state.groupName} 
+                                    name='groupName'
+                                    value={this.state.groupName}
                                     placeholder='New Group Name Here...'
                                 ></input>
-                                <input type='submit' value='Submit'></input>
-                            </form>
+                                <span className="input-group-btn">
+                                    <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
+                                        Update Group
+                                        </button>
+                                </span>
+                            </div>
+                            </div>
 
-                        </Card>
-                        : 
+                        </div>
+                        :
                         <>
                             <Button color='danger' onClick={this.leaveGroup}>
                                 Leave Group
                             </Button>
                         </>
-                        }
-
-                        
-
+                    }
+                    <div className='col-md-8'>
                         <GroupChatroomActivities
                             activities={activities}
                         />
-                    </>
-                }   
                     </div>
-                    <GroupChatroomCall
-                        user={user}
-                        group={group}
-                        participants={participants}
-                        handleCallButton={this.handleCallButton}
-                    />
                 </div>
             </section>
         )
