@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // import { Container } from 'reactstrap';
 import axios from "axios";
 import Fuse from 'fuse.js';
@@ -181,7 +181,6 @@ class GroupMembersView extends Component {
 
         let { error, group, search, users, members, invitees, isOwner } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
-        console.log(error)
 
         return (
             <>
@@ -211,6 +210,7 @@ class GroupMembersView extends Component {
 
                                 </div>
 
+                                <aside className="col-md-4 sidebar-padding">
                                 {isOwner
                                     ? <>
                                         <SearchBar
@@ -227,6 +227,7 @@ class GroupMembersView extends Component {
                                     </>
                                     : null
                                 }
+                                </aside>
 
                             </div>
                         </section>

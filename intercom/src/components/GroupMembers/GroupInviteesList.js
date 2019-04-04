@@ -1,43 +1,43 @@
 import React from 'react';
-import { Row, Table, Button } from 'reactstrap';
+// import { Row, Table, Button } from 'reactstrap';
 
 const GroupInviteesList = (props) => {
     let { isOwner, invitees, removeInvitee } = props
     return (
-        <Row>
-            <h3>Group Invitees</h3>
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Group Id</th>
-                        <th>User Id</th>
-                        <th>Invitee Name</th>
-                        {isOwner ? <th>Manage Invitee</th> : null}
-                    </tr>
-                </thead>
-                {invitees.map(invitee => (
-                    <tbody key={invitee.userId}>
-                        <tr>
-                            <td>{invitee.groupId}</td>
-                            <td>{invitee.userId}</td>
-                            <td>{invitee.displayName}</td>
+        <>
+            <h1 className="page-header sidebar-title">
+                Group Invitees
+            </h1>
+
+            {invitees.map(invitee => (
+                <div key={invitee.userId}>
+                    <div className="row blogu" >
+                        <div className="col-sm-8 col-md-8">
+                            <h4 className="blog-title">
+                                {invitee.displayName}
+                            </h4>
+                        </div>
+                        <>
                             {isOwner
-                                ? <td>
-                                    <Button
-                                        color='danger'
+                                ? <>
+                                    <button
+                                        className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right"
+                                        type="button"
                                         onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
                                     >
-                                        Remove Invitee
-                                </Button>
-                                </td>
+                                        Rescind Invite
+                                        </button>
+                                </>
                                 : null
                             }
-                        </tr>
-                    </tbody>
+                        </>
+                    </div>
+                    <hr></hr>
+                </div>
 
-                ))}
-            </Table>
-        </Row>
+            ))}
+
+        </>
 
     );
 }

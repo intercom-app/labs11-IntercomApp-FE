@@ -1,12 +1,12 @@
 import React from 'react';
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    Nav,
-    NavItem,
-    NavLink
-} from 'reactstrap';
+// import {
+//     Collapse,
+//     Navbar,
+//     NavbarToggler,
+//     Nav,
+//     NavItem,
+//     NavLink
+// } from 'reactstrap';
 
 export default class Example extends React.Component {
     constructor(props) {
@@ -15,6 +15,50 @@ export default class Example extends React.Component {
             isOpen: false
         };
     }
+
+    renderNavigation = () => {
+        if (this.props.isAuthenticated()){
+            return <nav className="navbar navbar-inverse navbar-fixed-top">
+                <div className="container">
+                    <div className="navbar-header">
+                        {/* <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                            </button> */}
+                        <a className="navbar-brand" href="#">VC</a>
+                    </div>
+                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul className="nav navbar-nav navbar-right custom-menu">
+                            <li className="active"><a href="#home">My Groups</a></li>
+                            <li><a href={`/user/${this.props.id}/account`}>Account</a></li>
+                            <li onClick={this.props.logout}><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }else {
+            return <nav className="navbar navbar-inverse navbar-fixed-top">
+                <div className="container">
+                    <div className="navbar-header">
+                        {/* <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                            </button> */}
+                        <a className="navbar-brand" href="#">VC</a>
+                    </div>
+                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul className="nav navbar-nav navbar-right custom-menu">
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#about">Contact</a></li>                            
+                            <li><a href="#meet-team">Team</a></li>
+                            <li onClick={this.props.login}><a href="#">Login</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
+    }
+
     toggle = () => {
         this.setState({
             isOpen: !this.state.isOpen
@@ -23,31 +67,31 @@ export default class Example extends React.Component {
     render() {
         return (
             <>
-                <nav className="navbar navbar-inverse navbar-fixed-top">
+                {this.renderNavigation()}
+                
+                
+                {/* <nav className="navbar navbar-inverse navbar-fixed-top">
                     <div className="container">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
                             <a className="navbar-brand" href="index.html">VC</a>
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav navbar-right custom-menu">
-                                <li className="active"><a href="#home">Home</a></li>
+                                <li className="active"><a href="#home">My Groups</a></li>
                                 <li><a href="#about">About</a></li>
-                                <li><a href="#services">Services</a></li>
                                 <li><a href="#meet-team">Team</a></li>
-                                <li><a href="#portfolio1">Portofolio</a></li>
                                 <li><a href="#contact">Contact</a></li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="single-post.html">Single</a></li>
+                                <li onClick={this.props.login}><a href="#">Login</a></li>
                             </ul>
                         </div>
                     </div>
-                </nav>
+                </nav> */}
+
+                
                 {/* <Navbar color="light" light expand="md">
                     <NavLink href={`/user/${this.props.id}`}>Home</NavLink>
                     <NavbarToggler onClick={this.toggle} />

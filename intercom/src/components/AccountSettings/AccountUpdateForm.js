@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
+// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ class AccountUpdateForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false,
+            // modal: false,
             displayName: ''
         };
     }
@@ -18,11 +18,11 @@ class AccountUpdateForm extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
 
-    toggle = () => {
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }));
-    }
+    // toggle = () => {
+    //     this.setState(prevState => ({
+    //         modal: !prevState.modal
+    //     }));
+    // }
 
     updateUser = async (e) => {
         const id = localStorage.getItem('userId');
@@ -32,10 +32,10 @@ class AccountUpdateForm extends Component {
         }
         try {
             const res = await axios.put(`${host}/api/users/${id}`, userData)
-            this.setState({ 
+            this.setState({
                 displayName: res.data.displayName
             })
-            this.toggle()
+            this.props.toggleChangeName();
         } catch (err) {
             console.log(err);
         };
@@ -44,9 +44,36 @@ class AccountUpdateForm extends Component {
     };
 
     render() {
-        const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
+        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         return (
-            <div>
+            <>
+                <div className="col-md-8">
+                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="pull-left">
+                            <div className="input-group searchbar">
+                                <input
+                                    className="form-control searchbar"
+                                    type="text"
+                                    name="displayName"
+                                    placeholder="Enter new display name..."
+                                    onChange={this.handleGroupInput}
+                                    value={this.state.displayName}
+                                />
+                                <span className="input-group-btn">
+                                <button 
+                                    className="btn btn-default" 
+                                    type="button"
+                                    onClick={this.updateUser}
+                                >
+                                    Update
+                                </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div>
                 <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
                     <ModalHeader>Update Account</ModalHeader>
@@ -70,7 +97,8 @@ class AccountUpdateForm extends Component {
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </div> */}
+            </>
         );
     }
 }

@@ -84,11 +84,11 @@ class GroupsInvited extends Component {
                                     {group.GroupName}
                                 </h3>
                                 <>
-                                <button class="btn btn-default" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
+                                <button className="btn btn-default" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
                                     Join
                                 </button>
                                 <span className="comments-padding"></span>
-                                <button class="btn btn-default" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
+                                <button className="btn btn-default" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
                                     Decline
                                 </button>
                                 </>
