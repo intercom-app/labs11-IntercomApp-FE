@@ -13,24 +13,24 @@ const GroupInviteesList = (props) => {
                 <div key={invitee.groupId}>
                     <div className="row blogu" >
                         <div className="col-sm-8 col-md-8">
-                            <h3 className="blog-title">
+                            <h4 className="blog-title">
                                 {invitee.displayName}
-                            </h3>
-                            <>
-                                {isOwner
-                                    ? <>
-                                        <button
-                                            className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
-                                            type="button"
-                                            onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
-                                        >
-                                            Rescind Invite
-                                        </button>
-                                    </>
-                                    : null
-                                }
-                            </>
+                            </h4>
                         </div>
+                        <>
+                            {isOwner
+                                ? <>
+                                    <button
+                                        className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right"
+                                        type="button"
+                                        onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
+                                    >
+                                        Rescind Invite
+                                        </button>
+                                </>
+                                : null
+                            }
+                        </>
                     </div>
                     <hr></hr>
                 </div>

@@ -13,22 +13,23 @@ const GroupMembersList = (props) => {
                 <div key={member.groupId}>
                     <div className="row blogu" >
                         <div className="col-sm-8 col-md-8">
-                            <h3 className="blog-title">
+                            <h4 className="blog-title">
                                 {member.displayName}
-                            </h3>
-                            <>
+                            </h4>
+                        </div>
+                        <>
                             {isOwner
                                 ? <>
                                     {member.userId === userId
                                         ?   <button 
-                                                className="btn btn-primary btn-noborder-radius" 
+                                                className="btn btn-primary btn-noborder-radius pull-right" 
                                                 type="button" 
                                                 disabled
                                             >
                                                 Owner
                                             </button>
                                         :   <button 
-                                                className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom" 
+                                                className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right" 
                                                 type="button" 
                                                 onClick={(e) => removeUser(e, member.userId, member.displayName)}
                                             >
@@ -39,7 +40,6 @@ const GroupMembersList = (props) => {
                                 : null
                             }
                             </>
-                        </div>
                     </div>
                     <hr></hr>
                 </div>
