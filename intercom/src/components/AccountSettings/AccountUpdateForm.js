@@ -8,7 +8,7 @@ class AccountUpdateForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false,
+            // modal: false,
             displayName: ''
         };
     }
@@ -18,11 +18,11 @@ class AccountUpdateForm extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
 
-    toggle = () => {
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }));
-    }
+    // toggle = () => {
+    //     this.setState(prevState => ({
+    //         modal: !prevState.modal
+    //     }));
+    // }
 
     updateUser = async (e) => {
         const id = localStorage.getItem('userId');
@@ -35,7 +35,7 @@ class AccountUpdateForm extends Component {
             this.setState({
                 displayName: res.data.displayName
             })
-            this.toggle()
+            this.props.toggleChangeName();
         } catch (err) {
             console.log(err);
         };
@@ -47,27 +47,32 @@ class AccountUpdateForm extends Component {
         // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         return (
             <>
-
-                <button className="pull-right" type="button" data-toggle="modal" data-target="#accountModal">Change Name</button>
-
-                <div className="modal fade" id="accountModal">
-                    <div className="modal-dialog">
-
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title">Modal Header</h4>
-                            </div>
-                            <div className="modal-body">
-                                <p>Some text in the modal.</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                <div className="col-md-8">
+                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="pull-left">
+                            <div className="input-group searchbar">
+                                <input
+                                    className="form-control searchbar"
+                                    type="text"
+                                    name="displayName"
+                                    placeholder="Enter new display name..."
+                                    onChange={this.handleGroupInput}
+                                    value={this.state.displayName}
+                                />
+                                <span className="input-group-btn">
+                                <button 
+                                    className="btn btn-default" 
+                                    type="button"
+                                    onClick={this.updateUser}
+                                >
+                                    Update
+                                </button>
+                                </span>
                             </div>
                         </div>
-
                     </div>
                 </div>
+
                 {/* <div>
                 <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>

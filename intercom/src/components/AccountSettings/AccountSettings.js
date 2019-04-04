@@ -10,6 +10,7 @@ class AccountSettings extends Component {
         super(props);
         this.state = {
             user: {},
+            updateUserName: false,
         }
     }
 
@@ -28,6 +29,12 @@ class AccountSettings extends Component {
                 });
             });
 
+    }
+
+    toggleChangeName = () => {
+        this.setState(prevState => ({
+            updateUserName: !prevState.updateUserName
+        }));
     }
 
     handleUpdate = () => {
@@ -110,7 +117,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user } = this.state
+        const { user, updateUserName } = this.state
 
         return (
             <>
@@ -140,14 +147,23 @@ class AccountSettings extends Component {
                                             <div className="pull-left">
                                                 <strong>{user.displayName}</strong>
                                             </div>
-                                            {/* <a className="pull-right">
-                                                Change Name
-                                            </a> */}
-
-                                            <AccountUpdateForm updateUser={this.handleUpdate}/>
-
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeName}>
+                                            { updateUserName 
+                                                ? 'Cancel'
+                                                : 'Change Name'
+                                            }
+                                            </div>
                                         </div>
                                     </div>
+
+                                    { updateUserName 
+                                        ? <AccountUpdateForm 
+                                            updateUser={this.handleUpdate}
+                                            toggleChangeName={this.toggleChangeName}
+                                        />
+                                        : null
+                                    }
+
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
