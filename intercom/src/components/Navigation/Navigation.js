@@ -1,13 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import {
-//     Collapse,
-//     Navbar,
-//     NavbarToggler,
-//     Nav,
-//     NavItem,
-//     NavLink
-// } from 'reactstrap';
+
 
 export default class Navigation extends React.Component {
     // constructor(props) {
