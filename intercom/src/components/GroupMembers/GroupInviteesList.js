@@ -24,7 +24,7 @@ const GroupInviteesList = (props) => {
                                             type="button"
                                             onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
                                         >
-                                            Rescind Invitee
+                                            Rescind Invite
                                         </button>
                                     </>
                                     : null

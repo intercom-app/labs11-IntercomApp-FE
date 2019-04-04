@@ -210,6 +210,7 @@ class GroupMembersView extends Component {
 
                                 </div>
 
+                                <aside className="col-md-4 sidebar-padding">
                                 {isOwner
                                     ? <>
                                         <SearchBar
@@ -226,6 +227,7 @@ class GroupMembersView extends Component {
                                     </>
                                     : null
                                 }
+                                </aside>
 
                             </div>
                         </section>
