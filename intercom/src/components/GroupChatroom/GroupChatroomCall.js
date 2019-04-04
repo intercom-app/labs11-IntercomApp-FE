@@ -11,21 +11,21 @@ class GroupChatroomCall extends Component {
                     <button
                         className="btn btn-success"
                         type="button"
-                        onClick={this.handleCallButton}>Start Call</button>
+                        onClick={handleCallButton}>Start Call</button>
                 )
             case (!userOnCall && groupOnCall):
                 return (
                     <button
                         className="btn btn-success"
                         type="button"
-                        onClick={this.handleCallButton}>Join Call</button>
+                        onClick={handleCallButton}>Join Call</button>
                 )
             case (userOnCall && groupOnCall):
                 return (
                     <button
                         className="btn btn-danger"
                         type="button"
-                        onClick={this.handleCallButton}>Leave Call</button>
+                        onClick={handleCallButton}>Leave Call</button>
                 )
             default:
                 return (

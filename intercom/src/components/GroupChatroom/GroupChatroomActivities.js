@@ -25,7 +25,7 @@ class GroupChatroomActivities extends Component {
     }
 
     render() {
-
+        const bulletless = { 'list-style-type': 'none' }
         const { activities } = this.props
 
         return (
@@ -35,18 +35,19 @@ class GroupChatroomActivities extends Component {
                     <a className="pull-left" href="#">
                         <img className="media-object" src="..styling/images/avatar1.png" alt=""/>
 					</a>
+                    <div className="media-body row">
                     {activities.map((activity, ind) =>
-                    <div key={ind} className="media-body">
-                            <p>
+                        <ul style={bulletless} key={ind}>
+                            <li key={ind} >
                                 <i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}
 		                        <span className="comments-padding"></span>
                                 <strong>{activity.displayName} {': '}</strong>
                                 {activity.activity} {' '}
-		                    </p>
-
-                    </div>
-                    
-                    )}
+		                    </li>
+                        </ul>
+                        
+                            )}
+                            </div>
                 </div>
             </div>
             
