@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
-// import { Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import Fuse from 'fuse.js';
 
@@ -190,10 +189,10 @@ class GroupMembersView extends Component {
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
-
-                                    <div>
-                                        <h2>{group.name}</h2>
-                                    </div>
+                                    <Link to={`/group/${group.id}`} className='blog-title'>
+                                        Back to Group
+                                    </Link>
+                                    <h2>{group.name}</h2>
 
                                     <GroupMembersList
                                         isOwner={isOwner}

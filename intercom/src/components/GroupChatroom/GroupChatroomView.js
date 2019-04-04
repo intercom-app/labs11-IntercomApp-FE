@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Container, Card } from 'reactstrap';
+import { Button } from 'reactstrap';
 import axios from 'axios';
 import host from '../../host';
 import GroupChatroomActivities from './GroupChatroomActivities';
