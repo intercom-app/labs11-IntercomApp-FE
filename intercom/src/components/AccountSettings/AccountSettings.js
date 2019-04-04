@@ -113,7 +113,73 @@ class AccountSettings extends Component {
         const { user } = this.state
 
         return (
-            <Container>
+            <>
+                <div className="container blog">
+                    <div className="row">
+                        <div className="col-md-offset-1 col-md-10">
+                            <h2>Account</h2>
+                            <hr></hr>
+
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>Profile</h3>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left"><strong>{user.displayName}</strong></div>
+                                            <div className="pull-right">Change Name</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">{user.email}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>Plan Details</h3>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">{`${user.billingSubcription}`.toUpperCase()} Membership</div>
+                                            <div className="pull-right">Upgrade</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">Pay as you chat</div>
+                                            <div className="pull-right">Details</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>Billing</h3>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">•••• •••• •••• 4242</div>
+                                            <div className="pull-right">Update</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+
+                        </div>
+                    </div>
+                </div>
+                {/* <Container>
                 <>
                     <h2>Account Settings</h2>
                     <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(user.id)}>Delete Account</Button>
@@ -125,7 +191,9 @@ class AccountSettings extends Component {
                         <CardTitle><strong>Billing Type: </strong>{user.billingSubcription}</CardTitle>
                     </CardBody>
                 </>
-            </Container>);
+            </Container> */}
+            </>
+        );
     }
 }
 
