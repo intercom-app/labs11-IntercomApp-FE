@@ -231,7 +231,7 @@ class GroupChatroomView extends Component {
                             <button className="btn btn-danger"
                                 type="button" onClick={this.deleteGroup}>Delete Group
                             </button>
-                            <br/>
+                            <br /><br/>
                             <h4 className="sidebar-title">Update Group Name:</h4>
                             <div className="input-group">
                                 <input
