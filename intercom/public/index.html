@@ -2,33 +2,26 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
+  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <title>React App</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Voice Chatroom</title>
   <!-- Bootstrap Core CSS -->
-  <!-- <link href="/src/styling/css/bootstrap.min.css" rel="stylesheet"> -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-
-
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom Fonts -->
-  <!-- <link href="/src/styling/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom CSS -->
-  <!-- <link rel="stylesheet" href="/src/styling/css/patros.css"> -->
+  <link rel="stylesheet" href="/css/patros.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-			<![endif]-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
+  <script src="https://js.stripe.com/v3/"></script>
   <!-- 
       This library is responsible for communicating with Stripe and performing
       tokenization. It must be available in the page in order for 
@@ -37,28 +30,24 @@
       can't install it from npm or bundle it into your application like a 
       conventional dependency. 
     -->
-  <script src="https://js.stripe.com/v3/"></script>
 
 </head>
 
 <body data-spy="scroll">
 
   <div id="root"></div>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ 
 
   <!-- jQuery -->
-  <script src="../src/styling/js/jquery.js">
-  </script>
-  <!-- Bootstrap Core Javalink -->
-  <script src="../src/styling/js/bootstrap.min.js">
-  </script>
+  <script src="/js/jquery.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/js/bootstrap.min.js"></script>
 
   <!-- Portfolio -->
-  <script src="../src/styling/js/jquery.quicksand.js">
-  </script>
+  <script src="/js/jquery.quicksand.js"></script>
+
 
   <!--Jquery Smooth Scrolling-->
-
   <script>
     $(document).ready(function () {
       $('.custom-menu a[href^="#"], .intro-scroller .inner-link').on('click', function (e) {
@@ -102,33 +91,6 @@
 
     });
 
-    $('a.page-scroll').bind('click', function (event) {
-      var $anchor = $(this);
-      $('html, body').stop().animate({
-        scrollTop: $($anchor.attr('href')).offset().top
-      }, 1500, 'easeInOutExpo');
-      event.preventDefault();
-    });
-
-    $(".nav a").on("click", function () {
-      $(".nav").find(".active").removeClass("active");
-      $(this).parent().addClass("active");
-    });
-
-    $('body').append('<div id="toTop" class="btn btn-primary color1"><span class="glyphicon glyphicon-chevron-up"></span></div>');
-    $(window).scroll(function () {
-      if ($(this).scrollTop() != 0) {
-        $('#toTop').fadeIn();
-      } else {
-        $('#toTop').fadeOut();
-      }
-    });
-    $('#toTop').click(function () {
-      $("html, body").animate({ scrollTop: 0 }, 700);
-      return false;
-    });
-
-
   </script>
 
   <script>
@@ -155,7 +117,6 @@
 
   <script type="text/javascript">
     $(document).ready(function () {
-      // inicializemap()
 
       $('#contactForm').on('submit', function (e) {
         e.preventDefault();
@@ -181,10 +142,39 @@
           messgaeError = 'You must fill all the form fields to proceed!';
           goodToGo = false;
         }
+
+
+        if (goodToGo) {
+          $.ajax({
+            data: $('#contactForm').serialize(),
+            beforeSend: function () {
+              $('#success').html('<div class="col-md-12 text-center"><img src="images/spinner1.gif" alt="spinner" /></div>');
+            },
+            success: function (response) {
+              if (response == 1) {
+                $('#success').html('<div class="col-md-12 text-center">Your email was sent successfully</div>');
+                window.location.reload();
+              } else {
+                $('#success').html('<div class="col-md-12 text-center">E-mail was not sent. Please try again!</div>');
+              }
+            },
+            error: function (e) {
+              $('#success').html('<div class="col-md-12 text-center">We could not fetch the data from the server. Please try again!</div>');
+            },
+            complete: function (done) {
+              console.log('Finished');
+            },
+            type: 'POST',
+            url: 'js/send_email.php',
+          });
+          return true;
+        } else {
+          $('#success').html('<div class="col-md-12 text-center">' + messgaeError + '</div>');
+          return false;
+        }
         return false;
       });
     });
-
 
   </script>
 
