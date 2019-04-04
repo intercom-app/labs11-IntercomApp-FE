@@ -194,7 +194,7 @@ class GroupMembersView extends Component {
                             <div className="row">
                                 <div className="col-md-8">
                                     <Link to={`/group/${group.id}`} className='blog-title'>
-                                        Back to Group
+                                        Group Chatroom
                                     </Link>
                                     <h2>{group.name}</h2>
 

@@ -22,12 +22,16 @@ class GroupsOwned extends Component {
                                         {group.GroupName}
                                     </h3>
                                 </Link>
-                                <>
-                                    <CallStatus groupId={group.groupId} />
-                                    <span className="comments-padding"></span>
-                                    <CallParticipants groupId={group.groupId} />
-                                </>
                             </div>
+                            <div className="col-sm-12 col-md-12">
+                                <CallStatus groupId={group.groupId} />
+                                <span className="comments-padding"></span>
+                                <CallParticipants groupId={group.groupId} />
+                                <Link to={`/group/${group.groupId}/members`} className='pull-right'>
+                                    Manage Members
+                                </Link>
+                            </div >
+
                         </div>
                         <hr></hr>
                     </div>
