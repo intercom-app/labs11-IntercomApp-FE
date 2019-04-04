@@ -142,6 +142,10 @@ class GroupMembersView extends Component {
             .catch(err => this.setState({ error: err }));
     }
 
+    clearSearch = () => {
+        this.setState({ search: '', users: []})
+    }
+
     removeUser = (e, id, userDisplayName) => {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
@@ -219,6 +223,7 @@ class GroupMembersView extends Component {
                                                 <SearchBar
                                                     inputValue={search}
                                                     updateSearch={this.handleSearch}
+                                                    clearSearch={this.clearSearch}
                                                 />
                                                 {this.state.search.length >= 3
                                                     ? <SearchResults

@@ -130,6 +130,15 @@ class GroupForm extends Component {
             .catch(err => this.setState({ error: err }));
     }
 
+    clearSearch = () => {
+        this.toggleInvite();
+        this.setState({ 
+            search: '',
+            users: [],
+            group: { name: ''} 
+        })
+    }
+
     toggleInvite = () => {
         this.setState(prevState => ({
             invite: !prevState.invite
@@ -202,12 +211,13 @@ class GroupForm extends Component {
                             </span>
                         </div>
 
-                        {invite
+                        {invite && group.name
                             ? <>
                                 <h4 className="sidebar-title">Invite Users to {group.name}:</h4>
                                 <SearchBar
                                     inputValue={search}
                                     updateSearch={this.handleSearch}
+                                    clearSearch={this.clearSearch}
                                 />
                                 {search.length >= 3
                                     ? <SearchResults

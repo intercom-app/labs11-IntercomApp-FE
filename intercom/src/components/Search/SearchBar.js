@@ -13,6 +13,15 @@ const SearchBar = (props) => {
                     value={props.inputValue}
                     onChange={props.updateSearch}
                 />
+                <span className="input-group-btn">
+                    <button
+                        className="btn btn-default"
+                        type="button"
+                        onClick={props.clearSearch}
+                    >
+                        Done
+                    </button>
+                </span>
             </div>
         </>
     );
