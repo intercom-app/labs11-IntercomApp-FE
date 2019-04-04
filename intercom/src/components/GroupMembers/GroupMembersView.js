@@ -211,22 +211,28 @@ class GroupMembersView extends Component {
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
-                                {isOwner
-                                    ? <>
-                                        <SearchBar
-                                            inputValue={search}
-                                            updateSearch={this.handleSearch}
-                                        />
-                                        {this.state.search.length >= 3
-                                            ? <SearchResults
-                                                users={users}
-                                                inviteUser={this.inviteUser}
-                                            />
-                                            : null
-                                        }
-                                    </>
-                                    : null
-                                }
+                                    {isOwner
+                                        ? <>
+                                            <div className="blog-sidebar">
+                                                <h3 className="sidebar-title">Invite New Members</h3>
+                                                <hr></hr>
+                                                <h4 className="sidebar-title">Search Users: </h4>
+                                                <SearchBar
+                                                    inputValue={search}
+                                                    updateSearch={this.handleSearch}
+                                                />
+                                                {this.state.search.length >= 3
+                                                    ? <SearchResults
+                                                        users={users}
+                                                        inviteUser={this.inviteUser}
+                                                    />
+                                                    : null
+                                                }
+                                            </div>
+
+                                        </>
+                                        : null
+                                    }
                                 </aside>
 
                             </div>

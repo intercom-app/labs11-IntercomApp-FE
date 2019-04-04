@@ -1,21 +1,45 @@
 import React, { Component } from "react";
-// import { NavLink } from "react-router-dom";
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
+import Fuse from 'fuse.js';
 import host from "../../host.js";
 import axios from 'axios';
-
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
 
 
 class GroupForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false,
+            invite: false,
+            search: '',
+            members: [],
+            invitees: [],
+            users: [],
             group: {
                 name: ''
-            }
+            },
+            error: null,
         };
 
+    }
+
+    componentDidMount() {
+        axios
+            .get(`${host}/api/groups/${this.state.group.id}/groupMembers`)
+            .then(res => {
+                this.setState({
+                    members: res.data,
+                    search: '',
+                });
+            })
+            .catch(err => this.setState({ error: err }));
+
+        axios
+            .get(`${host}/api/groups/${this.state.group.id}/groupInvitees`)
+            .then(res => {
+                this.setState({ invitees: res.data });
+            })
+            .catch(err => this.setState({ error: err }));
     }
 
     handleGroupInput = e => {
@@ -24,15 +48,90 @@ class GroupForm extends Component {
                 ...this.state.group,
                 [e.target.name]: e.target.value
             }
-        }
-        )
+        })
     }
 
-    // toggle = () => {
-    //     this.setState(prevState => ({
-    //         modal: !prevState.modal
-    //     }));
-    // }
+    handleSearch = async (e) => {
+        this.setState({
+            search: e.target.value
+        });
+
+        let users;
+        await axios
+            .get(`${host}/api/users`)
+            .then(res => users = res.data)
+            .catch(err => this.setState({ error: err }));
+
+        if (users) {
+            const options = {
+                shouldSort: true,
+                findAllMatches: true,
+                threshold: 0.2,
+                location: 0,
+                distance: 128,
+                maxPatternLength: 128,
+                minMatchCharLength: 3,
+                keys: [
+                    "displayName",
+                    "email"
+                ]
+            };
+            const fuse = new Fuse(users, options);
+            const results = fuse.search(this.state.search);
+
+            const usersUpdated = results.map(user => {
+                let buttonInvite = true
+                this.state.invitees.forEach(invitee => {
+                    if (invitee.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                this.state.members.forEach(member => {
+                    if (member.userId === user.id) {
+                        buttonInvite = false
+                    }
+                })
+                return { ...user, buttonInvite }
+            })
+
+            this.setState({
+                users: usersUpdated,
+            });
+        }
+    }
+
+    inviteUser = (e, id) => {
+        e.preventDefault();
+        const users = this.state.users
+        const index = users.findIndex(user => user.id === id)
+
+        const user = this.state.users[index]
+        const userUpdated = { ...user, buttonInvite: false }
+        users.splice(index, 1, userUpdated)
+
+        const userId = localStorage.getItem('userId')
+        const activity = { userId, activity: `Invited ${user.displayName} to the group` }
+        axios
+            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+            .then(() => {
+                axios
+                    .post(`${host}/api/groups/${this.state.group.id}/groupInvitees`, { userId: id })
+                    .then(res => {
+                        this.setState({
+                            users: users,
+                            invitees: res.data
+                        })
+                    })
+                    .catch(err => this.setState({ error: err }));
+            })
+            .catch(err => this.setState({ error: err }));
+    }
+
+    toggleInvite = () => {
+        this.setState(prevState => ({
+            invite: !prevState.invite
+        }));
+    }
 
     createGroup = async (event) => {
         event.preventDefault();
@@ -48,56 +147,31 @@ class GroupForm extends Component {
                 await this.setState({ group: group.data })
                 axios
                     .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
-                    .then(groupOwner => {
-                        console.log(groupOwner)
-                        this.props.updateGroups();
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                    .then(() => { this.props.updateGroups() })
+                    .catch(err => this.setState({ error: err }));
+
                 axios
                     .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
-                    .then(groupMember => {
-                        console.log(groupMember)
-                        this.props.updateGroups();
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                    .then(() => { this.props.updateGroups() })
+                    .catch(err => this.setState({ error: err }));
+
                 axios
                     .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-                    .then(activity => {
-                        console.log(activity)
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-                
+                    .then()
+                    .catch(err => this.setState({ error: err }));
+
+
             }
-        } catch (err) {
-            console.log(err);
-        };
+        } catch (err) { this.setState({ error: err }) };
 
+        this.toggleInvite()
 
-        // this.toggle()
-        // this.setState({
-        //     group: {
-        //         name: '',
-        //         phoneNumber: ''
-        //     }
-        // });
-        // this.setState({ state: this.state });
-        // history.replace(`/user/${userId.userId}`)
-        // setTimeout(
-        //     () => {
-        //         window.location.reload();
-        //     }, 1000
-        // );
     };
 
     render() {
-        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        // console.log(this.props.groupQuantity)
+
+        let { group, invite, search, users } = this.state
+
         return (
             <>
                 <aside className="col-md-4 sidebar-padding">
@@ -106,57 +180,47 @@ class GroupForm extends Component {
                         <hr></hr>
                         <h4 className="sidebar-title">New Group Name: </h4>
                         <div className="input-group">
-                                <input 
-                                    className="form-control" 
-                                    type="text" 
-                                    name="name" 
-                                    placeholder="Group Name..."
-                                    onChange={this.handleGroupInput}
-                                    value={this.state.group.name} 
-                                />
-                                <span className="input-group-btn">
-                                    <button 
-                                        className="btn btn-default" 
-                                        type="button"
-                                        onClick={this.createGroup}
-                                    >
-                                        Create
-                                    </button>
-                                </span>
-                            </div>
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="name"
+                                placeholder="Group Name..."
+                                onChange={this.handleGroupInput}
+                                value={group.name}
+                            />
+                            <span className="input-group-btn">
+                                <button
+                                    className="btn btn-default"
+                                    type="button"
+                                    onClick={this.createGroup}
+                                >
+                                    Create
+                                </button>
+                            </span>
                         </div>
+
+                        {invite
+                            ? <>
+                                <h4 className="sidebar-title">Invite Users to {group.name}:</h4>
+                                <SearchBar
+                                    inputValue={search}
+                                    updateSearch={this.handleSearch}
+                                />
+                                {search.length >= 3
+                                    ? <SearchResults
+                                        users={users}
+                                        inviteUser={this.inviteUser}
+                                    />
+                                    : null
+                                }
+                            </>
+                            : null
+                        }
+                    </div>
                 </aside>
-                    {/* 
-            <div>
-                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Create a new group</Button>
-                
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
-                    {this.props.groupQuantity > 0 ? (
-                        <ModalBody>
-                            <div>You need to upgrade your subscription to create more than 1 group.</div>
-                            <NavLink to={`${this.props.id}/billing`} color="primary" >Go to billing</NavLink>
-                        </ModalBody>
-                    ) : (
-                        <div>
-                    <ModalHeader>Create New Group</ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Input onChange={this.handleGroupInput} type="text" name="name" value={this.state.group.name} id="name" placeholder="Group Name" />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.createGroup}>Create</Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter></div>
-                    )}
-                </Modal>
-            </div> 
-            */}
             </>
-                );
-            }
-        }
-        
+        );
+    }
+}
+
 export default GroupForm;
