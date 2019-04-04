@@ -33,6 +33,7 @@ class User extends Component {
             });
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
+        // Groups belonged to is called after groups owned
     }
 
 
@@ -90,7 +91,7 @@ class User extends Component {
         const id = localStorage.getItem('userId')
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
-        this.getgroupsBelongedTo(id);
+        // Groups belonged to is called after groups owned
     }
 
 
