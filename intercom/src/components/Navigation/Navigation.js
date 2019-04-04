@@ -29,7 +29,7 @@ export default class Example extends React.Component {
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav navbar-right custom-menu">
-                            <li className="active"><a href="#home">My Groups</a></li>
+                            <li className="active"><a href={`/user/${this.props.id}`}>My Groups</a></li>
                             <li><a href={`/user/${this.props.id}/account`}>Account</a></li>
                             <li onClick={this.props.logout}><a href="#">Logout</a></li>
                         </ul>

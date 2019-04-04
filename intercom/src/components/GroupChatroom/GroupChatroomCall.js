@@ -9,27 +9,30 @@ class GroupChatroomCall extends Component {
         switch (true) {
             case (!userOnCall && !groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} color='success' >
-                        Start Call
-                    </Button>
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={this.handleCallButton}>Start Call</button>
                 )
             case (!userOnCall && groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} outline color='success' >
-                        Join Call
-                    </Button>
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={this.handleCallButton}>Join Call</button>
                 )
             case (userOnCall && groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} outline color='danger' >
-                        Leave Call
-                    </Button>
+                    <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={this.handleCallButton}>Leave Call</button>
                 )
             default:
                 return (
-                    <Button disabled color='secondary' >
-                        On another group call
-                    </Button>
+                    <button
+                        className="btn btn-seconday"
+                        type="button">Start Call</button>
                 )
         }
 
@@ -41,11 +44,10 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
-
+                <aside className="col-md-4 sidebar-padding">
+                    <div className="blog-sidebar">
                 {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
-
-                <Card className='mt-sm-4 mb-sm-4'>
-                    <CardBody>
+                        <hr></hr>
                         <CardTitle><strong>Phone Number</strong></CardTitle>
                         <CardText>
                             {group.phoneNumber
@@ -62,8 +64,8 @@ class GroupChatroomCall extends Component {
                                 </span>
                             )}
                         </CardText>
-                    </CardBody>
-                </Card>
+                    </div>
+                </aside>
             </>
 
         )

@@ -204,7 +204,9 @@ class GroupChatroomView extends Component {
         let { user, group, groupId, isOwner, participants, activities, error } = this.state
 
         return (
-            <Container>
+            <section className="container blog">
+                <div className="row">
+                    <div className="col-md-8">
                 {error
                     ? <p>{error}</p>
                     : <>
@@ -241,19 +243,22 @@ class GroupChatroomView extends Component {
                         </>
                         }
 
-                        <GroupChatroomCall
-                            user={user}
-                            group={group}
-                            participants={participants}
-                            handleCallButton={this.handleCallButton}
-                        />
+                        
 
                         <GroupChatroomActivities
                             activities={activities}
                         />
                     </>
-                }
-            </Container>
+                }   
+                    </div>
+                    <GroupChatroomCall
+                        user={user}
+                        group={group}
+                        participants={participants}
+                        handleCallButton={this.handleCallButton}
+                    />
+                </div>
+            </section>
         )
     }
 }
