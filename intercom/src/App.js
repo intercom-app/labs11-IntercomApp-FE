@@ -23,28 +23,28 @@ class App extends Component {
 
   render() {
 
-    const { isAuthenticated } = this.props.auth;
+    // const { isAuthenticated } = this.props.auth;
     const id = localStorage.getItem('userId');
 
     return (
 
       <div>
-        {
+        {/* {
           !isAuthenticated() && (
             <button onClick={this.login}>
               Log In
             </button>
           )
-        }
+        } */}
         {
-          isAuthenticated() && (
+          // isAuthenticated() && (
             <>
-              <Navigation id={id} logout={this.logout}/>
+            <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated}/>
               {/* <NavLink to={`/user/${id}`}>Home</NavLink> */}
 
               {/* <button onClick={this.logout}>Log Out</button> */}
             </>
-          )
+          // )
         }
         
       </div>
