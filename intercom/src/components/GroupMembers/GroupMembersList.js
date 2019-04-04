@@ -1,48 +1,52 @@
 import React from 'react';
-import { Row, Table, Button } from 'reactstrap';
+// import { Row, Table, Button } from 'reactstrap';
 
 const GroupMembersList = (props) => {
     let { isOwner, members, userId, removeUser } = props
     return (
-        <Row>
-            <h3>Group Members</h3>
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Group Id</th>
-                        <th>User Id</th>
-                        <th>Member Name</th>
-                        {isOwner ? <th>Manage Member</th> : null}
-                    </tr>
-                </thead>
-                {members.map(member => (
-                    <tbody key={member.userId}>
-                        <tr>
-                            <td>{member.groupId}</td>
-                            <td>{member.userId}</td>
-                            <td>{member.displayName}</td>
+        <>
+            <h1 className="page-header sidebar-title">
+                Group Members
+            </h1>
+
+            {members.map(member => (
+                <div key={member.userId}>
+                    <div className="row blogu" >
+                        <div className="col-sm-8 col-md-8">
+                            <h4 className="blog-title">
+                                {member.displayName}
+                            </h4>
+                        </div>
+                        <>
                             {isOwner
-                                ? <td>
+                                ? <>
                                     {member.userId === userId
-                                        ? <Button color="secondary" disabled>
-                                            Owner
-                                    </Button>
-                                        : <Button
-                                            color='danger'
-                                            onClick={(e) => removeUser(e, member.userId, member.displayName)}
-                                        >
-                                            Remove Member
-                                    </Button>
+                                        ?   <button 
+                                                className="btn btn-primary btn-noborder-radius pull-right" 
+                                                type="button" 
+                                                disabled
+                                            >
+                                                Owner
+                                            </button>
+                                        :   <button 
+                                                className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right" 
+                                                type="button" 
+                                                onClick={(e) => removeUser(e, member.userId, member.displayName)}
+                                            >
+                                                Remove Member
+                                            </button>
                                     }
-                                </td>
+                                </>
                                 : null
                             }
-                        </tr>
-                    </tbody>
+                            </>
+                    </div>
+                    <hr></hr>
+                </div>
 
-                ))}
-            </Table>
-        </Row>
+            ))}
+
+        </>
 
     );
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
+// import { NavLink } from "react-router-dom";
+// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -41,7 +41,7 @@ class GroupForm extends Component {
         const groupData = {
             name: this.state.group.name
         }
-        
+
         try {
             const group = await axios.post(`${host}/api/groups`, groupData)
             if (group) {
@@ -74,7 +74,7 @@ class GroupForm extends Component {
         } catch (err) {
             console.log(err);
         };
-       
+
 
         this.toggle()
         // this.setState({
@@ -88,14 +88,42 @@ class GroupForm extends Component {
         setTimeout(
             () => {
                 window.location.reload();
-            },1000
+            }, 1000
         );
     };
 
     render() {
-        const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
+        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         // console.log(this.props.groupQuantity)
         return (
+            <>
+                <aside className="col-md-4 sidebar-padding">
+                    <div className="blog-sidebar">
+                        <h3 className="sidebar-title">Create New Group</h3>
+                        <hr></hr>
+                        <h4 className="sidebar-title">New Group Name: </h4>
+                        <div className="input-group">
+                                <input 
+                                    className="form-control" 
+                                    type="text" 
+                                    name="name" 
+                                    placeholder="Group Name..."
+                                    onChange={this.handleGroupInput}
+                                    value={this.state.group.name} 
+                                />
+                                <span className="input-group-btn">
+                                    <button 
+                                        className="btn btn-default" 
+                                        type="button"
+                                        onClick={this.createGroup}
+                                    >
+                                        Create
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                </aside>
+                    {/* 
             <div>
                 <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Create a new group</Button>
                 
@@ -121,9 +149,11 @@ class GroupForm extends Component {
                     </ModalFooter></div>
                     )}
                 </Modal>
-            </div>
-        );
-    }
-}
-
+            </div> 
+            */}
+            </>
+                );
+            }
+        }
+        
 export default GroupForm;

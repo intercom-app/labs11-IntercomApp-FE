@@ -6,7 +6,7 @@ import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
-import { Row, Card, CardBody, CardTitle, Container } from 'reactstrap';
+// import { Row, Card, CardBody, CardTitle, Container } from 'reactstrap';
 
 
 class User extends Component {
@@ -107,36 +107,32 @@ class User extends Component {
         )
 
         return (
-            <Container>
+            <>
                 {this.state.error
                     ? <p>Error retrieving user!</p>
-                    : <div>
-                        {/* <Row className='mt-sm-4 ml-sm-2'>
-                            <Card>
-                                <CardBody>
-                                    <CardTitle><strong>Id: </strong>{this.state.user.id}</CardTitle>
-                                    <CardTitle><strong>Nickname: </strong>{this.state.user.displayName}</CardTitle>
-                                    <CardTitle><strong>Email: </strong>{this.state.user.email}</CardTitle>
-                                    <CardTitle><strong>Billing Type: </strong>{this.state.user.billingSubcription}</CardTitle>
-                                </CardBody>
-                            </Card>
-                        </Row>
-
-                        <GroupForm groupQuantity={this.state.groupsOwned.length} /> */}
-
+                    : <>
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
+
+                                    <div>
+                                        <h2>Welcome {this.state.user.displayName}!</h2>
+                                        <h4>{this.state.user.email}</h4>
+                                    </div>
+
                                     <GroupsOwned groupsOwned={this.state.groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsNotOwned} />
                                     <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups} />
+                                
                                 </div>
+
+                                <GroupForm groupQuantity={this.state.groupsOwned.length} />
+                            
                             </div>
                         </section>
-
-                    </div>
+                    </>
                 }
-            </Container>
+            </>
         );
     }
 }

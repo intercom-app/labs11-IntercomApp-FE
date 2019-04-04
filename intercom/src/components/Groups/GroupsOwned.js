@@ -14,22 +14,23 @@ class GroupsOwned extends Component {
                 </h1>
 
                 {this.props.groupsOwned.map(group => (
-                    <Link to={`/group/${group.groupId}`} key={group.groupId}>
-                        <div className="row blogu">
+                    <div key={group.groupId}>
+                        <div className="row blogu" >
                             <div className="col-sm-8 col-md-8">
-                                <h2 className="blog-title">
-                                    {group.GroupName}
-                                </h2>
-                                <p>
-                                    <span className="comments-padding"></span>
+                                <Link to={`/group/${group.groupId}`} >
+                                    <h3 className="blog-title">
+                                        {group.GroupName}
+                                    </h3>
+                                </Link>
+                                <>
                                     <CallStatus groupId={group.groupId} />
                                     <span className="comments-padding"></span>
                                     <CallParticipants groupId={group.groupId} />
-                                </p>
+                                </>
                             </div>
-                            <hr></hr>
                         </div>
-                    </Link>
+                        <hr></hr>
+                    </div>
 
                 ))}
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
   <head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -32,13 +33,46 @@
 			<![endif]-->
 
     <!-- 
+=======
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>React App</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/src/styling/css/bootstrap.min.css" rel="stylesheet" type="text/html">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+
+  <!-- Custom Fonts -->
+  <link href="/src/styling/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/html">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/src/styling/css/patros.css" type="text/html">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+
+  <!-- 
+>>>>>>> e95f4ce949bcbc5f50c4b3febb8629466c302230
       This library is responsible for communicating with Stripe and performing
       tokenization. It must be available in the page in order for 
       react-stripe-elements to work correctly. For PCI compliance purposes, 
-      you must load Stripe.js directly from Stripe’s servers at runtime—you 
-      can’t install it from npm or bundle it into your application like a 
+      you must load Stripe.js directly from Stripe's servers at runtime—you 
+      can't install it from npm or bundle it into your application like a 
       conventional dependency. 
     -->
+<<<<<<< HEAD
     <script src="https://js.stripe.com/v3/"></script>
     
   </head>
@@ -98,19 +132,84 @@
             return false;
           });
   
+=======
+  <script src="https://js.stripe.com/v3/"></script>
+
+</head>
+
+<body data-spy="scroll">
+
+  <div id="root"></div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <!-- jQuery -->
+  <link src="/src/styling/js/jquery.js">
+  </link>
+  <!-- Bootstrap Core Javalink -->
+  <link src="/src/styling/js/bootstrap.min.js">
+  </link>
+
+  <!-- Portfolio -->
+  <link src="/src/styling/js/jquery.quicksand.js">
+  </link>
+
+  <!--Jquery Smooth Scrolling-->
+  <script>
+    $(document).ready(function () {
+      $('.custom-menu a[href^="#"], .intro-scroller .inner-link').on('click', function (e) {
+        e.preventDefault();
+
+        var target = this.hash;
+        var $target = $(target);
+
+        $('html, body').stop().animate({
+          'scrollTop': $target.offset().top
+        }, 900, 'swing', function () {
+          window.location.hash = target;
+>>>>>>> e95f4ce949bcbc5f50c4b3febb8629466c302230
         });
-  
-      </script>
-  
-      <script>
-      function gallery(){};
-  
-      var $itemsHolder = $('ul.port2');
-      var $itemsClone = $itemsHolder.clone(); 
-      var $filterClass = "";
-      $('ul.filter li').click(function(e) {
+      });
+
+      $('a.page-scroll').bind('click', function (event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+          scrollTop: $($anchor.attr('href')).offset().top
+        }, 1500, 'easeInOutExpo');
+        event.preventDefault();
+      });
+
+      $(".nav a").on("click", function () {
+        $(".nav").find(".active").removeClass("active");
+        $(this).parent().addClass("active");
+      });
+
+      $('body').append('<div id="toTop" class="btn btn-primary color1"><span class="glyphicon glyphicon-chevron-up"></span></div>');
+      $(window).scroll(function () {
+        if ($(this).scrollTop() != 0) {
+          $('#toTop').fadeIn();
+        } else {
+          $('#toTop').fadeOut();
+        }
+      });
+      $('#toTop').click(function () {
+        $("html, body").animate({ scrollTop: 0 }, 700);
+        return false;
+      });
+
+    });
+
+  </script>
+
+  <script>
+    function gallery() { };
+
+    var $itemsHolder = $('ul.port2');
+    var $itemsClone = $itemsHolder.clone();
+    var $filterClass = "";
+    $('ul.filter li').click(function (e) {
       e.preventDefault();
       $filterClass = $(this).attr('data-value');
+<<<<<<< HEAD
         if($filterClass == 'all'){ var $filters = $itemsClone.find('li'); }
         else { var $filters = $itemsClone.find('li[data-type='+ $filterClass +']'); }
         $itemsHolder.quicksand(
@@ -129,9 +228,28 @@
       // inicializemap()
   
       $('#contactForm').on('submit', function(e){
+=======
+      if ($filterClass == 'all') { var $filters = $itemsClone.find('li'); }
+      else { var $filters = $itemsClone.find('li[data-type=' + $filterClass + ']'); }
+      $itemsHolder.quicksand(
+        $filters,
+        { duration: 1000 },
+        gallery
+      );
+    });
+
+    $(document).ready(gallery);
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // inicializemap()
+
+      $('#contactForm').on('submit', function (e) {
+>>>>>>> e95f4ce949bcbc5f50c4b3febb8629466c302230
         e.preventDefault();
         e.stopPropagation();
-  
+
         // get values from FORM
         var name = $("#name").val();
         var email = $("#email").val();
@@ -139,49 +257,20 @@
         var goodToGo = false;
         var messgaeError = 'Request can not be send';
         var pattern = new RegExp(/^(('[\w-\s]+')|([\w-]+(?:\.[\w-]+)*)|('[\w-\s]+')([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-  
-  
-         if (name && name.length > 0 && $.trim(name) !='' && message && message.length > 0 && $.trim(message) !='' && email && email.length > 0 && $.trim(email) !='') {
-            if (pattern.test(email)) {
-             goodToGo = true;
-            } else {
-             messgaeError = 'Please check your email address';
-             goodToGo = false; 
-            }
-         } else {
-           messgaeError = 'You must fill all the form fields to proceed!';
-           goodToGo = false;
-         }
-  
-         
-        if (goodToGo) {
-           $.ajax({
-           data: $('#contactForm').serialize(),
-           beforeSend: function() {
-             $('#success').html('<div class="col-md-12 text-center"><img src="images/spinner1.gif" alt="spinner" /></div>');
-           },
-           success:function(response){
-             if (response==1) {
-             $('#success').html('<div class="col-md-12 text-center">Your email was sent successfully</div>');
-             window.location.reload();
-             } else {
-             $('#success').html('<div class="col-md-12 text-center">E-mail was not sent. Please try again!</div>');
-             }
-           },
-           error:function(e){
-             $('#success').html('<div class="col-md-12 text-center">We could not fetch the data from the server. Please try again!</div>');
-           },
-           complete: function(done){
-             console.log('Finished');
-           },
-           type: 'POST',
-           url: 'js/send_email.php', 
-           });
-           return true;
+
+
+        if (name && name.length > 0 && $.trim(name) != '' && message && message.length > 0 && $.trim(message) != '' && email && email.length > 0 && $.trim(email) != '') {
+          if (pattern.test(email)) {
+            goodToGo = true;
+          } else {
+            messgaeError = 'Please check your email address';
+            goodToGo = false;
+          }
         } else {
-           $('#success').html('<div class="col-md-12 text-center">'+messgaeError+'</div>');
-           return false;
+          messgaeError = 'You must fill all the form fields to proceed!';
+          goodToGo = false;
         }
+<<<<<<< HEAD
         return false;
       });
     });
@@ -191,3 +280,45 @@
   
   </body>
 </html>
+=======
+
+
+        if (goodToGo) {
+          $.ajax({
+            data: $('#contactForm').serialize(),
+            beforeSend: function () {
+              $('#success').html('<div class="col-md-12 text-center"><img src="images/spinner1.gif" alt="spinner" /></div>');
+            },
+            success: function (response) {
+              if (response == 1) {
+                $('#success').html('<div class="col-md-12 text-center">Your email was sent successfully</div>');
+                window.location.reload();
+              } else {
+                $('#success').html('<div class="col-md-12 text-center">E-mail was not sent. Please try again!</div>');
+              }
+            },
+            error: function (e) {
+              $('#success').html('<div class="col-md-12 text-center">We could not fetch the data from the server. Please try again!</div>');
+            },
+            complete: function (done) {
+              console.log('Finished');
+            },
+            type: 'POST',
+            url: 'js/send_email.php',
+          });
+          return true;
+        } else {
+          $('#success').html('<div class="col-md-12 text-center">' + messgaeError + '</div>');
+          return false;
+        }
+        return false;
+      });
+    });
+
+
+  </script>
+
+</body>
+
+</html>
+>>>>>>> e95f4ce949bcbc5f50c4b3febb8629466c302230

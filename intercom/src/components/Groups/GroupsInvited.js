@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // import { Table, Button } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
@@ -77,26 +77,25 @@ class GroupsInvited extends Component {
                 </h1>
 
                 {this.props.groupsInvited.map(group => (
-                    <Link to={`/group/${group.groupId}`} key={group.groupId}>
+                    <div key={group.groupId}>
                         <div className="row blogu">
                             <div className="col-sm-8 col-md-8">
-                                <h2 className="blog-title">
+                                <h3 className="blog-title">
                                     {group.GroupName}
-                                </h2>
-                                <p>
-                                    <span className="comments-padding"></span>
-                                    <button class="btn btn-default" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
-                                        Join
-                                    </button>
-                                    <span className="comments-padding"></span>
-                                    <button class="btn btn-default" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
-                                        Decline
-                                    </button>
-                                </p>
+                                </h3>
+                                <>
+                                <button className="btn btn-default" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
+                                    Join
+                                </button>
+                                <span className="comments-padding"></span>
+                                <button className="btn btn-default" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
+                                    Decline
+                                </button>
+                                </>
                             </div>
-                            <hr></hr>
                         </div>
-                    </Link>
+                        <hr></hr>
+                    </div>
 
                 ))}
 
@@ -129,7 +128,7 @@ class GroupsInvited extends Component {
                     </Table>
                 </div> 
                 */}
-        
+
             </>
         );
     }

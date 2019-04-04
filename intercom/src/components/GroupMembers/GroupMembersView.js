@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Container } from 'reactstrap';
+// import { Link } from 'react-router-dom';
+// import { Container } from 'reactstrap';
 import axios from "axios";
 import Fuse from 'fuse.js';
 
@@ -15,6 +15,7 @@ class GroupMembersView extends Component {
         super(props);
         this.state = {
             id: this.props.match.params.id,
+            group: '',
             members: [],
             invitees: [],
             users: [],
@@ -26,6 +27,13 @@ class GroupMembersView extends Component {
 
     componentDidMount() {
         axios
+            .get(`${host}/api/groups/${this.state.id}`)
+            .then(res => {
+                this.setState({ group: res.data });
+            })
+            .catch(err => this.setState({ error: err }));
+
+        axios
             .get(`${host}/api/groups/${this.state.id}/groupMembers`)
             .then(res => {
                 this.setState({
@@ -33,14 +41,14 @@ class GroupMembersView extends Component {
                     search: '',
                 });
             })
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
 
         axios
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
             .then(res => {
                 this.setState({ invitees: res.data });
             })
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
 
         this.checkIfOwner(this.state.id);
     }
@@ -54,7 +62,7 @@ class GroupMembersView extends Component {
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {
-            this.setState({ error: err.response.data.message })
+            this.setState({ error: err })
         }
 
     }
@@ -68,7 +76,7 @@ class GroupMembersView extends Component {
         await axios
             .get(`${host}/api/users`)
             .then(res => users = res.data)
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
 
         if (users) {
             const options = {
@@ -130,9 +138,9 @@ class GroupMembersView extends Component {
                             invitees: res.data
                         })
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => this.setState({ error: err }));
             })
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
     }
 
     removeUser = (e, id, userDisplayName) => {
@@ -147,9 +155,9 @@ class GroupMembersView extends Component {
                     .then(res => {
                         this.setState({ members: res.data });
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => this.setState({ error: err }));
             })
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
     }
 
     removeInvitee = (e, id, userDisplayName) => {
@@ -164,20 +172,69 @@ class GroupMembersView extends Component {
                     .then(res => {
                         this.setState({ invitees: res.data });
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => this.setState({ error: err }));
             })
-            .catch(err => console.error(err));
+            .catch(err => this.setState({ error: err }));
     }
 
     render() {
 
-        let { id, search, users, members, invitees, isOwner } = this.state
+        let { error, group, search, users, members, invitees, isOwner } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
 
         return (
-            <Container>
+            <>
+                {error
+                    ? <p>Error retrieving members!</p>
+                    : <>
+                        <section className="container blog">
+                            <div className="row">
+                                <div className="col-md-8">
 
-                <Link to={`/group/${id}`}>
+                                    <div>
+                                        <h2>{group.name}</h2>
+                                    </div>
+
+                                    <GroupMembersList
+                                        isOwner={isOwner}
+                                        members={members}
+                                        userId={userId}
+                                        removeUser={this.removeUser}
+                                    />
+
+                                    <GroupInviteesList
+                                        isOwner={isOwner}
+                                        invitees={invitees}
+                                        removeInvitee={this.removeInvitee}
+                                    />
+
+                                </div>
+
+                                <aside className="col-md-4 sidebar-padding">
+                                {isOwner
+                                    ? <>
+                                        <SearchBar
+                                            inputValue={search}
+                                            updateSearch={this.handleSearch}
+                                        />
+                                        {this.state.search.length >= 3
+                                            ? <SearchResults
+                                                users={users}
+                                                inviteUser={this.inviteUser}
+                                            />
+                                            : null
+                                        }
+                                    </>
+                                    : null
+                                }
+                                </aside>
+
+                            </div>
+                        </section>
+
+                    </>
+                }
+                {/* <Link to={`/group/${id}`}>
                     Back to Group
                 </Link>
 
@@ -209,9 +266,9 @@ class GroupMembersView extends Component {
                     isOwner={isOwner}
                     invitees={invitees}
                     removeInvitee={this.removeInvitee}
-                />
+                /> */}
 
-            </Container>
+            </>
         )
     }
 }
