@@ -81,6 +81,9 @@ class GroupForm extends Component {
 
             const usersUpdated = results.map(user => {
                 let buttonInvite = true
+                if ( parseInt(localStorage.getItem('userId')) === user.id) {
+                    buttonInvite = false
+                }
                 this.state.invitees.forEach(invitee => {
                     if (invitee.userId === user.id) {
                         buttonInvite = false
