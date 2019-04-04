@@ -107,8 +107,10 @@ class User extends Component {
                                 <div className="col-md-8">
 
                                     <div>
+                                        <img className="media-object pull-left avatar-img" src={require('../../images/avatar1.png')} alt="" />  
+                                        <span className="comments-padding"></span>                                                                              
                                         <h2>Welcome {user.displayName}!</h2>
-                                        <h4>{user.email}</h4>
+                                        <span>{user.email}</span>
                                     </div>
 
                                     <GroupsOwned groupsOwned={groupsOwned} />

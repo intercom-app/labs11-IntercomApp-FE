@@ -96,8 +96,6 @@ class GroupForm extends Component {
     };
 
     render() {
-        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
-        // console.log(this.props.groupQuantity)
         return (
             <>
                 <aside className="col-md-4 sidebar-padding">
