@@ -10,7 +10,7 @@ const GroupInviteesList = (props) => {
             </h1>
 
             {invitees.map(invitee => (
-                <div key={invitee.groupId}>
+                <div key={invitee.userId}>
                     <div className="row blogu" >
                         <div className="col-sm-8 col-md-8">
                             <h4 className="blog-title">

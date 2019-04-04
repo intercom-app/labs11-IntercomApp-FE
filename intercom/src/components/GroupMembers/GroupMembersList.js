@@ -10,7 +10,7 @@ const GroupMembersList = (props) => {
             </h1>
 
             {members.map(member => (
-                <div key={member.groupId}>
+                <div key={member.userId}>
                     <div className="row blogu" >
                         <div className="col-sm-8 col-md-8">
                             <h4 className="blog-title">
