@@ -7,17 +7,6 @@ import CallStatus from './CallStatus';
 
 class GroupsBelonged extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            groupsBelonged: [],
-        }
-    }
-
-    componentDidMount() {
-        this.setState({ groupsBelonged: this.props.groupsBelonged });
-    }
-
     render() {
         return (
             <>
@@ -25,7 +14,7 @@ class GroupsBelonged extends Component {
                     Groups Belonged To
                 </h1>
 
-                {this.state.groupsBelonged.map(group => (
+                {this.props.groupsBelonged.map(group => (
                     <div key={group.groupId}>
                         <div className="row blogu" >
                             <div className="col-sm-8 col-md-8">

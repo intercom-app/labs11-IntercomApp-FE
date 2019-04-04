@@ -59,7 +59,11 @@ class User extends Component {
 
         axios.get(groupsBelongedTo)
             .then(res => {
-                this.setState({ groupsBelongedTo: res.data })
+                const groupsOwnedIds = this.state.groupsOwned.map(group => group.groupId);
+                const groupsNotOwned = res.data.filter(group => 
+                    !groupsOwnedIds.includes(group.groupId)
+                )
+                this.setState({ groupsBelongedTo: groupsNotOwned })
             })
             .catch(err => {
                 this.setState({
@@ -88,27 +92,20 @@ class User extends Component {
 
 
     updateGroups = () => {
+        console.log('updating')
         const id = localStorage.getItem('userId')
+        this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
         this.getgroupsBelongedTo(id);
     }
 
 
     render() {
-        // const groupsOwned = this.state.groupsOwned;
-        const groupsBelongedTo = this.state.groupsBelongedTo;
-        const groupOwned = this.state.groupsOwned.reduce((arr, group) => {
-            arr.push(group.groupId)
-            return arr
-        }, []);
-        const groupsNotOwned = groupsBelongedTo.filter(group => {
-            return !groupOwned.includes(group.groupId)
-        }
-        )
+        let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
 
         return (
             <>
-                {this.state.error
+                {error
                     ? <p>Error retrieving user!</p>
                     : <>
                         <section className="container blog">
@@ -116,18 +113,18 @@ class User extends Component {
                                 <div className="col-md-8">
 
                                     <div>
-                                        <h2>Welcome {this.state.user.displayName}!</h2>
-                                        <h4>{this.state.user.email}</h4>
+                                        <h2>Welcome {user.displayName}!</h2>
+                                        <h4>{user.email}</h4>
                                     </div>
 
-                                    <GroupsOwned groupsOwned={this.state.groupsOwned} />
-                                    <GroupsBelonged groupsBelonged={groupsNotOwned} />
-                                    <GroupsInvited groupsInvited={this.state.groupsInvitedTo} updateGroups={this.updateGroups} />
-                                
+                                    <GroupsOwned groupsOwned={groupsOwned} />
+                                    <GroupsBelonged groupsBelonged={groupsBelongedTo} />
+                                    <GroupsInvited groupsInvited={groupsInvitedTo} updateGroups={this.updateGroups} />
+
                                 </div>
 
-                                <GroupForm groupQuantity={this.state.groupsOwned.length} />
-                            
+                                <GroupForm groupQuantity={groupsOwned.length} updateGroups={this.updateGroups} />
+
                             </div>
                         </section>
                     </>

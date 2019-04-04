@@ -28,11 +28,11 @@ class GroupForm extends Component {
         )
     }
 
-    toggle = () => {
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }));
-    }
+    // toggle = () => {
+    //     this.setState(prevState => ({
+    //         modal: !prevState.modal
+    //     }));
+    // }
 
     createGroup = async (event) => {
         event.preventDefault();
@@ -50,6 +50,7 @@ class GroupForm extends Component {
                     .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
                     .then(groupOwner => {
                         console.log(groupOwner)
+                        this.props.updateGroups();
                     })
                     .catch(err => {
                         console.log(err);
@@ -58,6 +59,7 @@ class GroupForm extends Component {
                     .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
                     .then(groupMember => {
                         console.log(groupMember)
+                        this.props.updateGroups();
                     })
                     .catch(err => {
                         console.log(err);
@@ -70,13 +72,14 @@ class GroupForm extends Component {
                     .catch(err => {
                         console.log(err);
                     });
+                
             }
         } catch (err) {
             console.log(err);
         };
 
 
-        this.toggle()
+        // this.toggle()
         // this.setState({
         //     group: {
         //         name: '',
@@ -85,11 +88,11 @@ class GroupForm extends Component {
         // });
         // this.setState({ state: this.state });
         // history.replace(`/user/${userId.userId}`)
-        setTimeout(
-            () => {
-                window.location.reload();
-            }, 1000
-        );
+        // setTimeout(
+        //     () => {
+        //         window.location.reload();
+        //     }, 1000
+        // );
     };
 
     render() {
