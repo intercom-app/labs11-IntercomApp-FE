@@ -6,7 +6,7 @@ import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
-import { Row, Card, CardBody, CardTitle, Container } from 'reactstrap';
+// import { Row, Card, CardBody, CardTitle, Container } from 'reactstrap';
 
 
 class User extends Component {
@@ -107,10 +107,10 @@ class User extends Component {
         )
 
         return (
-            <Container>
+            <>
                 {this.state.error
                     ? <p>Error retrieving user!</p>
-                    : <div>
+                    : <>
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
@@ -130,10 +130,9 @@ class User extends Component {
                             
                             </div>
                         </section>
-
-                    </div>
+                    </>
                 }
-            </Container>
+            </>
         );
     }
 }
