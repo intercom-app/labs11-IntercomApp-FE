@@ -25,22 +25,32 @@ class GroupChatroomActivities extends Component {
     }
 
     render() {
-
+        const bulletless = { 'list-style-type': 'none' }
         const { activities } = this.props
 
         return (
-            <Card>
+            <div className="comments1">            
                 <h4>Latest Activities</h4>
-                <ul>
+                <div className="media">
+                    <a className="pull-left" href="#">
+                        <img className="media-object" src="..styling/images/avatar1.png" alt=""/>
+					</a>
+                    <div className="media-body row">
                     {activities.map((activity, ind) =>
-                        <ListGroupItem key={ind}>
-                            {activity.displayName} {': '}
-                            {activity.activity} {' '}
-                            {this.getDateTime(activity.createdAt)}
-                        </ListGroupItem>
-                    )}
-                </ul>
-            </Card>
+                        <ul style={bulletless} key={ind}>
+                            <li key={ind} >
+                                <i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}
+		                        <span className="comments-padding"></span>
+                                <strong>{activity.displayName} {': '}</strong>
+                                {activity.activity} {' '}
+		                    </li>
+                        </ul>
+                        
+                            )}
+                            </div>
+                </div>
+            </div>
+            
         )
     }
 
