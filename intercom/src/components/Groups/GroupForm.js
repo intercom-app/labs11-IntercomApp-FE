@@ -181,9 +181,12 @@ class GroupForm extends Component {
     };
 
     render() {
+<<<<<<< HEAD
 
         let { group, invite, search, users } = this.state
 
+=======
+>>>>>>> 3779a8b65ef4b43cc1c571d3130dd8e68298303f
         return (
             <>
                 <aside className="col-md-4 sidebar-padding">

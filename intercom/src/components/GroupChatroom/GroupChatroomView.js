@@ -58,6 +58,8 @@ class GroupChatroomView extends Component {
         const groupById = `${host}/api/groups/${id}`;   
         const res = await this.axiosDel(groupById, 'group') 
         if (res.count) {
+            this.updateGroup({ callStatus: false });   
+            this.updateUser({ callStatus: false });                     
             const userId = localStorage.getItem('userId')
             this.props.history.push(`/user/${userId}`)
         }   
