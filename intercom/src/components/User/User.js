@@ -6,8 +6,6 @@ import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
-// import { Row, Card, CardBody, CardTitle, Container } from 'reactstrap';
-
 
 class User extends Component {
     state = {
@@ -88,11 +86,7 @@ class User extends Component {
             });
     }
 
-
-
-
     updateGroups = () => {
-        console.log('updating')
         const id = localStorage.getItem('userId')
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
