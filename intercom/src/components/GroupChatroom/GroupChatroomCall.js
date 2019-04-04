@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
 class GroupChatroomCall extends Component {
 
@@ -9,27 +8,30 @@ class GroupChatroomCall extends Component {
         switch (true) {
             case (!userOnCall && !groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} color='success' >
-                        Start Call
-                    </Button>
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={handleCallButton}>Start Call</button>
                 )
             case (!userOnCall && groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} outline color='success' >
-                        Join Call
-                    </Button>
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={handleCallButton}>Join Call</button>
                 )
             case (userOnCall && groupOnCall):
                 return (
-                    <Button onClick={handleCallButton} outline color='danger' >
-                        Leave Call
-                    </Button>
+                    <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={handleCallButton}>Leave Call</button>
                 )
             default:
                 return (
-                    <Button disabled color='secondary' >
-                        On another group call
-                    </Button>
+                    <button
+                        className="btn btn-secondary"
+                        type="button">In Call</button>
                 )
         }
 
@@ -41,29 +43,29 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
-
-                {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
-
-                <Card className='mt-sm-4 mb-sm-4'>
-                    <CardBody>
-                        <CardTitle><strong>Phone Number</strong></CardTitle>
-                        <CardText>
+                <aside className="col-md-8 sidebar-padding">
+                    <div className="">
+                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
+                        <hr></hr>
+                        <h4 className="sidebar-title">Phone Number</h4>
+                        <p>
                             {group.phoneNumber
                                 ? group.phoneNumber
                                 : 'No Active Phone Number'
                             }
-                        </CardText>
+                        </p>
 
-                        <CardTitle><strong>Call Participants</strong></CardTitle>
-                        <CardText>
+                        <h4 className="sidebar-title">Call Participants</h4>
+                        
+                        <p>
                             {participants.map(user =>
                                 <span key={user.userId}>
                                     {user.displayName}{' '}
                                 </span>
                             )}
-                        </CardText>
-                    </CardBody>
-                </Card>
+                        </p>
+                    </div>
+                </aside>
             </>
 
         )
