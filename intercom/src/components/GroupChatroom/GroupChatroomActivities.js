@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ListGroupItem, Card} from 'reactstrap';
+// import '../../../public/images/';
+// const image = require('../../images/avatar1.png')
 
 class GroupChatroomActivities extends Component {
 
@@ -25,29 +26,29 @@ class GroupChatroomActivities extends Component {
     }
 
     render() {
-        const bulletless = { 'list-style-type': 'none' }
+        const bulletless = { listStyleType: 'none' }
         const { activities } = this.props
 
         return (
             <div className="comments1">            
                 <h4>Latest Activities</h4>
                 <div className="media">
-                    <a className="pull-left" href="#">
-                        <img className="media-object" src="..styling/images/avatar1.png" alt=""/>
-					</a>
+                    {/* <span className="pull-left" > */}
+					{/* </span> */}
                     <div className="media-body row">
-                    {activities.map((activity, ind) =>
-                        <ul style={bulletless} key={ind}>
-                            <li key={ind} >
-                                <i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}
-		                        <span className="comments-padding"></span>
-                                <strong>{activity.displayName} {': '}</strong>
-                                {activity.activity} {' '}
-		                    </li>
-                        </ul>
-                        
-                            )}
-                            </div>
+                        {activities.map((activity, ind) =>
+                            <ul style={bulletless} key={ind} className='comment-wrap'>
+                                <img className="media-object avatar-img" src={require('../../images/avatar1.png')} alt=""/>
+                                <span><i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}</span>
+                                <li key={ind} >
+                                    <span className="comments-padding"></span>
+                                    <strong>{activity.displayName} {': '}</strong>
+                                    {activity.activity} {' '}
+                                </li>
+                            </ul>
+                            
+                                )}
+                    </div>
                 </div>
             </div>
             
