@@ -12,10 +12,10 @@ class CallStatus extends Component {
     }
 
     componentDidMount() {
-        this.getParticipants();
+        this.getCallStatus();
     }
 
-    getParticipants = () => {
+    getCallStatus = () => {
         const callStatus = `${host}/api/groups/${this.props.groupId}/callStatus`;
         axios.get(callStatus)
             .then(res => {
