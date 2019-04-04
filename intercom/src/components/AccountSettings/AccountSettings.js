@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, CardBody, CardTitle } from 'reactstrap'
+// import { Button, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
@@ -123,8 +123,11 @@ class AccountSettings extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>Profile</h3>
+                                        <h3 style={{ marginTop: "0px"}}>
+                                            Profile
+                                        </h3>
                                         <button
+                                            style={{ padding: "3px 12px"}}
                                             className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
                                             type="button"
                                             onClick={() => this.handleDelete(user.id)}
@@ -134,13 +137,22 @@ class AccountSettings extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left"><strong>{user.displayName}</strong></div>
-                                            <div className="pull-right">Change Name</div>
+                                            <div className="pull-left">
+                                                <strong>{user.displayName}</strong>
+                                            </div>
+                                            {/* <a className="pull-right">
+                                                Change Name
+                                            </a> */}
+
+                                            <AccountUpdateForm updateUser={this.handleUpdate}/>
+
                                         </div>
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">{user.email}</div>
+                                            <div className="pull-left">
+                                                {user.email}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -150,18 +162,28 @@ class AccountSettings extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>Plan Details</h3>
+                                        <h3 style={{ marginTop: "0px" }}>
+                                            Plan Details
+                                        </h3>
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">{`${user.billingSubcription}`.toUpperCase()} Membership</div>
-                                            <div className="pull-right">Upgrade</div>
+                                            <div className="pull-left">
+                                                {`${user.billingSubcription}`.toUpperCase()} Membership
+                                            </div>
+                                            <div className="pull-right">
+                                                Upgrade
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">Pay as you chat</div>
-                                            <div className="pull-right">Details</div>
+                                            <div className="pull-left">
+                                                Pay as you chat
+                                            </div>
+                                            <div className="pull-right">
+                                                Details
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -171,12 +193,18 @@ class AccountSettings extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>Billing</h3>
+                                        <h3 style={{ marginTop: "0px" }}>
+                                            Billing
+                                        </h3>
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">•••• •••• •••• 4242</div>
-                                            <div className="pull-right">Update</div>
+                                            <div className="pull-left">
+                                                •••• •••• •••• 4242
+                                            </div>
+                                            <div className="pull-right">
+                                                Update
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

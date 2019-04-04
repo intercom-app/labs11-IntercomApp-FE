@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
+// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -32,7 +32,7 @@ class AccountUpdateForm extends Component {
         }
         try {
             const res = await axios.put(`${host}/api/users/${id}`, userData)
-            this.setState({ 
+            this.setState({
                 displayName: res.data.displayName
             })
             this.toggle()
@@ -44,9 +44,31 @@ class AccountUpdateForm extends Component {
     };
 
     render() {
-        const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
+        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         return (
-            <div>
+            <>
+
+                <button className="pull-right" type="button" data-toggle="modal" data-target="#accountModal">Change Name</button>
+
+                <div className="modal fade" id="accountModal">
+                    <div className="modal-dialog">
+
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <h4 className="modal-title">Modal Header</h4>
+                            </div>
+                            <div className="modal-body">
+                                <p>Some text in the modal.</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {/* <div>
                 <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
                     <ModalHeader>Update Account</ModalHeader>
@@ -70,7 +92,8 @@ class AccountUpdateForm extends Component {
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </div> */}
+            </>
         );
     }
 }
