@@ -49,7 +49,7 @@ class GroupForm extends Component {
                 axios
                     .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
                     .then(groupOwner => {
-                        console.log(groupOwner)
+                        // console.log(groupOwner)
                         this.props.updateGroups();
                     })
                     .catch(err => {
