@@ -56,37 +56,54 @@ class AddToAccountBalance extends Component {
         
         const userId = localStorage.getItem('userId')
         console.log(userId)
+
+        //TESTING (For the charging step included below)
+        const amountToAddToAccountBalance = this.state.amountToAddToAccountBalance;
+        // console.log('amountToAddToAccountBalance: ', amountToAddToAccountBalance)
+
         
         try{
             const createSourceResponse = await this.props.stripe.createSource(sourceData);
             console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
             console.log('sourceObject: ', source);
-            // return source;
 
             const userData = await axios.get(`${host}/api/users/${userId}`)
             const user = userData.data;
             const userStripeId =user.stripeId;
             console.log('userStripeId: ', userStripeId);
 
-            const body = {
+            // Step 2. Attach the source to the customer object. (see the endpoint on the backend)
+            const newlyAttachedSource = await axios.post(`${host}/api/purchasingAndBilling/attachSourceToCustomer`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
-            }
-
-            const newlyAttachedSource = await axios.post(`${host}/api/purchasingAndBilling/attachSourceToCustomer`, body)
+            })
             console.log('newlyAttachedSource: ',newlyAttachedSource)
+
+            // //TESTING 1  PaymentIntentMethodOfCharging
+            // const paymentIntentClientSecret = await axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, {'amountToAddToAccountBalance':amountToAddToAccountBalance});
+            // console.log('paymentIntentClientSecret: ', paymentIntentClientSecret.data.client_secret);
+            
+            // const handleCardPaymentResponse = await this.props.stripe.handleCardPayment(paymentIntentClientSecret.data.client_secret);
+
+            // // TESTING 2 - Soon to be phased out (but working) credit card charging method
+            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+                'userStripeId':userStripeId,
+                'sourceId': source.id,
+                'amountToAddToAccountBalance': amountToAddToAccountBalance
+            })
+            console.log('chargeResponse: ',chargeResponse)
             
         } catch(err) {
             console.log('err: ', err);
         }
     }
 
-    // Step 2. Attach the source to the customer object. 
-    attachSourceToCustomer = async() => {
-        const userId = localStorage.getItem('userId')
-        console.log(userId)
-    }
+    
+    // attachSourceToCustomer = async() => {
+    //     const userId = localStorage.getItem('userId')
+    //     console.log(userId)
+    // }
 
 
     // If the checkout process is interrupted and resumes later, you should attempt to reuse the same PaymentIntent instead of creating a new one. 
@@ -104,19 +121,15 @@ class AddToAccountBalance extends Component {
         console.log('amountToAddToAccountBalance: ', amountToAddToAccountBalance)
 
         try{
-            const paymentIntentClientSecret = axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, amountToAddToAccountBalance)
-            console.log(paymentIntentClientSecret)
+            const paymentIntentClientSecret = await axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, {'amountToAddToAccountBalance':amountToAddToAccountBalance});
+            console.log('paymentIntentClientSecret: ', paymentIntentClientSecret.data.client_secret);
+            
+            const handleCardPaymentResponse = await this.props.stripe.handleCardPayment(paymentIntentClientSecret.data.client_secret, {
+            });
+            console.log('handleCardPaymentResponse: ', handleCardPaymentResponse);
         } catch(err){
-            console.log(err)
+            console.log(err.response)
         }
-
-        // axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, amountToAddToAccountBalance)
-        //     .then(res => {
-        //         console.log('res (expect client_secret here): ', res);
-        //     })
-        //     .catch(err => {
-        //         console.log('err1: ', err); 
-        //     })
     };
 
     handleOptionChange = changeEvent => {
@@ -190,7 +203,7 @@ class AddToAccountBalance extends Component {
                             <br/>
                             <div>
                                 <h5>I want to save this credit card for later. </h5>
-                                <button onClick = {this.createPaymentIntentSubmitHandler}>create payment intent</button>
+                                {/* <button onClick = {this.createPaymentIntentSubmitHandler}>create payment intent</button> */}
                                 <button onClick = {this.createSourceAndAttachToCustomer}>create source function</button>
                             </div>
                             <br/>
@@ -209,39 +222,6 @@ class AddToAccountBalance extends Component {
     }
 }
 
-//     render() {
-//         return (
-//             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
-//             // equivalent to creating a Stripe instance with Stripe.js.
-//             <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' >
-//                 <div>
-//                     <h1>Add to Account Balance</h1>
-
-                   
-//                     {/* The Elements component, which encloses the PRICING PLAN 1 checkout form,
-//                       creates an Elements group. When you use multiple Elements components
-//                       instead of the combined CardElement, the Elements group indicates 
-//                       which ones are related. For example, if you used separate components
-//                       for the card number, expiration date, and CVC, you would put them 
-//                       all in the same Elements group. Note that Elements must contain the
-//                       component that you wrapped with injectStripe, you cannot put Elements
-//                       inside of the component that you wrap with injectStripe. */}
-//                     <Elements>
-//                         {/* PRICING PLAN 1 COMPONENT */}
-//                         <PricingPlan1 />
-//                     </Elements>
-
-                    
-//                     <Elements>
-//                         {/* PRICING PLAN 2 COMPONENT */}
-//                         <PricingPlan2 />
-//                     </Elements>
-
-//                 </div>
-//             </StripeProvider>
-//         )
-//     }
-// }
 
 // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
 export default injectStripe(AddToAccountBalance);
