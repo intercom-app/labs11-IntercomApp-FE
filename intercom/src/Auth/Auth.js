@@ -25,18 +25,20 @@ export default class Auth {
 
   handleAuthentication = () => {
     this.auth0.parseHash(async (err, authResult) => {
+      console.log(authResult)
       if (authResult && authResult.accessToken && authResult.idToken) {
         try {
           const user = await axios.post(`${host}/api/users`, authResult.idTokenPayload)
           const id = user.data.id;
           if (user && id) {
+            localStorage.setItem('avatar', authResult.idTokenPayload.picture)
             localStorage.setItem('userId', id)
             const route = `/user/${id} `
             this.setSession(authResult, route)
           }
         } catch (err) {
           console.log(err);
-          alert(`Error: ${err.error}.Check the console for further details.`);
+          // alert(`Error: ${err.error}.Check the console for further details.`);
         }
 
       } else if (err) {
@@ -93,6 +95,7 @@ export default class Auth {
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userId');
+    localStorage.removeItem('avatar');    
 
     // navigate to the home route
     history.replace('/');

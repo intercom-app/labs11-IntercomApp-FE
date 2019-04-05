@@ -97,7 +97,7 @@ class User extends Component {
 
     render() {
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
-
+        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');        
         return (
             <>
                 {error
@@ -108,9 +108,10 @@ class User extends Component {
                                 <div className="col-md-8">
 
                                     <div>
-                                        <img className="pull-left avatar-img-lg" src={require('../../images/avatar1.png')} alt="" />  
+                                        <img className="media-object pull-left avatar-img-users" src={avatar} alt="" />  
+                                        <span className="comments-padding"></span>                                                                              
                                         <h2>Welcome {user.displayName}!</h2>
-                                        <span>{user.email}</span>
+                                        {/* <span>{user.email}</span> */}
                                     </div>
 
                                     <GroupsOwned groupsOwned={groupsOwned} />
