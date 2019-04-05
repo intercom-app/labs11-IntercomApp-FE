@@ -52,6 +52,8 @@ class PricingPurchasingOptions extends Component {
                     </Elements>
 
                 </div>
+                </section>
+                
             </StripeProvider>
         )
     }

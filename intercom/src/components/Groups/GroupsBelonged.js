@@ -1,35 +1,48 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
-import { Table } from 'reactstrap';
+import { Link } from "react-router-dom";
+
+import CallParticipants from './CallParticipants';
+import CallStatus from './CallStatus';
 
 
 class GroupsBelonged extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
-    }
-    render() { 
-        return ( <div className='mt-sm-3'>
-            {/* {console.log(this.props.groupsBelonged)} */}
-            <h2>Groups Belonged To</h2>
-            <Table>
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>Group Name</th>
-                    </tr>
-                </thead>
-                {this.props.groupsBelonged.map((group, key) => (
-                    <tbody key={key}>
-                        <tr>   
-                            <td><NavLink to={`/group/${group.groupId}`} >{group.groupId}</NavLink></td>
-                            <td>{group.GroupName}</td>
-                        </tr>
-                    </tbody>
+
+    render() {
+        return (
+            <>
+                <h1 className="page-header sidebar-title">
+                    Groups Belonged To
+                </h1>
+
+                {this.props.groupsBelonged.map(group => (
+                    <div key={group.groupId}>
+                        <div className="row blogu" >
+                            <div className="col-sm-8 col-md-8">
+                                <Link to={`/group/${group.groupId}`} >
+                                    <h3 className="blog-title">
+                                        {group.GroupName}
+                                    </h3>
+                                </Link>
+                            </div>
+                            <div className="col-sm-12 col-md-12">
+                                <CallStatus groupId={group.groupId} />
+                                <span className="comments-padding"></span>
+                                <CallParticipants groupId={group.groupId} />
+                                <Link to={`/group/${group.groupId}/members`} className='pull-right'>
+                                    View Members
+                                </Link>
+                            </div >
+
+                        </div>
+                        <hr></hr>
+                    </div>
+
                 ))}
-            </Table>
-        </div> );
+
+            </>
+
+        );
     }
 }
- 
+
 export default GroupsBelonged;

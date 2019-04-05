@@ -1,26 +1,39 @@
 import React, { Component } from 'react';
-import { Card } from 'reactstrap';
 
 class GroupChatroomCall extends Component {
 
-    renderButton = (userCallStatus, groupCallStatus) => {
+    renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
         const userOnCall = (userCallStatus === 1)
         const groupOnCall = (groupCallStatus === 1)
-        let text = ''
-        switch(true) {
+        switch (true) {
             case (!userOnCall && !groupOnCall):
-                text = 'Start Call'
-                break;
+                return (
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={handleCallButton}>Start Call</button>
+                )
             case (!userOnCall && groupOnCall):
-                text = 'Join Call'
-                break;
+                return (
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        onClick={handleCallButton}>Join Call</button>
+                )
             case (userOnCall && groupOnCall):
-                text = 'Leave Call'
-                break;
+                return (
+                    <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={handleCallButton}>Leave Call</button>
+                )
             default:
-                break;
+                return (
+                    <button
+                        className="btn btn-secondary"
+                        type="button">In Call</button>
+                )
         }
-        return text;
 
     }
 
@@ -30,26 +43,29 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
+                <aside className="col-md-8 sidebar-padding">
+                    <div className="">
+                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
+                        <hr></hr>
+                        <h4 className="sidebar-title">Phone Number</h4>
+                        <p>
+                            {group.phoneNumber
+                                ? group.phoneNumber
+                                : 'No Active Phone Number'
+                            }
+                        </p>
 
-                <button onClick={handleCallButton} className='mt-sm-4'>
-                    {this.renderButton(user.callStatus, group.callStatus)}
-                </button>
-                <Card className='mt-sm-4 mb-sm-4'>
-                    <h5>Phone Number</h5>
-                    {group.phoneNumber
-                        ? group.phoneNumber
-                        : 'No Active Phone Number'
-                    }
-                </Card>
-
-                <h5>Call Participants</h5>
-                <ul>
-                    {participants.map(user =>
-                        <li key={user.userId}>
-                            {user.displayName}
-                        </li>
-                    )}
-                </ul>
+                        <h4 className="sidebar-title">Call Participants</h4>
+                        
+                        <p>
+                            {participants.map(user =>
+                                <span key={user.userId}>
+                                    {user.displayName}{' '}
+                                </span>
+                            )}
+                        </p>
+                    </div>
+                </aside>
             </>
 
         )

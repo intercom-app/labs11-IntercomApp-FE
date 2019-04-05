@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ListGroupItem, Card} from 'reactstrap';
+// import '../../../public/images/';
+// const image = require('../../images/avatar1.png')
 
 class GroupChatroomActivities extends Component {
 
@@ -25,22 +26,33 @@ class GroupChatroomActivities extends Component {
     }
 
     render() {
-
+        const bulletless = { listStyleType: 'none' }
         const { activities } = this.props
-
+        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');
         return (
-            <Card>
+            <div className="comments1">            
                 <h4>Latest Activities</h4>
-                <ul>
-                    {activities.map((activity, ind) =>
-                        <ListGroupItem key={ind}>
-                            {activity.displayName} {': '}
-                            {activity.activity} {' '}
-                            {this.getDateTime(activity.createdAt)}
-                        </ListGroupItem>
-                    )}
-                </ul>
-            </Card>
+                <div className="media">
+                    {/* <span className="pull-left" > */}
+					{/* </span> */}
+                    <div className="media-body row">
+                        {activities.map((activity, ind) =>
+                            <ul style={bulletless} key={ind} className='comment-wrap'>
+                                {/* <img className="media-object avatar-img" src={require('../../images/avatar1.png')} alt=""/> */}
+                                <img className="media-object avatar-img" src={avatar} alt="" />                                
+                                <span><i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}</span>
+                                <li key={ind} >
+                                    <span className="comments-padding"></span>
+                                    <strong>{activity.displayName} {': '}</strong>
+                                    {activity.activity} {' '}
+                                </li>
+                            </ul>
+                            
+                                )}
+                    </div>
+                </div>
+            </div>
+            
         )
     }
 
