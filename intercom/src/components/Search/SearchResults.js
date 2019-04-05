@@ -4,7 +4,7 @@ const SearchResults = (props) => {
     return (
         <>
             {props.users.map(user => (
-                <div className="media">
+                <div className="media" key={user.id}>
                     <div className="media-body">
                         <h4 className="media-heading">{user.displayName}</h4>
                         {user.email}
