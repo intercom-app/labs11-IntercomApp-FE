@@ -18,13 +18,12 @@ class PricingPurchasingOptions extends Component {
         console.log('componentDidMount');
     }
 
-    render() {
+    render() { 
         return (
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
-            <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' >
-                <section className="container blog">
-                    <div className="row">
+            <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' betas = {["payment_intent_beta_3"]}>
+                <div>
                     <h1>Pricing Purchasing Options</h1>
 
                    
@@ -53,7 +52,6 @@ class PricingPurchasingOptions extends Component {
                     </Elements>
 
                 </div>
-                </section>
                 
             </StripeProvider>
         )
