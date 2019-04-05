@@ -37,7 +37,7 @@ export default class Navigation extends React.Component {
                                 <li><a href="#about">About</a></li>
                                 <li><a href="#contact">Contact</a></li>
                                 <li><a href="#meet-team">Team</a></li>
-                                <li><a href="#login" onClick={this.props.login}>Login</a></li>
+                                <li><Link to={`/`} onClick={this.props.login}>Login</Link></li>
                             </ul>
                         }
                     </div>
