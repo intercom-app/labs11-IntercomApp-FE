@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
-// import { Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import Fuse from 'fuse.js';
 
@@ -143,6 +142,10 @@ class GroupMembersView extends Component {
             .catch(err => this.setState({ error: err }));
     }
 
+    clearSearch = () => {
+        this.setState({ search: '', users: []})
+    }
+
     removeUser = (e, id, userDisplayName) => {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
@@ -190,10 +193,10 @@ class GroupMembersView extends Component {
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
-
-                                    <div>
-                                        <h2>{group.name}</h2>
-                                    </div>
+                                    <Link to={`/group/${group.id}`} className='blog-title'>
+                                        Group Chatroom
+                                    </Link>
+                                    <h2>{group.name}</h2>
 
                                     <GroupMembersList
                                         isOwner={isOwner}
@@ -211,22 +214,29 @@ class GroupMembersView extends Component {
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
-                                {isOwner
-                                    ? <>
-                                        <SearchBar
-                                            inputValue={search}
-                                            updateSearch={this.handleSearch}
-                                        />
-                                        {this.state.search.length >= 3
-                                            ? <SearchResults
-                                                users={users}
-                                                inviteUser={this.inviteUser}
-                                            />
-                                            : null
-                                        }
-                                    </>
-                                    : null
-                                }
+                                    {isOwner
+                                        ? <>
+                                            <div className="blog-sidebar">
+                                                <h3 className="sidebar-title">Invite New Members</h3>
+                                                <hr></hr>
+                                                <h4 className="sidebar-title">Search Users: </h4>
+                                                <SearchBar
+                                                    inputValue={search}
+                                                    updateSearch={this.handleSearch}
+                                                    clearSearch={this.clearSearch}
+                                                />
+                                                {this.state.search.length >= 3
+                                                    ? <SearchResults
+                                                        users={users}
+                                                        inviteUser={this.inviteUser}
+                                                    />
+                                                    : null
+                                                }
+                                            </div>
+
+                                        </>
+                                        : null
+                                    }
                                 </aside>
 
                             </div>

@@ -33,7 +33,7 @@ class User extends Component {
             });
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
-        this.getgroupsBelongedTo(id);
+        // Groups belonged to is called after groups owned
     }
 
 
@@ -52,12 +52,12 @@ class User extends Component {
             });
     }
 
-    getgroupsBelongedTo = (id) => {
+    getgroupsBelongedTo = (id, groupsOwned) => {
         const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
 
         axios.get(groupsBelongedTo)
             .then(res => {
-                const groupsOwnedIds = this.state.groupsOwned.map(group => group.groupId);
+                const groupsOwnedIds = groupsOwned.map(group => group.groupId);
                 const groupsNotOwned = res.data.filter(group => 
                     !groupsOwnedIds.includes(group.groupId)
                 )
@@ -77,6 +77,7 @@ class User extends Component {
         axios.get(groupsOwned)
             .then(res => {
                 this.setState({ groupsOwned: res.data })
+                this.getgroupsBelongedTo(id, res.data);
             })
             .catch(err => {
                 this.setState({
@@ -90,7 +91,7 @@ class User extends Component {
         const id = localStorage.getItem('userId')
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
-        this.getgroupsBelongedTo(id);
+        // Groups belonged to is called after groups owned
     }
 
 

@@ -12,6 +12,7 @@
     "popper.js": "^1.15.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-loader-spinner": "^2.3.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-stripe-elements": "^2.0.3",
