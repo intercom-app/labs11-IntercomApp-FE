@@ -15,6 +15,9 @@ import Auth from './Auth/Auth';
 import Authenticating from './Auth/Authenticating';
 import User from './components/User/User'
 
+// Landing Page
+import LandingPageView from './components/LandingPage/LandingPageView';
+
 
 
 // Create new Auth session
@@ -29,8 +32,9 @@ const handleAuthentication = (nextState, replace) => {
 export const makeMainRoutes = () => {
   return (
     <Router history={history} component={App}>
-      <div>
+      <>
         <Route path="/" render={(props) => <App auth={auth} {...props} />} />
+        <Route exact path="/" render={(props) => <LandingPageView auth={auth} {...props} />} />
         <Route exact path="/authenticating" render={(props) => {
           handleAuthentication(props);
           return <Authenticating {...props} />
@@ -40,7 +44,7 @@ export const makeMainRoutes = () => {
         <Route exact path="/group/:id" render={(props) => <GroupChatroomView {...props} />} />
         <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />
         <Route exact path="/user/:id/billing" render={(props) => <PricingPurchasingOptions auth={auth} {...props} />} />        
-      </div>
+      </>
     </Router>
   );
 }

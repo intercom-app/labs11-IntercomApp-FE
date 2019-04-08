@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Navigation from './components/Navigation/Navigation';
-import LandingPageView from './components/LandingPage/LandingPageView';
 
 class App extends Component {
 
@@ -27,7 +26,6 @@ class App extends Component {
     return (
       <>
         <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated} />
-        <LandingPageView />
       </>
     )
   }
