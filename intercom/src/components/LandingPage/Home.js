@@ -5,7 +5,8 @@ const Home = () => {
         <>
             <header id="home" className="carousel slide">
                 <ul className="cb-slideshow">
-                    <li><span>image1</span>
+                    <li>
+                        <span>image1</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
@@ -15,7 +16,8 @@ const Home = () => {
                             <h4>PATROS – Free HTML5/CSS3 Responsive Website Template.</h4>
                         </div>
                     </li>
-                    <li><span>image2</span>
+                    <li>
+                        <span>image2</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
@@ -25,7 +27,8 @@ const Home = () => {
                             <h4>Lorem Ipsum is simply dummy text of typesetting industry.</h4>
                         </div>
                     </li>
-                    <li><span>image3</span>
+                    <li>
+                        <span>image3</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
@@ -35,7 +38,8 @@ const Home = () => {
                             <h4>Lorem Ipsum is simply dummy text of typesetting industry.</h4>
                         </div>
                     </li>
-                    <li><span>Image 04</span>
+                    <li>
+                        <span>Image 04</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
@@ -45,7 +49,8 @@ const Home = () => {
                             <h4>Lorem Ipsum is simply dummy text of typesetting industry.</h4>
                         </div>
                     </li>
-                    <li><span>Image 05</span>
+                    <li>
+                        <span>Image 05</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
@@ -55,7 +60,8 @@ const Home = () => {
                             <h4>Lorem Ipsum is simply dummy text of typesetting industry.</h4>
                         </div>
                     </li>
-                    <li><span>Image 06</span>
+                    <li>
+                        <span>Image 06</span>
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
