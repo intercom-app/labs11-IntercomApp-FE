@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-
 import CallParticipants from './CallParticipants';
 import CallStatus from './CallStatus';
 

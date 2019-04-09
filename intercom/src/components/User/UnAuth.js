@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
-const img = require('https://unsplash.com/photos/gehzL37x6zY');
 
 class UnAuth extends Component {
 
     render() { 
+        // const img = require('../../images/avatar1.png')
+        const id = localStorage.getItem('userId')
         return ( 
             <section className="container blog">
-                <h2>You shall not pass!</h2>
-                <div style={{ textAlign: "center", backgroundImage: `url(https://unsplash.com/photos/gehzL37x6zY)` }}>
-
+                <div style={{ textAlign: "center", marginBottom: "5%" }}>
+                    <h2 >You shall not pass!</h2>
+                    <Link to={`/user/${id}/`} className=''>Go back to your profile</Link>
                 </div>
+                <div className='unauth'></div>
             </section>
         );
     }

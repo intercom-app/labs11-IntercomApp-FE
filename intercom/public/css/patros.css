@@ -3,6 +3,13 @@
 .avatar-img-users {width: 25%; margin-right: 2%; border-radius: 50%}
 .avatar-img-lg {width: 10%; margin-right: 2%; border-radius: 50%}
 .comment-wrap {display: flex; align-items: center}
+.unauth { background-image: url(../images/headphones.jpg);
+            background-position: 'center';
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100%
+         }
 .cb-slideshow, .cb-slideshow:after { position:absolute; width:100%; height:100%; top: 0px; left: 0px; z-index: 0; background-color:#131313;
 }
 .cb-slideshow li span { width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; color: transparent;background-size: cover;
