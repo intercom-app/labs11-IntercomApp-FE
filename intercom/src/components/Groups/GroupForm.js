@@ -15,39 +15,15 @@ class GroupForm extends Component {
             members: [],
             invitees: [],
             users: [],
-            group: {
-                name: ''
-            },
+            group: {},
             error: null,
         };
 
     }
 
-    componentDidMount() {
-        axios
-            .get(`${host}/api/groups/${this.state.group.id}/groupMembers`)
-            .then(res => {
-                this.setState({
-                    members: res.data,
-                    search: '',
-                });
-            })
-            .catch(err => this.setState({ error: err }));
-
-        axios
-            .get(`${host}/api/groups/${this.state.group.id}/groupInvitees`)
-            .then(res => {
-                this.setState({ invitees: res.data });
-            })
-            .catch(err => this.setState({ error: err }));
-    }
-
     handleGroupInput = e => {
         this.setState({
-            group: {
-                ...this.state.group,
-                [e.target.name]: e.target.value
-            }
+            group: { [e.target.name]: e.target.value}
         })
     }
 
@@ -131,18 +107,23 @@ class GroupForm extends Component {
     }
 
     clearSearch = () => {
-        this.toggleInvite();
         this.setState({ 
             search: '',
             users: [],
-            group: { name: ''} 
+            invitees: [],
+            group: {},
+            invite: false
         })
+        document.getElementById("groupNameInput").value = '';
     }
 
     toggleInvite = () => {
-        this.setState(prevState => ({
-            invite: !prevState.invite
-        }));
+        this.setState({
+            search: '',
+            users: [],
+            invitees: [],
+            invite: true
+        });
     }
 
     createGroup = async (event) => {
@@ -191,11 +172,14 @@ class GroupForm extends Component {
                         <h3 className="sidebar-title">Create New Group</h3>
                         <hr></hr>
                         <h4 className="sidebar-title">New Group Name: </h4>
+                        {!invite
+                        ? 
                         <div className="input-group">
                             <input
                                 className="form-control"
                                 type="text"
                                 name="name"
+                                id="groupNameInput"
                                 placeholder="Group Name..."
                                 onChange={this.handleGroupInput}
                                 value={group.name}
@@ -210,10 +194,33 @@ class GroupForm extends Component {
                                 </button>
                             </span>
                         </div>
+                        :
+                        <div className="input-group">
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="name"
+                                id="groupNameInput"
+                                value={group.name}
+                                disabled
+                            />
+                            <span className="input-group-btn">
+                                <button
+                                    className="btn btn-default"
+                                    type="button"
+                                    disabled
+                                >
+                                    Created
+                                </button>
+                            </span>
+                        </div>
+                        }
 
                         {invite && group.name
                             ? <>
-                                <h4 className="sidebar-title">Invite Users to {group.name}:</h4>
+                                <h4 className="sidebar-title" style={{marginTop: "20px"}}>
+                                    Invite Users to {group.name}:
+                                </h4>
                                 <SearchBar
                                     inputValue={search}
                                     updateSearch={this.handleSearch}
@@ -226,6 +233,8 @@ class GroupForm extends Component {
                                     />
                                     : null
                                 }
+                                <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
+
                             </>
                             : null
                         }
