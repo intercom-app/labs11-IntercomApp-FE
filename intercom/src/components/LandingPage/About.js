@@ -14,7 +14,7 @@ const About = () => {
 									<p>
 										Our mission is to assist a wide variety of users ranging from those who may be hearing impaired or elderly to anyone who finds themselves as a group having difficulty conversing with others with overbearing background noise.
 										We provide our users to opportunity to easily create and join personal groups and initiate voice chats within those groups to keep a clear communication link with their family and friends.
-                  </p>
+                  					</p>
 								</div>
 							</div>
 						</div>
