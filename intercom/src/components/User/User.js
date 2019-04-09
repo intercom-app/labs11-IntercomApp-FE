@@ -96,7 +96,6 @@ class User extends Component {
 
 
     render() {
-        console.log(this.state.user)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
         const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');        
         return (
@@ -121,7 +120,11 @@ class User extends Component {
 
                                 </div>
 
-                                <GroupForm groupQuantity={groupsOwned.length} updateGroups={this.updateGroups} />
+                                <aside className="col-md-4 sidebar-padding">
+
+                                    <GroupForm updateGroups={this.updateGroups} />
+
+                                </aside>
 
                             </div>
                         </section>
