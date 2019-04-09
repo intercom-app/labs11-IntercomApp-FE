@@ -25,7 +25,7 @@ export default class Auth {
 
   handleAuthentication = () => {
     this.auth0.parseHash(async (err, authResult) => {
-      console.log(authResult)
+      // console.log(authResult)
       if (authResult && authResult.accessToken && authResult.idToken) {
         try {
           const user = await axios.post(`${host}/api/users`, authResult.idTokenPayload)
