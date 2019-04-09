@@ -125,7 +125,7 @@ span.text a:hover{
 .list-social-icons li:hover {background:#33cc33;}
 .list-social-icons li:hover .social-icons {color:#f7f7f7;}
 .list-social-icons li:active .social-icons {background:#33cc33;}
-/* .blog{padding-top:100px;} */
+.blog{margin-top:20px;}
 .pagination {
     margin: 20px 0 50px !important;
 }    
