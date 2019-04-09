@@ -5,7 +5,6 @@ import host from '../../host';
 import {CardElement, injectStripe} from 'react-stripe-elements'; // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
 
 
-
 class AddToAccountBalance extends Component {
     constructor(props) {
         console.log('Constructor Invoked'); //constructor first thing invoked in mounting lifecycle
@@ -43,81 +42,177 @@ class AddToAccountBalance extends Component {
     // they should be charged directly. They can be charged only once, and their status will change to consumed 
     // when charged.
 
-    createSourceAndAttachToCustomer = async() => {
-        const sourceData = {
+    createSource = async() => {
+        const sourceInfo = {
             type: 'card',
             currency: 'usd',
-            owner: {
-                'email': 'customerEmail@emailDomain.com',
-            },
             usage: this.state.creditCardUsage
         }
-        console.log('sourceData: ', sourceData)
-        
-        const userId = localStorage.getItem('userId')
-        console.log(userId)
+        console.log('sourceInfo: ', sourceInfo)
         
         try{
-            const createSourceResponse = await this.props.stripe.createSource(sourceData);
+            const createSourceResponse = await this.props.stripe.createSource(sourceInfo);
             console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
             console.log('sourceObject: ', source);
-            // return source;
+            return source
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
-            const userData = await axios.get(`${host}/api/users/${userId}`)
-            const user = userData.data;
-            const userStripeId =user.stripeId;
+    // Saving an additional credit card ("attaching" in Stripe) to a customer (for having multiple credit cards saved for a customer)
+    attachSourceToCustomer = async(source) => {
+        const userId = localStorage.getItem('userId')
+        console.log('userId: ', userId)
+
+        try{
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
             console.log('userStripeId: ', userStripeId);
 
-            const body = {
+            // Step 2. Attach the source to the customer object. (see the endpoint on the backend)
+            const newlyAttachedSource = await axios.post(`${host}/api/purchasingAndBilling/attachSourceToCustomer`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
-            }
-
-            const newlyAttachedSource = await axios.post(`${host}/api/purchasingAndBilling/attachSourceToCustomer`, body)
-            console.log('newlyAttachedSource: ',newlyAttachedSource)
-            
+            });
+            console.log('newlyAttachedSource: ', newlyAttachedSource);
+            return newlyAttachedSource
         } catch(err) {
             console.log('err: ', err);
         }
     }
 
-    // Step 2. Attach the source to the customer object. 
-    attachSourceToCustomer = async() => {
+    // Replacing a customer's saved default credit card ("updating" the credit card Stripe)
+    updateDefaultSource = async(source) => {
         const userId = localStorage.getItem('userId')
-        console.log(userId)
+        console.log('userId: ', userId)
+
+        try{
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
+            console.log('userStripeId: ', userStripeId);
+
+            // Step 2. Attach the source to the customer object. (see the endpoint on the backend)
+            const newlyUpdatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
+                'userStripeId':userStripeId,
+                'sourceId': source.id
+            });
+            console.log('newlyUpdatedSource: ', newlyUpdatedSource);
+            return newlyUpdatedSource
+        } catch(err) {
+            console.log('err: ', err);
+        }
+    }
+
+    
+    // If you want to associate a payment with a particular Customer object, you can include a customer parameter when making a charge request with a source, even if the source is not attached.
+    doNotSaveCardAndCharge = async() => {
+        console.log('doNotSaveCardAndCharge!!!!');
+        const userId = localStorage.getItem('userId');
+        console.log('userId: ', userId);
+        try{
+            const source = await this.createSource();
+            const sourceId = source.id;
+
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
+            console.log('userStripeId: ', userStripeId);
+            
+            const body = {
+                'userStripeId':  userStripeId,
+                'sourceId': sourceId,
+                'amountToAddToAccountBalance': this.state.amountToAddToAccountBalance
+            };
+            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, body);
+            console.log('chargeResponse: ', chargeResponse)
+
+        } catch(err) {
+            console.log('err: ', err);
+        }    
+    }
+    
+
+    attachSourceToCustomerAndCharge = async() => {
+        console.log('attachSourceToCustomerAndCharge!!!!');
+        const userId = localStorage.getItem('userId')
+        console.log('userId: ', userId)
+        try {
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
+            console.log('userStripeId: ', userStripeId);
+
+            const source = await this.createSource();
+            const attachSourceToCustomerResponse = await this.attachSourceToCustomer(source);
+            console.log('attachSourceToCustomerResponse: ', attachSourceToCustomerResponse); 
+
+            // TESTING - Soon to be phased out (but working) credit card charging method
+            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+                'userStripeId':userStripeId,
+                'sourceId': source.id,
+                'amountToAddToAccountBalance': this.state.amountToAddToAccountBalance
+            })
+            console.log('chargeResponse: ',chargeResponse)
+        } catch(err) {
+            console.log('err: ', err);
+        }
+    }
+
+    //If you attempt to charge a Customer object without specifying a source, Stripe uses the customer’s default source.
+    chargeCustomerWithDefaultSource = async() => {
+        console.log('chargeCustomerWithDefaultSource!!!!');
+        const userId = localStorage.getItem('userId')
+        console.log('userId: ', userId)
+        try {
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
+            console.log('userStripeId: ', userStripeId);
+
+            const customerStripeInfo = await axios.post(`${host}/api/purchasingAndBilling/retrieveCustomerStripeInfo`,{'userStripeId':userStripeId});
+            const defaultSourceId = customerStripeInfo.data.defaultSourceId;
+            console.log('defaultSourceId: ', defaultSourceId);
+
+            // TESTING - Soon to be phased out (but working) credit card charging method
+            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+                'userStripeId':userStripeId,
+                'sourceId': defaultSourceId,
+                'amountToAddToAccountBalance': this.state.amountToAddToAccountBalance
+            })
+            console.log('chargeResponse: ',chargeResponse)
+        } catch(err) {
+            console.log('err: ', err.response);
+        }
     }
 
 
-    // If the checkout process is interrupted and resumes later, you should attempt to reuse the same PaymentIntent instead of creating a new one. 
-    // Each PaymentIntent has a unique ID that you can use to retrieve it if you need it again. In your application’s data model, you can store 
-    // the PaymentIntent’s ID on the customer’s shopping cart or session in order to facilitate retrieval. The benefit of reusing the PaymentIntent
-    // is that the object helps track any failed payment attempts for a given cart or session.
-    
-    // You should also provide an idempotency key–typically based on the ID that you associate with the cart or customer session in your application–when creating the PaymentIntent to avoid erroneously creating duplicate PaymentIntents for the same purchase.
+    // makeChargeOld = async(userStripeId,source ) => {
+    //     try{
+    //         // // TESTING - Soon to be phased out (but working) credit card charging method
+    //         const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+    //             'userStripeId':userStripeId,
+    //             'sourceId': source.id,
+    //             'amountToAddToAccountBalance': amountToAddToAccountBalance
+    //         })
+    //         console.log('chargeResponse: ',chargeResponse)
+            
+    //     } catch(err) {
+    //         console.log('err: ', err);
+    //     }
+    // }
 
-    // The client secret can be used to complete the payment process with the amount specified on the PaymentIntent. It should not be logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
-    // After obtaining the client secret from the data attribute, use stripe.handleCardPayment (client secret required as parameter to use this function) to complete the payment
-    createPaymentIntentSubmitHandler = async() => {
-        // e.preventDefault();
-        const amountToAddToAccountBalance = this.state.amountToAddToAccountBalance;
-        console.log('amountToAddToAccountBalance: ', amountToAddToAccountBalance)
+    // makeChargeNew = async(userStripeId,sourceId ) => {
+    //     try{
+    //         //TESTING 1  PaymentIntentMethodOfCharging
+    //         const paymentIntentClientSecret = await axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, {'amountToAddToAccountBalance':amountToAddToAccountBalance});
+    //         console.log('paymentIntentClientSecret: ', paymentIntentClientSecret.data.client_secret);
+            
+    //         const handleCardPaymentResponse = await this.props.stripe.handleCardPayment(paymentIntentClientSecret.data.client_secret);
+            
+    //     } catch(err) {
+    //         console.log('err: ', err);
+    //     }
+    // }
 
-        try{
-            const paymentIntentClientSecret = axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, amountToAddToAccountBalance)
-            console.log(paymentIntentClientSecret)
-        } catch(err){
-            console.log(err)
-        }
-
-        // axios.post(`${host}/api/purchasingAndBilling/createPaymentIntent`, amountToAddToAccountBalance)
-        //     .then(res => {
-        //         console.log('res (expect client_secret here): ', res);
-        //     })
-        //     .catch(err => {
-        //         console.log('err1: ', err); 
-        //     })
-    };
 
     handleOptionChange = changeEvent => {
         this.setState({
@@ -190,8 +285,14 @@ class AddToAccountBalance extends Component {
                             <br/>
                             <div>
                                 <h5>I want to save this credit card for later. </h5>
-                                <button onClick = {this.createPaymentIntentSubmitHandler}>create payment intent</button>
-                                <button onClick = {this.createSourceAndAttachToCustomer}>create source function</button>
+                                {/* <button onClick = {this.createPaymentIntentSubmitHandler}>create payment intent</button> */}
+                                
+                                <button onClick = {this.doNotSaveCardAndCharge}>doNotSaveCardAndCharge</button>
+
+                                <button onClick = {this.attachSourceToCustomerAndCharge}>attachSourceToCustomerAndCharge</button>
+
+                                <button onClick = {this.chargeCustomerWithDefaultSource}>chargeCustomerWithDefaultSource</button>
+                                
                             </div>
                             <br/>
                             
@@ -209,39 +310,7 @@ class AddToAccountBalance extends Component {
     }
 }
 
-//     render() {
-//         return (
-//             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
-//             // equivalent to creating a Stripe instance with Stripe.js.
-//             <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' >
-//                 <div>
-//                     <h1>Add to Account Balance</h1>
-
-                   
-//                     {/* The Elements component, which encloses the PRICING PLAN 1 checkout form,
-//                       creates an Elements group. When you use multiple Elements components
-//                       instead of the combined CardElement, the Elements group indicates 
-//                       which ones are related. For example, if you used separate components
-//                       for the card number, expiration date, and CVC, you would put them 
-//                       all in the same Elements group. Note that Elements must contain the
-//                       component that you wrapped with injectStripe, you cannot put Elements
-//                       inside of the component that you wrap with injectStripe. */}
-//                     <Elements>
-//                         {/* PRICING PLAN 1 COMPONENT */}
-//                         <PricingPlan1 />
-//                     </Elements>
-
-                    
-//                     <Elements>
-//                         {/* PRICING PLAN 2 COMPONENT */}
-//                         <PricingPlan2 />
-//                     </Elements>
-
-//                 </div>
-//             </StripeProvider>
-//         )
-//     }
-// }
 
 // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
 export default injectStripe(AddToAccountBalance);
+
