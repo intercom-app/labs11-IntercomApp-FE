@@ -5,7 +5,7 @@ const Services = () => {
 		<section id="services">
 			<div className="greenback">
 				<div className="container">
-					<div className="text-center homeport2"><h2>Features</h2></div>
+					<div className="text-center homeport2"><h2>Services</h2></div>
 					<div className="row">
 						<div className="col-md-12 homeservices1">
 							<div className="col-md-3 portfolio-item">

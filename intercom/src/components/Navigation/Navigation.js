@@ -35,11 +35,13 @@ export default class Navigation extends React.Component {
                                 <li onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>                               
                             </ul>
                             :
-                            <ul className="nav navbar-nav navbar-right custom-menu" >
-                                <li className="active"><a href="#about">About</a></li>
-                                <li><a href="#contact">Contact</a></li>
+                            <ul className="nav navbar-nav navbar-right custom-menu" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#services">Services</a></li>
                                 <li><a href="#meet-team">Team</a></li>
+                                <li><a href="#contact">Contact</a></li>
                                 <li><Link to={`/`} onClick={this.props.login}>Login</Link></li>
+                                <li><Link to={`/`} onClick={this.props.login}>Sign Up</Link></li>
                             </ul>
                         }
                     </div>
