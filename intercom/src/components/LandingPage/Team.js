@@ -9,7 +9,7 @@ const Team = () => {
 				<img className="img-responsive displayed" src="images/short.png" alt="about" />
 				</div>
 				<div className="row teamspace">
-					<div className="col-xs-4 col-sm-3 col-md-2">
+					<div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars3.githubusercontent.com/u/11194836?s=400&v=4"} alt="github-adrian-adames" />
@@ -24,7 +24,7 @@ const Team = () => {
 						</div>
 					</div>
 
-					<div className="col-xs-4 col-sm-3 col-md-2">
+					<div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars3.githubusercontent.com/u/18264960?s=400&v=4"} alt="github-erinç-emer" />
@@ -39,7 +39,7 @@ const Team = () => {
 						</div>
 					</div>
 
-                    <div className="col-xs-4 col-sm-3 col-md-2">
+                    <div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars1.githubusercontent.com/u/39572677?s=400&v=4"} alt="github-stephen-fargali" />
@@ -54,7 +54,7 @@ const Team = () => {
 						</div>
 					</div>
 
-                    <div className="col-xs-4 col-sm-3 col-md-2">
+                    <div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars0.githubusercontent.com/u/44040846?s=400&v=4"} alt="github-chelsea-tolnai" />
@@ -69,7 +69,7 @@ const Team = () => {
 						</div>
 					</div>
 
-                    <div className="col-xs-4 col-sm-3 col-md-2">
+                    <div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars3.githubusercontent.com/u/44141603?s=400&v=4"} alt="github-sergey-osipyan" />
@@ -84,7 +84,7 @@ const Team = () => {
 						</div>
 					</div>
 
-                    <div className="col-xs-4 col-sm-3 col-md-2">
+                    <div className="col-xs-4 col-sm-4 col-md-2">
 						<div className="team-member">
 							<div className="team-img">
 								<img className="img-responsive" src={"https://avatars2.githubusercontent.com/u/1798283?s=400&v=4"} alt="github-lotanna-x" />
