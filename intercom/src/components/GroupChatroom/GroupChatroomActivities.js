@@ -28,7 +28,7 @@ class GroupChatroomActivities extends Component {
     render() {
         const bulletless = { listStyleType: 'none' }
         const { activities } = this.props
-        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');
+        const avatar = this.props.avatar || require('../../images/avatar1.png');
         return (
             <div className="comments1">            
                 <h4>Latest Activities</h4>

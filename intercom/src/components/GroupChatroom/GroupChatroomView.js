@@ -264,6 +264,7 @@ class GroupChatroomView extends Component {
                     <div className='col-md-8'>
                         <GroupChatroomActivities
                             activities={activities}
+                            avatar={this.state.user.avatar}
                         />
                     </div>
                 </div>

@@ -13,7 +13,6 @@ class User extends Component {
         groupsBelongedTo: [],
         groupsInvitedTo: [],
         groupsOwned: []
-
     }
 
     componentDidMount() {
@@ -96,10 +95,8 @@ class User extends Component {
 
 
     render() {
-        console.log(this.state.user)
-        console.log(localStorage.getItem('userId') === this.props.match.params.id)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
-        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');        
+        const avatar = this.state.user.avatar || require('../../images/avatar1.png');        
         return (
             <>
                 {localStorage.getItem('userId') !== this.props.match.params.id ?

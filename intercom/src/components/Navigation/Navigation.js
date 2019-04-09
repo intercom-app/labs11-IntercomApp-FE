@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import host from '../../host';
+import axios from 'axios';
 
 
 export default class Navigation extends React.Component {
 
-    render() {
+    render() {              
         return (
 
             <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -30,7 +32,7 @@ export default class Navigation extends React.Component {
                             <ul className="nav navbar-nav navbar-right custom-menu" >
                                 <li className="active"><Link to={`/user/${this.props.id}`}>My Groups</Link></li>
                                 <li><Link to={`/user/${this.props.id}/account`}>Account</Link></li>
-                                <li onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>
+                                <li onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>                               
                             </ul>
                             :
                             <ul className="nav navbar-nav navbar-right custom-menu" >
