@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Navigation from './components/Navigation/Navigation';
 
-
 class App extends Component {
 
   login = () => {
@@ -25,7 +24,9 @@ class App extends Component {
     const id = localStorage.getItem('userId');
 
     return (
-      <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated} />
+      <>
+        <Navigation id={id} login={this.login} logout={this.logout} isAuthenticated={this.props.auth.isAuthenticated} />
+      </>
     )
   }
 }
