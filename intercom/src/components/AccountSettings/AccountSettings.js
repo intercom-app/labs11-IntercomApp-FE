@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
+import DeleteAccount from './DeleteAccount';
 
 
 class AccountSettings extends Component {
@@ -133,14 +134,15 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <button
+                                        <DeleteAccount user={this.state.user} handleDelete={this.handleDelete} />
+                                        {/* <button
                                             style={{ padding: "3px 12px"}}
                                             className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
                                             type="button"
                                             onClick={() => this.handleDelete(user.id)}
                                         >
                                             Delete Account
-                                        </button>
+                                        </button> */}
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
