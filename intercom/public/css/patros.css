@@ -123,7 +123,7 @@ span.text a:hover{
 .list-social-icons li:hover {background:#33cc33;}
 .list-social-icons li:hover .social-icons {color:#f7f7f7;}
 .list-social-icons li:active .social-icons {background:#33cc33;}
-.blog{padding-top:100px;}
+/* .blog{padding-top:100px;} */
 .pagination {
     margin: 20px 0 50px !important;
 }    
@@ -166,7 +166,10 @@ select:focus {outline-color: transparent;}
 .form-control:focus{border-color:#33cc33;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}
 img.displayed{display: block;margin-left: auto;margin-right: auto;background-color:transparent;}
 .img-products{position:center;}
-.navbar-inverse { background-color: #33cc33; opacity:0.85; font-size:15px; padding-top:16px;  padding-bottom:16px }
+.navbar-inverse { background-color: #33cc33; opacity:0.85; font-size:15px; padding-top:16px;  padding-bottom:16px;
+    position: inherit
+
+}
 .navbar-inverse .navbar-nav>li>a{font-size: 15px;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; ;}
 .navbar-inverse .navbar-nav>li>a { color:#efefef; padding-bottom:6px; padding-right:10px; }
 .navbar-inverse .navbar-nav li { margin-left:15px; text-transform: uppercase; }
@@ -176,7 +179,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .navbar-inverse .navbar-nav>li>a:active { border-bottom: 3px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; }
 .navbar-inverse { border:none; }
 .navbar-brand img{ margin-top:-5px; }
-@media only screen and (max-width:767px) { .navbar-collapse{ border:none; } .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover { border:none; } .navbar-inverse .navbar-nav>li { border-bottom:1px solid #bd502f; } .navbar-inverse .navbar-nav>li:hover { border-bottom:1px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; } .navbar-inverse .navbar-nav>li>a:hover { color:#FFF; border:none; } }
+@media only screen and (max-width:767px) { .navbar-collapse{ border:none; } .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover { border:none; } .navbar-inverse .navbar-nav>li { border-bottom:1px solid #398439; } .navbar-inverse .navbar-nav>li:hover { border-bottom:1px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; } .navbar-inverse .navbar-nav>li>a:hover { color:#FFF; border:none; } }
  .carousel-caption{position:absolute;right:15%;top:-40px;left:15%;z-index:10;padding-bottom:20px;color:#313131;text-align:center;text-shadow:0 0px 0px rgba(0,0,0,.6)}
  .carousel-caption .btn{text-shadow:none}
  @media screen and (min-width:768px){.carousel-control .glyphicon-chevron-left,.carousel-control .glyphicon-chevron-right,.carousel-control .icon-next,.carousel-control .icon-prev{width:30px;height:30px;margin-top:-15px;font-size:30px}.carousel-control .glyphicon-chevron-left,.carousel-control .icon-prev{margin-left:-15px}.carousel-control .glyphicon-chevron-right,.carousel-control .icon-next{margin-right:-15px} .carousel-caption{right:20%;left:20%;padding-bottom:30px} }
@@ -195,7 +198,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 @-webkit-keyframes magic-mouse-icon { 0% { margin-top: 6px; opacity: 0;} 30% { opacity: 1;} 100% { margin-top: 18px; opacity: 0;} }
 @-o-keyframes magic-mouse-icon { 0% { margin-top: 6px; opacity: 0;} 30%  { opacity: 1;} 100% { margin-top: 18px; opacity: 0;} }
 @keyframes magic-mouse-icon { 0%   { margin-top: 6px; opacity: 0;} 30%  { opacity: 1;} 100% { margin-top: 18px; opacity: 0;} }
-.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover { background-color: #bd502f; }
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover { background-color: #398439; }
 .homeservices1 { padding-top:40px; margin-bottom:40px; }
 .homeservices1 a { color:#efefef; }
 .homeservices1 a:hover { color:#FFF; text-decoration: none; }
@@ -531,9 +534,9 @@ ul.cb-slideshow h4{
 .singlepost {
     margin-bottom: 20px;
 }
-.blog {
-    padding-top: 50px;
-}
+/* .blog {
+    padding-top: 18%;
+} */
 }
 
 @media screen and (min-width: 769px) and (max-width: 1140px) {

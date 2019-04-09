@@ -96,6 +96,7 @@ class User extends Component {
 
 
     render() {
+        console.log(this.state.user)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
         const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');        
         return (
