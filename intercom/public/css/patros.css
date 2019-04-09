@@ -94,6 +94,8 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .color-elements{color:#33cc33;}
 .custom-menu li{font-size: 12px;padding:0px 0px;}
 .btn-custom, .btn-custom:active,.btn-custom:focus, .btn-custom:hover{background-color:#33cc33;border-color:#33cc33}
+.btn-signup { margin-bottom: 15px; font-size: 20px; color: #313131; background-color:  #33cc33; border-color: #313131}
+.btn-signup:active,.btn-signup:focus, .btn-signup:hover{ color: #33cc33; background-color: white; border-color: #33cc33}
 #about {padding: 80px 0px 40px 0px;/*background-image:url("../images/background.jpg");background-repeat:repeat;*/}
 #products {padding-top:80px;}
 #contact {padding-top:80px;}
@@ -103,8 +105,8 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .homeport1 { margin-top:20px; }
 .homeport2 { margin-top:40px; }
 .greenback{ background-color: #33cc33 }
-#about p{color:#313131;line-height: 1.8em;
-    font-size: 14px;}
+#about p{color:#313131;line-height: 1.8em; font-size: 14px;}
+#signup p{color:#313131;line-height: 1.8em; font-size: 14px;}
 .prodmap{margin-right:0px;  margin-left:0px;  position: relative;}
 #contact {background-color:#2D2D2D;color:#f7f7f7;}
 #contact .fa{padding-right: 31px; color:#33cc33 ;}
@@ -167,8 +169,8 @@ select:focus {outline-color: transparent;}
 img.displayed{display: block;margin-left: auto;margin-right: auto;background-color:transparent;}
 .img-products{position:center;}
 .navbar-inverse { background-color: #33cc33; opacity:0.85; font-size:15px; padding-top:16px;  padding-bottom:16px;
-    position: inherit
-
+    position: inherit;
+    margin-bottom: 0px;
 }
 .navbar-inverse .navbar-nav>li>a{font-size: 15px;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; ;}
 .navbar-inverse .navbar-nav>li>a { color:#efefef; padding-bottom:6px; padding-right:10px; }
@@ -446,6 +448,9 @@ header.carousel {
 }  
 .h2, h2 {
     font-size: 20px;
+}
+.btn-signup {
+    font-size: 16px;
 }
 #about {
     padding: 30px 0px 0 0px;
