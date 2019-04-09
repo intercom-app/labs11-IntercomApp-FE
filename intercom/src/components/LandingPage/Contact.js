@@ -1,6 +1,9 @@
 import React from 'react';
 
 const Contact = () => {
+
+		const sendEmail = `${process.env.REACT_APP_CONTACT_EMAIL}`
+
     return (
 		<section id="contact">
 			<div className="container"> 
@@ -12,7 +15,7 @@ const Contact = () => {
 							</div>
 						</div>
 						<div className="col-lg-12 col-md-12">
-							<form className="inline" id="contactForm" method="post">
+							<form className="inline" id="contactForm" action={sendEmail} method="POST" >
 								<div className="row">
 									<div className="col-sm-6 height-contact-element">
 										<div className="form-group">
