@@ -36,10 +36,6 @@ class UpdatePaymentMethod extends Component {
             const userStripeId = res.data.stripeId;
             console.log('userStripeId: ', userStripeId);
 
-            // const customerStripeDefaultSource = await axios.post(`${host}/api/purchasingAndBilling/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
-            // const defaultSourceId = customerStripeDefaultSource.data.defaultSourceId;
-            // console.log('defaultSourceId: ', defaultSourceId);
-
             const newlyUpdatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
@@ -53,7 +49,7 @@ class UpdatePaymentMethod extends Component {
 
     updatePaymentMethod = async() => {
         try{
-            // Step 1, create a source from the entered credit card information. //Source objects allow you to accept a variety of payment methods. They represent a customer's payment instrument, and can be used with the Stripe API just like a Card object: once chargeable, they can be charged, or can be attached to customers.
+            // Step 1, create a source from the entered credit card information. 
             const source = await this.createSource();
             console.log('source: ', source);
             // Step 2, update the customer's default source. 
@@ -80,6 +76,6 @@ class UpdatePaymentMethod extends Component {
         )
     }
 }
-// The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
+
 export default injectStripe(UpdatePaymentMethod);
 
