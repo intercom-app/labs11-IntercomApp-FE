@@ -15,7 +15,9 @@ class GroupForm extends Component {
             members: [],
             invitees: [],
             users: [],
-            group: {},
+            group: {
+                name: ''
+            },
             error: null,
         };
 
@@ -166,81 +168,77 @@ class GroupForm extends Component {
         let { group, invite, search, users } = this.state
 
         return (
-            <>
-                <aside className="col-md-4 sidebar-padding">
-                    <div className="blog-sidebar">
-                        <h3 className="sidebar-title">Create New Group</h3>
-                        <hr></hr>
-                        <h4 className="sidebar-title">New Group Name: </h4>
-                        {!invite
-                        ? 
-                        <div className="input-group">
-                            <input
-                                className="form-control"
-                                type="text"
-                                name="name"
-                                id="groupNameInput"
-                                placeholder="Group Name..."
-                                onChange={this.handleGroupInput}
-                                value={group.name}
-                            />
-                            <span className="input-group-btn">
-                                <button
-                                    className="btn btn-default"
-                                    type="button"
-                                    onClick={this.createGroup}
-                                >
-                                    Create
-                                </button>
-                            </span>
-                        </div>
-                        :
-                        <div className="input-group">
-                            <input
-                                className="form-control"
-                                type="text"
-                                name="name"
-                                id="groupNameInput"
-                                value={group.name}
-                                disabled
-                            />
-                            <span className="input-group-btn">
-                                <button
-                                    className="btn btn-default"
-                                    type="button"
-                                    disabled
-                                >
-                                    Created
-                                </button>
-                            </span>
-                        </div>
-                        }
+            <div className="blog-sidebar">
+                <h3 className="sidebar-title">Create New Group</h3>
+                <hr></hr>
+                <h4 className="sidebar-title">New Group Name: </h4>
+                {!invite
+                ? 
+                <div className="input-group">
+                    <input
+                        className="form-control"
+                        type="text"
+                        name="name"
+                        id="groupNameInput"
+                        placeholder="Group Name..."
+                        onChange={this.handleGroupInput}
+                        value={group.name}
+                    />
+                    <span className="input-group-btn">
+                        <button
+                            className="btn btn-default"
+                            type="button"
+                            onClick={this.createGroup}
+                        >
+                            Create
+                        </button>
+                    </span>
+                </div>
+                :
+                <div className="input-group">
+                    <input
+                        className="form-control"
+                        type="text"
+                        name="name"
+                        id="groupNameInput"
+                        value={group.name}
+                        disabled
+                    />
+                    <span className="input-group-btn">
+                        <button
+                            className="btn btn-default"
+                            type="button"
+                            disabled
+                        >
+                            Created
+                        </button>
+                    </span>
+                </div>
+                }
 
-                        {invite && group.name
-                            ? <>
-                                <h4 className="sidebar-title" style={{marginTop: "20px"}}>
-                                    Invite Users to {group.name}:
-                                </h4>
-                                <SearchBar
-                                    inputValue={search}
-                                    updateSearch={this.handleSearch}
-                                    clearSearch={this.clearSearch}
-                                />
-                                {search.length >= 3
-                                    ? <SearchResults
-                                        users={users}
-                                        inviteUser={this.inviteUser}
-                                    />
-                                    : null
-                                }
-                                <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
-
-                            </>
+                {invite && group.name
+                    ? <>
+                        <h4 className="sidebar-title" style={{marginTop: "20px"}}>
+                            Invite Users to {group.name}:
+                        </h4>
+                        <SearchBar
+                            inputValue={search}
+                            updateSearch={this.handleSearch}
+                            clearSearch={this.clearSearch}
+                        />
+                        {search.length >= 3
+                            ? <SearchResults
+                                users={users}
+                                inviteUser={this.inviteUser}
+                            />
                             : null
                         }
-                    </div>
-                </aside>
-            </>
+                        <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
+
+                    </>
+                    : null
+                }
+            </div>
         );
     }
 }
