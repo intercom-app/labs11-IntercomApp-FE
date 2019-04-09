@@ -6,31 +6,31 @@
 .cb-slideshow, .cb-slideshow:after { position:absolute; width:100%; height:100%; top: 0px; left: 0px; z-index: 0; background-color:#131313;
 }
 .cb-slideshow li span { width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; color: transparent;background-size: cover;
-    background-repeat: none; opacity: 0; z-index: 0; -webkit-backface-visibility: hidden; -webkit-animation: imageAnimation 36s linear infinite 0s;
-    -moz-animation: imageAnimation 36s linear infinite 0s; -o-animation: imageAnimation 36s linear infinite 0s; -ms-animation: imageAnimation 36s linear infinite 0s;
-    animation: imageAnimation 36s linear infinite 0s; }
+    background-repeat: none; opacity: 0; z-index: 0; -webkit-backface-visibility: hidden; -webkit-animation: imageAnimation 24s linear infinite 0s;
+    -moz-animation: imageAnimation 24s linear infinite 0s; -o-animation: imageAnimation 24s linear infinite 0s; -ms-animation: imageAnimation 24s linear infinite 0s;
+    animation: imageAnimation 24s linear infinite 0s; }
 .cb-slideshow li div { z-index: 1000; position: absolute; bottom: 30px; left: 0px; width: 100%; text-align: center; opacity: 0; color: #fff;
-    -webkit-animation: titleAnimation 36s linear infinite 0s; -moz-animation: titleAnimation 36s linear infinite 0s; -o-animation: titleAnimation 36s linear infinite 0s;
-    -ms-animation: titleAnimation 36s linear infinite 0s; animation: titleAnimation 36s linear infinite 0s; }
+    -webkit-animation: titleAnimation 24s linear infinite 0s; -moz-animation: titleAnimation 24s linear infinite 0s; -o-animation: titleAnimation 24s linear infinite 0s;
+    -ms-animation: titleAnimation 24s linear infinite 0s; animation: titleAnimation 24s linear infinite 0s; }
 .cb-slideshow li div h3 { font-family: 'Open Sans'; font-size: 70px; padding-left: 20px; line-height: 50px; color:#33cc33; }
 .cb-slideshow h3,.cb-slideshow h4{ margin-bottom: 15%; }
-.cb-slideshow li:nth-child(1) span { background-image: url(../images/unsplash1.jpg); }
-.cb-slideshow li:nth-child(2) span { background-image: url(../images/unsplash2.jpg); -webkit-animation-delay: 6s; -moz-animation-delay: 6s;
+.cb-slideshow li:nth-child(1) span { background-image: url(../images/blur-cellphone-connection-983831.jpg); }
+.cb-slideshow li:nth-child(2) span { background-image: url(../images/girl-headphones-headset-33815.jpg); -webkit-animation-delay: 6s; -moz-animation-delay: 6s;
     -o-animation-delay: 6s; -ms-animation-delay: 6s; animation-delay: 6s; }
-.cb-slideshow li:nth-child(3) span { background-image: url(../images/unsplash3.jpg); -webkit-animation-delay: 12s; -moz-animation-delay: 12s;
+.cb-slideshow li:nth-child(3) span { background-image: url(../images/green-smartphone-call.jpg); -webkit-animation-delay: 12s; -moz-animation-delay: 12s;
     -o-animation-delay: 12s; -ms-animation-delay: 12s; animation-delay: 12s; }
-.cb-slideshow li:nth-child(4) span { background-image: url(../images/unsplash4.jpg); -webkit-animation-delay: 18s; -moz-animation-delay: 18s;
+.cb-slideshow li:nth-child(4) span { background-image: url(../images/can-chat-chatting-362.jpg); -webkit-animation-delay: 18s; -moz-animation-delay: 18s;
     -o-animation-delay: 18s; -ms-animation-delay: 18s; animation-delay: 18s; }
-.cb-slideshow li:nth-child(5) span { background-image: url(../images/unsplash5.jpg); -webkit-animation-delay: 24s; -moz-animation-delay: 24s;
+/* .cb-slideshow li:nth-child(5) span { background-image: url(../images/unsplash5.jpg); -webkit-animation-delay: 24s; -moz-animation-delay: 24s;
     -o-animation-delay: 24s; -ms-animation-delay: 24s; animation-delay: 24s; }
 .cb-slideshow li:nth-child(6) span { background-image: url(../images/unsplash6.jpg); -webkit-animation-delay: 30s; -moz-animation-delay: 30s;
-    -o-animation-delay: 30s; -ms-animation-delay: 30s; animation-delay: 30s; }
+    -o-animation-delay: 30s; -ms-animation-delay: 30s; animation-delay: 30s; } */
 .cb-slideshow li:nth-child(2) div { -webkit-animation-delay: 6s; -moz-animation-delay: 6s; -o-animation-delay: 6s; -ms-animation-delay: 6s;
     animation-delay: 6s; }
 .cb-slideshow li:nth-child(3) div { -webkit-animation-delay: 12s; -moz-animation-delay: 12s; -o-animation-delay: 12s; -ms-animation-delay: 12s; animation-delay: 12s; }
 .cb-slideshow li:nth-child(4) div { -webkit-animation-delay: 18s; -moz-animation-delay: 18s; -o-animation-delay: 18s; -ms-animation-delay: 18s; animation-delay: 18s; }
-.cb-slideshow li:nth-child(5) div { -webkit-animation-delay: 24s; -moz-animation-delay: 24s; -o-animation-delay: 24s; -ms-animation-delay: 24s; animation-delay: 24s; }
-.cb-slideshow li:nth-child(6) div { -webkit-animation-delay: 30s; -moz-animation-delay: 30s; -o-animation-delay: 30s; -ms-animation-delay: 30s; animation-delay: 30s; }
+/* .cb-slideshow li:nth-child(5) div { -webkit-animation-delay: 24s; -moz-animation-delay: 24s; -o-animation-delay: 24s; -ms-animation-delay: 24s; animation-delay: 24s; }
+.cb-slideshow li:nth-child(6) div { -webkit-animation-delay: 30s; -moz-animation-delay: 30s; -o-animation-delay: 30s; -ms-animation-delay: 30s; animation-delay: 30s; } */
 /* Animation for the slideshow images */
 @-webkit-keyframes imageAnimation { 0% { opacity: 0; -webkit-animation-timing-function: ease-in; } 8% { opacity: 1; -webkit-animation-timing-function: ease-out; } 17% { opacity: 1 } 25% { opacity: 0 } 100% { opacity: 0 } }
 @-moz-keyframes imageAnimation { 0% { opacity: 0;  -moz-animation-timing-function: ease-in; } 8% { opacity: 1; -moz-animation-timing-function: ease-out; } 17% { opacity: 1 } 25% { opacity: 0 } 100% { opacity: 0 } }
@@ -74,6 +74,7 @@ a{color:#33cc33;text-decoration:none}
 a:focus,a:hover{color:#313131;text-decoration:none;}
 .img-portfolio { margin-bottom: 30px; }
 .img-hover:hover { opacity: 0.8; }
+#home { height: 100vh; }
 header.carousel { height: 100%; max-height: 650px; }
 header.carousel .item, header.carousel .item.active, header.carousel .carousel-inner { height: 100%; }
 header.carousel .fill2 { width: 100%; height: 100%; background-position: center; background-size: cover; background-color: #1B2D2D; }
@@ -102,7 +103,7 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 #contact {padding-top:80px;}
 .homeport1 { margin-top:20px; }
 .homeport2 { margin-top:40px; }
-.orangeback{ background-color: #33cc33 }
+.greenback{ background-color: #33cc33 }
 #about p{color:#313131;line-height: 1.8em;
     font-size: 14px;}
 .prodmap{margin-right:0px;  margin-left:0px;  position: relative;}
@@ -306,14 +307,16 @@ figure.effect-oscar:hover img {	opacity: 0.4; }
 .hvr-bounce-to-bottom:hover, .hvr-bounce-to-bottom:focus, .hvr-bounce-to-bottom:active { color: white; }
 .hvr-bounce-to-bottom:hover:before, .hvr-bounce-to-bottom:focus:before, .hvr-bounce-to-bottom:active:before { -webkit-transform: scaleY(1); transform: scaleY(1); -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66); transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66); }
 #map-canvas {width: 100%; height: 400px;line-height: 2em;}
+#contact { margin-top:80px; }
 #contactpage .form-control { color:#3d3d3d; }
 #contactpage h2 { margin:40px 0; }
 #page1 {padding: 80px 0px 40px 0px;}
 #portfolio1 {padding-top:80px; margin-bottom: 80px; clear:both; display: block; }
 #meet-team { padding-top:80px;}
+#meet-team h3 {font-size:18px;}
 #meet-team ul {text-align: center;}
-#meet-team li{ display: inline-block; margin-right:24px; font-size:18px; }
-#meet-team .teamspace{ margin-top:30px; }
+#meet-team li{ display: inline-block; font-size:24px; }
+#meet-team .teamspace{ margin-top:30px; text-align: center;}
 #meet-team  .team-img img { filter: grayscale(1); -webkit-filter: grayscale(1); -moz-filter: grayscale(1); -o-filter: grayscale(1); -ms-filter: grayscale(1); -webkit-transition:0.8s; transition: 0.8s; }
 #meet-team  .team-img img:hover { filter: grayscale(0); -webkit-filter: grayscale(0); -moz-filter: grayscale(0); -o-filter: grayscale(0); -ms-filter: grayscale(0); -webkit-transition:0.8s; transition: 0.8s; cursor: pointer; }
  /*portfolio*/
@@ -471,7 +474,7 @@ header.carousel {
 }
 ul.cb-slideshow h4{
 	font-size:15px;
-	margin:1;
+	margin:1px;
 }
 .cb-slideshow h3{
     margin-bottom:5%;
