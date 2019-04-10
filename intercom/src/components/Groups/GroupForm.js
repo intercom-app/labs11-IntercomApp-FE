@@ -113,7 +113,7 @@ class GroupForm extends Component {
             search: '',
             users: [],
             invitees: [],
-            group: {},
+            group: { name: '' },
             invite: false
         })
         document.getElementById("groupNameInput").value = '';
