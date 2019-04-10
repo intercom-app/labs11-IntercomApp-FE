@@ -6,14 +6,15 @@ import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
+import RecentActivity from '../RecentActivity/RecentActivity';
 
 class User extends Component {
     state = {
         user: {},
         groupsBelongedTo: [],
         groupsInvitedTo: [],
-        groupsOwned: []
-
+        groupsOwned: [],
+        activities: [],
     }
 
     componentDidMount() {
@@ -22,7 +23,6 @@ class User extends Component {
 
         axios.get(userEndpoint)
             .then(res => {
-                // console.log(res.data)
                 this.setState({ user: res.data })
             })
             .catch(err => {
@@ -32,22 +32,24 @@ class User extends Component {
                 });
             });
         this.getgroupsOwned(id);
-        this.getGroupsInvitedTo(id);
         // Groups belonged to is called after groups owned
+        this.getGroupsInvitedTo(id);
+
     }
 
+    getgroupsOwned = (id) => {
+        const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
 
-    getGroupsInvitedTo = (id) => {
-        const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-
-        axios.get(groupsInvitedTo)
+        axios.get(groupsOwned)
             .then(res => {
-                this.setState({ groupsInvitedTo: res.data })
+                this.setState({ groupsOwned: res.data })
+                this.getgroupsBelongedTo(id, res.data);
+                this.getRecentActivity(res.data);
             })
             .catch(err => {
                 this.setState({
                     error: err.response.data.message,
-                    groupsInvitedTo: []
+                    groupsOwned: []
                 });
             });
     }
@@ -62,6 +64,7 @@ class User extends Component {
                     !groupsOwnedIds.includes(group.groupId)
                 )
                 this.setState({ groupsBelongedTo: groupsNotOwned })
+                this.getRecentActivity(groupsNotOwned);
             })
             .catch(err => {
                 this.setState({
@@ -71,18 +74,18 @@ class User extends Component {
             });
     }
 
-    getgroupsOwned = (id) => {
-        const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
+    getGroupsInvitedTo = (id) => {
+        const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
 
-        axios.get(groupsOwned)
+        axios.get(groupsInvitedTo)
             .then(res => {
-                this.setState({ groupsOwned: res.data })
-                this.getgroupsBelongedTo(id, res.data);
+                this.setState({ groupsInvitedTo: res.data })
+                this.getRecentActivity(res.data);
             })
             .catch(err => {
                 this.setState({
                     error: err.response.data.message,
-                    groupsOwned: []
+                    groupsInvitedTo: []
                 });
             });
     }
@@ -94,10 +97,31 @@ class User extends Component {
         // Groups belonged to is called after groups owned
     }
 
+    getRecentActivity = (groups) => {
+        groups.forEach(group => {
+            axios.get(`${host}/api/groups/${group.groupId}/activities`)
+            .then(res => {
+                const activities = res.data.map( activity => {
+                    return {...activity, groupId: group.groupId, groupName: group.GroupName}
+                })
+                const updatedActivities = this.state.activities.concat(activities)
+                this.setState({
+                    activities: updatedActivities
+                });
+            })
+            .then(() => {
+                this.state.activities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt) )
+            })
+            .catch(err => console.error(err));           
+        })
+    }
+
 
     render() {
-        let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo } = this.state
-        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');        
+        let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
+        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');    
+        const recentActivities = activities.slice(0, 5)
+
         return (
             <>
                 {error
@@ -123,6 +147,7 @@ class User extends Component {
                                 <aside className="col-md-4 sidebar-padding">
 
                                     <GroupForm updateGroups={this.updateGroups} />
+                                    <RecentActivity recentActivities={recentActivities} />
 
                                 </aside>
 
