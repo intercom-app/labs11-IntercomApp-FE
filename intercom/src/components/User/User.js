@@ -128,23 +128,23 @@ class User extends Component {
         return (
             <>
                 {error
-                    ? <p>Error retrieving user!</p>
+                    ? <h1>Error retrieving user!</h1>
                     : <>
                         <section className="container blog">
+
+                            <div className="row">
+                                <div className="col-md-12"> 
+                                    <img className="media-object pull-left avatar-img-users" src={avatar} alt="" />  
+                                    <span className="comments-padding"></span>                                                                              
+                                    <h2>Welcome {user.displayName}!</h2>
+                                </div>
+                            </div>
+
                             <div className="row">
                                 <div className="col-md-8">
-
-                                    <div>
-                                        <img className="media-object pull-left avatar-img-users" src={avatar} alt="" />  
-                                        <span className="comments-padding"></span>                                                                              
-                                        <h2>Welcome {user.displayName}!</h2>
-                                        {/* <span>{user.email}</span> */}
-                                    </div>
-
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited groupsInvited={groupsInvitedTo} updateGroups={this.updateGroups} />
-
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
@@ -153,7 +153,6 @@ class User extends Component {
                                     <RecentActivity recentActivities={recentActivities} />
 
                                 </aside>
-
                             </div>
                         </section>
                     </>

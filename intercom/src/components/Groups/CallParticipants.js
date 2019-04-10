@@ -30,7 +30,12 @@ class CallParticipants extends Component {
 
     render() { 
         return ( 
-            <>On Call:  {this.state.callParticipants.length}</>
+            <>
+                {this.state.callParticipants.length === 0
+                ? null
+                : <>On Call:  {this.state.callParticipants.length}</>
+                }
+            </>
         );
     }
 }

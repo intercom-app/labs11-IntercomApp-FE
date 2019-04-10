@@ -31,7 +31,7 @@ class CallStatus extends Component {
 
     render() {
         return (
-            <>Call Status:  {this.state.callStatus === 1 ? 'Active' : 'Inactive'}</>
+            <>Call Status:  {this.state.callStatus === true ? 'Active' : 'Inactive'}</>
         );
     }
 }
