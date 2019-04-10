@@ -11,7 +11,7 @@ class AddToAccountBalanceNew extends Component {
         super(props);
         this.state = {
             currentAccountBalance: 0,
-            amountToAddToAccountBalance:''
+            amountToAdd:''
         };
     }
 
@@ -45,7 +45,7 @@ class AddToAccountBalanceNew extends Component {
                                 <input
                                     type = 'number'
                                     name = 'amountToAddToAccountBalance'
-                                    value = {this.state.amountToAddToAccountBalance}
+                                    value = {this.state.amountToAdd}
                                     onChange = {this.inputChangeHandler}
                                 />
                                 <button onClick = {this.addToAccountBalance} type = 'submit'> SubmitPaymentAndAddToAccountBalance </button>
