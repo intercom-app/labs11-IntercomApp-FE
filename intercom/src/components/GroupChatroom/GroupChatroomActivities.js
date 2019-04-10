@@ -43,8 +43,8 @@ class GroupChatroomActivities extends Component {
                                 <span><i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}</span>
                                 <li key={ind} >
                                     <span className="comments-padding"></span>
-                                    <strong>{activity.displayName} {': '}</strong>
-                                    {activity.activity} {' '}
+                                    <strong>{activity.displayName}{': '}</strong>
+                                    {activity.activity}
                                 </li>
                             </ul>
                             

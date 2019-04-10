@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 class GroupChatroomCall extends Component {
 
     renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
-        const userOnCall = (userCallStatus === 1)
-        const groupOnCall = (groupCallStatus === 1)
+        const userOnCall = (userCallStatus === true)
+        const groupOnCall = (groupCallStatus === true)
         switch (true) {
             case (!userOnCall && !groupOnCall):
                 return (
@@ -43,29 +43,67 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
-                <aside className="col-md-8 sidebar-padding">
-                    <div className="">
-                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
-                        <hr></hr>
-                        <h4 className="sidebar-title">Phone Number</h4>
-                        <p>
-                            {group.phoneNumber
-                                ? group.phoneNumber
-                                : 'No Active Phone Number'
-                            }
-                        </p>
+                <h1 className="page-header sidebar-title">
+                    Call Status
+                </h1>
 
-                        <h4 className="sidebar-title">Call Participants</h4>
-                        
-                        <p>
+                <div className="row blogu" >
+                    <div className="col-sm-12 col-md-12">
+                        {group.callStatus === true 
+                            ? 
+                            <>
+                                <span className='pull-right info-link'>
+                                    <i className="fa fa-question-circle"></i>
+                                    {' '}Join a Call
+                                </span>
+                                <h3 className="blog-title color-elements">Active</h3>
+                            </>
+                            : 
+                            <>
+                                <span className='pull-right info-link'>
+                                    <i className="fa fa-question-circle"></i>
+                                    {' '}Start a Call
+                                </span>
+                                <h3 className="blog-title color-elements">Inactive</h3>
+                            </>
+                        }
+                    </div>
+
+                    {group.callStatus === true 
+                    ? 
+                    <div className="col-sm-12 col-md-12">
+                        <div>
+                            <strong>Phone Number: </strong>
+                            <span className="comments-padding"></span>
+                            {group.phoneNumber}
+                        </div>
+
+                        <div style={{marginTop: "8px"}}>
+                            <strong>Call Participants:</strong>
+                            <span className="comments-padding"></span>
+                            {participants.length}
+                        </div>
+
+                        <p className="p-list">
                             {participants.map(user =>
                                 <span key={user.userId}>
-                                    {user.displayName}{' '}
+                                    {user.displayName}{' | '}
                                 </span>
                             )}
                         </p>
+                    </div >
+                    : null
+                    }
+
+                </div>
+                <hr></hr>
+
+                {/* <aside className="col-md-8 sidebar-padding">
+                    <div className="">
+                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
+                        <hr></hr>
                     </div>
-                </aside>
+                </aside> */}
             </>
 
         )

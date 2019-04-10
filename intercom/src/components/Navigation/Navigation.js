@@ -27,9 +27,9 @@ export default class Navigation extends React.Component {
                     {this.props.isAuthenticated()
                             ?
                             <ul className="nav navbar-nav navbar-right custom-menu" >
-                                <li data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" onClick={this.toggle}><Link to={`/user/${this.props.id}`}>My Groups</Link></li>
-                                <li data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"onClick={this.toggle}><Link to={`/user/${this.props.id}/account`}>Account</Link></li>
-                                <li data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"  onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>
+                                <li onClick={this.toggle}><Link to={`/user/${this.props.id}`}>My Groups</Link></li>
+                                <li onClick={this.toggle}><Link to={`/user/${this.props.id}/account`}>Account</Link></li>
+                                <li onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>
                             </ul>
                             :
                             <ul className="nav navbar-nav navbar-right custom-menu" >
