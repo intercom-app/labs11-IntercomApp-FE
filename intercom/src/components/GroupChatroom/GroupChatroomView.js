@@ -211,63 +211,78 @@ class GroupChatroomView extends Component {
                     ? <h1>Error retrieving group!</h1>
                     : <>
                         <section className="container blog">
+                                                               
                             <div className="row">
-                                <div className="col-md-8">                                                                    
-                                    <div className="row">
-                                        <div className="col-md-12"> 
-                                            <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
-                                            <span className="pull-left">
-                                                <h2>{group.name}</h2>
-                                            </span>
-                                            <span className="pull-right">                                                
-                                                <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
-                                                <h4>{isOwner ? 'Manage Members' : 'View Members'}</h4>
-                                                </Link>
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div className="col-md-12"> 
+                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
+                                    <span className="pull-left">
+                                        <h2>{group.name}</h2>
+                                    </span>
+                                    <span className="pull-right">                                                
+                                        <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                        <h4>{isOwner ? 'Manage Members' : 'View Members'}</h4>
+                                        </Link>
+                                    </span>
+                                </div>
+                            </div>
 
+                            <div className="row">
+                                <div className="col-md-8">     
                                     <GroupChatroomCall
                                         user={user}
                                         group={group}
                                         participants={participants}
                                         handleCallButton={this.handleCallButton}
                                     />
+
+                                    <GroupChatroomActivities
+                                        activities={activities}
+                                    />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <div className="blog-sidebar">
+                                            <h3 className="sidebar-title">Group Settings</h3>
+                                            <hr></hr>
+                                        {isOwner ? 
+                                        <>
+                                            <h4 className="sidebar-title">Update Group Name: </h4>
+                                            <div className="input-group">
+                                                <input
+                                                    className='form-control'
+                                                    onChange={this.handleInputChange}
+                                                    type='text'
+                                                    id='groupName'
+                                                    name='groupName'
+                                                    value={this.state.groupName}
+                                                    placeholder='New Name...'
+                                                >
+                                                </input>
+                                                <span className="input-group-btn">
+                                                    <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
+                                                        Update
+                                                    </button>
+                                                </span>
+                                            </div>
 
-                                    {isOwner ? 
-                                    <>
-                                        <h3 className="sidebar-title">Group Settings</h3>
-                                        <hr></hr>
+                                            <button className="btn btn-primary btn-group-delete"
+                                                type="button" onClick={this.deleteGroup}>Delete Group
+                                            </button>
+                                        </>
+                                        : null
+                                        }
+                                    </div>
+                                </aside>
 
-                                        <h4 className="sidebar-title">Update Group Name: </h4>
-                                        <div className="input-group">
-                                            <input
-                                                className='form-control'
-                                                onChange={this.handleInputChange}
-                                                type='text'
-                                                id='groupName'
-                                                name='groupName'
-                                                value={this.state.groupName}
-                                                placeholder='New Name...'
-                                            >
-                                            </input>
-                                            <span className="input-group-btn">
-                                                <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
-                                                    Update
-                                                </button>
-                                            </span>
-                                        </div>
+                                {/* <div className='col-md-8'>
+                                    <GroupChatroomActivities
+                                        activities={activities}
+                                    />
+                                </div> */}
 
-                                        <button className="btn btn-primary btn-group-delete"
-                                            type="button" onClick={this.deleteGroup}>Delete Group
-                                        </button>
-                                    </>
-                                    : null
-                                    }
+                            </div>
+
+                                
                                         {/* <h4 className="sidebar-title">New Group Name: </h4> */}
                                         {/* {!invite
                                         ? 
@@ -335,8 +350,7 @@ class GroupChatroomView extends Component {
                                             </>
                                             : null
                                         } */}
-                                    </div>
-                                </aside>
+
 {/* 
                                 {isOwner ?
                                     <div className='sidebar-padding'>
@@ -377,12 +391,7 @@ class GroupChatroomView extends Component {
                                         </Button>
                                     </>
                                 } */}
-                                <div className='col-md-8'>
-                                    <GroupChatroomActivities
-                                        activities={activities}
-                                    />
-                                </div>
-                            </div>
+
                         </section>
                     </>
                 }

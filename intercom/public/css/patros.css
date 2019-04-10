@@ -131,7 +131,7 @@ span.text a:hover{
 .pagination {
     margin: 20px 0 50px !important;
 }    
-.sidebar-padding{padding-top: 20px;}
+.sidebar-padding{padding-top: 0px;}
 .blog-title{margin-top: 0;}
 .blog-title a{color:#33cc33; -webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s;}
 .blog-title a:hover{color:#555;text-decoration: none;}
