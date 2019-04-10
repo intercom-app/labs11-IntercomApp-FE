@@ -213,9 +213,18 @@ class GroupChatroomView extends Component {
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">                                                                    
-                                    <div>
-                                        <span className="pull-left icon-img-users"><i className="fa fa-users fa-3x"></i></span>
-                                        <h2>{group.name}</h2>
+                                    <div className="row">
+                                        <div className="col-md-12"> 
+                                            <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
+                                            <span className="pull-left">
+                                                <h2>{group.name}</h2>
+                                            </span>
+                                            <span className="pull-right">                                                
+                                                <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                                <h4>{isOwner ? 'Manage Members' : 'View Members'}</h4>
+                                                </Link>
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <GroupChatroomCall
@@ -225,6 +234,110 @@ class GroupChatroomView extends Component {
                                         handleCallButton={this.handleCallButton}
                                     />
                                 </div>
+
+                                <aside className="col-md-4 sidebar-padding">
+                                    <div className="blog-sidebar">
+
+                                    {isOwner ? 
+                                    <>
+                                        <h3 className="sidebar-title">Group Settings</h3>
+                                        <hr></hr>
+
+                                        <h4 className="sidebar-title">Update Group Name: </h4>
+                                        <div className="input-group">
+                                            <input
+                                                className='form-control'
+                                                onChange={this.handleInputChange}
+                                                type='text'
+                                                id='groupName'
+                                                name='groupName'
+                                                value={this.state.groupName}
+                                                placeholder='New Name...'
+                                            >
+                                            </input>
+                                            <span className="input-group-btn">
+                                                <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
+                                                    Update
+                                                </button>
+                                            </span>
+                                        </div>
+
+                                        <button className="btn btn-primary btn-group-delete"
+                                            type="button" onClick={this.deleteGroup}>Delete Group
+                                        </button>
+                                    </>
+                                    : null
+                                    }
+                                        {/* <h4 className="sidebar-title">New Group Name: </h4> */}
+                                        {/* {!invite
+                                        ? 
+                                        <div className="input-group">
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="name"
+                                                id="groupNameInput"
+                                                placeholder="Group Name..."
+                                                onChange={this.handleGroupInput}
+                                                value={group.name}
+                                            />
+                                            <span className="input-group-btn">
+                                                <button
+                                                    className="btn btn-default"
+                                                    type="button"
+                                                    onClick={this.createGroup}
+                                                >
+                                                    Create
+                                                </button>
+                                            </span>
+                                        </div>
+                                        :
+                                        <div className="input-group">
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="name"
+                                                id="groupNameInput"
+                                                value={group.name}
+                                                disabled
+                                            />
+                                            <span className="input-group-btn">
+                                                <button
+                                                    className="btn btn-default"
+                                                    type="button"
+                                                    disabled
+                                                >
+                                                    Created
+                                                </button>
+                                            </span>
+                                        </div>
+                                        } */}
+
+                                        {/* {invite && group.name
+                                            ? <>
+                                                <h4 className="sidebar-title" style={{marginTop: "20px"}}>
+                                                    Invite Users to {group.name}:
+                                                </h4>
+                                                <SearchBar
+                                                    inputValue={search}
+                                                    updateSearch={this.handleSearch}
+                                                    clearSearch={this.clearSearch}
+                                                />
+                                                {search.length >= 3
+                                                    ? <SearchResults
+                                                        users={users}
+                                                        inviteUser={this.inviteUser}
+                                                    />
+                                                    : null
+                                                }
+                                                <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
+
+                                            </>
+                                            : null
+                                        } */}
+                                    </div>
+                                </aside>
+{/* 
                                 {isOwner ?
                                     <div className='sidebar-padding'>
                                         <div className="blog-sidebar">
@@ -263,7 +376,7 @@ class GroupChatroomView extends Component {
                                             Leave Group
                                         </Button>
                                     </>
-                                }
+                                } */}
                                 <div className='col-md-8'>
                                     <GroupChatroomActivities
                                         activities={activities}
