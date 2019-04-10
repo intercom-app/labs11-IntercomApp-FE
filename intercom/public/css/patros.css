@@ -230,7 +230,10 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .media { border-bottom: 1px solid #f2f2f2; padding-bottom:12px; }
 .media a:hover > img { filter: brightness(70%) !important;  -webkit-filter: brightness(70%); -moz-filter: brightness(70%); -o-filter: brightness(70%); -ms-filter: brightness(70%);-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; }
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {	background-color:#33cc33; border-color: #ddd; }
- .page-header { font-size: 25px; padding-bottom:18px; text-transform: uppercase; }
+.page-header { font-size: 25px; padding-bottom:18px; text-transform: uppercase; }
+.page-header.sidebar-title.groups-title { margin-bottom: 0px; }
+.groups-row { padding-top: 20px }
+.no-groups { margin: 0px; padding: 12px 0px; }
 .myfooter { color: #9d9d9d;	padding:10px 0px;}
 .myfooter a { color: #efefef; padding:10px 0px; -webkit-transition:0.5s; transition: 0.5s;  }
 .myfooter a:hover {	color: #33cc33; padding:12px 0px; text-decoration: none; -webkit-transition-timing-function: linear; transition-timing-function: linear;}
