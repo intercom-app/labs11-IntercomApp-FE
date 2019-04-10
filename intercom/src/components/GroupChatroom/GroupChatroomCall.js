@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 class GroupChatroomCall extends Component {
 
     renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
-        const userOnCall = (userCallStatus === 1)
-        const groupOnCall = (groupCallStatus === 1)
+        const userOnCall = (userCallStatus === true)
+        const groupOnCall = (groupCallStatus === true)
         switch (true) {
             case (!userOnCall && !groupOnCall):
                 return (
@@ -43,6 +43,56 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
+                <h1 className="page-header sidebar-title">
+                    Call Status
+                </h1>
+
+                <div className="row blogu" >
+                    <div className="col-sm-8 col-md-8">
+                        {group.callStatus === true 
+                            ? <h3 className="blog-title color-elements">Active</h3>
+                            : <h3 className="blog-title">Inactive</h3>
+                        }
+                    </div>
+
+                    {group.callStatus === true 
+                    ? 
+                    <div className="col-sm-12 col-md-12">
+                        <div>
+                            <strong>Phone Number: </strong>
+                            <span className="comments-padding"></span>
+                            {group.phoneNumber}
+                        </div>
+
+                        <div style={{marginTop: "8px"}}>
+                            <strong>Call Participants:</strong>
+                            <span className="comments-padding"></span>
+                            {participants.length}
+                        </div>
+
+                        <p style={{marginTop: "0px", paddingTop: "4px"}}>
+                            {participants.map(user =>
+                                <span key={user.userId}>
+                                    {user.displayName}{' | '}
+                                </span>
+                            )}
+                        </p>
+                    </div >
+                    : null
+                    }
+
+                    {/* <div className="col-sm-12 col-md-12">
+                        <CallStatus groupId={group.groupId} />
+                        <span className="comments-padding"></span>
+                        <CallParticipants groupId={group.groupId} />
+                        <Link to={`/group/${group.groupId}/members`} className='pull-right'>
+                            Manage Members
+                        </Link>
+                    </div > */}
+
+                </div>
+                <hr></hr>
+
                 <aside className="col-md-8 sidebar-padding">
                     <div className="">
                         {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
