@@ -133,7 +133,7 @@ span.text a:hover{
 .blog-title{margin-top: 0;}
 .blog-title a{color:#33cc33; -webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s;}
 .blog-title a:hover{color:#555;text-decoration: none;}
-.sidebar-title{color:#555;}
+.sidebar-title {color:#555;}
 .pagination>li>a{color:#33cc33;}
 .pagination>.active>a{background-color: #33cc33;border-color:#33cc33; color:white;}
 .pagination>li>a:hover {color:#313131;}
@@ -146,7 +146,7 @@ span.text a:hover{
   border-radius: 3px; background-clip: padding-box; -webkit-opacity: 0; -moz-opacity: 0; opacity: 0; filter: alpha(opacity=0);  -moz-transition: all 0.5s; -o-transition: all 0.5s; -webkit-transition: all 0.5s; transition: all 0.5s; }
 .blog-sidebar{min-height: 20px;padding: 19px;}
 @media(max-width: 991px){.blog-sidebar{ margin: 0 auto;}}
-.blog-sidebar h4:hover{color:#33cc33;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; }
+/* .blog-sidebar h4:hover{color:#33cc33;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; } */
 .sidebar-list{padding-left: 0px;}
 .sidebar-list li>h5{margin-top:2px;}
 .blog-sidebar ul>li{border-bottom: 1px solid #f2f2f2;  display: block; padding: 10px 10px;}
@@ -223,8 +223,8 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .searchbar { max-width: 270px; }
 .media-object { max-width: 80px; }
 .media-body { color:#9d9d9d;font-size: 13px;line-height:1.5em;}
-.media-heading a { color:#313131; font-size:16px; }
-.media-heading a:hover { color:#33cc33; text-decoration: none; }
+.media-heading a { color:#33cc33; font-size:16px; }
+.media-heading a:hover { color:#313131; text-decoration: none; }
 .media { border-bottom: 1px solid #f2f2f2; padding-bottom:12px; }
 .media a:hover > img { filter: brightness(70%) !important;  -webkit-filter: brightness(70%); -moz-filter: brightness(70%); -o-filter: brightness(70%); -ms-filter: brightness(70%);-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; }
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {	background-color:#33cc33; border-color: #ddd; }
