@@ -105,12 +105,15 @@ class User extends Component {
                     return {...activity, groupId: group.groupId, groupName: group.GroupName}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
+
+                const filteredActivities = updatedActivities.filter((activity, index, self) =>
+                    index === self.findIndex((i) => ( i.id === activity.id ))
+                )
+
+                filteredActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt) )
                 this.setState({
-                    activities: updatedActivities
+                    activities: filteredActivities
                 });
-            })
-            .then(() => {
-                this.state.activities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt) )
             })
             .catch(err => console.error(err));           
         })
