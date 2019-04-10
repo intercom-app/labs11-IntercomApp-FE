@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 class GroupChatroomCall extends Component {
 
@@ -48,10 +49,24 @@ class GroupChatroomCall extends Component {
                 </h1>
 
                 <div className="row blogu" >
-                    <div className="col-sm-8 col-md-8">
+                    <div className="col-sm-12 col-md-12">
                         {group.callStatus === true 
-                            ? <h3 className="blog-title color-elements">Active</h3>
-                            : <h3 className="blog-title">Inactive</h3>
+                            ? 
+                            <>
+                                <span className='pull-right info-link'>
+                                    <i class="fa fa-question-circle"></i>
+                                    {' '}Join a Call
+                                </span>
+                                <h3 className="blog-title color-elements">Active</h3>
+                            </>
+                            : 
+                            <>
+                                <span className='pull-right info-link'>
+                                    <i class="fa fa-question-circle"></i>
+                                    {' '}Start a Call
+                                </span>
+                                <h3 className="blog-title color-elements">Inactive</h3>
+                            </>
                         }
                     </div>
 
@@ -81,15 +96,6 @@ class GroupChatroomCall extends Component {
                     : null
                     }
 
-                    {/* <div className="col-sm-12 col-md-12">
-                        <CallStatus groupId={group.groupId} />
-                        <span className="comments-padding"></span>
-                        <CallParticipants groupId={group.groupId} />
-                        <Link to={`/group/${group.groupId}/members`} className='pull-right'>
-                            Manage Members
-                        </Link>
-                    </div > */}
-
                 </div>
                 <hr></hr>
 
@@ -97,23 +103,6 @@ class GroupChatroomCall extends Component {
                     <div className="">
                         {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
                         <hr></hr>
-                        <h4 className="sidebar-title">Phone Number</h4>
-                        <p>
-                            {group.phoneNumber
-                                ? group.phoneNumber
-                                : 'No Active Phone Number'
-                            }
-                        </p>
-
-                        <h4 className="sidebar-title">Call Participants</h4>
-                        
-                        <p>
-                            {participants.map(user =>
-                                <span key={user.userId}>
-                                    {user.displayName}{' '}
-                                </span>
-                            )}
-                        </p>
                     </div>
                 </aside>
             </>

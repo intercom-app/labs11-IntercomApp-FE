@@ -169,8 +169,8 @@ class GroupChatroomView extends Component {
     }
 
     handleCallButton = async () => {
-        const userOnCall = (this.state.user.callStatus === 1)
-        const groupOnCall = (this.state.group.callStatus === 1)
+        const userOnCall = (this.state.user.callStatus === true)
+        const groupOnCall = (this.state.group.callStatus === true)
         // TWILIO CODE HERE FOR PHONE NUMBER
         const phoneNumber = '+15555555555'
 
