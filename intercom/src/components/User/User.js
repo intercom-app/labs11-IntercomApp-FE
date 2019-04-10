@@ -128,7 +128,7 @@ class User extends Component {
         return (
             <>
                 {error
-                    ? <p>Error retrieving user!</p>
+                    ? <h1>Error retrieving user!</h1>
                     : <>
                         <section className="container blog">
                             <div className="row">
@@ -138,7 +138,6 @@ class User extends Component {
                                         <img className="media-object pull-left avatar-img-users" src={avatar} alt="" />  
                                         <span className="comments-padding"></span>                                                                              
                                         <h2>Welcome {user.displayName}!</h2>
-                                        {/* <span>{user.email}</span> */}
                                     </div>
 
                                     <GroupsOwned groupsOwned={groupsOwned} />

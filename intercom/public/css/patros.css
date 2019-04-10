@@ -2,6 +2,7 @@
 .avatar-img {width: 5%; margin-right: 2%; border-radius: 50%}
 .avatar-img-users {width: 25%; margin-right: 2%; border-radius: 50%}
 .avatar-img-lg {width: 10%; margin-right: 2%; border-radius: 50%}
+.icon-img-users { margin-right: 2%; }
 .comment-wrap {display: flex; align-items: center}
 .cb-slideshow, .cb-slideshow:after { position:absolute; width:100%; height:100%; top: 0px; left: 0px; z-index: 0; background-color:#131313;
 }
