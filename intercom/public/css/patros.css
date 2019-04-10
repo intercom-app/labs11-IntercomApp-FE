@@ -8,7 +8,7 @@
             background-size: contain;
             background-repeat: no-repeat;
             height: 100vh;
-            width: 100%;         }
+            width: 100%;}
 
 .cb-slideshow, .cb-slideshow:after { position:absolute; width:100%; height:100%; top: 0px; left: 0px; z-index: 0; background-color:#131313;
 }
@@ -348,6 +348,7 @@ ul.nav-pills  { text-align: center; margin: 25px auto 20px auto; width: auto; di
 .team-img img { margin-left:auto; margin-right:auto; width:90%; }
 .port3 { width: 99%; min-width: 240px; display: inline-block; margin:0px 0px 7px 0px; padding:0px; }
 .port3 img { width: 100%; min-width: none; max-width:none; cursor: pointer;}
+
 }
 @media (max-width:1024px){
 .cb-slideshow li div h3 {

@@ -99,7 +99,7 @@ class User extends Component {
         const avatar = this.state.user.avatar || require('../../images/avatar1.png');        
         return (
             <>
-                {localStorage.getItem('userId') !== this.props.match.params.id ?
+                {parseInt(localStorage.getItem('userId')) !== parseInt(this.props.match.params.id) ?
                     <UnAuth/> : 
                 <>
                 {error
