@@ -6,7 +6,7 @@ import axios from 'axios';
 
 class GroupsInvited extends Component {
     state = {
-        display: true,
+        display: false,
     }
 
     toggleDisplay = () => {
@@ -86,6 +86,9 @@ class GroupsInvited extends Component {
                 </h1>
 
                 <div className="collapse" id="groups-invited">
+                { this.props.groupsInvited.length === 0
+                ? <p>You have no invites at this time.</p>
+                : <>
                     {this.props.groupsInvited.map(group => (
                         <div key={group.groupId}>
                             <div className="row blogu">
@@ -107,7 +110,10 @@ class GroupsInvited extends Component {
                             <hr></hr>
                         </div>
                     ))}
+                </>
+                }
                 </div>
+
             </>
         );
     }

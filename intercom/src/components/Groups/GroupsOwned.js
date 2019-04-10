@@ -39,6 +39,9 @@ class GroupsOwned extends Component {
                 </h1>
 
                 <div className="collapse" id="groups-owned">
+                { this.props.groupsOwned.length === 0
+                ? <p>You do not own any groups at this time.</p>
+                : <>
                     {this.props.groupsOwned.map(group => (
                         <div key={group.groupId}>
                             <div className="row blogu" >
@@ -62,6 +65,8 @@ class GroupsOwned extends Component {
                             <hr></hr>
                         </div>
                     ))}
+                </>
+                }
                 </div>
 
             </>

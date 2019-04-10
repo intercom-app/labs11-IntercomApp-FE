@@ -40,6 +40,9 @@ class GroupsBelonged extends Component {
                 </h1>
 
                 <div className="collapse" id="groups-belonged">
+                { this.props.groupsBelonged.length === 0
+                ? <p>You are not a member of any groups at this time.</p>
+                : <>
                     {this.props.groupsBelonged.map(group => (
                         <div key={group.groupId}>
                             <div className="row blogu" >
@@ -63,6 +66,8 @@ class GroupsBelonged extends Component {
                             <hr></hr>
                         </div>
                     ))}
+                </>
+                }
                 </div>
             </>
 
