@@ -18,7 +18,7 @@ class GroupsOwned extends Component {
     render() {
         return (
             <>
-                <h1 className="page-header sidebar-title">
+                <h1 className="page-header sidebar-title groups-title">
                     Groups Owned
                     <span data-toggle="collapse" data-target="#groups-owned" >
                     { this.state.display 
@@ -40,10 +40,10 @@ class GroupsOwned extends Component {
 
                 <div className="collapse" id="groups-owned">
                 { this.props.groupsOwned.length === 0
-                ? <p>You do not own any groups at this time.</p>
+                ? <p className="no-groups">You do not own any groups at this time.</p>
                 : <>
                     {this.props.groupsOwned.map(group => (
-                        <div key={group.groupId}>
+                        <div key={group.groupId} className="groups-row">
                             <div className="row blogu" >
                                 <div className="col-sm-8 col-md-8">
                                     <Link to={`/group/${group.groupId}`} >
@@ -62,7 +62,7 @@ class GroupsOwned extends Component {
                                 </div >
 
                             </div>
-                            <hr></hr>
+                            <hr style={{marginBottom:"0px"}}></hr>
                         </div>
                     ))}
                 </>

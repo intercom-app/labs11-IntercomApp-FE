@@ -65,7 +65,7 @@ class GroupsInvited extends Component {
     render() {
         return (
             <>
-                <h1 className="page-header sidebar-title">
+                <h1 className="page-header sidebar-title groups-title">
                     Groups Invited To
                     <span data-toggle="collapse" data-target="#groups-invited" >
                     { this.state.display 
@@ -87,10 +87,10 @@ class GroupsInvited extends Component {
 
                 <div className="collapse" id="groups-invited">
                 { this.props.groupsInvited.length === 0
-                ? <p>You have no invites at this time.</p>
+                ? <p className="no-groups">You have no invites at this time.</p>
                 : <>
                     {this.props.groupsInvited.map(group => (
-                        <div key={group.groupId}>
+                        <div key={group.groupId} className="groups-row">
                             <div className="row blogu">
                                 <div className="col-sm-8 col-md-8">
                                     <h3 className="blog-title">
@@ -107,7 +107,7 @@ class GroupsInvited extends Component {
                                     </>
                                 </div>
                             </div>
-                            <hr></hr>
+                            <hr style={{marginBottom:"0px"}}></hr>
                         </div>
                     ))}
                 </>

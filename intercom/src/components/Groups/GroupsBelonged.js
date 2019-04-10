@@ -19,7 +19,7 @@ class GroupsBelonged extends Component {
     render() {
         return (
             <>
-                <h1 className="page-header sidebar-title">
+                <h1 className="page-header sidebar-title groups-title">
                     Groups Belonged To
                     <span data-toggle="collapse" data-target="#groups-belonged" >
                     { this.state.display 
@@ -41,10 +41,10 @@ class GroupsBelonged extends Component {
 
                 <div className="collapse" id="groups-belonged">
                 { this.props.groupsBelonged.length === 0
-                ? <p>You are not a member of any groups at this time.</p>
+                ? <p className="no-groups">You are not a member of any groups at this time.</p>
                 : <>
                     {this.props.groupsBelonged.map(group => (
-                        <div key={group.groupId}>
+                        <div key={group.groupId} className="groups-row">
                             <div className="row blogu" >
                                 <div className="col-sm-8 col-md-8">
                                     <Link to={`/group/${group.groupId}`} >
@@ -63,7 +63,7 @@ class GroupsBelonged extends Component {
                                 </div >
 
                             </div>
-                            <hr></hr>
+                            <hr style={{marginBottom:"0px"}}></hr>
                         </div>
                     ))}
                 </>
