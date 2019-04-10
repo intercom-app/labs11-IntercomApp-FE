@@ -5,6 +5,7 @@ const SearchBar = (props) => {
         <>
             <div className="input-group">
                 <input
+                    autoComplete="off"
                     className="form-control"
                     type="text"
                     name="searchUser"

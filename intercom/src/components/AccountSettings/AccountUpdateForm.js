@@ -52,6 +52,7 @@ class AccountUpdateForm extends Component {
                         <div className="pull-left">
                             <div className="input-group searchbar">
                                 <input
+                                    autoComplete="off"
                                     className="form-control searchbar"
                                     type="text"
                                     name="displayName"

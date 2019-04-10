@@ -176,6 +176,7 @@ class GroupForm extends Component {
                 ? 
                 <div className="input-group">
                     <input
+                        autoComplete="off"
                         className="form-control"
                         type="text"
                         name="name"
@@ -197,6 +198,7 @@ class GroupForm extends Component {
                 :
                 <div className="input-group">
                     <input
+                        autoComplete="off"
                         className="form-control"
                         type="text"
                         name="name"
