@@ -96,7 +96,7 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .custom-menu li{font-size: 12px;padding:0px 0px;}
 .info-link:hover { color:#33cc33; cursor: pointer; }
 .btn-custom, .btn-custom:active,.btn-custom:focus, .btn-custom:hover{background-color:#33cc33;border-color:#33cc33}
-.btn-signup { margin-bottom: 15px; font-size: 20px; color: #313131; background-color:  #33cc33; border-color: #313131}
+.btn-signup { margin-bottom: 15px; font-size: 20px; color: #313131; background-color:  #33cc33; box-shadow: 0px 5px 3px rgba(0, 0, 0, .2);}
 .btn-signup:active,.btn-signup:focus, .btn-signup:hover{ color: #33cc33; background-color: white; border-color: #33cc33}
 #about {padding: 80px 0px 40px 0px;/*background-image:url("../images/background.jpg");background-repeat:repeat;*/}
 #products {padding-top:80px;}
