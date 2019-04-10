@@ -7,7 +7,7 @@ import CallStatus from './CallStatus';
 
 class GroupsBelonged extends Component {
     state = {
-        display: false,
+        display: true,
     }
 
     toggleDisplay = () => {
@@ -39,7 +39,7 @@ class GroupsBelonged extends Component {
                     </span>
                 </h1>
 
-                <div className="collapse" id="groups-belonged">
+                <div className="collapse in" id="groups-belonged">
                 { this.props.groupsBelonged.length === 0
                 ? <p className="no-groups">You are not a member of any groups at this time.</p>
                 : <>
