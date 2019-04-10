@@ -54,7 +54,7 @@ class GroupChatroomCall extends Component {
                             ? 
                             <>
                                 <span className='pull-right info-link'>
-                                    <i class="fa fa-question-circle"></i>
+                                    <i className="fa fa-question-circle"></i>
                                     {' '}Join a Call
                                 </span>
                                 <h3 className="blog-title color-elements">Active</h3>
@@ -62,7 +62,7 @@ class GroupChatroomCall extends Component {
                             : 
                             <>
                                 <span className='pull-right info-link'>
-                                    <i class="fa fa-question-circle"></i>
+                                    <i className="fa fa-question-circle"></i>
                                     {' '}Start a Call
                                 </span>
                                 <h3 className="blog-title color-elements">Inactive</h3>
@@ -85,7 +85,7 @@ class GroupChatroomCall extends Component {
                             {participants.length}
                         </div>
 
-                        <p style={{marginTop: "0px", paddingTop: "4px"}}>
+                        <p className="p-list">
                             {participants.map(user =>
                                 <span key={user.userId}>
                                     {user.displayName}{' | '}
@@ -99,12 +99,12 @@ class GroupChatroomCall extends Component {
                 </div>
                 <hr></hr>
 
-                <aside className="col-md-8 sidebar-padding">
+                {/* <aside className="col-md-8 sidebar-padding">
                     <div className="">
                         {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
                         <hr></hr>
                     </div>
-                </aside>
+                </aside> */}
             </>
 
         )
