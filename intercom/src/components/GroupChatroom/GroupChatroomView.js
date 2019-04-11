@@ -52,16 +52,37 @@ class GroupChatroomView extends Component {
         this.axiosPut(groupById, 'group', changes);
     }
 
-    deleteGroup = async () => {
+    deleteGroup = () => {
         const id = this.state.groupId;
-        const groupById = `${host}/api/groups/${id}`;   
-        const res = await this.axiosDel(groupById, 'group') 
-        if (res.count) {
-            this.updateGroup({ callStatus: false });   
-            this.updateUser({ callStatus: false });                     
-            const userId = localStorage.getItem('userId')
-            this.props.history.push(`/user/${userId}`)
-        }   
+        const userId = localStorage.getItem('userId')
+        axios.get(`${host}/api/groups/${id}/callParticipants`)
+            .then(res => {
+                // If call participants, update call status to false for all participants then delete group
+                let updatedCallParticipants = 0;
+                res.data.forEach( user => {
+                    axios.put(`${host}/api/users/${user.userId}`, { callStatus: false })
+                        .then(() => {
+                            updatedCallParticipants++
+                            if (updatedCallParticipants === res.data.length) {
+                                // Delete Group
+                                axios.delete(`${host}/api/groups/${id}`)
+                                    // Go back to user main view
+                                    .then(() => this.props.history.push(`/user/${userId}`) )
+                                    .catch(err => console.log(err))
+                            } 
+                        })
+                        .catch(err => console.log(err))
+                })
+                // If no participants go right to delete
+                if (updatedCallParticipants === res.data.length) {
+                    // Delete Group
+                    axios.delete(`${host}/api/groups/${id}`)
+                        // Go back to user main view
+                        .then(() => this.props.history.push(`/user/${userId}`) )
+                        .catch(err => console.log(err))
+                } 
+            })
+            .catch(err => console.log(err))
     }
 
     leaveGroup = async () => {
@@ -283,123 +304,7 @@ class GroupChatroomView extends Component {
                                     </div>
                                 </aside>
 
-                                {/* <div className='col-md-8'>
-                                    <GroupChatroomActivities
-                                        activities={activities}
-                                    />
-                                </div> */}
-
                             </div>
-
-                                
-                                        {/* <h4 className="sidebar-title">New Group Name: </h4> */}
-                                        {/* {!invite
-                                        ? 
-                                        <div className="input-group">
-                                            <input
-                                                className="form-control"
-                                                type="text"
-                                                name="name"
-                                                id="groupNameInput"
-                                                placeholder="Group Name..."
-                                                onChange={this.handleGroupInput}
-                                                value={group.name}
-                                            />
-                                            <span className="input-group-btn">
-                                                <button
-                                                    className="btn btn-default"
-                                                    type="button"
-                                                    onClick={this.createGroup}
-                                                >
-                                                    Create
-                                                </button>
-                                            </span>
-                                        </div>
-                                        :
-                                        <div className="input-group">
-                                            <input
-                                                className="form-control"
-                                                type="text"
-                                                name="name"
-                                                id="groupNameInput"
-                                                value={group.name}
-                                                disabled
-                                            />
-                                            <span className="input-group-btn">
-                                                <button
-                                                    className="btn btn-default"
-                                                    type="button"
-                                                    disabled
-                                                >
-                                                    Created
-                                                </button>
-                                            </span>
-                                        </div>
-                                        } */}
-
-                                        {/* {invite && group.name
-                                            ? <>
-                                                <h4 className="sidebar-title" style={{marginTop: "20px"}}>
-                                                    Invite Users to {group.name}:
-                                                </h4>
-                                                <SearchBar
-                                                    inputValue={search}
-                                                    updateSearch={this.handleSearch}
-                                                    clearSearch={this.clearSearch}
-                                                />
-                                                {search.length >= 3
-                                                    ? <SearchResults
-                                                        users={users}
-                                                        inviteUser={this.inviteUser}
-                                                    />
-                                                    : null
-                                                }
-                                                <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
-
-                                            </>
-                                            : null
-                                        } */}
-
-{/* 
-                                {isOwner ?
-                                    <div className='sidebar-padding'>
-                                        <div className="blog-sidebar">
-                                    
-                                        <Link to={`/group/${groupId}/members`} className='blog-title'>
-                                            {isOwner ? 'Manage Members' : 'View Members'}
-                                        </Link>
-                                        <hr/>
-                                        <button className="btn btn-danger"
-                                            type="button" onClick={this.deleteGroup}>Delete Group
-                                        </button>
-                                        <br /><br/>
-                                        <h4 className="sidebar-title">Update Group Name:</h4>
-                                        <div className="input-group">
-                                            <input
-                                                className='form-control'
-                                                onChange={this.handleInputChange}
-                                                type='text'
-                                                id='groupName'
-                                                name='groupName'
-                                                value={this.state.groupName}
-                                                placeholder='New Group Name Here...'
-                                            ></input>
-                                            <span className="input-group-btn">
-                                                <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
-                                                    Update Group
-                                                    </button>
-                                            </span>
-                                        </div>
-                                        </div>
-
-                                    </div>
-                                    :
-                                    <>
-                                        <Button color='danger' onClick={this.leaveGroup}>
-                                            Leave Group
-                                        </Button>
-                                    </>
-                                } */}
 
                         </section>
 
