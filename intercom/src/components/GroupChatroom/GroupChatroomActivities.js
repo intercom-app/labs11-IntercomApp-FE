@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import '../../../public/images/';
-// const image = require('../../images/avatar1.png')
 
 class GroupChatroomActivities extends Component {
 
@@ -38,8 +36,7 @@ class GroupChatroomActivities extends Component {
                     <div className="media-body row">
                         {activities.map((activity, ind) =>
                             <ul style={bulletless} key={ind} className='comment-wrap'>
-                                {/* <img className="media-object avatar-img" src={require('../../images/avatar1.png')} alt=""/> */}
-                                <img className="media-object avatar-img" src={avatar} alt="" />                                
+                                <img className="media-object avatar-img" src={activity.avatar || require('../../images/avatar1.png')} alt="" />                                
                                 <span><i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}</span>
                                 <li key={ind} >
                                     <span className="comments-padding"></span>
