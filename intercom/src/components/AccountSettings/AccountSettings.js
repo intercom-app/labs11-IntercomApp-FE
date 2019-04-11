@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-// import { Button, Container, CardBody, CardTitle } from 'reactstrap'
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
-
+import Footer from '../LandingPage/Footer';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -233,19 +232,10 @@ class AccountSettings extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <Container>
-                <>
-                    <h2>Account Settings</h2>
-                    <Button className='float-sm-right' color="danger" onClick={() => this.handleDelete(user.id)}>Delete Account</Button>
-                    <AccountUpdateForm updateUser={this.handleUpdate}/>
-                    <CardBody>
-                        <CardTitle><strong>Id: </strong>{user.id}</CardTitle>
-                        <CardTitle><strong>Nickname: </strong>{user.displayName}</CardTitle>
-                        <CardTitle><strong>Email: </strong>{user.email}</CardTitle>
-                        <CardTitle><strong>Billing Type: </strong>{user.billingSubcription}</CardTitle>
-                    </CardBody>
-                </>
-            </Container> */}
+
+                <div className="myfooter-app">
+                    <Footer/>
+                </div>
             </>
         );
     }
