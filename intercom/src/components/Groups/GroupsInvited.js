@@ -92,20 +92,25 @@ class GroupsInvited extends Component {
                     {this.props.groupsInvited.map(group => (
                         <div key={group.groupId} className="groups-row">
                             <div className="row blogu">
-                                <div className="col-sm-8 col-md-8">
-                                    <h3 className="blog-title">
-                                        {group.GroupName}
-                                    </h3>
+                                <div>
+                                    <div className="col-sm-8 col-md-8">
+                                        <h3 className="blog-title">
+                                            {group.GroupName}
+                                        </h3>
+                                    </div>
+                                    <div className="col-sm-2 col-md-2">
+                                        <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
+                                            Join Group
+                                        </button>
+                                    </div>
+                                    <div className="col-sm-2 col-md-2">                                        
+                                        <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
+                                            Decline
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="col-sm-12 col-md-12">
-                                    <span>Invited By: {group.groupOwner}</span>
-                                    <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
-                                        Join Group
-                                    </button>
-                                    <span className="comments-padding"></span>
-                                    <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
-                                        Decline
-                                    </button>
+                                    Invited by: {group.groupOwner}
                                 </div>
                             </div>
                             <hr style={{marginBottom:"0px"}}></hr>

@@ -79,7 +79,7 @@ class User extends Component {
 
         axios.get(groupsInvitedTo)
             .then(res => {
-                // this.setState({ groupsInvitedTo: res.data })
+                this.setState({ groupsInvitedTo: res.data })
                 this.getOwners(res.data);
                 this.getRecentActivity(res.data);
             })
@@ -98,8 +98,12 @@ class User extends Component {
                 const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
                 const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
 
+                const filteredGroups = groupsWithOwner.filter((group, index, self) =>
+                index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                )
+
                 this.setState({
-                    groupsInvitedTo: groupsWithOwner
+                    groupsInvitedTo: filteredGroups
                 });
             })
             .catch(err => console.error(err));           
