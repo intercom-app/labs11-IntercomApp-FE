@@ -46,6 +46,7 @@ class AccountSettings extends Component {
             .catch(err => console.log(err));
     }
 
+
     handleDelete = (id) => {
         this.addGroupsMemberActivities(id); // First updates activities for all groups user belonged to
         // Second updates activities for all groups user was invited to
@@ -111,10 +112,10 @@ class AccountSettings extends Component {
 
     deleteAccount = (id) => {
         axios
-            .delete(`${host}/api/users/${id}`, {params: {id: this.state.user.id}})
+            .delete(`${host}/api/users/${id}`)
             .then(() => this.props.auth.logout())
             .catch(err => console.log(err));
-    }
+}
 
     render() {
 
