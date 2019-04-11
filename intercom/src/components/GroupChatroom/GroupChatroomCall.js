@@ -70,11 +70,6 @@ class GroupChatroomCall extends Component {
                     {group.callStatus === true 
                     ? 
                     <div className="col-sm-12 col-md-12">
-                        <div>
-                            <strong>Phone Number: </strong>
-                            <span className="comments-padding"></span>
-                            {group.phoneNumber}
-                        </div>
 
                         <div style={{marginTop: "8px"}}>
                             <strong>Call Participants:</strong>
