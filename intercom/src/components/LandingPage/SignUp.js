@@ -17,7 +17,7 @@ const SignUp = (props) => {
 
                                 <div className="row">
                                     <Link to={`/`} onClick={props.auth.login}>
-                                    <button type="button" className="btn btn-md btn-noborder-radius btn-signup col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6" name="signup">
+                                    <button type="button" className="btn btn-md btn-signup col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6" name="signup">
                                         Sign Up Today!
                                     </button>
                                     </Link>

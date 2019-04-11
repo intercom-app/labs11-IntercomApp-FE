@@ -80,21 +80,34 @@ class User extends Component {
         axios.get(groupsInvitedTo)
             .then(res => {
                 this.setState({ groupsInvitedTo: res.data })
+                this.getOwners(res.data);
                 this.getRecentActivity(res.data);
             })
             .catch(err => {
                 this.setState({
-                    error: err.response.data.message,
+                    error: err,
                     groupsInvitedTo: []
                 });
             });
     }
 
-    updateGroups = () => {
-        const id = localStorage.getItem('userId')
-        this.getgroupsOwned(id);
-        this.getGroupsInvitedTo(id);
-        // Groups belonged to is called after groups owned
+    getOwners = (groups) => {
+        groups.forEach(group => {
+            axios.get(`${host}/api/groups/${group.groupId}/groupOwners`)
+            .then(res => {
+                const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
+                const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
+
+                const filteredGroups = groupsWithOwner.filter((group, index, self) =>
+                index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                )
+
+                this.setState({
+                    groupsInvitedTo: filteredGroups
+                });
+            })
+            .catch(err => console.error(err));           
+        })
     }
 
     getRecentActivity = (groups) => {
@@ -119,6 +132,12 @@ class User extends Component {
         })
     }
 
+    updateGroups = () => {
+        const id = localStorage.getItem('userId')
+        this.getgroupsOwned(id);
+        this.getGroupsInvitedTo(id);
+        // Groups belonged to is called after groups owned
+    }
 
     render() {
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
