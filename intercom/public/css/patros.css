@@ -79,7 +79,7 @@ a.inner-link { color: #fff; text-decoration: none; }
 @media only screen and (max-width:767px) { .mouse-icon { bottom:10px; } .cb-slideshow li div h3 { font-size:30px; } }
   
 body { color: #313131; font-family: 'Open Sans'; height:100%; position:relative; }
-#root { min-height: 100vh; display: block; position: relative; padding-bottom: 85px;}
+#root { min-height: 100vh; display: block; position: relative; }
 ::-moz-selection { background: #33cc33;color:#fff; }
 ::-webkit-selection { background: #33cc33;color:#fff; }
 ::selection { background: #33cc33;color:#fff;} 
@@ -103,6 +103,7 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .height-contact-element {margin:30px 0;} 
 .carousel-indicators-size{width:15px;height:15px;}
 .custom-container{height:300px;}
+.page-container{padding-bottom: 80px;}
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
 .btn-noborder-radius{border-radius:0px;}
 .menu-border-bottom{background-color:transparent;border-bottom:2px solid white;}
@@ -114,13 +115,12 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .btn-signup:active,.btn-signup:focus, .btn-signup:hover{ color: #33cc33; background-color: white; border-color: #33cc33}
 #about {padding: 80px 0px 40px 0px;/*background-image:url("../images/background.jpg");background-repeat:repeat;*/}
 #products {padding-top:80px;}
-#contact {padding-top:80px;}
+#contact {padding-top:80px; padding-bottom: 80px}
 #location {padding-top:50px;}
 #bloghome {padding-top:80px; padding-bottom:20px;}
-#contact {padding-top:80px;}
 .homeport1 { margin-top:20px; }
 .homeport2 { margin-top:40px; }
-.greenback{ background-color: #33cc33 }
+.greenback{ background-color: #00a800 }
 #about p{color:#313131;line-height: 1.8em; font-size: 14px;}
 #signup p{color:#313131;line-height: 1.8em; font-size: 14px;}
 .prodmap{margin-right:0px;  margin-left:0px;  position: relative;}
@@ -134,7 +134,7 @@ span.text a:hover{
 }
 #follow-us {height:220px;}
 #myCarousel li{transform:rotateZ(45deg);}
-#footer {width:100%;font-size:12px;color:#1E1E1E;}
+#footer {width:100%;font-size:12px;color:#1E1E1E; position:absolute; bottom:0;}
 .social-icons{color:#313131;font-size:24px; padding:0;}
 .list-social-icons {display: inline-block; vertical-align: middle;}
 .list-social-icons li {margin: 0px 15px;width: 40px;height: 40px;text-align: center;line-height: 40px;border-radius: 50%;-webkit-transition: all 0.4s ease;-moz-transition: all 0.4s ease;-o-transition: all 0.4s ease;transition: all 0.4s ease;}
@@ -249,10 +249,9 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .page-header.sidebar-title.groups-title { margin-bottom: 0px; }
 .groups-row { padding-top: 20px }
 .no-groups { margin: 0px; padding: 12px 0px; }
-.myfooter { color: #9d9d9d;	padding:10px 0px;}
+.myfooter { color: #9d9d9d;	padding:10px 0px; }
 .myfooter a { color: #efefef; padding:10px 0px; -webkit-transition:0.5s; transition: 0.5s;  }
 .myfooter a:hover {	color: #33cc33; padding:12px 0px; text-decoration: none; -webkit-transition-timing-function: linear; transition-timing-function: linear;}
-.myfooter-app { position:absolute; bottom:0; width:100%; }
 .singlepost { margin-bottom:60px; }
 .singlepost a{ color:#33cc33;}
 .singlepost a:hover {color:#9d9d9d;}
@@ -356,7 +355,7 @@ figure.effect-oscar:hover img {	opacity: 0.4; }
 #meet-team ul {text-align: center;}
 #meet-team li{ display: inline-block; font-size:24px; }
 #meet-team .teamspace{ margin-top:30px; text-align: center;}
-#meet-team  .team-img img { filter: grayscale(1); -webkit-filter: grayscale(1); -moz-filter: grayscale(1); -o-filter: grayscale(1); -ms-filter: grayscale(1); -webkit-transition:0.8s; transition: 0.8s; }
+#meet-team  .team-img img { border-radius: 50%; filter: grayscale(1); -webkit-filter: grayscale(1); -moz-filter: grayscale(1); -o-filter: grayscale(1); -ms-filter: grayscale(1); -webkit-transition:0.8s; transition: 0.8s; }
 #meet-team  .team-img img:hover { filter: grayscale(0); -webkit-filter: grayscale(0); -moz-filter: grayscale(0); -o-filter: grayscale(0); -ms-filter: grayscale(0); -webkit-transition:0.8s; transition: 0.8s; cursor: pointer; }
  /*portfolio*/
 .port2 { margin:0px;  padding:0px;  max-width: 100%; }
