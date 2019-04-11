@@ -16,14 +16,14 @@ class DeleteModal extends Component {
   render() {
     return (
       <div>
-          {console.log(this.props.target)}
+          {console.log(this.props)}
         <button
           type="button"
           className="btn btn-primary"
           data-toggle="modal"
           data-target="#deleteModal"
         >
-          Delete Account
+          {`${this.props.type}`}
         </button>
 
         <div
@@ -60,19 +60,19 @@ class DeleteModal extends Component {
                 >
                   Close
                 </button>
-                {this.state.confirmTarget === this.props.target.email ? <button
+                {this.state.confirmTarget === this.props.targetName ? <button
                   type="button"
                   className="btn btn-danger"
                   data-dismiss="modal"
-                  onClick={() => this.props.handleDelete(this.props.target.id)}
+                  onClick={() => this.props.handleTarget(this.props.target)}
                 >
-                  Confirm Deletion
+                  Confirm
                 </button> : <button
                   type="button"
                   className="btn btn-danger"
                   disabled
                   >
-                  Confirm Deletion
+                  Confirm
                 </button> }
               </div>
             </div>

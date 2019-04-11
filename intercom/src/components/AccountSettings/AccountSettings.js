@@ -134,7 +134,7 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteModal deleteMessage={"Confirm your email address below to delete your account"} target={this.state.user} handleDelete={this.handleDelete} />
+                                        <DeleteModal deleteMessage={"Confirm your email address below to delete your account"} target={this.state.user} handleDelete={this.handleDelete} type={'Delete Account'} />
                                          {/* <button
                                             style={{ padding: "3px 12px"}}
                                             className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
