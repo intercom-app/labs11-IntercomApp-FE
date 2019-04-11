@@ -10,7 +10,6 @@ class AddToAccountBalanceNew extends Component {
         console.log('Constructor Invoked'); //constructor first thing invoked in mounting lifecycle
         super(props);
         this.state = {
-            currentAccountBalance: 0,
             amountToAdd:''
         };
     }
@@ -21,9 +20,45 @@ class AddToAccountBalanceNew extends Component {
         this.setState({[name]: value});
     }
 
-    addToAccountBalanceSubmitHandler = (e) => {
-        // user clicks button to add money to his or her account balance
+    chargeCustomerAndAddToAccountBalance = async(e) => {
         e.preventDefault();
+
+        const userId = localStorage.getItem('userId');
+        // console.log('userId: ', userId);
+        try {
+            const res = await axios.get(`${host}/api/users/${userId}`);
+            const userStripeId = res.data.stripeId;
+            // console.log('userStripeId: ', userStripeId);
+
+            const customerStripeInfo = await axios.post(`${host}/api/purchasingAndBilling/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
+            // console.log('customerStripeInfo: ', customerStripeInfo);
+            const defaultSourceId = customerStripeInfo.data.defaultSourceId;
+            // console.log('defaultSourceId: ', defaultSourceId);
+
+            // TESTING - Soon to be phased out (but working) credit card charging method
+            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+                'userStripeId':userStripeId,
+                'sourceId': defaultSourceId,
+                'amountToAdd': this.state.amountToAdd 
+            })
+            // console.log('chargeResponse: ', chargeResponse);
+
+            if (chargeResponse.data.charge.status === "succeeded") {
+                // console.log('charge suceeded!');
+
+                const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
+                let accountBalance = accountBalanceCall.data.accountBalance;
+                // console.log('accountBalance old: ', accountBalance);
+                accountBalance = accountBalance + chargeResponse.data.charge.amount;
+                // console.log('accountBalance new: ', accountBalance);
+
+                const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+                // console.log('addToBalanceResponse: ', addToBalanceResponse);
+            }
+
+        } catch(err) {
+            console.log('err: ', err);
+        }
     }
 
 
@@ -44,11 +79,11 @@ class AddToAccountBalanceNew extends Component {
                                 Amount to add to account balance: 
                                 <input
                                     type = 'number'
-                                    name = 'amountToAddToAccountBalance'
+                                    name = 'amountToAdd'
                                     value = {this.state.amountToAdd}
                                     onChange = {this.inputChangeHandler}
                                 />
-                                <button onClick = {this.addToAccountBalance} type = 'submit'> SubmitPaymentAndAddToAccountBalance </button>
+                                <button onClick = {this.chargeCustomerAndAddToAccountBalance} type = 'submit'> chargeCustomerAndAddToAccountBalance </button>
                             </div>                            
                         </form>
                     </div>
