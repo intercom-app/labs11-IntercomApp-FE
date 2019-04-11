@@ -10,14 +10,14 @@ const SearchResults = (props) => {
                         {user.email}
                         {user.buttonInvite
                             ? <button
-                                className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right"
+                                className="btn btn-join pull-right"
                                 type="button"
                                 onClick={(e) => props.inviteUser(e, user.id)}
                             >
                                 Invite
                                 </button>
                             : <button
-                                className="btn btn-primary btn-noborder-radius pull-right"
+                                className="btn btn-primary pull-right"
                                 type="button"
                                 disabled
                             >
