@@ -18,32 +18,34 @@ class UpdatePaymentMethod extends Component {
         
         try{
             const createSourceResponse = await this.props.stripe.createSource(sourceInfo);
-            console.log('createSourceResponse: ', createSourceResponse);
+            // console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
-            console.log('sourceObject: ', source);
+            // console.log('sourceObject: ', source);
             return source;
         } catch(err) {
-            console.log('err: ', err);
+            // console.log('err: ', err);
+            return err
         }
     }
 
     updateDefaultSource = async(source) => {
         const userId = localStorage.getItem('userId');
-        console.log('userId: ', userId);
+        // console.log('userId: ', userId);
 
         try{
             const res = await axios.get(`${host}/api/users/${userId}`);
             const userStripeId = res.data.stripeId;
-            console.log('userStripeId: ', userStripeId);
+            // console.log('userStripeId: ', userStripeId);
 
             const newlyUpdatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
             });
-            console.log('newlyUpdatedSource: ', newlyUpdatedSource);
+            // console.log('newlyUpdatedSource: ', newlyUpdatedSource);
             return newlyUpdatedSource;
         } catch(err) {
-            console.log('err: ', err);
+            // console.log('err: ', err);
+            return err
         }
     }
 
@@ -51,17 +53,14 @@ class UpdatePaymentMethod extends Component {
         try{
             // Step 1, create a source from the entered credit card information. 
             const source = await this.createSource();
-            console.log('source: ', source);
+            // console.log('source: ', source);
             // Step 2, update the customer's default source. 
             const newDefaultSource = await this.updateDefaultSource(source);
-            console.log('newDefaultSource: ', newDefaultSource);
+            // console.log('newDefaultSource: ', newDefaultSource);
         } catch(err) {
-            console.log('err: ', err)
+            // console.log('err: ', err)
+            return err
         }
-    }
-
-    componentDidMount() {
-        console.log('componentDidMount');
     }
 
     render() {
