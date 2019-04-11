@@ -261,7 +261,6 @@ class GroupChatroomView extends Component {
 
                                     <GroupChatroomActivities
                                         activities={activities}
-                                        // avatar={user.avatar}
                                     />
                                 </div>
 
