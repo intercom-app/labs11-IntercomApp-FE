@@ -31,24 +31,27 @@ class GroupChatroomActivities extends Component {
         const avatar = this.props.avatar || require('../../images/avatar1.png');
         return (
             <div className="comments1">            
-                <h4>Latest Activities</h4>
+                <h3>Latest Activities</h3>
                 <div className="media">
-                    {/* <span className="pull-left" > */}
-					{/* </span> */}
                     <div className="media-body row">
                         {activities.map((activity, ind) =>
-                            <ul style={bulletless} key={ind} className='comment-wrap'>
-                                {/* <img className="media-object avatar-img" src={require('../../images/avatar1.png')} alt=""/> */}
-                                <img className="media-object avatar-img" src={avatar} alt="" />                                
-                                <span><i className="fa fa-calendar-o"></i> {this.getDateTime(activity.createdAt)}</span>
-                                <li key={ind} >
-                                    <span className="comments-padding"></span>
+                            <div key={ind} className="col-xs-12 col-sm-12 col-md-12" style={{padding: "3px 0px 5px 15px"}}>
+                                <div className="col-xs-1 col-sm-1 col-md-1" style={{padding: "0px"}}>
+                                    <img className="avatar-img" src={avatar} alt="user image" />                                
+                                </div>
+
+                                <div className="col-xs-10 col-sm-9 col-md-9" style={{padding: "1.5% 0px 0px 0px"}}>
                                     <strong>{activity.displayName}{': '}</strong>
                                     {activity.activity}
-                                </li>
-                            </ul>
-                            
-                                )}
+                                </div>
+
+                                <div className="col-xs-11 col-xs-offset-1 col-sm-2 col-sm-offset-0 col-md-2 col-md-offset-0" style={{padding: "1.5% 0px 0px 0px"}}>
+                                    <i className="fa fa-calendar-o"></i> 
+                                    {' '}
+                                    {this.getDateTime(activity.createdAt)}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,10 +1,9 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700);
-.avatar-img {width: 5%; margin-right: 2%; border-radius: 50%}
+.avatar-img {width: 70%; border-radius: 50%}
 .avatar-img-rec {width: 40px; height: 100%; margin-right: 2%; border-radius: 50%}
 .avatar-img-users {width: 25%; margin-right: 2%; border-radius: 50%}
 .avatar-img-lg {width: 10%; margin-right: 2%; border-radius: 50%}
 .icon-img-users { margin-right: 2%; }
-.comment-wrap {display: flex; align-items: center}
 .rec-gr-act {
     display: flex;
     align-items: center;
