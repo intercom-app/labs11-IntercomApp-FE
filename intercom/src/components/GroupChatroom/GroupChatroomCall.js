@@ -2,44 +2,10 @@ import React, { Component } from 'react';
 
 class GroupChatroomCall extends Component {
 
-    renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
-        const userOnCall = (userCallStatus === true)
-        const groupOnCall = (groupCallStatus === true)
-        switch (true) {
-            case (!userOnCall && !groupOnCall):
-                return (
-                    <button
-                        className="btn btn-success"
-                        type="button"
-                        onClick={handleCallButton}>Start Call</button>
-                )
-            case (!userOnCall && groupOnCall):
-                return (
-                    <button
-                        className="btn btn-success"
-                        type="button"
-                        onClick={handleCallButton}>Join Call</button>
-                )
-            case (userOnCall && groupOnCall):
-                return (
-                    <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={handleCallButton}>Leave Call</button>
-                )
-            default:
-                return (
-                    <button
-                        className="btn btn-secondary"
-                        type="button">In Call</button>
-                )
-        }
-
-    }
-
     render() {
 
-        let { user, group, participants, handleCallButton } = this.props
+        // let { user, group, participants, handleCallButton } = this.props
+        let {  group, participants } = this.props
 
         return (
             <>                
@@ -101,6 +67,41 @@ class GroupChatroomCall extends Component {
 
         )
     }
+
+    // renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
+    //     const userOnCall = (userCallStatus === true)
+    //     const groupOnCall = (groupCallStatus === true)
+    //     switch (true) {
+    //         case (!userOnCall && !groupOnCall):
+    //             return (
+    //                 <button
+    //                     className="btn btn-success"
+    //                     type="button"
+    //                     onClick={handleCallButton}>Start Call</button>
+    //             )
+    //         case (!userOnCall && groupOnCall):
+    //             return (
+    //                 <button
+    //                     className="btn btn-success"
+    //                     type="button"
+    //                     onClick={handleCallButton}>Join Call</button>
+    //             )
+    //         case (userOnCall && groupOnCall):
+    //             return (
+    //                 <button
+    //                     className="btn btn-danger"
+    //                     type="button"
+    //                     onClick={handleCallButton}>Leave Call</button>
+    //             )
+    //         default:
+    //             return (
+    //                 <button
+    //                     className="btn btn-secondary"
+    //                     type="button">In Call</button>
+    //             )
+    //     }
+
+    // }
 
 }
 
