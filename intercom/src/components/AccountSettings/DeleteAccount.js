@@ -52,7 +52,7 @@ class DeleteAccount extends Component {
                 <input type="text" name="confirmUserName" onChange={this.handleGroupInput} value={this.state.confirmUserName} />
               </div>
               <div class="modal-footer">
-                {console.log("props", this.props)}
+                {/* {console.log("props", this.props)} */}
                 <button
                   type="button"
                   class="btn btn-secondary"

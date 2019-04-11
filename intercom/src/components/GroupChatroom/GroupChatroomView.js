@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
 import axios from 'axios';
 import host from '../../host';
 import GroupChatroomActivities from './GroupChatroomActivities';
@@ -169,8 +168,8 @@ class GroupChatroomView extends Component {
     }
 
     handleCallButton = async () => {
-        const userOnCall = (this.state.user.callStatus === 1)
-        const groupOnCall = (this.state.group.callStatus === 1)
+        const userOnCall = (this.state.user.callStatus === true)
+        const groupOnCall = (this.state.group.callStatus === true)
         // TWILIO CODE HERE FOR PHONE NUMBER
         const phoneNumber = '+15555555555'
 
@@ -206,69 +205,198 @@ class GroupChatroomView extends Component {
         let { user, group, groupId, isOwner, participants, activities, error } = this.state
 
         return (
-            <section className="container blog">
-                <div className="row">
-                    <div className="col-md-8">
+            <>
                 {error
-                    ? <p>{error}</p>
+                    ? <h1>Error retrieving group!</h1>
                     : <>
-                        <h3>Group Name: {group.name}</h3>
-                        <GroupChatroomCall
-                            user={user}
-                            group={group}
-                            participants={participants}
-                            handleCallButton={this.handleCallButton}
-                        />
-                    </>
-                }   
-                    </div>
-                    {isOwner ?
-                        <div className='sidebar-padding'>
-                            <div className="blog-sidebar">
-                        
-                            <Link to={`/group/${groupId}/members`} className='blog-title'>
-                                {isOwner ? 'Manage Members' : 'View Members'}
-                            </Link>
-                            <hr/>
-                            <button className="btn btn-danger"
-                                type="button" onClick={this.deleteGroup}>Delete Group
-                            </button>
-                            <br /><br/>
-                            <h4 className="sidebar-title">Update Group Name:</h4>
-                            <div className="input-group">
-                                <input
-                                    className='form-control'
-                                    onChange={this.handleInputChange}
-                                    type='text'
-                                    id='groupName'
-                                    name='groupName'
-                                    value={this.state.groupName}
-                                    placeholder='New Group Name Here...'
-                                ></input>
-                                <span className="input-group-btn">
-                                    <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
-                                        Update Group
-                                        </button>
-                                </span>
-                            </div>
+                        <section className="container blog">
+                                                               
+                            <div className="row">
+                                <div className="col-md-12"> 
+                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
+                                    <span className="pull-left">
+                                        <h2>{group.name}</h2>
+                                    </span>
+                                    <span className="pull-right">                                                
+                                        <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                        <h4>{isOwner ? 'Manage Members' : 'View Members'}</h4>
+                                        </Link>
+                                    </span>
+                                </div>
                             </div>
 
-                        </div>
-                        :
-                        <>
-                            <Button color='danger' onClick={this.leaveGroup}>
-                                Leave Group
-                            </Button>
-                        </>
-                    }
-                    <div className='col-md-8'>
-                        <GroupChatroomActivities
-                            activities={activities}
-                        />
-                    </div>
-                </div>
-            </section>
-        )
+                            <div className="row">
+                                <div className="col-md-8">     
+                                    <GroupChatroomCall
+                                        user={user}
+                                        group={group}
+                                        participants={participants}
+                                        handleCallButton={this.handleCallButton}
+                                    />
+
+                                    <GroupChatroomActivities
+                                        activities={activities}
+                                        avatar={user.avatar}
+                                    />
+                                </div>
+
+                                <aside className="col-md-4 sidebar-padding">
+                                    <div className="blog-sidebar">
+                                            <h3 className="sidebar-title">Group Settings</h3>
+                                            <hr></hr>
+                                        {isOwner ? 
+                                        <>
+                                            <h4 className="sidebar-title">Update Group Name: </h4>
+                                            <div className="input-group">
+                                                <input
+                                                    className='form-control'
+                                                    onChange={this.handleInputChange}
+                                                    type='text'
+                                                    id='groupName'
+                                                    name='groupName'
+                                                    value={this.state.groupName}
+                                                    placeholder='New Name...'
+                                                >
+                                                </input>
+                                                <span className="input-group-btn">
+                                                    <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
+                                                        Update
+                                                    </button>
+                                                </span>
+                                            </div>
+
+                                            <button className="btn btn-primary btn-group-delete"
+                                                type="button" onClick={this.deleteGroup}>Delete Group
+                                            </button>
+                                        </>
+                                        : null
+                                        }
+                                    </div>
+                                </aside>
+
+                                {/* <div className='col-md-8'>
+                                    <GroupChatroomActivities
+                                        activities={activities}
+                                    />
+                                </div> */}
+
+                            </div>
+
+                                
+                                        {/* <h4 className="sidebar-title">New Group Name: </h4> */}
+                                        {/* {!invite
+                                        ? 
+                                        <div className="input-group">
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="name"
+                                                id="groupNameInput"
+                                                placeholder="Group Name..."
+                                                onChange={this.handleGroupInput}
+                                                value={group.name}
+                                            />
+                                            <span className="input-group-btn">
+                                                <button
+                                                    className="btn btn-default"
+                                                    type="button"
+                                                    onClick={this.createGroup}
+                                                >
+                                                    Create
+                                                </button>
+                                            </span>
+                                        </div>
+                                        :
+                                        <div className="input-group">
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                name="name"
+                                                id="groupNameInput"
+                                                value={group.name}
+                                                disabled
+                                            />
+                                            <span className="input-group-btn">
+                                                <button
+                                                    className="btn btn-default"
+                                                    type="button"
+                                                    disabled
+                                                >
+                                                    Created
+                                                </button>
+                                            </span>
+                                        </div>
+                                        } */}
+
+                                        {/* {invite && group.name
+                                            ? <>
+                                                <h4 className="sidebar-title" style={{marginTop: "20px"}}>
+                                                    Invite Users to {group.name}:
+                                                </h4>
+                                                <SearchBar
+                                                    inputValue={search}
+                                                    updateSearch={this.handleSearch}
+                                                    clearSearch={this.clearSearch}
+                                                />
+                                                {search.length >= 3
+                                                    ? <SearchResults
+                                                        users={users}
+                                                        inviteUser={this.inviteUser}
+                                                    />
+                                                    : null
+                                                }
+                                                <p>Search for users by name or email to invite. Once complete, or if you do not wish to invite a user at this time, click done.</p>
+
+                                            </>
+                                            : null
+                                        } */}
+
+{/* 
+                                {isOwner ?
+                                    <div className='sidebar-padding'>
+                                        <div className="blog-sidebar">
+                                    
+                                        <Link to={`/group/${groupId}/members`} className='blog-title'>
+                                            {isOwner ? 'Manage Members' : 'View Members'}
+                                        </Link>
+                                        <hr/>
+                                        <button className="btn btn-danger"
+                                            type="button" onClick={this.deleteGroup}>Delete Group
+                                        </button>
+                                        <br /><br/>
+                                        <h4 className="sidebar-title">Update Group Name:</h4>
+                                        <div className="input-group">
+                                            <input
+                                                className='form-control'
+                                                onChange={this.handleInputChange}
+                                                type='text'
+                                                id='groupName'
+                                                name='groupName'
+                                                value={this.state.groupName}
+                                                placeholder='New Group Name Here...'
+                                            ></input>
+                                            <span className="input-group-btn">
+                                                <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
+                                                    Update Group
+                                                    </button>
+                                            </span>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                    :
+                                    <>
+                                        <Button color='danger' onClick={this.leaveGroup}>
+                                            Leave Group
+                                        </Button>
+                                    </>
+                                } */}
+
+                        </section>
+                    </>
+                }
+            </>
+        );
     }
 }
 

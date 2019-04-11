@@ -3,6 +3,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import PricingPlan1 from './PricingPlan1';
 import PricingPlan2 from './PricingPlan2';
 import AddToAccountBalance from "./AddToAccountBalance";
+import UpdatePaymentMethod from './UpdatePaymentMethod';
 
 class PricingPurchasingOptions extends Component {
     constructor() {
@@ -49,6 +50,10 @@ class PricingPurchasingOptions extends Component {
                     <Elements>
                         {/* ADD TO ACCOUNT BALANCE COMPONENT */}
                         <AddToAccountBalance />
+                    </Elements>
+
+                    <Elements>
+                        <UpdatePaymentMethod />
                     </Elements>
 
                 </div>
