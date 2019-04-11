@@ -79,7 +79,8 @@ a.inner-link { color: #fff; text-decoration: none; }
 .cb-slideshow li span{ filter: brightness(40%); -webkit-filter: brightness(40%); -moz-filter: brightness(40%); -o-filter: brightness(40%); -ms-filter: brightness(40%); }
 @media only screen and (max-width:767px) { .mouse-icon { bottom:10px; } .cb-slideshow li div h3 { font-size:30px; } }
   
-body { color: #313131; font-family: 'Open Sans';  }
+body { color: #313131; font-family: 'Open Sans'; height:100%; position:relative; }
+#root { min-height: 100vh; display: block; position: relative; padding-bottom: 85px;}
 ::-moz-selection { background: #33cc33;color:#fff; }
 ::-webkit-selection { background: #33cc33;color:#fff; }
 ::selection { background: #33cc33;color:#fff;} 
@@ -251,6 +252,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .myfooter { color: #9d9d9d;	padding:10px 0px;}
 .myfooter a { color: #efefef; padding:10px 0px; -webkit-transition:0.5s; transition: 0.5s;  }
 .myfooter a:hover {	color: #33cc33; padding:12px 0px; text-decoration: none; -webkit-transition-timing-function: linear; transition-timing-function: linear;}
+.myfooter-app { position:absolute; bottom:0; width:100%; }
 .singlepost { margin-bottom:60px; }
 .singlepost a{ color:#33cc33;}
 .singlepost a:hover {color:#9d9d9d;}

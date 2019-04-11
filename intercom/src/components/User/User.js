@@ -7,6 +7,7 @@ import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
 import RecentActivity from '../RecentActivity/RecentActivity';
+import Footer from "../LandingPage/Footer";
 
 class User extends Component {
     state = {
@@ -176,6 +177,10 @@ class User extends Component {
                                 </aside>
                             </div>
                         </section>
+
+                        <div className="myfooter-app">
+                            <Footer/>
+                        </div>
                     </>
                 }</>
             }

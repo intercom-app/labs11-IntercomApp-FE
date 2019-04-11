@@ -4,7 +4,7 @@ import axios from 'axios';
 import host from '../../host';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
-
+import Footer from '../LandingPage/Footer';
 
 
 class GroupChatroomView extends Component {
@@ -393,6 +393,10 @@ class GroupChatroomView extends Component {
                                 } */}
 
                         </section>
+
+                        <div className="myfooter-app">
+                            <Footer/>
+                        </div>
                     </>
                 }
             </>
