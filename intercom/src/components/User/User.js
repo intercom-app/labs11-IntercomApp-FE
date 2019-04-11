@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import GroupForm from '../Groups/GroupForm';
-// import { NavLink } from "react-router-dom";
+import UnAuth from './UnAuth';
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
@@ -141,11 +141,13 @@ class User extends Component {
 
     render() {
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
-        const avatar = localStorage.getItem('avatar') || require('../../images/avatar1.png');    
+        const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
-
         return (
             <>
+                {parseInt(localStorage.getItem('userId')) !== parseInt(this.props.match.params.id) ?
+                    <UnAuth/> : 
+                <>
                 {error
                     ? <h1>Error retrieving user!</h1>
                     : <>
@@ -169,13 +171,14 @@ class User extends Component {
                                 <aside className="col-md-4 sidebar-padding">
 
                                     <GroupForm updateGroups={this.updateGroups} />
-                                    <RecentActivity recentActivities={recentActivities} />
+                                    <RecentActivity recentActivities={recentActivities} avatar={avatar}/>
 
                                 </aside>
                             </div>
                         </section>
                     </>
-                }
+                }</>
+            }
             </>
         );
     }

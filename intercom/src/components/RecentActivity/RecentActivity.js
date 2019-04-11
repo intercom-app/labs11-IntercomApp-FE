@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const RecentActivity = (props) => {
+    const avatar = props.avatar || require('../../images/avatar1.png');
+    
     return (
         <div className="blog-sidebar">
             <h4 className="sidebar-title"><i className="fa fa-align-left"></i> Recent Group Activity</h4>
@@ -10,7 +12,7 @@ const RecentActivity = (props) => {
             {props.recentActivities.map( activity =>
                 <div className="media" key={activity.id}>
                     <div className="media-body">
-
+                        
                         <h4 className="media-heading">
                             <Link to={`/group/${activity.groupId}`} >{activity.groupName}</Link>
                             <span className="pull-right" style={{color:"#9d9d9d", fontSize: "13px", paddingTop: "3px"}}>
@@ -32,10 +34,11 @@ const RecentActivity = (props) => {
                                 }
                             </span>
                         </h4>
+                        <div className='rec-gr-act'> 
+                            <img className="media-object avatar-img-rec" src={avatar} alt="" />                                                              
+                            <p><strong>{activity.displayName}: </strong>{activity.activity}</p>
+                        </div>
                         
-                        <strong>{activity.displayName}: </strong>
-                        {activity.activity}
-
                     </div>
                 </div>
             )}
