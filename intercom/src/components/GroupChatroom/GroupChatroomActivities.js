@@ -5,12 +5,12 @@ import React, { Component } from 'react';
 class GroupChatroomActivities extends Component {
 
     getDateTime = (date) => {
-        const dateStr = new Date(date).toLocaleDateString('en-GB', {
+        const dateStr = new Date(date).toLocaleDateString(undefined, {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
         });
-        const today = new Date().toLocaleDateString('en-GB', {
+        const today = new Date().toLocaleDateString(undefined, {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
