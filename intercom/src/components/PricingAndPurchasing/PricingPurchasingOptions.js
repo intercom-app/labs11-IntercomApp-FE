@@ -31,7 +31,7 @@ class PricingPurchasingOptions extends Component {
                     </Elements>
 
                     <Elements>
-                        <AddToAccountBalanceNew />
+                        <AddToAccountBalance/>
                     </Elements>
 
                     {/* <Elements>                        
