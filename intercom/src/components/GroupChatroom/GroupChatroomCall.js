@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import GroupChatroomCallModel from './GroupChatroomCallModel';
 
 class GroupChatroomCall extends Component {
 
