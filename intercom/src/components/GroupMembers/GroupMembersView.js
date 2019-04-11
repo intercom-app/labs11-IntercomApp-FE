@@ -8,6 +8,7 @@ import SearchBar from '../Search/SearchBar';
 import SearchResults from '../Search/SearchResults';
 import GroupMembersList from './GroupMembersList.js';
 import GroupInviteesList from './GroupInviteesList.js';
+import Footer from '../LandingPage/Footer';
 
 class GroupMembersView extends Component {
     constructor(props) {
@@ -277,6 +278,10 @@ class GroupMembersView extends Component {
                     invitees={invitees}
                     removeInvitee={this.removeInvitee}
                 /> */}
+
+                <div className="myfooter-app">
+                    <Footer/>
+                </div>
 
             </>
         )

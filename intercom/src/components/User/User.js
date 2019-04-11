@@ -7,6 +7,7 @@ import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
 import host from '../../host';
 import RecentActivity from '../RecentActivity/RecentActivity';
+import Footer from "../LandingPage/Footer";
 
 class User extends Component {
     state = {
@@ -79,12 +80,12 @@ class User extends Component {
 
         axios.get(groupsInvitedTo)
             .then(res => {
-                this.setState({ groupsInvitedTo: res.data })
+                this.getOwners(res.data);
                 this.getRecentActivity(res.data);
             })
             .catch(err => {
                 this.setState({
-                    error: err.response.data.message,
+                    error: err,
                     groupsInvitedTo: []
                 });
             });
@@ -95,6 +96,30 @@ class User extends Component {
         this.getgroupsOwned(id);
         this.getGroupsInvitedTo(id);
         // Groups belonged to is called after groups owned.js
+    }
+    getOwners = (groups) => {
+        if (groups.length > 0) {
+            groups.forEach(group => {
+                axios.get(`${host}/api/groups/${group.groupId}/groupOwners`)
+                .then(res => {
+                    const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
+                    const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
+
+                    const filteredGroups = groupsWithOwner.filter((group, index, self) =>
+                    index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                    )
+
+                    this.setState({
+                        groupsInvitedTo: filteredGroups
+                    });
+                })
+                .catch(err => console.error(err));           
+            })
+        } else {
+            this.setState({
+                groupsInvitedTo: []
+            });           
+        }
     }
 
     getRecentActivity = (groups) => {
@@ -120,6 +145,12 @@ class User extends Component {
         })
     }
 
+    updateGroups = () => {
+        const id = localStorage.getItem('userId')
+        this.getgroupsOwned(id);
+        this.getGroupsInvitedTo(id);
+        // Groups belonged to is called after groups owned
+    }
 
     render() {
         // console.log(this.state.activities)
@@ -159,6 +190,10 @@ class User extends Component {
                                 </aside>
                             </div>
                         </section>
+
+                        <div className="myfooter-app">
+                            <Footer/>
+                        </div>
                     </>
                 }</>
             }
