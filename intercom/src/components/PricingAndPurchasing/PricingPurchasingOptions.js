@@ -3,6 +3,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import PricingPlan1 from './PricingPlan1';
 import PricingPlan2 from './PricingPlan2';
 import AddToAccountBalance from "./AddToAccountBalance";
+import AddToAccountBalanceNew from "./AddToAccountBalanceNew";
 import UpdatePaymentMethod from './UpdatePaymentMethod';
 
 class PricingPurchasingOptions extends Component {
@@ -36,24 +37,28 @@ class PricingPurchasingOptions extends Component {
                       all in the same Elements group. Note that Elements must contain the
                       component that you wrapped with injectStripe, you cannot put Elements
                       inside of the component that you wrap with injectStripe. */}
-                    <Elements>
-                        {/* PRICING PLAN 1 COMPONENT */}
+                    
+                    {/* <Elements>
                         <PricingPlan1 />
                     </Elements>
 
                     
-                    <Elements>
-                        {/* PRICING PLAN 2 COMPONENT */}
+                    <Elements>                        
                         <PricingPlan2 />
+                    </Elements>
+
+                    <Elements>                        
+                        <AddToAccountBalance />
+                    </Elements> */}
+
+                    <Elements>
+                        {/* Update payment method component */}
+                        <UpdatePaymentMethod />
                     </Elements>
 
                     <Elements>
                         {/* ADD TO ACCOUNT BALANCE COMPONENT */}
-                        <AddToAccountBalance />
-                    </Elements>
-
-                    <Elements>
-                        <UpdatePaymentMethod />
+                        <AddToAccountBalanceNew />
                     </Elements>
 
                 </div>

@@ -91,6 +91,12 @@ class User extends Component {
             });
     }
 
+    updateGroups = () => {
+        const id = localStorage.getItem('userId')
+        this.getgroupsOwned(id);
+        this.getGroupsInvitedTo(id);
+        // Groups belonged to is called after groups owned.js
+    }
     getOwners = (groups) => {
         if (groups.length > 0) {
             groups.forEach(group => {
@@ -121,6 +127,7 @@ class User extends Component {
             axios.get(`${host}/api/groups/${group.groupId}/activities`)
             .then(res => {
                 const activities = res.data.map( activity => {
+                    // console.log(activity)
                     return {...activity, groupId: group.groupId, groupName: group.GroupName}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
@@ -146,6 +153,7 @@ class User extends Component {
     }
 
     render() {
+        // console.log(this.state.activities)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
         const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
@@ -177,7 +185,7 @@ class User extends Component {
                                 <aside className="col-md-4 sidebar-padding">
 
                                     <GroupForm updateGroups={this.updateGroups} />
-                                    <RecentActivity recentActivities={recentActivities} avatar={avatar}/>
+                                    <RecentActivity recentActivities={recentActivities} user={user}/>
 
                                 </aside>
                             </div>

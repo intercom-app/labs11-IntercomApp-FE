@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const RecentActivity = (props) => {
-    const avatar = props.avatar || require('../../images/avatar1.png');
-    
+    const avatar = props.user.avatar || require('../../images/avatar1.png');
+    // console.log(props.recentActivities)
     return (
         <div className="blog-sidebar">
             <h4 className="sidebar-title"><i className="fa fa-align-left"></i> Recent Group Activity</h4>
@@ -35,7 +35,7 @@ const RecentActivity = (props) => {
                             </span>
                         </h4>
                         <div className='rec-gr-act'> 
-                            <img className="media-object avatar-img-rec" src={avatar} alt="" />                                                              
+                            <img className="media-object avatar-img-rec" src={activity.avatar || require('../../images/avatar1.png')} alt="" />                                                              
                             <p><strong>{activity.displayName}: </strong>{activity.activity}</p>
                         </div>
                         
