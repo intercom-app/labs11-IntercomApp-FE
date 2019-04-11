@@ -293,6 +293,14 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .btn-join:hover { background-color: #fff;  border: 1px solid #33cc33; color: #33cc33 }
 .btn-decline { background-color: #c20500;  border:1px solid transparent; color: #fff}
 .btn-decline:hover { background-color: #fff;  border:1px solid #c20500; color: #c20500}
+@media (max-width:500px){
+    .btn-join {font-size: 12px; }
+    .btn-decline {font-size: 12px; }
+}
+@media (max-width:380px){
+    .btn-join {padding: 3px 6px; }
+    .btn-decline {padding: 3px 6px; }
+}
 .btn-primary { background-color: #33cc33;  border:none; }
 .btn-primary:hover { background-color: #2D2D2D;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; }
 @media only screen and (min-width:768px) and (max-width: 980px) { 

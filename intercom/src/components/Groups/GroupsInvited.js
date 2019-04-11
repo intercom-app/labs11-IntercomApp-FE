@@ -93,23 +93,23 @@ class GroupsInvited extends Component {
                         <div key={group.groupId} className="groups-row">
                             <div className="row blogu">
                                 <div>
-                                    <div className="col-sm-8 col-md-8">
+                                    <div className="col-xs-6 col-sm-8 col-md-8">
                                         <h3 className="blog-title">
                                             {group.GroupName}
                                         </h3>
                                     </div>
-                                    <div className="col-sm-2 col-md-2">
+                                    <div className="col-xs-3 col-sm-2 col-md-2">
                                         <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
                                             Join Group
                                         </button>
                                     </div>
-                                    <div className="col-sm-2 col-md-2">                                        
+                                    <div className="col-xs-3 col-sm-2 col-md-2">                                        
                                         <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
                                             Decline
                                         </button>
                                     </div>
                                 </div>
-                                <div className="col-sm-12 col-md-12">
+                                <div className="col-xs-12 col-sm-12 col-md-12">
                                     Invited by: {group.groupOwner}
                                 </div>
                             </div>
