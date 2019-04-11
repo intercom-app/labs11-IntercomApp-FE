@@ -36,7 +36,7 @@ class GroupsInvited extends Component {
         //add the activity to the group's log
         axios
             .post(`${host}/api/groups/${groupId}/activities`, activity)
-            .then()
+            .then(() =>  this.props.updateGroups() )
             .catch(err => {
                 console.log(err);
             });
@@ -56,7 +56,7 @@ class GroupsInvited extends Component {
         //add the declining activity to the group's log
         axios
             .post(`${host}/api/groups/${groupId}/activities`, activity)
-            .then()
+            .then(() =>  this.props.updateGroups() )
             .catch(err => {
                 console.log(err);
             });
