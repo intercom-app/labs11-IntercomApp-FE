@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GroupChatroomCallModel from './GroupChatroomCallModel';
 
 class GroupChatroomCall extends Component {
 
@@ -42,31 +43,29 @@ class GroupChatroomCall extends Component {
         let { user, group, participants, handleCallButton } = this.props
 
         return (
-            <>
+            <>                
                 <h1 className="page-header sidebar-title">
                     Call Status
                 </h1>
 
                 <div className="row blogu" >
                     <div className="col-sm-12 col-md-12">
-                        {group.callStatus === true 
-                            ? 
-                            <>
-                                <span className='pull-right info-link'>
-                                    <i className="fa fa-question-circle"></i>
-                                    {' '}Join a Call
-                                </span>
-                                <h3 className="blog-title color-elements">Active</h3>
-                            </>
-                            : 
-                            <>
-                                <span className='pull-right info-link'>
-                                    <i className="fa fa-question-circle"></i>
-                                    {' '}Start a Call
-                                </span>
-                                <h3 className="blog-title color-elements">Inactive</h3>
-                            </>
-                        }
+
+                        <span className='pull-right info-link'>
+                            <a  href="#" 
+                                data-toggle="tooltip" 
+                                data-placement="left"
+                                title="Open the mobile application and select the group you wish to start or join a Voice Chat with. Within the group simply click 'Start Call' or 'Join Call' !"
+                            >
+                                <i className="fa fa-question-circle"></i>
+                                {group.callStatus === true ? <>{' '}Join a Call</> : <>{' '}Start a Call</>}
+                            </a>
+                        </span>
+
+                        <h3 className="blog-title color-elements">
+                            {group.callStatus === true ? 'Active' : 'Inactive'}
+                        </h3>
+
                     </div>
 
                     {group.callStatus === true 
