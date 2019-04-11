@@ -65,14 +65,16 @@ class GroupChatroomView extends Component {
     }
 
     leaveGroup = async () => {
-        this.addActivity(`Left Group`);
-        const id = this.state.groupId;
-        const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
-        const res = await this.axiosDel(member, 'user')
-        if (res) {
-            const userId = localStorage.getItem('userId')
-            this.props.history.push(`/user/${userId}`)
-        }  
+        const addedActivity = await this.addActivity(`Left Group`);
+        if(addedActivity) {
+            const id = this.state.groupId;
+            const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
+            const res = await this.axiosDel(member, 'user')
+            if (res) {
+                const userId = localStorage.getItem('userId')
+                this.props.history.push(`/user/${userId}`)
+            }  
+        }
     }
 
     getActivities = id => {
@@ -80,11 +82,12 @@ class GroupChatroomView extends Component {
         this.axiosGet(activities, 'activities');
     }
 
-    addActivity = (activityComment) => {
+    addActivity = async (activityComment) => {
         const id = this.state.groupId;
         const activities = `${host}/api/groups/${id}/activities`;
         const activity = { userId: this.state.userId, activity: activityComment }
-        this.axiosPost(activities, 'activities', activity)
+        const posted = await this.axiosPost(activities, 'activities', activity)
+        if(posted) {return true}
     }
 
     getParticipants = id => {
@@ -132,6 +135,7 @@ class GroupChatroomView extends Component {
         try {
             const res = await axios.post(call, post)
             this.setState({ [key]: res.data })
+            if (res.data.length > 0) {return true}
         } catch (err) {
             this.setState({ error: err.response.data.message })
         }
@@ -265,11 +269,16 @@ class GroupChatroomView extends Component {
                                                 </span>
                                             </div>
 
-                                            <button className="btn btn-primary btn-group-delete"
-                                                type="button" onClick={this.deleteGroup}>Delete Group
+                                            <button className="btn btn-delete" type="button" onClick={this.deleteGroup}>
+                                                Delete Group
                                             </button>
                                         </>
-                                        : null
+                                        : 
+                                        <>
+                                            <button className="btn btn-delete btn-leave" type="button" onClick={this.leaveGroup}>
+                                                Leave Group
+                                            </button>
+                                        </>
                                         }
                                     </div>
                                 </aside>

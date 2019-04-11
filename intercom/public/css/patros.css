@@ -286,7 +286,9 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .comments1 { margin-top:60px; }
 .comments1 .media-heading  { color:#313131; font-size:16px; }
 .comments1 .media-object { max-width: 60px; }
-.btn-group-delete { margin: 20px 0px; }
+.btn-delete { margin: 20px 0px; background-color: #fff;  border:1px solid #c20500; color: #c20500}
+.btn-delete:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
+.btn-leave { margin-top: 0px;}
 .btn-join { background-color: #33cc33;  border:1px solid transparent; color: #fff}
 .btn-join:hover { background-color: #fff;  border: 1px solid #33cc33; color: #33cc33 }
 .btn-decline { background-color: #c20500;  border:1px solid transparent; color: #fff}
