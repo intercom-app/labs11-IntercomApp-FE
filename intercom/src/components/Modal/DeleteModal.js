@@ -1,3 +1,10 @@
+//DeleteModal expects to have the following variables passed to props:
+// handleTarget(target) : function, performs desired operation on target
+// targetName : string, name used to confirm target before performing handleTarget
+// type: text displayed on button
+// deleteMessage: Message displayed on modal
+
+
 import React, { Component } from "react";
 
 class DeleteModal extends Component {
