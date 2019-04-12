@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import $ from 'jquery';
-// window.jQuery = $;
+
 export default class Navigation extends React.Component {
 
 

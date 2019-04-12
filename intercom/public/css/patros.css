@@ -150,6 +150,7 @@ span.text a:hover{
 .blog-title a{color:#33cc33; -webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s;}
 .blog-title a:hover{color:#555;text-decoration: none;}
 .sidebar-title {color:#555;}
+.sidebar-title-group-chatroom {color:#33cc33;}
 .pagination>li>a{color:#33cc33;}
 .pagination>.active>a{background-color: #33cc33;border-color:#33cc33; color:white;}
 .pagination>li>a:hover {color:#313131;}
@@ -198,7 +199,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .navbar-inverse .navbar-nav>li>a:active { border-bottom: 3px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; }
 .navbar-inverse { border:none; }
 .navbar-brand img{ margin-top:-5px; }
-@media only screen and (max-width:767px) { .navbar-collapse{ border:none; } .navbar-inverse{opacity: 0.85} .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover { border:none; } .navbar-inverse .navbar-nav>li { border-bottom:1px solid #398439; } .navbar-inverse .navbar-nav>li:hover { border-bottom:1px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; } .navbar-inverse .navbar-nav>li>a:hover { color:#FFF; border:none; } }
+@media only screen and (max-width:767px) { .navbar-collapse{ border:none; } .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover { border:none; } .navbar-inverse .navbar-nav>li { border-bottom:1px solid #398439; } .navbar-inverse .navbar-nav>li:hover { border-bottom:1px solid #FFF;-webkit-transition:0.5s; transition: 0.5s; transition-timing-function: ease; } .navbar-inverse .navbar-nav>li>a:hover { color:#FFF; border:none; } }
  .carousel-caption{position:absolute;right:15%;top:-40px;left:15%;z-index:10;padding-bottom:20px;color:#313131;text-align:center;text-shadow:0 0px 0px rgba(0,0,0,.6)}
  .carousel-caption .btn{text-shadow:none}
  @media screen and (min-width:768px){.carousel-control .glyphicon-chevron-left,.carousel-control .glyphicon-chevron-right,.carousel-control .icon-next,.carousel-control .icon-prev{width:30px;height:30px;margin-top:-15px;font-size:30px}.carousel-control .glyphicon-chevron-left,.carousel-control .icon-prev{margin-left:-15px}.carousel-control .glyphicon-chevron-right,.carousel-control .icon-next{margin-right:-15px} .carousel-caption{right:20%;left:20%;padding-bottom:30px} }
@@ -453,6 +454,10 @@ header.carousel {
 }
 .cb-slideshow h4 {
     margin-bottom: 13%;
+}
+
+.avatar-img-act {
+    width: 85% !important;
 }
 }
 @media (max-width:480px){

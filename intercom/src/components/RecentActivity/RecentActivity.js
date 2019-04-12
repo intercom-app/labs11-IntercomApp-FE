@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const RecentActivity = (props) => {
-    const avatar = props.user.avatar || require('../../images/avatar1.png');
-    // console.log(props.recentActivities)
     return (
         <div className="blog-sidebar">
             <h4 className="sidebar-title"><i className="fa fa-align-left"></i> Recent Group Activity</h4>

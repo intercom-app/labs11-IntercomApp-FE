@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Fuse from 'fuse.js';
-
 import host from "../../host.js";
 import SearchBar from '../Search/SearchBar';
 import SearchResults from '../Search/SearchResults';
@@ -17,6 +16,7 @@ class GroupMembersView extends Component {
             id: this.props.match.params.id,
             group: '',
             members: [],
+            membersDetails: [],
             invitees: [],
             users: [],
             search: '',
@@ -39,6 +39,15 @@ class GroupMembersView extends Component {
                 this.setState({
                     members: res.data,
                     search: '',
+                });
+            })
+            .catch(err => this.setState({ error: err }));
+
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
+            .then(res => {
+                this.setState({
+                    membersDetails: res.data
                 });
             })
             .catch(err => this.setState({ error: err }));
@@ -182,8 +191,7 @@ class GroupMembersView extends Component {
     }
 
     render() {
-
-        let { error, group, search, users, members, invitees, isOwner } = this.state
+        let { error, group, search, users, members, membersDetails, invitees, isOwner } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
 
         return (
@@ -194,14 +202,12 @@ class GroupMembersView extends Component {
                         <section className="container blog">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <Link to={`/group/${group.id}`} className='blog-title'>
-                                        Group Chatroom
-                                    </Link>
+                                    
                                     <h2>{group.name}</h2>
 
                                     <GroupMembersList
                                         isOwner={isOwner}
-                                        members={members}
+                                        membersDetails={membersDetails}
                                         userId={userId}
                                         removeUser={this.removeUser}
                                     />
@@ -215,9 +221,13 @@ class GroupMembersView extends Component {
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
+                                    
                                     {isOwner
                                         ? <>
                                             <div className="blog-sidebar">
+                                                <Link to={`/group/${group.id}`} className='sidebar-title-group-chatroom'>
+                                                    Group Chatroom
+                                                </Link>
                                                 <h3 className="sidebar-title">Invite New Members</h3>
                                                 <hr></hr>
                                                 <h4 className="sidebar-title">Search Users: </h4>
@@ -236,7 +246,13 @@ class GroupMembersView extends Component {
                                             </div>
 
                                         </>
-                                        : null
+                                        : 
+                                        <div className="blog-sidebar">
+                                            <Link to={`/group/${group.id}`} className='sidebar-title-group-chatroom'>
+                                                Group Chatroom
+                                            </Link>
+                                        </div>
+                                        
                                     }
                                 </aside>
 
