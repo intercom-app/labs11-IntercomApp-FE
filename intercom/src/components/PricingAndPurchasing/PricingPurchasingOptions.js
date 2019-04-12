@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import AddToAccountBalanceDev from "./AddToAccountBalanceDev";
 import AddToAccountBalance from "./AddToAccountBalance";
-import UpdatePaymentMethod from './UpdatePaymentMethod';
+import UpdateBilling from './UpdateBilling';
 
 class PricingPurchasingOptions extends Component {
     constructor() {

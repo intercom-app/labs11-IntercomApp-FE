@@ -4,7 +4,7 @@ import host from '../../host';
 import {CardElement, injectStripe} from 'react-stripe-elements'; // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
 
 
-class UpdatePaymentMethod extends Component {
+class UpdateBilling extends Component {
     constructor(props) {
         super(props);
     }
@@ -49,7 +49,7 @@ class UpdatePaymentMethod extends Component {
         }
     }
 
-    updatePaymentMethod = async() => {
+    updateBilling = async() => {
         try{
             // Step 1, create a source from the entered credit card information. 
             const source = await this.createSource();
@@ -67,14 +67,14 @@ class UpdatePaymentMethod extends Component {
         return (
                 <div style = {{border:'1px solid red'}}>
                     <div>
-                        <h1>Update Payment Method</h1>
+                        <h1>updateBilling</h1>
                         <CardElement />
-                        <button onClick = {this.updatePaymentMethod}>updatePaymentMethod</button>
+                        <button onClick = {this.updateBilling}>updateBilling</button>
                     </div>
                 </div>
         )
     }
 }
 
-export default injectStripe(UpdatePaymentMethod);
+export default injectStripe(updateBilling);
 
