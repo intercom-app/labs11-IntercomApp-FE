@@ -191,7 +191,8 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .navbar-inverse { background-color: #33cc33; font-size:15px; padding-top:16px;  padding-bottom:16px;
     position: inherit;
     margin-bottom: 0px;
-    position: fixed
+    position: fixed;
+    z-index: 10000;
 }
 .navbar-inverse .navbar-nav>li>a{font-size: 15px;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; ;}
 .navbar-inverse .navbar-nav>li>a { color:#efefef; padding-bottom:6px; padding-right:10px; }
