@@ -11,6 +11,7 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             updateUserName: false,
+            updateBilling:false
         }
     }
 
@@ -37,12 +38,26 @@ class AccountSettings extends Component {
         }));
     }
 
+    toggleChangeBilling = () => {
+        this.setState(prevState => ({
+            updateBilling: !prevState.updateBilling
+        }));
+    }
+
     handleUpdate = () => {
         const id = this.state.user.id
         axios
             .get(`${host}/api/users/${id}`)
             .then(res => this.setState({ user: res.data }))
             .catch(err => console.log(err));
+    }
+
+    handleBillingUpdate = () => {
+        // const id = this.state.user.id
+        // axios
+        //     .get(`${host}/api/users/${id}`)
+        //     .then(res => this.setState({ user: res.data }))
+        //     .catch(err => console.log(err));
     }
 
     handleDelete = (id) => {
@@ -117,7 +132,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName } = this.state
+        const { user, updateUserName, updateBilling } = this.state
 
         return (
             <>
@@ -219,9 +234,25 @@ class AccountSettings extends Component {
                                             <div className="pull-left">
                                                 •••• •••• •••• 4242
                                             </div>
-                                            <div className="pull-right">
+                                            {/* <div className="pull-right">
                                                 Update
+                                            </div> */}
+                                            
+
+
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                                { updateBilling 
+                                                    ? 'Cancel'
+                                                    : 'Update'
+                                                }
                                             </div>
+                                            {/* { updateBilling 
+                                                ? <UpdateBillingForm 
+                                                    updateBilling={this.handleBillingUpdate}
+                                                    toggleChangeBilling={this.toggleChangeBilling}
+                                                />
+                                                : null
+                                            } */}
                                         </div>
                                     </div>
                                 </div>
