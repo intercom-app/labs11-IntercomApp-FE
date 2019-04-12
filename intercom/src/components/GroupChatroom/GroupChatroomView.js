@@ -235,7 +235,7 @@ class GroupChatroomView extends Component {
                 {error
                     ? <h1>Error retrieving group!</h1>
                     : <>
-                        <section className="container blog">
+                        <section className="container blog page-container">
                                                                
                             <div className="row">
                                 <div className="col-md-12"> 
@@ -268,8 +268,8 @@ class GroupChatroomView extends Component {
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <div className="blog-sidebar">
-                                            <h3 className="sidebar-title">Group Settings</h3>
-                                            <hr></hr>
+                                        <h3 className="sidebar-title">Group Settings</h3>
+                                        <hr></hr>
                                         {isOwner ? 
                                         <>
                                             <h4 className="sidebar-title">Update Group Name: </h4>
@@ -310,9 +310,8 @@ class GroupChatroomView extends Component {
 
                         </section>
 
-                        <div className="myfooter-app">
-                            <Footer/>
-                        </div>
+                        <Footer/>
+
                     </>
                 }
             </>
