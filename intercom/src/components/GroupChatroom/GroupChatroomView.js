@@ -235,7 +235,7 @@ class GroupChatroomView extends Component {
                 {error
                     ? <h1>Error retrieving group!</h1>
                     : <>
-                        <section className="container blog">
+                        <section className="container blog page-container">
                                                                
                             <div className="row">
                                 <div className="col-md-12"> 
@@ -310,9 +310,8 @@ class GroupChatroomView extends Component {
 
                         </section>
 
-                        <div className="myfooter-app">
-                            <Footer/>
-                        </div>
+                        <Footer/>
+
                     </>
                 }
             </>
