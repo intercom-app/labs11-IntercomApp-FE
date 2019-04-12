@@ -4,7 +4,6 @@ import UpdateBilling from './UpdateBilling';
 
 class UpdateBillingWrapper extends Component {
     render() { 
-        console.log(process.env.REACT_APP_PK_TEST)
         return (
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
