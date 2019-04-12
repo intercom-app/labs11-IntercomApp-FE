@@ -16,7 +16,7 @@ class DeleteModal extends Component {
   render() {
     return (
       <div>
-          {console.log(this.props)}
+          {/* {console.log(this.props)} */}
         <button
           type="button"
           className="btn btn-primary"
