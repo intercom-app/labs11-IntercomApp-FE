@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Fuse from 'fuse.js';
-
 import host from "../../host.js";
 import SearchBar from '../Search/SearchBar';
+import RecentActivity from '../RecentActivity/RecentActivity';
 import SearchResults from '../Search/SearchResults';
 import GroupMembersList from './GroupMembersList.js';
 import GroupInviteesList from './GroupInviteesList.js';
@@ -17,6 +17,8 @@ class GroupMembersView extends Component {
             id: this.props.match.params.id,
             group: '',
             members: [],
+            membersDetails: [],
+            activities: [],
             invitees: [],
             users: [],
             search: '',
@@ -42,6 +44,33 @@ class GroupMembersView extends Component {
                 });
             })
             .catch(err => this.setState({ error: err }));
+
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
+            .then(res => {
+                this.setState({
+                    membersDetails: res.data
+                });
+            })
+            .catch(err => this.setState({ error: err }));
+        
+        axios.get(`${host}/api/groups/${this.state.id}/activities`)
+            .then(res => {
+                const activities = res.data.map(activity => {
+                    // console.log(activity)
+                    return { ...activity, groupId: activity.groupId, groupName: activity.GroupName}
+                })
+                const updatedActivities = this.state.activities.concat(activities)
+
+                const filteredActivities = updatedActivities.filter((activity, index, self) =>
+                    index === self.findIndex((i) => (i.id === activity.id))
+                )
+
+                filteredActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                this.setState({
+                    activities: filteredActivities
+                });
+            })
 
         axios
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
@@ -182,26 +211,38 @@ class GroupMembersView extends Component {
     }
 
     render() {
-
-        let { error, group, search, users, members, invitees, isOwner } = this.state
+        // let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
+        let { error, group, search, users, membersDetails, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
-
+        const recentActivities = activities.slice(0, 5);
+        const style = { color: "#9d9d9d", fontSize: "13px", paddingTop: '17px'}
         return (
             <>
                 {error
                     ? <p>Error retrieving members!</p>
                     : <>
                         <section className="container blog page-container">
+
+                            <div className="row">
+                                <div className="col-md-12"> 
+                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
+                                    <span className="pull-left">
+                                        <h2>{group.name}</h2>
+                                    </span>
+                                    <span className="pull-right">                                                
+                                        <Link to={`/group/${group.id}`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                        <h4>Group Chatroom</h4>
+                                        </Link>
+                                    </span>
+                                </div>
+                            </div>
+
                             <div className="row">
                                 <div className="col-md-8">
-                                    <Link to={`/group/${group.id}`} className='blog-title'>
-                                        Group Chatroom
-                                    </Link>
-                                    <h2>{group.name}</h2>
 
                                     <GroupMembersList
                                         isOwner={isOwner}
-                                        members={members}
+                                        membersDetails={membersDetails}
                                         userId={userId}
                                         removeUser={this.removeUser}
                                     />
@@ -215,6 +256,7 @@ class GroupMembersView extends Component {
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
+                                    
                                     {isOwner
                                         ? <>
                                             <div className="blog-sidebar">
@@ -236,8 +278,14 @@ class GroupMembersView extends Component {
                                             </div>
 
                                         </>
-                                        : null
+                                        : 
+                                        <div className="blog-sidebar">
+                                            <RecentActivity recentActivities={recentActivities} style={style} />
+                                        </div>
+                                        
                                     }
+
+
                                 </aside>
 
                             </div>
@@ -245,40 +293,6 @@ class GroupMembersView extends Component {
 
                     </>
                 }
-                {/* <Link to={`/group/${id}`}>
-                    Back to Group
-                </Link>
-
-                {isOwner
-                    ? <>
-                        <SearchBar
-                            inputValue={search}
-                            updateSearch={this.handleSearch}
-                        />
-                        {this.state.search.length >= 3
-                            ? <SearchResults
-                                users={users}
-                                inviteUser={this.inviteUser}
-                            />
-                            : null
-                        }
-                    </>
-                    : null
-                }
-
-                <GroupMembersList
-                    isOwner={isOwner}
-                    members={members}
-                    userId={userId}
-                    removeUser={this.removeUser}
-                />
-
-                <GroupInviteesList
-                    isOwner={isOwner}
-                    invitees={invitees}
-                    removeInvitee={this.removeInvitee}
-                /> */}
-
                 
                 <Footer/>
 

@@ -17,14 +17,14 @@ class GroupChatroomCall extends Component {
                     <div className="col-sm-12 col-md-12">
 
                         <span className='pull-right info-link'>
-                            <a  href="#" 
+                            <span  
                                 data-toggle="tooltip" 
                                 data-placement="left"
                                 title="Open the mobile application and select the group you wish to start or join a Voice Chat with. Within the group simply click 'Start Call' or 'Join Call' !"
                             >
                                 <i className="fa fa-question-circle"></i>
                                 {group.callStatus === true ? <>{' '}Join a Call</> : <>{' '}Start a Call</>}
-                            </a>
+                            </span>
                         </span>
 
                         <h3 className="blog-title color-elements">

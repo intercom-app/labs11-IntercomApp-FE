@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import {Elements, StripeProvider} from 'react-stripe-elements';
+<<<<<<< HEAD:intercom/src/components/Billing/UpdateBillingWrapper.js
 import UpdateBilling from './UpdateBilling';
 
 class UpdateBillingWrapper extends Component {
     constructor(props) {
         super(props);
     }
+=======
+// import AddToAccountBalanceDev from "./AddToAccountBalanceDev";
+import AddToAccountBalance from "./AddToAccountBalance";
+import UpdatePaymentMethod from './UpdatePaymentMethod';
+
+class PricingPurchasingOptions extends Component {
+    // constructor() {
+    //     super();
+    // }
+>>>>>>> a74affeda985acf5b2f45c87af15359f96758189:intercom/src/components/PricingAndPurchasing/PricingPurchasingOptions.js
 
     render() { 
         return (

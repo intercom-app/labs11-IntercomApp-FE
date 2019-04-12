@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
-import DeleteAccount from './DeleteAccount';
+import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 
@@ -72,13 +72,13 @@ class AccountSettings extends Component {
     }
 
     handleDelete = (id) => {
-        this.addGroupsMemberActivities(id); // First updates activities for all groups user belonged to
+        this.deleteAccount(id); // First updates activities for all groups user belonged to
         // Second updates activities for all groups user was invited to
         // Third deletes all groups user was owner of
         // Last deletes user and logs out
     }
 
-    addGroupsMemberActivities = (id) => {
+    /* addGroupsMemberActivities = (id) => {
         const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
         axios
             .get(`${host}/api/users/${id}/groupsBelongedTo`)
@@ -132,14 +132,14 @@ class AccountSettings extends Component {
                 }
             })
             .catch(err => console.error(err));
-    }
+    } */
 
     deleteAccount = (id) => {
         axios
             .delete(`${host}/api/users/${id}`)
             .then(() => this.props.auth.logout())
-            .catch(err => console.log(err));
-    }
+            .catch(err => console.log(err.response));
+}
 
     render() {
 
@@ -159,15 +159,15 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteAccount user={this.state.user} handleDelete={this.handleDelete} />
-                                        {/* <button
+                                        <DeleteModal deleteMessage={"Confirm your email address below to delete your account"} target={this.state.user.id} targetName={this.state.user.email} handleTarget={this.handleDelete} type={'Delete Account'} />
+                                         {/* <button
                                             style={{ padding: "3px 12px"}}
                                             className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
                                             type="button"
                                             onClick={() => this.handleDelete(user.id)}
                                         >
                                             Delete Account
-                                        </button> */}
+                                        </button>  */}
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
@@ -310,58 +310,3 @@ export default AccountSettings;
 
 
 
-
-
-
-
-
-
-
-
-
-// <div className="row">
-//                                 <div className="col-md-12">
-//                                     <div className="col-md-4">
-//                                         <h3 style={{ marginTop: "0px" }}>
-//                                             Billing
-//                                         </h3>
-//                                     </div>
-//                                     <div className="col-md-8">
-//                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-//                                         { updateBilling 
-//                                                 ? <UpdateBillingWrapper 
-//                                                     updateBilling={this.handleBillingUpdate}
-//                                                     toggleChangeBilling={this.toggleChangeBilling}
-//                                                 />
-//                                                 : null
-//                                         }
-//                                         {updateBilling
-//                                                 ? <CurrentBilling1 /> 
-                                                
-//                                                 : <CurrentBilling2 /> 
-//                                         }
-
-//                                             {/* <div className="pull-left">
-//                                                 •••• •••• •••• 4242
-//                                             </div> */}
-//                                             {/* <CurrentBilling1 /> */}
-//                                             {/* <div className="pull-right">
-//                                                 Update
-//                                             </div> */}
-                                            
-
-
-//                                             <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
-//                                                 { updateBilling 
-//                                                     ? 'Cancel'
-//                                                     : 'Update'
-//                                                 }
-//                                             </div>
-                                            
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                             <hr></hr>
-
-//                         </div>

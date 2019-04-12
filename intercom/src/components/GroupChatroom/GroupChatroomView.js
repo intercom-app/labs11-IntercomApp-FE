@@ -4,6 +4,7 @@ import axios from 'axios';
 import host from '../../host';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
+import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 
 
@@ -261,13 +262,14 @@ class GroupChatroomView extends Component {
 
                                     <GroupChatroomActivities
                                         activities={activities}
+                                        avatar={user.avatar}
                                     />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <div className="blog-sidebar">
-                                            <h3 className="sidebar-title">Group Settings</h3>
-                                            <hr></hr>
+                                        <h3 className="sidebar-title">Group Settings</h3>
+                                        <hr></hr>
                                         {isOwner ? 
                                         <>
                                             <h4 className="sidebar-title">Update Group Name: </h4>
@@ -288,16 +290,17 @@ class GroupChatroomView extends Component {
                                                     </button>
                                                 </span>
                                             </div>
-
-                                            <button className="btn btn-delete" type="button" onClick={this.deleteGroup}>
+                                            <DeleteModal deleteMessage={"Confirm your group's name to delete your group"} target={this.state.groupId} targetName={this.state.group.name} handleTarget={this.deleteGroup} type={'Delete Group'} />
+                                            {/* <button className="btn btn-delete" type="button" onClick={this.deleteGroup}>
                                                 Delete Group
-                                            </button>
+                                            </button> */}
                                         </>
                                         : 
                                         <>
-                                            <button className="btn btn-delete btn-leave" type="button" onClick={this.leaveGroup}>
+                                            <DeleteModal deleteMessage={"Confirm the group's name to leave the group"} target={this.state.groupId} targetName={this.state.group.name} handleTarget={this.leaveGroup} type={'Leave Group'} />
+                                            {/* <button className="btn btn-delete btn-leave" type="button" onClick={this.leaveGroup}>
                                                 Leave Group
-                                            </button>
+                                            </button> */}
                                         </>
                                         }
                                     </div>
@@ -308,6 +311,7 @@ class GroupChatroomView extends Component {
                         </section>
 
                         <Footer/>
+
                     </>
                 }
             </>
