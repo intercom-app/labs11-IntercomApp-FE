@@ -13,7 +13,7 @@ const RecentActivity = (props) => {
                         
                         <h4 className="media-heading">
                             <Link to={`/group/${activity.groupId}`} >{activity.groupName}</Link>
-                            <span className="pull-right" style={{color:"#9d9d9d", fontSize: "13px", paddingTop: "3px"}}>
+                            <span className="pull-right" style={props.style || {color:"#9d9d9d", fontSize: "13px", paddingTop: "3px"}}>
                                 <i className="fa fa-calendar-o"></i>
                                 { new Date().toLocaleDateString() === new Date(activity.createdAt).toLocaleDateString()
                                 ? 

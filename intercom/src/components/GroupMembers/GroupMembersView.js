@@ -213,7 +213,8 @@ class GroupMembersView extends Component {
     render() {
         let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
-        const recentActivities = activities.slice(0, 5)
+        const recentActivities = activities.slice(0, 5);
+        const style = { color: "#9d9d9d", fontSize: "13px", paddingTop: '17px'}
         return (
             <>
                 {error
@@ -271,11 +272,11 @@ class GroupMembersView extends Component {
                                             <Link to={`/group/${group.id}`} className='sidebar-title-group-chatroom'>
                                                 Group Chatroom
                                             </Link>
+                                            <RecentActivity recentActivities={recentActivities} style={style} />
                                         </div>
                                         
                                     }
 
-                                        <RecentActivity recentActivities={recentActivities}  />
 
                                 </aside>
 

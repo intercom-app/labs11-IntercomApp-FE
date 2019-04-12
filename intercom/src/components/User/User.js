@@ -175,7 +175,7 @@ class User extends Component {
                             </div>
 
                             <div className="row">
-                                <div className="col-md-8">
+                                        <div className="col-md-8 col-md-8-right-padding">
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited groupsInvited={groupsInvitedTo} updateGroups={this.updateGroups} />
