@@ -7,6 +7,9 @@ import {CardElement, injectStripe} from 'react-stripe-elements'; // The injectSt
 class UpdateBilling extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            last4: ''
+        }
     }
 
     createSource = async() => {
@@ -18,33 +21,37 @@ class UpdateBilling extends Component {
         
         try{
             const createSourceResponse = await this.props.stripe.createSource(sourceInfo);
-            // console.log('createSourceResponse: ', createSourceResponse);
+            console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
-            // console.log('sourceObject: ', source);
+            console.log('source: ', source);
             return source;
         } catch(err) {
-            // console.log('err: ', err);
+            console.log('err: ', err);
             return err
         }
     }
 
     updateDefaultSource = async(source) => {
         const userId = localStorage.getItem('userId');
-        // console.log('userId: ', userId);
 
         try{
             const res = await axios.get(`${host}/api/users/${userId}`);
             const userStripeId = res.data.stripeId;
-            // console.log('userStripeId: ', userStripeId);
+            console.log('userStripeId: ', userStripeId);
 
-            const newlyUpdatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
+            const updatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
             });
-            // console.log('newlyUpdatedSource: ', newlyUpdatedSource);
-            return newlyUpdatedSource;
+            console.log('updatedSource: ', updatedSource);
+
+            const last4 = updatedSource.data.sources.data[0].card.last4;
+            await axios.put(`${host}/api/users/${userId}/last4`, {last4:last4})
+            this.props.handleBillingUpdate();
+
+            return updatedSource;
         } catch(err) {
-            // console.log('err: ', err);
+            console.log('err: ', err);
             return err
         }
     }
@@ -53,28 +60,28 @@ class UpdateBilling extends Component {
         try{
             // Step 1, create a source from the entered credit card information. 
             const source = await this.createSource();
-            // console.log('source: ', source);
+            
             // Step 2, update the customer's default source. 
             const newDefaultSource = await this.updateDefaultSource(source);
-            // console.log('newDefaultSource: ', newDefaultSource);
+
         } catch(err) {
-            // console.log('err: ', err)
+            console.log('err: ', err)
             return err
         }
     }
 
     render() {
         return (
-                <div style = {{border:'1px solid red'}}>
-                    <div>
-                        <h1>updateBilling</h1>
+                <div>
+                    {/* <div style = {{border:'1px solid black', marginBottom:'5px'}}> */}
+                    <div style = {{marginBottom:'10px'}}>
                         <CardElement />
-                        <button onClick = {this.updateBilling}>updateBilling</button>
                     </div>
+                    <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
                 </div>
         )
     }
 }
 
-export default injectStripe(updateBilling);
+export default injectStripe(UpdateBilling);
 

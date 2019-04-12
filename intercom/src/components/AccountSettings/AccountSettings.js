@@ -4,6 +4,7 @@ import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 import DeleteAccount from './DeleteAccount';
 import Footer from '../LandingPage/Footer';
+import UpdateBillingWrapper from '../PricingAndPurchasing/UpdateBillingWrapper.js';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             updateUserName: false,
-            updateBilling:false
+            updateBilling:false, 
+            last4: 1234
         }
     }
 
@@ -28,6 +30,15 @@ class AccountSettings extends Component {
                     error: err.response.data.message,
                     user: {},
                 });
+            });
+        
+            
+        axios.get(`${userEndpoint}/last4`)
+            .then(res => {
+                this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => { 
+                console.log(err)
             });
 
     }
@@ -53,11 +64,11 @@ class AccountSettings extends Component {
     }
 
     handleBillingUpdate = () => {
-        // const id = this.state.user.id
-        // axios
-        //     .get(`${host}/api/users/${id}`)
-        //     .then(res => this.setState({ user: res.data }))
-        //     .catch(err => console.log(err));
+        const id = this.state.user.id
+        axios
+            .get(`${host}/api/users/${id}/last4`)
+            .then(res => this.setState({last4:res.data.last4}))
+            .catch(err => console.log(err))
     }
 
     handleDelete = (id) => {
@@ -132,7 +143,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling } = this.state
+        const { user, updateUserName, updateBilling, last4 } = this.state
 
         return (
             <>
@@ -229,30 +240,32 @@ class AccountSettings extends Component {
                                             Billing
                                         </h3>
                                     </div>
-                                    <div className="col-md-8">
+                                    <div className="col-md-6">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                •••• •••• •••• 4242
-                                            </div>
-                                            {/* <div className="pull-right">
-                                                Update
-                                            </div> */}
-                                            
-
-
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
-                                                { updateBilling 
-                                                    ? 'Cancel'
-                                                    : 'Update'
-                                                }
-                                            </div>
-                                            {/* { updateBilling 
-                                                ? <UpdateBillingForm 
-                                                    updateBilling={this.handleBillingUpdate}
+                                        { updateBilling 
+                                                ? <UpdateBillingWrapper 
+                                                    handleBillingUpdate={this.handleBillingUpdate}
                                                     toggleChangeBilling={this.toggleChangeBilling}
                                                 />
                                                 : null
-                                            } */}
+                                        }
+                                        {updateBilling
+                                                ? <CurrentBilling1
+                                                    last4 = {last4}
+                                                 /> 
+                                                
+                                                : <CurrentBilling2 
+                                                    last4 = {last4}
+                                                /> 
+                                        }
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                            { updateBilling 
+                                                ? 'Cancel'
+                                                : 'Update'
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -269,4 +282,86 @@ class AccountSettings extends Component {
     }
 }
 
+const CurrentBilling1 = (props) => {
+    return(
+        <div className="pull-left" style={{ display: "none"}} >
+            {`•••• •••• •••• ${props.last4}`}
+        </div>
+    )
+}
+
+const CurrentBilling2 = (props) => {
+    return(
+        // <div className="pull-left">
+        //     •••• •••• •••• 4242
+        // </div>
+
+        // <div className="pull-left" >
+        //     •••• •••• •••• 4242
+        // </div>
+
+        <div className="pull-left" >
+            {`•••• •••• •••• ${props.last4}`}
+        </div>
+    )
+}
+
 export default AccountSettings;
+
+
+
+
+
+
+
+
+
+
+
+
+// <div className="row">
+//                                 <div className="col-md-12">
+//                                     <div className="col-md-4">
+//                                         <h3 style={{ marginTop: "0px" }}>
+//                                             Billing
+//                                         </h3>
+//                                     </div>
+//                                     <div className="col-md-8">
+//                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+//                                         { updateBilling 
+//                                                 ? <UpdateBillingWrapper 
+//                                                     updateBilling={this.handleBillingUpdate}
+//                                                     toggleChangeBilling={this.toggleChangeBilling}
+//                                                 />
+//                                                 : null
+//                                         }
+//                                         {updateBilling
+//                                                 ? <CurrentBilling1 /> 
+                                                
+//                                                 : <CurrentBilling2 /> 
+//                                         }
+
+//                                             {/* <div className="pull-left">
+//                                                 •••• •••• •••• 4242
+//                                             </div> */}
+//                                             {/* <CurrentBilling1 /> */}
+//                                             {/* <div className="pull-right">
+//                                                 Update
+//                                             </div> */}
+                                            
+
+
+//                                             <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+//                                                 { updateBilling 
+//                                                     ? 'Cancel'
+//                                                     : 'Update'
+//                                                 }
+//                                             </div>
+                                            
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                             <hr></hr>
+
+//                         </div>
