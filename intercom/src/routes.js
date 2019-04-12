@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import PricingPurchasingOptions from './components/PricingAndPurchasing/PricingPurchasingOptions';
+import AddToBalance from './components/Billing/AddToBalance';
 import GroupMembersView from './components/GroupMembers/GroupMembersView';
 import AccountSettings from './components/AccountSettings/AccountSettings';
 import GroupChatroomView from './components/GroupChatroom/GroupChatroomView';
@@ -43,7 +43,7 @@ export const makeMainRoutes = () => {
         <Route exact path="/user/:id/account" render={(props) => <AccountSettings auth={auth} {...props} />} />        
         <Route exact path="/group/:id" render={(props) => <GroupChatroomView {...props} />} />
         <Route exact path="/group/:id/members" render={(props) => <GroupMembersView {...props} />} />
-        <Route exact path="/user/:id/billing" render={(props) => <PricingPurchasingOptions auth={auth} {...props} />} />        
+        <Route exact path="/user/:id/billing" render={(props) => <AddToBalance auth={auth} {...props} />} />        
       </>
     </Router>
   );

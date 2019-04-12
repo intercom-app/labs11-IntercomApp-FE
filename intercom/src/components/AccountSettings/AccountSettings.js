@@ -4,7 +4,7 @@ import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 import DeleteAccount from './DeleteAccount';
 import Footer from '../LandingPage/Footer';
-import UpdateBillingWrapper from '../PricingAndPurchasing/UpdateBillingWrapper.js';
+import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 
 class AccountSettings extends Component {
     constructor(props) {

@@ -8,7 +8,7 @@ import {CardElement, injectStripe} from 'react-stripe-elements'; // The injectSt
 // of the major card fields: the card number, the expiration date, and the CVC. To display 
 // those inputs separately, you can use other Element components provided by the library.
 
-class AddToAccountBalance extends Component {
+class AddToBalance extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -93,5 +93,5 @@ class AddToAccountBalance extends Component {
 
 
 // The injectStripe HOC provides the this.props.stripe property that manages your Elements groups. You can call this.props.stripe.createToken or this.props.stripe.createSource within a component that has been injected to submit payment data to Stripe.
-export default injectStripe(AddToAccountBalance);
+export default injectStripe(AddToBalance);
 
