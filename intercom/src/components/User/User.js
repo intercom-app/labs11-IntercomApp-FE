@@ -153,7 +153,6 @@ class User extends Component {
     }
 
     render() {
-        // console.log(this.state.activities)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
         const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
@@ -176,17 +175,15 @@ class User extends Component {
                             </div>
 
                             <div className="row">
-                                <div className="col-md-8">
+                                        <div className="col-md-8 col-md-8-right-padding">
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited groupsInvited={groupsInvitedTo} updateGroups={this.updateGroups} />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
-
                                     <GroupForm updateGroups={this.updateGroups} />
                                     <RecentActivity recentActivities={recentActivities} user={user}/>
-
                                 </aside>
                             </div>
                         </section>
