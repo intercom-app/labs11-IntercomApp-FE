@@ -33,15 +33,68 @@ const GroupMembersList = (props) => {
                 Group Members
             </h1>
 
-            {membersDetails.map(member => (
-                <div key={member.id}>
                     <div className="row blogu" >
                         {/* <div className="col-sm-8 col-md-8">
                             <h4 className="blog-title">
                                 {member.displayName}
                             </h4>
                         </div> */}
-                        <div className="col-xs-12 col-sm-12 col-md-12" style={{ padding: "3px 0px 5px 15px" }}>
+                        <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Email</th>                                        
+                                        <th scope="col">Time Joined</th>
+                                        <th scope="col"></th>  
+                                    </tr>
+                                </thead>
+                                {membersDetails.map((member, ind) =>
+                                    <tbody key={member.id}>
+                                        <tr>
+                                            <td style={{ width: '15%' }}>
+                                                <img className='avatar-img-act' style={{width: '45%', borderRadius: '50%'}} src={member.avatar || require('../../images/avatar1.png')} alt="user avatar" />
+                                            </td>
+                                            <td style={{ width: '15%', paddingTop: '2.5%' }}>
+                                                {member.displayName}
+                                            </td>
+                                            <td style={{ width: '22%', paddingTop: '2.5%' }}>
+                                                {member.email}
+                                            </td>
+                                            <td style={{ width: '20%', paddingTop: '2.5%' }}><i className="fa fa-calendar-o"></i>
+                                                {' '}{getDateTime(member.createdAt)}
+                                            </td>
+                                                {isOwner
+                                                    ? <>
+                                                        {member.id === userId
+                                                            ? <td style={{ width: '20%', paddingTop: '2.5%' }}>
+                                                                <button
+                                                                    className="btn btn-primary rounded"
+                                                                    type="button"
+                                                                    disabled
+                                                                    >
+                                                                        Owner
+                                                                </button>
+                                                            </td>
+                                                            : <td style={{ width: '20%', paddingTop: '2.5%' }}>
+                                                                <button
+                                                                    className="btn btn-primary hvr-bounce-to-bottom rounded"
+                                                                    type="button"
+                                                                    onClick={(e) => removeUser(e, member.userId, member.displayName)}
+                                                                >
+                                                                Remove Member
+                                                                </button>
+                                                            </td>
+                                                        }
+                                                    </>
+                                                    : null
+                                                }
+                                            
+                                        </tr>
+                                    </tbody>
+                                 )}
+                            </table>
+                        {/* <div className="col-xs-12 col-sm-12 col-md-12" style={{ padding: "3px 0px 5px 15px" }}>
                             <div className="col-xs-1 col-sm-1 col-md-1" style={{ padding: "0px" }}>
                                 <img className="avatar-img" src={member.avatar || require('../../images/avatar1.png')} alt="user avatar" />
                             </div>
@@ -59,11 +112,11 @@ const GroupMembersList = (props) => {
                                 {' '}
                                 {getDateTime(member.createdAt)}
                             </div>
-                        </div>
+                        </div> */}
                         <>
-                            {isOwner
+                            {/* {isOwner
                                 ? <>
-                                    {member.userId === userId
+                                    {member.id === userId
                                         ?   <button 
                                                 className="btn btn-primary btn-noborder-radius pull-right" 
                                                 type="button" 
@@ -81,13 +134,11 @@ const GroupMembersList = (props) => {
                                     }
                                 </>
                                 : null
-                            }
+                            } */}
                             </>
                     </div>
                     <hr></hr>
-                </div>
 
-            ))}
 
         </>
 
