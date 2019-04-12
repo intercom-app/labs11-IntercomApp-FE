@@ -3,10 +3,6 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import UpdateBilling from './UpdateBilling';
 
 class UpdateBillingWrapper extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() { 
         console.log(process.env.REACT_APP_PK_TEST)
         return (
