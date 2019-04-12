@@ -211,7 +211,8 @@ class GroupMembersView extends Component {
     }
 
     render() {
-        let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
+        // let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
+        let { error, group, search, users, membersDetails, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
         const recentActivities = activities.slice(0, 5);
         const style = { color: "#9d9d9d", fontSize: "13px", paddingTop: '17px'}

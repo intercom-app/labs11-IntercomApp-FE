@@ -5,9 +5,9 @@ import {CardElement, injectStripe} from 'react-stripe-elements'; // The injectSt
 
 
 class UpdatePaymentMethod extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     createSource = async() => {
         const sourceInfo = {
@@ -55,7 +55,8 @@ class UpdatePaymentMethod extends Component {
             const source = await this.createSource();
             // console.log('source: ', source);
             // Step 2, update the customer's default source. 
-            const newDefaultSource = await this.updateDefaultSource(source);
+            // const newDefaultSource = await this.updateDefaultSource(source);
+            await this.updateDefaultSource(source);
             // console.log('newDefaultSource: ', newDefaultSource);
         } catch(err) {
             // console.log('err: ', err)
