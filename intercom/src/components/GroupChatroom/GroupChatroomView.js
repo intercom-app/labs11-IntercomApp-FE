@@ -268,8 +268,8 @@ class GroupChatroomView extends Component {
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <div className="blog-sidebar">
-                                            <h3 className="sidebar-title">Group Settings</h3>
-                                            <hr></hr>
+                                        <h3 className="sidebar-title">Group Settings</h3>
+                                        <hr></hr>
                                         {isOwner ? 
                                         <>
                                             <h4 className="sidebar-title">Update Group Name: </h4>

@@ -222,10 +222,23 @@ class GroupMembersView extends Component {
                     ? <p>Error retrieving members!</p>
                     : <>
                         <section className="container blog page-container">
+
+                            <div className="row">
+                                <div className="col-md-12"> 
+                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
+                                    <span className="pull-left">
+                                        <h2>{group.name}</h2>
+                                    </span>
+                                    <span className="pull-right">                                                
+                                        <Link to={`/group/${group.id}`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                        <h4>Group Chatroom</h4>
+                                        </Link>
+                                    </span>
+                                </div>
+                            </div>
+
                             <div className="row">
                                 <div className="col-md-8">
-                                    
-                                    <h2>{group.name}</h2>
 
                                     <GroupMembersList
                                         isOwner={isOwner}
@@ -247,9 +260,6 @@ class GroupMembersView extends Component {
                                     {isOwner
                                         ? <>
                                             <div className="blog-sidebar">
-                                                <Link to={`/group/${group.id}`} className='sidebar-title-group-chatroom'>
-                                                    Group Chatroom
-                                                </Link>
                                                 <h3 className="sidebar-title">Invite New Members</h3>
                                                 <hr></hr>
                                                 <h4 className="sidebar-title">Search Users: </h4>
@@ -270,9 +280,6 @@ class GroupMembersView extends Component {
                                         </>
                                         : 
                                         <div className="blog-sidebar">
-                                            <Link to={`/group/${group.id}`} className='sidebar-title-group-chatroom'>
-                                                Group Chatroom
-                                            </Link>
                                             <RecentActivity recentActivities={recentActivities} style={style} />
                                         </div>
                                         
@@ -286,40 +293,6 @@ class GroupMembersView extends Component {
 
                     </>
                 }
-                {/* <Link to={`/group/${id}`}>
-                    Back to Group
-                </Link>
-
-                {isOwner
-                    ? <>
-                        <SearchBar
-                            inputValue={search}
-                            updateSearch={this.handleSearch}
-                        />
-                        {this.state.search.length >= 3
-                            ? <SearchResults
-                                users={users}
-                                inviteUser={this.inviteUser}
-                            />
-                            : null
-                        }
-                    </>
-                    : null
-                }
-
-                <GroupMembersList
-                    isOwner={isOwner}
-                    members={members}
-                    userId={userId}
-                    removeUser={this.removeUser}
-                />
-
-                <GroupInviteesList
-                    isOwner={isOwner}
-                    invitees={invitees}
-                    removeInvitee={this.removeInvitee}
-                /> */}
-
                 
                 <Footer/>
 
