@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
-import DeleteAccount from './DeleteAccount';
+import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 
 class AccountSettings extends Component {
@@ -44,6 +44,7 @@ class AccountSettings extends Component {
             .then(res => this.setState({ user: res.data }))
             .catch(err => console.log(err));
     }
+
 
     handleDelete = (id) => {
         this.addGroupsMemberActivities(id); // First updates activities for all groups user belonged to
@@ -113,7 +114,7 @@ class AccountSettings extends Component {
             .delete(`${host}/api/users/${id}`)
             .then(() => this.props.auth.logout())
             .catch(err => console.log(err));
-    }
+}
 
     render() {
 
@@ -133,15 +134,15 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteAccount user={this.state.user} handleDelete={this.handleDelete} />
-                                        {/* <button
+                                        <DeleteModal deleteMessage={"Confirm your email address below to delete your account"} target={this.state.user} handleDelete={this.handleDelete} type={'Delete Account'} />
+                                         {/* <button
                                             style={{ padding: "3px 12px"}}
                                             className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
                                             type="button"
                                             onClick={() => this.handleDelete(user.id)}
                                         >
                                             Delete Account
-                                        </button> */}
+                                        </button>  */}
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
