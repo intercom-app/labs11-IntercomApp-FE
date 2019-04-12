@@ -220,7 +220,7 @@ class GroupMembersView extends Component {
                 {error
                     ? <p>Error retrieving members!</p>
                     : <>
-                        <section className="container blog">
+                        <section className="container blog page-container">
                             <div className="row">
                                 <div className="col-md-8">
                                     
@@ -319,9 +319,8 @@ class GroupMembersView extends Component {
                     removeInvitee={this.removeInvitee}
                 /> */}
 
-                <div className="myfooter-app">
-                    <Footer/>
-                </div>
+                
+                <Footer/>
 
             </>
         )

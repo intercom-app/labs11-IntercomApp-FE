@@ -1,23 +1,12 @@
 import React, { Component } from "react";
 import {Elements, StripeProvider} from 'react-stripe-elements';
-import PricingPlan1 from './PricingPlan1';
-import PricingPlan2 from './PricingPlan2';
+import AddToAccountBalanceDev from "./AddToAccountBalanceDev";
 import AddToAccountBalance from "./AddToAccountBalance";
-import AddToAccountBalanceNew from "./AddToAccountBalanceNew";
 import UpdatePaymentMethod from './UpdatePaymentMethod';
 
 class PricingPurchasingOptions extends Component {
     constructor() {
         super();
-        this.state = {stateKey1: 'stateKey1_value'};
-    }
-
-    pricingPurchasingFunction1 = () => {
-        console.log('pricingPurchasingOptionsFunction1');
-    }
-
-    componentDidMount() {
-        console.log('componentDidMount');
     }
 
     render() { 
@@ -27,9 +16,8 @@ class PricingPurchasingOptions extends Component {
             <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' betas = {["payment_intent_beta_3"]}>
                 <div>
                     <h1>Pricing Purchasing Options</h1>
-
                    
-                    {/* The Elements component, which encloses the PRICING PLAN 1 checkout form,
+                    {/* The Elements component, which encloses the UpdatePaymentMethod component,
                       creates an Elements group. When you use multiple Elements components
                       instead of the combined CardElement, the Elements group indicates 
                       which ones are related. For example, if you used separate components
@@ -37,32 +25,20 @@ class PricingPurchasingOptions extends Component {
                       all in the same Elements group. Note that Elements must contain the
                       component that you wrapped with injectStripe, you cannot put Elements
                       inside of the component that you wrap with injectStripe. */}
-                    
-                    {/* <Elements>
-                        <PricingPlan1 />
-                    </Elements>
-
-                    
-                    <Elements>                        
-                        <PricingPlan2 />
-                    </Elements>
-
-                    <Elements>                        
-                        <AddToAccountBalance />
-                    </Elements> */}
 
                     <Elements>
-                        {/* Update payment method component */}
                         <UpdatePaymentMethod />
                     </Elements>
 
                     <Elements>
-                        {/* ADD TO ACCOUNT BALANCE COMPONENT */}
-                        <AddToAccountBalanceNew />
+                        <AddToAccountBalance/>
                     </Elements>
 
-                </div>
-                
+                    {/* <Elements>                        
+                        <AddToAccountBalanceDev />
+                    </Elements>  */}
+
+                </div>               
             </StripeProvider>
         )
     }

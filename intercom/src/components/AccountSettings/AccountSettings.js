@@ -121,7 +121,7 @@ class AccountSettings extends Component {
 
         return (
             <>
-                <div className="container blog">
+                <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
                             <h2>Account</h2>
@@ -232,9 +232,7 @@ class AccountSettings extends Component {
                     </div>
                 </div>
 
-                <div className="myfooter-app">
-                    <Footer/>
-                </div>
+                <Footer/>
             </>
         );
     }

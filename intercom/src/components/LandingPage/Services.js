@@ -7,8 +7,8 @@ const Services = () => {
 				<div className="container">
 					<div className="text-center homeport2"><h2>Services</h2></div>
 					<div className="row">
-						<div className="col-md-12 homeservices1">
-							<div className="col-md-3 portfolio-item">
+						<div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 homeservices1">
+							<div className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<div className="text-center">
 									<span className="fa-stack fa-lg">
 									  <i className="fa fa-circle fa-stack-2x"></i>
@@ -18,7 +18,7 @@ const Services = () => {
 									<p>Registration and Login is handled entirely by Auth0, a secure and trusted authentication platform. Simply use your gmail account or another preferred email and password to begin.</p>
 								</div>
 							</div>
-							<div className="col-md-3 portfolio-item">
+							<div className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<div className="text-center">									
 									<span className="fa-stack fa-lg">
 									  <i className="fa fa-circle fa-stack-2x"></i>
@@ -28,7 +28,7 @@ const Services = () => {
 									<p>Create personal group chatrooms and invite your family and friends to join. Once group members have accepted their invitations you can start communicating with ease.</p>
 								</div>
 							</div>
-							<div className="col-md-3 portfolio-item">
+							<div className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<div className="text-center">
 									<span className="fa-stack fa-lg">
 									  <i className="fa fa-circle fa-stack-2x"></i>
@@ -38,7 +38,7 @@ const Services = () => {
 									<p>Conversations can happen anywhere at anytime. Using Twilio, a reliable voice application, Voice Chatroom allows you the ability to start and join real-time conversations within your group.</p>
 								</div>
 							</div>
-							<div className="col-md-3 portfolio-item">
+							<div className="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<div className="text-center">
 									<span className="fa-stack fa-lg">
 									  <i className="fa fa-circle fa-stack-2x"></i>

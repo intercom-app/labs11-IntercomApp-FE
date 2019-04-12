@@ -164,7 +164,7 @@ class User extends Component {
                 {error
                     ? <h1>Error retrieving user!</h1>
                     : <>
-                        <section className="container blog">
+                        <section className="container blog page-container">
 
                             <div className="row">
                                 <div className="col-md-12"> 
@@ -188,9 +188,7 @@ class User extends Component {
                             </div>
                         </section>
 
-                        <div className="myfooter-app">
-                            <Footer/>
-                        </div>
+                        <Footer/>
                     </>
                 }</>
             }

@@ -36,12 +36,12 @@ const Contact = () => {
 									</div>
 									<div className="col-sm-3 col-xs-6 height-contact-element">
 										<div className="form-group">
-											<input type="submit" className="btn btn-md btn-custom btn-noborder-radius" value="Send It"/>
+											<input type="submit" className="btn btn-md btn-custom" value="Send It"/>
 										</div>
 									</div>
 									<div className="col-sm-3 col-xs-6 height-contact-element">
 										<div className="form-group">
-											<button type="button" className="btn btn-md btn-noborder-radius btn-custom" name="reset">RESET
+											<button type="button" className="btn btn-md btn-custom" name="reset">RESET
 											</button>
 										</div>
 									</div>
