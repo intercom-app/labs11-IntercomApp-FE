@@ -3,6 +3,7 @@ import React from 'react';
 
 const GroupInviteesList = (props) => {
     let { isOwner, invitees, removeInvitee } = props
+    // console.log(invitees)
     return (
         <>
             <h1 className="page-header sidebar-title">
@@ -21,7 +22,7 @@ const GroupInviteesList = (props) => {
                             {isOwner
                                 ? <>
                                     <button
-                                        className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom pull-right"
+                                        className="btn btn-primary rounded hvr-bounce-to-bottom pull-right"
                                         type="button"
                                         onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
                                     >

@@ -4,6 +4,7 @@ import axios from "axios";
 import Fuse from 'fuse.js';
 import host from "../../host.js";
 import SearchBar from '../Search/SearchBar';
+import RecentActivity from '../RecentActivity/RecentActivity';
 import SearchResults from '../Search/SearchResults';
 import GroupMembersList from './GroupMembersList.js';
 import GroupInviteesList from './GroupInviteesList.js';
@@ -17,6 +18,7 @@ class GroupMembersView extends Component {
             group: '',
             members: [],
             membersDetails: [],
+            activities: [],
             invitees: [],
             users: [],
             search: '',
@@ -51,6 +53,24 @@ class GroupMembersView extends Component {
                 });
             })
             .catch(err => this.setState({ error: err }));
+        
+        axios.get(`${host}/api/groups/${this.state.id}/activities`)
+            .then(res => {
+                const activities = res.data.map(activity => {
+                    // console.log(activity)
+                    return { ...activity, groupId: activity.groupId, groupName: activity.GroupName}
+                })
+                const updatedActivities = this.state.activities.concat(activities)
+
+                const filteredActivities = updatedActivities.filter((activity, index, self) =>
+                    index === self.findIndex((i) => (i.id === activity.id))
+                )
+
+                filteredActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                this.setState({
+                    activities: filteredActivities
+                });
+            })
 
         axios
             .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
@@ -191,9 +211,9 @@ class GroupMembersView extends Component {
     }
 
     render() {
-        let { error, group, search, users, members, membersDetails, invitees, isOwner } = this.state
+        let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
-
+        const recentActivities = activities.slice(0, 5)
         return (
             <>
                 {error
@@ -254,6 +274,9 @@ class GroupMembersView extends Component {
                                         </div>
                                         
                                     }
+
+                                        <RecentActivity recentActivities={recentActivities}  />
+
                                 </aside>
 
                             </div>

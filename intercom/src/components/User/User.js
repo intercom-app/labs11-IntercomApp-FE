@@ -153,7 +153,6 @@ class User extends Component {
     }
 
     render() {
-        // console.log(this.state.activities)
         let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
         const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
@@ -183,10 +182,8 @@ class User extends Component {
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
-
                                     <GroupForm updateGroups={this.updateGroups} />
                                     <RecentActivity recentActivities={recentActivities} user={user}/>
-
                                 </aside>
                             </div>
                         </section>

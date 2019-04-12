@@ -26,7 +26,6 @@ const GroupMembersList = (props) => {
     }
 
     let { isOwner, membersDetails, userId, removeUser } = props
-    console.log(props.membersDetails)
     return (
         <>
             <h1 className="page-header sidebar-title">
@@ -46,7 +45,6 @@ const GroupMembersList = (props) => {
                                         <th scope="col"></th>
                                         <th scope="col">Email</th>                                        
                                         <th scope="col">Time Joined</th>
-                                        <th scope="col"></th>  
                                     </tr>
                                 </thead>
                                 {membersDetails.map((member, ind) =>
@@ -69,7 +67,7 @@ const GroupMembersList = (props) => {
                                                         {member.id === userId
                                                             ? <td style={{ width: '20%', paddingTop: '2.5%' }}>
                                                                 <button
-                                                                    className="btn btn-primary rounded"
+                                                                    className="btn btn-primary pull-right rounded"
                                                                     type="button"
                                                                     disabled
                                                                     >

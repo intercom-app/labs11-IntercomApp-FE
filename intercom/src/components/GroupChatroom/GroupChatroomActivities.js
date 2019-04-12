@@ -25,7 +25,7 @@ class GroupChatroomActivities extends Component {
 
     render() {
         const { activities } = this.props
-        console.log(activities)
+        // console.log(activities)
         // const avatar = this.props.avatar || require('../../images/avatar1.png');
         return (
             <div className="comments1">            
