@@ -101,7 +101,7 @@ class AccountSettings extends Component {
                                             Profile
                                         </h3>
                                         <DeleteModal 
-                                            deleteMessage={"Confirm your email address below to delete your account"} 
+                                            deleteMessage={"Confirm your email address."} 
                                             target={this.state.user.id} 
                                             targetName={this.state.user.email} 
                                             handleTarget={this.deleteAccount} 

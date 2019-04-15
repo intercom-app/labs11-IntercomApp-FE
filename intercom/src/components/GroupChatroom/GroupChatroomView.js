@@ -288,7 +288,7 @@ class GroupChatroomView extends Component {
                                                 </span>
                                             </div>
                                             <DeleteModal 
-                                                deleteMessage={"Confirm your group's name to delete your group"} 
+                                                deleteMessage={"Confirm your group's name"} 
                                                 target={this.state.groupId} 
                                                 targetName={this.state.group.name} 
                                                 handleTarget={this.deleteGroup} 
@@ -299,7 +299,7 @@ class GroupChatroomView extends Component {
                                         : 
                                         <>
                                             <DeleteModal 
-                                                deleteMessage={"Confirm the group's name to leave the group"} 
+                                                deleteMessage={"Confirm the group's name"} 
                                                 target={this.state.groupId} 
                                                 targetName={this.state.group.name} 
                                                 handleTarget={this.leaveGroup} 
