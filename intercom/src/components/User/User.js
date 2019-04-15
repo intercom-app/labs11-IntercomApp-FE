@@ -91,12 +91,6 @@ class User extends Component {
             });
     }
 
-    updateGroups = () => {
-        const id = localStorage.getItem('userId')
-        this.getgroupsOwned(id);
-        this.getGroupsInvitedTo(id);
-        // Groups belonged to is called after groups owned.js
-    }
     getOwners = (groups) => {
         if (groups.length > 0) {
             groups.forEach(group => {
