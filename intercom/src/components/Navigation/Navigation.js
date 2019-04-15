@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export default class Navigation extends React.Component {
 
@@ -26,8 +26,8 @@ export default class Navigation extends React.Component {
                     {this.props.isAuthenticated()
                             ?
                             <ul className="nav navbar-nav navbar-right custom-menu" >
-                                <li><Link to={`/user/${this.props.id}`}>My Groups</Link></li>
-                                <li><Link to={`/user/${this.props.id}/account`}>Account</Link></li>
+                                <li><NavLink to={`/user/${this.props.id}`}>My Groups</NavLink></li>
+                                <li><NavLink to={`/user/${this.props.id}/account`}>Account</NavLink></li>
                                 <li><Link to={`/`} onClick={this.props.logout}>Logout</Link></li>
                             </ul>
                             :
