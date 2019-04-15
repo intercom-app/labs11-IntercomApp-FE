@@ -119,12 +119,12 @@ class GroupMembersView extends Component {
             const usersUpdated = results.map(user => {
                 let buttonInvite = true
                 this.state.invitees.forEach(invitee => {
-                    if (invitee.userId === user.id) {
+                    if (invitee.id === user.id) {
                         buttonInvite = false
                     }
                 })
                 this.state.members.forEach(member => {
-                    if (member.userId === user.id) {
+                    if (member.id === user.id) {
                         buttonInvite = false
                     }
                 })
@@ -154,7 +154,7 @@ class GroupMembersView extends Component {
                 axios
                     .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
                     .then(() => {
-                        this.setState({ users })
+                        this.setState({ users: users })
                         this.getGroupInvitees()
                     })
                     .catch(err => this.setState({ error: err }));
