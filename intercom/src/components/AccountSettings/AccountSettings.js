@@ -5,6 +5,7 @@ import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
+import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -12,7 +13,9 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             updateUserName: false,
-            updateBilling:false, 
+            updateBilling:false,
+            addToBalance:false,
+            balance: 0,  
             last4: 1234
         }
     }
@@ -55,6 +58,12 @@ class AccountSettings extends Component {
         }));
     }
 
+    toggleChangeAddToBalance = () => {
+        this.setState(prevState => ({
+            addToBalance: !prevState.addToBalance
+        }));
+    }
+
     handleUpdate = () => {
         const id = this.state.user.id
         axios
@@ -69,6 +78,14 @@ class AccountSettings extends Component {
             .get(`${host}/api/users/${id}/last4`)
             .then(res => this.setState({last4:res.data.last4}))
             .catch(err => console.log(err))
+    }
+
+    handleAddToBalance = () => {
+        const id = this.state.user.id
+        // axios
+        //     .get(`${host}/api/users/${id}/last4`)
+        //     .then(res => this.setState({last4:res.data.last4}))
+        //     .catch(err => console.log(err))
     }
 
     handleDelete = (id) => {
@@ -143,7 +160,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling, last4 } = this.state
+        const { user, updateUserName, updateBilling,  addToBalance, balance, last4 } = this.state
 
         return (
             <>
@@ -235,42 +252,88 @@ class AccountSettings extends Component {
 
                             <div className="row">
                                 <div className="col-md-12">
+
                                     <div className="col-md-4">
                                         <h3 style={{ marginTop: "0px" }}>
                                             Billing
                                         </h3>
                                     </div>
+                                    
+                                    
                                     <div className="col-md-6">
+                                             
+                                        {/* ADD TO BALANCE */}
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                        { updateBilling 
-                                                ? <UpdateBillingWrapper 
-                                                    handleBillingUpdate={this.handleBillingUpdate}
-                                                    toggleChangeBilling={this.toggleChangeBilling}
-                                                />
-                                                : null
-                                        }
-                                        {updateBilling
-                                                ? <CurrentBilling1
-                                                    last4 = {last4}
-                                                 /> 
-                                                
-                                                : <CurrentBilling2 
-                                                    last4 = {last4}
-                                                /> 
-                                        }
+                                            { addToBalance 
+                                                    ? <AddToBalanceWrapper 
+                                                        handleAddToBalance={this.handleAddToBalance}
+                                                        toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                                    />
+                                                    : null
+                                            }
+                                            { addToBalance
+                                                    ? <CurrentBalance1
+                                                        balance = {balance}
+                                                    /> 
+                                                    
+                                                    : <CurrentBalance2 
+                                                        balance = {balance}
+                                                    /> 
+                                            }
                                         </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                            
+                                        
+
+                                        {/* UPDATING PAYMENT INFO */}
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             { updateBilling 
-                                                ? 'Cancel'
-                                                : 'Update'
+                                                    ? <UpdateBillingWrapper 
+                                                        handleBillingUpdate={this.handleBillingUpdate}
+                                                        toggleChangeBilling={this.toggleChangeBilling}
+                                                    />
+                                                    : null
+                                            }
+                                            {updateBilling
+                                                    ? <CurrentBilling1
+                                                        last4 = {last4}
+                                                    /> 
+                                                    
+                                                    : <CurrentBilling2 
+                                                        last4 = {last4}
+                                                    /> 
                                             }
                                         </div>
                                     </div>
+
+
+                                    <div className="col-md-2">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeAddToBalance}>
+                                                { addToBalance 
+                                                    ? 'Cancel'
+                                                    : 'Add Money'
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                                { updateBilling 
+                                                    ? 'Cancel'
+                                                    : 'Update'
+                                                }
+                                            </div>
+                                        </ div>
+
+                                    </div>
+
                                 </div>
                             </div>
                             <hr></hr>
+
+                           
+
+                            
 
                         </div>
                     </div>
@@ -292,16 +355,24 @@ const CurrentBilling1 = (props) => {
 
 const CurrentBilling2 = (props) => {
     return(
-        // <div className="pull-left">
-        //     •••• •••• •••• 4242
-        // </div>
-
-        // <div className="pull-left" >
-        //     •••• •••• •••• 4242
-        // </div>
-
         <div className="pull-left" >
             {`•••• •••• •••• ${props.last4}`}
+        </div>
+    )
+}
+
+const CurrentBalance1 = (props) => {
+    return(
+        <div className="pull-left" style={{ display: "none"}} >
+            Account Balance: ${props.balance}
+        </div>
+    )
+}
+
+const CurrentBalance2 = (props) => {
+    return(
+        <div className="pull-left" >
+            Account Balance: ${props.balance}
         </div>
     )
 }
