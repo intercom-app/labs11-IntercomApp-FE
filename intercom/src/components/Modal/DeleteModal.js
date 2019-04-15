@@ -44,9 +44,6 @@ class DeleteModal extends Component {
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="deleteModalLongTitle">
-                  {`${this.props.deleteMessage}`} 
-                </h5>
                 <button
                   type="button"
                   className="close"
@@ -55,6 +52,9 @@ class DeleteModal extends Component {
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
+                <h5 className="modal-title" id="deleteModalLongTitle">
+                  {`${this.props.deleteMessage}`} 
+                </h5>
               </div>
               <div className="modal-body">
                 <input type="text" name="confirmTarget" onChange={this.handleGroupInput} value={this.state.confirmTarget} />
