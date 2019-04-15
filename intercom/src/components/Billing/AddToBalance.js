@@ -68,11 +68,10 @@ class AddToBalance extends Component {
 
     render() {
         return (
-                <div style = {{border:'1px solid blue'}}>
-                    <div>
-                        {/* <div>
-                            Current Account Balance: $10.31
-                        </div> */}
+                // <div style = {{border:'1px solid blue', marginBottom:'100px'}}>
+                <div>
+
+                    {/* <div>
                         <form onSubmit = {this.chargeAndAddToBalance}>
                             <div>
                                 Amount to add: 
@@ -85,7 +84,34 @@ class AddToBalance extends Component {
                                 <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeAndAddToBalance </button>
                             </div>                            
                         </form>
+                    </div> */}
+
+                    <div>
+                        <form onSubmit = {this.chargeAndAddToBalance}>
+                            <div style = {{border:'1px solid blue', marginBottom:'100px'}} className="form-group">
+                                Amount to add: 
+                                <select className="form-control">
+                                    <option>2</option>
+                                    <option>5</option>
+                                    <option>10</option>
+                                    <option>15</option>
+                                    <option>20</option>
+                                    <option>25</option>
+                                    <option>30</option>
+                                    <option>35</option>
+                                    <option>40</option>
+                                </select>
+                                <input
+                                    type = 'number'
+                                    name = 'amountToAdd'
+                                    value = {this.state.amountToAdd}
+                                    onChange = {this.inputChangeHandler}
+                                />
+                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeAndAddToBalance </button>
+                            </div>                            
+                        </form>
                     </div>
+
                 </div>
         )
     }

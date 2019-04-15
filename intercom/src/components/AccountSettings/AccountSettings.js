@@ -261,6 +261,20 @@ class AccountSettings extends Component {
                                     
                                     
                                     <div className="col-md-6">
+
+                                        {/* { addToBalance
+                                            ? <CurrentBalance2
+                                                balance = {balance}
+                                            /> 
+                                            
+                                            : <CurrentBalance2 
+                                                balance = {balance}
+                                            /> 
+                                        } */}
+
+                                        <div>
+                                            Account Balance: {this.state.balance}
+                                        </div>
                                              
                                         {/* ADD TO BALANCE */}
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
@@ -271,15 +285,7 @@ class AccountSettings extends Component {
                                                     />
                                                     : null
                                             }
-                                            { addToBalance
-                                                    ? <CurrentBalance1
-                                                        balance = {balance}
-                                                    /> 
-                                                    
-                                                    : <CurrentBalance2 
-                                                        balance = {balance}
-                                                    /> 
-                                            }
+                                            
                                         </div>
                                             
                                         
@@ -361,21 +367,21 @@ const CurrentBilling2 = (props) => {
     )
 }
 
-const CurrentBalance1 = (props) => {
-    return(
-        <div className="pull-left" style={{ display: "none"}} >
-            Account Balance: ${props.balance}
-        </div>
-    )
-}
+// const CurrentBalance1 = (props) => {
+//     return(
+//         <div className="pull-left" style={{ display: "none"}} >
+//             Account Balance: ${props.balance}
+//         </div>
+//     )
+// }
 
-const CurrentBalance2 = (props) => {
-    return(
-        <div className="pull-left" >
-            Account Balance: ${props.balance}
-        </div>
-    )
-}
+// const CurrentBalance2 = (props) => {
+//     return(
+//         <div className="pull-left" >
+//             Account Balance: ${props.balance}
+//         </div>
+//     )
+// }
 
 export default AccountSettings;
 
