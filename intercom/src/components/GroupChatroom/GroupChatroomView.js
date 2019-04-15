@@ -193,38 +193,35 @@ class GroupChatroomView extends Component {
         this.setState({ groupName: '' })
     }
 
-    handleCallButton = async () => {
-        const userOnCall = (this.state.user.callStatus === true)
-        const groupOnCall = (this.state.group.callStatus === true)
-        // TWILIO CODE HERE FOR PHONE NUMBER
-        const phoneNumber = '+15555555555'
+    // handleCallButton = async () => {
+    //     const userOnCall = (this.state.user.callStatus === true)
+    //     const groupOnCall = (this.state.group.callStatus === true)
+    //     // TWILIO CODE HERE FOR PHONE NUMBER
+    //     const phoneNumber = '+15555555555'
 
-        switch (true) {
-            case (!userOnCall && !groupOnCall): // Start Call
-                this.updateUser({ callStatus: true });
-                this.updateGroup({ callStatus: true, phoneNumber });
-                this.addParticipant();
-                this.addActivity(`Started Call on ${phoneNumber}`);
-                break;
-            case (!userOnCall && groupOnCall): // Join Call
-                this.updateUser({ callStatus: true });
-                this.addParticipant();
-                break;
-            case (userOnCall && groupOnCall): // Leave Call
-                this.updateUser({ callStatus: false });
-                const participants = await this.deleteParticipant(this.state.userId);
-                if (participants === undefined) { // Terminate Call: if no more particates
-                    this.addActivity('Ended Call');
-                    this.updateGroup({ callStatus: false, phoneNumber: null });
-                }
-                break;
-            default:
-                break;
-        }
-
-
-
-    }
+    //     switch (true) {
+    //         case (!userOnCall && !groupOnCall): // Start Call
+    //             this.updateUser({ callStatus: true });
+    //             this.updateGroup({ callStatus: true, phoneNumber });
+    //             this.addParticipant();
+    //             this.addActivity(`Started Call on ${phoneNumber}`);
+    //             break;
+    //         case (!userOnCall && groupOnCall): // Join Call
+    //             this.updateUser({ callStatus: true });
+    //             this.addParticipant();
+    //             break;
+    //         case (userOnCall && groupOnCall): // Leave Call
+    //             this.updateUser({ callStatus: false });
+    //             const participants = await this.deleteParticipant(this.state.userId);
+    //             if (participants === undefined) { // Terminate Call: if no more particates
+    //                 this.addActivity('Ended Call');
+    //                 this.updateGroup({ callStatus: false, phoneNumber: null });
+    //             }
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     render() {
 
@@ -235,7 +232,7 @@ class GroupChatroomView extends Component {
                 {error
                     ? <h1>Error retrieving group!</h1>
                     : <>
-                        <section className="container blog">
+                        <section className="container blog page-container">
                                                                
                             <div className="row">
                                 <div className="col-md-12"> 
@@ -257,7 +254,7 @@ class GroupChatroomView extends Component {
                                         user={user}
                                         group={group}
                                         participants={participants}
-                                        handleCallButton={this.handleCallButton}
+                                        // handleCallButton={this.handleCallButton}
                                     />
 
                                     <GroupChatroomActivities
@@ -268,8 +265,8 @@ class GroupChatroomView extends Component {
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <div className="blog-sidebar">
-                                            <h3 className="sidebar-title">Group Settings</h3>
-                                            <hr></hr>
+                                        <h3 className="sidebar-title">Group Settings</h3>
+                                        <hr></hr>
                                         {isOwner ? 
                                         <>
                                             <h4 className="sidebar-title">Update Group Name: </h4>
@@ -290,17 +287,25 @@ class GroupChatroomView extends Component {
                                                     </button>
                                                 </span>
                                             </div>
-                                            <DeleteModal deleteMessage={"Confirm your group's name to delete your group"} target={this.state.groupId} targetName={this.state.group.name} handleTarget={this.deleteGroup} type={'Delete Group'} />
-                                            {/* <button className="btn btn-delete" type="button" onClick={this.deleteGroup}>
-                                                Delete Group
-                                            </button> */}
+                                            <DeleteModal 
+                                                deleteMessage={"Confirm your group's name to delete your group"} 
+                                                target={this.state.groupId} 
+                                                targetName={this.state.group.name} 
+                                                handleTarget={this.deleteGroup} 
+                                                type={'Delete Group'}
+                                             />
+
                                         </>
                                         : 
                                         <>
-                                            <DeleteModal deleteMessage={"Confirm the group's name to leave the group"} target={this.state.groupId} targetName={this.state.group.name} handleTarget={this.leaveGroup} type={'Leave Group'} />
-                                            {/* <button className="btn btn-delete btn-leave" type="button" onClick={this.leaveGroup}>
-                                                Leave Group
-                                            </button> */}
+                                            <DeleteModal 
+                                                deleteMessage={"Confirm the group's name to leave the group"} 
+                                                target={this.state.groupId} 
+                                                targetName={this.state.group.name} 
+                                                handleTarget={this.leaveGroup} 
+                                                type={'Leave Group'}
+                                             />
+
                                         </>
                                         }
                                     </div>
@@ -310,9 +315,8 @@ class GroupChatroomView extends Component {
 
                         </section>
 
-                        <div className="myfooter-app">
-                            <Footer/>
-                        </div>
+                        <Footer/>
+
                     </>
                 }
             </>

@@ -26,14 +26,13 @@ const GroupMembersList = (props) => {
     }
 
     let { isOwner, membersDetails, userId, removeUser } = props
-    console.log(membersDetails)
     return (
         <>
             <h1 className="page-header sidebar-title">
                 Group Members
             </h1>
 
-                    <div className="row blogu" >
+                    <div className="row blogu" style={{marginRight: "0px", marginLeft: "0px"}}>
                         {/* <div className="col-sm-8 col-md-8">
                             <h4 className="blog-title">
                                 {member.displayName}
