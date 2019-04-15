@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const RecentActivity = (props) => {
     return (
-        <div className="blog-sidebar">
+        <div className="blog-sidebar" style = {{ color: "#9d9d9d", fontSize: "13px", paddingTop: '17px'}}>
             <h4 className="sidebar-title"><i className="fa fa-align-left"></i> Recent Group Activity</h4>
             <hr></hr>
 

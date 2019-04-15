@@ -28,36 +28,37 @@ class GroupMembersView extends Component {
     }
 
     componentDidMount() {
+        // Get Group
         axios
             .get(`${host}/api/groups/${this.state.id}`)
-            .then(res => {
-                this.setState({ group: res.data });
-            })
-            .catch(err => this.setState({ error: err }));
-
-        axios
-            .get(`${host}/api/groups/${this.state.id}/groupMembers`)
-            .then(res => {
-                this.setState({
-                    members: res.data,
-                    search: '',
-                });
-            })
-            .catch(err => this.setState({ error: err }));
-
-        axios
-            .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
-            .then(res => {
-                this.setState({
-                    membersDetails: res.data
-                });
-            })
+            .then(res => this.setState({ group: res.data }) )
             .catch(err => this.setState({ error: err }));
         
-        axios.get(`${host}/api/groups/${this.state.id}/activities`)
+        this.getGroupMembers()
+        this.getGroupInvitees()
+        this.getGroupActivities()
+        this.checkIfOwner(this.state.id);
+    }
+
+    getGroupMembers = () => {
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
+            .then(res => this.setState({ members: res.data }) )
+            .catch(err => this.setState({ error: err }));
+    }
+
+    getGroupInvitees = () => {
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupInvitees/detailed`)
+            .then(res => this.setState({ invitees: res.data }) )
+            .catch(err => this.setState({ error: err }));
+    }
+
+    getGroupActivities = () => {
+        axios
+            .get(`${host}/api/groups/${this.state.id}/activities`)
             .then(res => {
                 const activities = res.data.map(activity => {
-                    // console.log(activity)
                     return { ...activity, groupId: activity.groupId, groupName: activity.GroupName}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
@@ -71,15 +72,6 @@ class GroupMembersView extends Component {
                     activities: filteredActivities
                 });
             })
-
-        axios
-            .get(`${host}/api/groups/${this.state.id}/groupInvitees`)
-            .then(res => {
-                this.setState({ invitees: res.data });
-            })
-            .catch(err => this.setState({ error: err }));
-
-        this.checkIfOwner(this.state.id);
     }
 
     checkIfOwner = async (id) => {
@@ -127,12 +119,12 @@ class GroupMembersView extends Component {
             const usersUpdated = results.map(user => {
                 let buttonInvite = true
                 this.state.invitees.forEach(invitee => {
-                    if (invitee.userId === user.id) {
+                    if (invitee.id === user.id) {
                         buttonInvite = false
                     }
                 })
                 this.state.members.forEach(member => {
-                    if (member.userId === user.id) {
+                    if (member.id === user.id) {
                         buttonInvite = false
                     }
                 })
@@ -161,11 +153,9 @@ class GroupMembersView extends Component {
             .then(() => {
                 axios
                     .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
-                    .then(res => {
-                        this.setState({
-                            users: users,
-                            invitees: res.data
-                        })
+                    .then(() => {
+                        this.setState({ users: users })
+                        this.getGroupInvitees()
                     })
                     .catch(err => this.setState({ error: err }));
             })
@@ -180,13 +170,16 @@ class GroupMembersView extends Component {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Removed ${userDisplayName} from the group` }
+        // Add to group activities
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
             .then(() => {
+                // Delete member
                 axios
                     .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
-                    .then(res => {
-                        this.setState({ members: res.data });
+                    .then(() => {
+                        // Update state with updated group members
+                        this.getGroupMembers()
                     })
                     .catch(err => this.setState({ error: err }));
             })
@@ -197,25 +190,48 @@ class GroupMembersView extends Component {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Cancelled ${userDisplayName}'s invitation.` }
+        // Add to group activities
         axios
             .post(`${host}/api/groups/${this.state.id}/activities`, activity)
             .then(() => {
+                // Delete Invitee
                 axios
                     .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
-                    .then(res => {
-                        this.setState({ invitees: res.data });
+                    .then(() => {
+                        // Update state with updated group invitees
+                        this.getGroupInvitees()
                     })
                     .catch(err => this.setState({ error: err }));
             })
             .catch(err => this.setState({ error: err }));
     }
 
+    getDateTime = (date) => {
+        const dateStr = new Date(date).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        const today = new Date().toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        if (dateStr !== today) {
+            return dateStr
+        } else {
+            return new Date(date).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+            })
+        }
+    }
+
     render() {
-        // let { error, group, search, users, members, membersDetails, invitees, isOwner, activities } = this.state
-        let { error, group, search, users, membersDetails, invitees, isOwner, activities } = this.state
+        let { error, group, search, users, members, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
         const recentActivities = activities.slice(0, 5);
-        const style = { color: "#9d9d9d", fontSize: "13px", paddingTop: '17px'}
+
         return (
             <>
                 {error
@@ -242,15 +258,17 @@ class GroupMembersView extends Component {
 
                                     <GroupMembersList
                                         isOwner={isOwner}
-                                        membersDetails={membersDetails}
+                                        members={members}
                                         userId={userId}
                                         removeUser={this.removeUser}
+                                        getDateTime={this.getDateTime}
                                     />
 
                                     <GroupInviteesList
                                         isOwner={isOwner}
                                         invitees={invitees}
                                         removeInvitee={this.removeInvitee}
+                                        getDateTime={this.getDateTime}
                                     />
 
                                 </div>
@@ -280,7 +298,7 @@ class GroupMembersView extends Component {
                                         </>
                                         : 
                                         <div className="blog-sidebar">
-                                            <RecentActivity recentActivities={recentActivities} style={style} />
+                                            <RecentActivity recentActivities={recentActivities} />
                                         </div>
                                         
                                     }
