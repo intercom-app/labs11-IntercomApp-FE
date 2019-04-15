@@ -19,47 +19,44 @@ class GroupsInvited extends Component {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Joined group.' }
-        //delete the user from groupInvitees table
-        axios
-            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
-            .then(() => this.props.updateGroups() )
-            .catch(err => {
-                console.log(err);
-            });
-        //add the user to the groupMembers table
-        axios
-            .post(`${host}/api/groups/${groupId}/groupMembers`, userId)
-            .then(() =>  this.props.updateGroups() )
-            .catch(err => {
-                console.log(err);
-            });
+
         //add the activity to the group's log
         axios
-            .post(`${host}/api/groups/${groupId}/activities`, activity)
-            .then(() =>  this.props.updateGroups() )
-            .catch(err => {
-                console.log(err);
-            });
+        .post(`${host}/api/groups/${groupId}/activities`, activity)
+        .then(() => {
+            //delete the user from groupInvitees table
+            axios
+            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
+            .then(() => {
+                //add the user to the groupMembers table
+                axios
+                .post(`${host}/api/groups/${groupId}/groupMembers`, userId)
+                .then(() =>  this.props.updateGroups() )
+                .catch(err => console.log(err) );
+            })
+            .catch(err => console.log(err) );
+        })
+        .catch(err => console.log(err) );
+
     }
 
     declineInvite = (event, groupId) => {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Declined to join to group.' }
-        //delete the user from groupInvitees table due to decline
-        axios
-            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
-            .then(() => this.props.updateGroups() )
-            .catch(err => {
-                console.log(err);
-            });
+
         //add the declining activity to the group's log
         axios
-            .post(`${host}/api/groups/${groupId}/activities`, activity)
-            .then(() =>  this.props.updateGroups() )
-            .catch(err => {
-                console.log(err);
-            });
+        .post(`${host}/api/groups/${groupId}/activities`, activity)
+        .then(() => {
+            //delete the user from groupInvitees table due to decline
+            axios
+            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
+            .then(() => this.props.updateGroups() )
+            .catch(err => console.log(err) );
+        })
+        .catch(err => console.log(err) );
+
     }
 
     render() {

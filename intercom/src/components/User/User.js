@@ -32,19 +32,21 @@ class User extends Component {
                     user: {},
                 });
             });
-        this.getgroupsOwned(id);
+        this.getGroupsOwned(id);
         // Groups belonged to is called after groups owned
-        this.getGroupsInvitedTo(id);
+        // Groups invited to is called after groups belonged to
 
     }
 
-    getgroupsOwned = (id) => {
+    compo
+
+    getGroupsOwned = (id) => {
         const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
 
         axios.get(groupsOwned)
             .then(res => {
                 this.setState({ groupsOwned: res.data })
-                this.getgroupsBelongedTo(id, res.data);
+                this.getGroupsBelongedTo(id, res.data);
                 this.getRecentActivity(res.data);
             })
             .catch(err => {
@@ -55,7 +57,7 @@ class User extends Component {
             });
     }
 
-    getgroupsBelongedTo = (id, groupsOwned) => {
+    getGroupsBelongedTo = (id, groupsOwned) => {
         const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
 
         axios.get(groupsBelongedTo)
@@ -65,6 +67,7 @@ class User extends Component {
                     !groupsOwnedIds.includes(group.groupId)
                 )
                 this.setState({ groupsBelongedTo: groupsNotOwned })
+                this.getGroupsInvitedTo(id, groupsNotOwned);
                 this.getRecentActivity(groupsNotOwned);
             })
             .catch(err => {
@@ -75,13 +78,18 @@ class User extends Component {
             });
     }
 
-    getGroupsInvitedTo = (id) => {
+    getGroupsInvitedTo = (id, groupsBelongedTo) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
 
         axios.get(groupsInvitedTo)
             .then(res => {
-                this.getOwners(res.data);
-                this.getRecentActivity(res.data);
+                const groupsBelongedToIds = groupsBelongedTo.map(group => group.groupId);
+                const groupsNotBelongedTo = res.data.filter(group => 
+                    !groupsBelongedToIds.includes(group.groupId)
+                )
+                this.setState({ groupsInvitedTo: groupsNotBelongedTo })
+                this.getOwners(groupsNotBelongedTo);
+                this.getRecentActivity(groupsNotBelongedTo);
             })
             .catch(err => {
                 this.setState({
@@ -91,12 +99,6 @@ class User extends Component {
             });
     }
 
-    updateGroups = () => {
-        const id = localStorage.getItem('userId')
-        this.getgroupsOwned(id);
-        this.getGroupsInvitedTo(id);
-        // Groups belonged to is called after groups owned.js
-    }
     getOwners = (groups) => {
         if (groups.length > 0) {
             groups.forEach(group => {
@@ -127,7 +129,6 @@ class User extends Component {
             axios.get(`${host}/api/groups/${group.groupId}/activities`)
             .then(res => {
                 const activities = res.data.map( activity => {
-                    // console.log(activity)
                     return {...activity, groupId: group.groupId, groupName: group.GroupName}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
@@ -147,9 +148,9 @@ class User extends Component {
 
     updateGroups = () => {
         const id = localStorage.getItem('userId')
-        this.getgroupsOwned(id);
-        this.getGroupsInvitedTo(id);
+        this.getGroupsOwned(id);
         // Groups belonged to is called after groups owned
+        // Groups invited to is called after groups belonged to
     }
 
     render() {
@@ -178,7 +179,12 @@ class User extends Component {
                                         <div className="col-md-8 col-md-8-right-padding">
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
-                                    <GroupsInvited groupsInvited={groupsInvitedTo} updateGroups={this.updateGroups} />
+                                    <GroupsInvited 
+                                        groupsInvited={groupsInvitedTo} 
+                                        updateGroups={this.updateGroups}
+                                        // acceptInvite={this.acceptInvite}
+                                        // declineInvite={this.declineInvite}
+                                    />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">

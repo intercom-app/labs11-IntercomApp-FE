@@ -1,23 +1,16 @@
 import React, { Component } from "react";
 import {Elements, StripeProvider} from 'react-stripe-elements';
-import AddToAccountBalanceDev from "./AddToAccountBalanceDev";
-import AddToAccountBalance from "./AddToAccountBalance";
-import UpdatePaymentMethod from './UpdatePaymentMethod';
+import UpdateBilling from './UpdateBilling';
 
-class PricingPurchasingOptions extends Component {
-    constructor() {
-        super();
-    }
-
+class UpdateBillingWrapper extends Component {
     render() { 
         return (
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
-            <StripeProvider apiKey = 'pk_test_VuIo3fiUe3QUD93ieQbeDT5U00sms1K5SK' betas = {["payment_intent_beta_3"]}>
+            <StripeProvider apiKey = {process.env.REACT_APP_PK_TEST} betas = {["payment_intent_beta_3"]}>
+                {/* <div style = {{border:'1px solid black'}}> */}
                 <div>
-                    <h1>Pricing Purchasing Options</h1>
-                   
-                    {/* The Elements component, which encloses the UpdatePaymentMethod component,
+                    {/* The Elements component, which encloses the UpdateBilling component,
                       creates an Elements group. When you use multiple Elements components
                       instead of the combined CardElement, the Elements group indicates 
                       which ones are related. For example, if you used separate components
@@ -27,16 +20,10 @@ class PricingPurchasingOptions extends Component {
                       inside of the component that you wrap with injectStripe. */}
 
                     <Elements>
-                        <UpdatePaymentMethod />
+                        <UpdateBilling 
+                            handleBillingUpdate = {this.props.handleBillingUpdate}
+                        />
                     </Elements>
-
-                    <Elements>
-                        <AddToAccountBalance/>
-                    </Elements>
-
-                    {/* <Elements>                        
-                        <AddToAccountBalanceDev />
-                    </Elements>  */}
 
                 </div>               
             </StripeProvider>
@@ -44,4 +31,4 @@ class PricingPurchasingOptions extends Component {
     }
 }
 
-export default PricingPurchasingOptions;
+export default UpdateBillingWrapper;

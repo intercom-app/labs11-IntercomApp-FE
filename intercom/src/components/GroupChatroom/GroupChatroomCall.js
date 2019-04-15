@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 
 class GroupChatroomCall extends Component {
 
+    componentDidMount() {
+        window.$('[data-toggle="tooltip"]').tooltip();
+    }
+
+    componentDidUpdate() {
+        window.$('[data-toggle="tooltip"]').tooltip();
+    }
+
     render() {
 
         // let { user, group, participants, handleCallButton } = this.props
-        let {  group, participants } = this.props
+        let { group, participants } = this.props
 
         return (
-            <>                
+            <>
                 <h1 className="page-header sidebar-title">
                     Call Status
                 </h1>
@@ -17,14 +25,15 @@ class GroupChatroomCall extends Component {
                     <div className="col-sm-12 col-md-12">
 
                         <span className='pull-right info-link'>
-                            <a  href="#" 
-                                data-toggle="tooltip" 
+                            <div
+                                data-toggle="tooltip"
                                 data-placement="left"
-                                title="Open the mobile application and select the group you wish to start or join a Voice Chat with. Within the group simply click 'Start Call' or 'Join Call' !"
+                                data-html="true"
+                                title="Open the mobile application and select the group you wish to start or join a Voice Chat with. Within the group simply click <b>Start Call</b> or <b>Join Call</b> !"
                             >
                                 <i className="fa fa-question-circle"></i>
                                 {group.callStatus === true ? <>{' '}Join a Call</> : <>{' '}Start a Call</>}
-                            </a>
+                            </div>
                         </span>
 
                         <h3 className="blog-title color-elements">
@@ -33,25 +42,25 @@ class GroupChatroomCall extends Component {
 
                     </div>
 
-                    {group.callStatus === true 
-                    ? 
-                    <div className="col-sm-12 col-md-12">
+                    {group.callStatus === true
+                        ?
+                        <div className="col-sm-12 col-md-12">
 
-                        <div style={{marginTop: "8px"}}>
-                            <strong>Call Participants:</strong>
-                            <span className="comments-padding"></span>
-                            {participants.length}
-                        </div>
+                            <div style={{ marginTop: "8px" }}>
+                                <strong>Call Participants:</strong>
+                                <span className="comments-padding"></span>
+                                {participants.length}
+                            </div>
 
-                        <p className="p-list">
-                            {participants.map(user =>
-                                <span key={user.userId}>
-                                    {user.displayName}{' | '}
-                                </span>
-                            )}
-                        </p>
-                    </div >
-                    : null
+                            <p className="p-list">
+                                {participants.map(user =>
+                                    <span key={user.userId}>
+                                        {user.displayName}{' | '}
+                                    </span>
+                                )}
+                            </p>
+                        </div >
+                        : null
                     }
 
                 </div>

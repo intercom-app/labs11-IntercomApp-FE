@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export default class Navigation extends React.Component {
 
@@ -26,13 +26,13 @@ export default class Navigation extends React.Component {
                     {this.props.isAuthenticated()
                             ?
                             <ul className="nav navbar-nav navbar-right custom-menu" >
-                                <li onClick={this.toggle}><Link to={`/user/${this.props.id}`}>My Groups</Link></li>
-                                <li onClick={this.toggle}><Link to={`/user/${this.props.id}/account`}>Account</Link></li>
-                                <li onClick={this.props.logout}><Link to={`/`}>Logout</Link></li>
+                                <li><NavLink to={`/user/${this.props.id}`}>My Groups</NavLink></li>
+                                <li><NavLink to={`/user/${this.props.id}/account`}>Account</NavLink></li>
+                                <li><Link to={`/`} onClick={this.props.logout}>Logout</Link></li>
                             </ul>
                             :
                             <ul className="nav navbar-nav navbar-right custom-menu" >                         
-                                <li className='active'><a href="#about">About</a></li>
+                                <li><a href="#about">About</a></li>
                                 <li><a href="#services">Services</a></li>
                                 <li><a href="#meet-team">Team</a></li>
                                 <li><a href="#contact">Contact</a></li>
