@@ -4,6 +4,7 @@ import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
+import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -11,6 +12,8 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             updateUserName: false,
+            updateBilling:false, 
+            last4: 1234
         }
     }
 
@@ -28,12 +31,27 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
+        
+            
+        axios.get(`${userEndpoint}/last4`)
+            .then(res => {
+                this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => { 
+                console.log(err)
+            });
 
     }
 
     toggleChangeName = () => {
         this.setState(prevState => ({
             updateUserName: !prevState.updateUserName
+        }));
+    }
+
+    toggleChangeBilling = () => {
+        this.setState(prevState => ({
+            updateBilling: !prevState.updateBilling
         }));
     }
 
@@ -45,6 +63,13 @@ class AccountSettings extends Component {
             .catch(err => console.log(err));
     }
 
+    handleBillingUpdate = () => {
+        const id = this.state.user.id
+        axios
+            .get(`${host}/api/users/${id}/last4`)
+            .then(res => this.setState({last4:res.data.last4}))
+            .catch(err => console.log(err))
+    }
 
     handleDelete = (id) => {
         this.deleteAccount(id); // First updates activities for all groups user belonged to
@@ -118,7 +143,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName } = this.state
+        const { user, updateUserName, updateBilling, last4 } = this.state
 
         return (
             <>
@@ -215,14 +240,32 @@ class AccountSettings extends Component {
                                             Billing
                                         </h3>
                                     </div>
-                                    <div className="col-md-8">
+                                    <div className="col-md-6">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                •••• •••• •••• 4242
-                                            </div>
-                                            <div className="pull-right">
-                                                Update
-                                            </div>
+                                        { updateBilling 
+                                                ? <UpdateBillingWrapper 
+                                                    handleBillingUpdate={this.handleBillingUpdate}
+                                                    toggleChangeBilling={this.toggleChangeBilling}
+                                                />
+                                                : null
+                                        }
+                                        {updateBilling
+                                                ? <CurrentBilling1
+                                                    last4 = {last4}
+                                                 /> 
+                                                
+                                                : <CurrentBilling2 
+                                                    last4 = {last4}
+                                                /> 
+                                        }
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                            { updateBilling 
+                                                ? 'Cancel'
+                                                : 'Update'
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -239,4 +282,31 @@ class AccountSettings extends Component {
     }
 }
 
+const CurrentBilling1 = (props) => {
+    return(
+        <div className="pull-left" style={{ display: "none"}} >
+            {`•••• •••• •••• ${props.last4}`}
+        </div>
+    )
+}
+
+const CurrentBilling2 = (props) => {
+    return(
+        // <div className="pull-left">
+        //     •••• •••• •••• 4242
+        // </div>
+
+        // <div className="pull-left" >
+        //     •••• •••• •••• 4242
+        // </div>
+
+        <div className="pull-left" >
+            {`•••• •••• •••• ${props.last4}`}
+        </div>
+    )
+}
+
 export default AccountSettings;
+
+
+
