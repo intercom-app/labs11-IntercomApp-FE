@@ -2,28 +2,7 @@ import React from 'react';
 
 const GroupMembersList = (props) => {
 
-    const getDateTime = (date) => {
-        const dateStr = new Date(date).toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
-        const today = new Date().toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
-        if (dateStr !== today) {
-            return dateStr
-        } else {
-            return new Date(date).toLocaleTimeString(undefined, {
-                hour: '2-digit',
-                minute: '2-digit',
-            })
-        }
-    }
-
-    let { isOwner, members, userId, removeUser } = props
+    let { isOwner, members, userId, removeUser, getDateTime } = props
     return (
         <>
             <h1 className="page-header sidebar-title">
@@ -35,10 +14,11 @@ const GroupMembersList = (props) => {
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col">User</th>
                             <th scope="col"></th>
                             <th scope="col">Email</th>
                             <th scope="col">Joined On</th>
+                            {isOwner ? <th scope="col">Manage</th> : null}
                         </tr>
                     </thead>
                     {members.map( member =>
@@ -54,7 +34,7 @@ const GroupMembersList = (props) => {
                                     {member.email}
                                 </td>
                                 <td style={{ width: '20%', paddingTop: '2.5%' }}><i className="fa fa-calendar-o"></i>
-                                    {' '}{getDateTime(member.createdAt)}
+                                    {' '}{getDateTime(member.memberCreatedAt)}
                                 </td>
                                 {isOwner
                                     ? <>

@@ -153,11 +153,9 @@ class GroupMembersView extends Component {
             .then(() => {
                 axios
                     .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
-                    .then(res => {
-                        this.setState({
-                            users: users,
-                            invitees: res.data
-                        })
+                    .then(() => {
+                        this.setState({ users })
+                        this.getGroupInvitees()
                     })
                     .catch(err => this.setState({ error: err }));
             })
@@ -208,6 +206,27 @@ class GroupMembersView extends Component {
             .catch(err => this.setState({ error: err }));
     }
 
+    getDateTime = (date) => {
+        const dateStr = new Date(date).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        const today = new Date().toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        if (dateStr !== today) {
+            return dateStr
+        } else {
+            return new Date(date).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+            })
+        }
+    }
+
     render() {
         let { error, group, search, users, members, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
@@ -242,12 +261,14 @@ class GroupMembersView extends Component {
                                         members={members}
                                         userId={userId}
                                         removeUser={this.removeUser}
+                                        getDateTime={this.getDateTime}
                                     />
 
                                     <GroupInviteesList
                                         isOwner={isOwner}
                                         invitees={invitees}
                                         removeInvitee={this.removeInvitee}
+                                        getDateTime={this.getDateTime}
                                     />
 
                                 </div>
