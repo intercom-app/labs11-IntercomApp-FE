@@ -18,6 +18,16 @@ class App extends Component {
     if (localStorage.getItem('isLoggedIn') === 'true') {
       renewSession();
     }
+
+    window.$(document).ready(function(){
+      window.$(this).scrollTop(0);
+    });
+  }
+
+  componentDidUpdate = () => {
+    window.$(document).ready(function(){
+      window.$(this).scrollTop(0);
+    });
   }
 
   render() {
