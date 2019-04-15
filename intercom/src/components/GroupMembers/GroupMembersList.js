@@ -26,6 +26,7 @@ const GroupMembersList = (props) => {
     }
 
     let { isOwner, membersDetails, userId, removeUser } = props
+    console.log(membersDetails)
     return (
         <>
             <h1 className="page-header sidebar-title">
@@ -78,7 +79,7 @@ const GroupMembersList = (props) => {
                                                                 <button
                                                                     className="btn btn-primary hvr-bounce-to-bottom rounded"
                                                                     type="button"
-                                                                    onClick={(e) => removeUser(e, member.userId, member.displayName)}
+                                                                    onClick={(e) => removeUser(e, member.id, member.displayName)}
                                                                 >
                                                                 Remove Member
                                                                 </button>

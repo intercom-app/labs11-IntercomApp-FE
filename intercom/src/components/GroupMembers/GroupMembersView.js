@@ -48,6 +48,7 @@ class GroupMembersView extends Component {
         axios
             .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
             .then(res => {
+                res.data.map()
                 this.setState({
                     membersDetails: res.data
                 });
@@ -186,7 +187,7 @@ class GroupMembersView extends Component {
                 axios
                     .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
                     .then(res => {
-                        this.setState({ members: res.data });
+                        this.setState({ membersDetails: res.data });
                     })
                     .catch(err => this.setState({ error: err }));
             })
