@@ -71,13 +71,34 @@ class AccountSettings extends Component {
             .catch(err => console.log(err))
     }
 
+    handleDelete = () => {
+        // First delete Groups Owned if any, then delete user
+        axios
+            .get(`${host}/api/users/${userId}/groupsOwned`)
+            .then(res => {
+                if (res.data.length === 0) { this.deleteAccount() }
+                else {
+                    const originalGroups = res.data.length;
+                    let updatedGroups = 0;
+                    res.data.forEach(group => {
+                        axios
+                            .delete(`${host}/api/groups/${group.groupId}`)
+                            .then(() => {
+                                updatedGroups++
+                                if (updatedGroups === originalGroups) { this.deleteAccount() }
+                            })
+                            .catch(err => console.log(err));
+                    })
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
     deleteAccount = () => {
         const userId = localStorage.getItem('userId')
         axios
             .delete(`${host}/api/users/${userId}`)
-            .then((res) => {
-                this.props.auth.logout()
-            })
+            .then(() => this.props.auth.logout())
             .catch(err => console.log(err.response));
     }
 
@@ -104,7 +125,7 @@ class AccountSettings extends Component {
                                             deleteMessage={"Confirm your email address below to delete your account"} 
                                             target={this.state.user.id} 
                                             targetName={this.state.user.email} 
-                                            handleTarget={this.deleteAccount} 
+                                            handleTarget={this.handleDelete} 
                                             type={'Delete Account'}
                                          />
 
