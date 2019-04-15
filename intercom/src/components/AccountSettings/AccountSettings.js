@@ -73,6 +73,7 @@ class AccountSettings extends Component {
 
     handleDelete = () => {
         // First delete Groups Owned if any, then delete user
+        const userId = localStorage.getItem('userId')
         axios
             .get(`${host}/api/users/${userId}/groupsOwned`)
             .then(res => {
