@@ -186,6 +186,16 @@ class GroupForm extends Component {
                         value={group.name}
                     />
                     <span className="input-group-btn">
+                        {group.name === ""
+                        ?
+                        <button
+                            className="btn btn-default"
+                            type="button"
+                            disabled
+                        >
+                            Create
+                        </button>
+                        :
                         <button
                             className="btn btn-default"
                             type="button"
@@ -193,6 +203,7 @@ class GroupForm extends Component {
                         >
                             Create
                         </button>
+                        }
                     </span>
                 </div>
                 :

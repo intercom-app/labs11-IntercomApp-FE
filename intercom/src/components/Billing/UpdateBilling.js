@@ -62,7 +62,8 @@ class UpdateBilling extends Component {
             const source = await this.createSource();
             
             // Step 2, update the customer's default source. 
-            const newDefaultSource = await this.updateDefaultSource(source);
+            // const newDefaultSource = await this.updateDefaultSource(source);
+            await this.updateDefaultSource(source);
 
         } catch(err) {
             console.log('err: ', err)
