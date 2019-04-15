@@ -77,9 +77,10 @@ class User extends Component {
 
     getGroupsInvitedTo = (id) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-
+        console.log(groupsInvitedTo)
         axios.get(groupsInvitedTo)
             .then(res => {
+                console.log(res)
                 this.getOwners(res.data);
                 this.getRecentActivity(res.data);
             })
