@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 export default class Navigation extends React.Component {
 
-
     render() {              
         return (
             <nav className="navbar navbar-inverse navbar-fixed-top navbar-container">
