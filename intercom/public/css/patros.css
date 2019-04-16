@@ -420,6 +420,14 @@ ul.nav-pills  { text-align: center; margin: 25px auto 20px auto; width: auto; di
     margin-bottom: 10%;
 }
 }
+@media (max-width:824px){
+.cb-slideshow h3{
+    margin-bottom: -8%;
+}
+.cb-slideshow h4{
+    margin-bottom: 8%;
+}
+}
 @media (max-width:768px){
 .cb-slideshow li div h3 {
     font-size:45px;
@@ -429,6 +437,9 @@ ul.nav-pills  { text-align: center; margin: 25px auto 20px auto; width: auto; di
 }
 .cb-slideshow h3{
     margin-bottom:5%;
+}
+.cb-slideshow h4{
+    margin-bottom:15%;
 }
 header.carousel {
     max-height: 500px;
@@ -442,6 +453,9 @@ header.carousel {
 .cb-slideshow li div {
     bottom:30px;
 }	
+.cb-slideshow h3{
+    margin-bottom:10%;
+}
 }
 @media (max-width:667px){
 .cb-slideshow li div {
@@ -449,9 +463,6 @@ header.carousel {
 }	
 .cb-slideshow li div h3 {
     font-size:25px;
-}
-.cb-slideshow h4 {
-    margin-bottom: 13%;
 }
 }
 @media (max-width:640px){
@@ -461,6 +472,12 @@ header.carousel {
 .cb-slideshow li div {
     bottom:50px;
 }
+.cb-slideshow h3{
+    margin-bottom:-8%;
+}
+.cb-slideshow h4{
+    margin-bottom:10%;
+}
 }
 @media (max-width:600px){
 .cb-slideshow li div {
@@ -469,8 +486,11 @@ header.carousel {
 .cb-slideshow li div h3 {
     font-size:25px;
 }
+.cb-slideshow h3 {
+    margin-bottom: 10%;
+}
 .cb-slideshow h4 {
-    margin-bottom: 13%;
+    margin-bottom: 15%;
 }
 }
 @media (max-width:568px){
@@ -480,10 +500,6 @@ header.carousel {
 .cb-slideshow li div h3 {
     font-size:25px;
 }
-.cb-slideshow h4 {
-    margin-bottom: 13%;
-}
-
 .avatar-img-act {
     width: 85% !important;
 }
