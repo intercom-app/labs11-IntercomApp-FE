@@ -52,7 +52,7 @@ class DeleteModal extends Component {
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <h3>{this.props.type}</h3>
+                <h3 style={{textAlign: 'center'}}>{this.props.type}</h3>
               </div>
 
               <div className="modal-body">
@@ -76,12 +76,13 @@ class DeleteModal extends Component {
                   Close
                 </button>
 
-                {this.state.confirmTarget === this.props.targetName ? <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                  onClick={() => this.props.handleTarget(this.props.target)}
-                >
+                {this.state.confirmTarget === this.props.targetName ? 
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-dismiss="modal"
+                    onClick={() => this.props.handleTarget(this.props.target)}
+                  >
                   Confirm
                 </button> : <button
                   type="button"

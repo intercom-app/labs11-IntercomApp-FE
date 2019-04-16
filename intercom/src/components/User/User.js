@@ -79,7 +79,6 @@ class User extends Component {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
         axios.get(groupsInvitedTo)
             .then(res => {
-                console.log(res.data)
                 this.getOwners(res.data);
                 this.getRecentActivity(res.data);
             })
@@ -96,7 +95,6 @@ class User extends Component {
             groups.forEach(group => {
                 axios.get(`${host}/api/groups/${group.groupId}/groupOwners`)
                 .then(res => {
-                    console.log(res.data[0])
                     const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
                     const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
 
@@ -108,7 +106,6 @@ class User extends Component {
                         groupsInvitedTo: filteredGroups
                     });
                 })
-                .catch(err => console.error(err));           
             })
         } else {
             this.setState({
@@ -122,7 +119,6 @@ class User extends Component {
             axios.get(`${host}/api/groups/${group.groupId}/activities`)
             .then(res => {
                 const activities = res.data.map( activity => {
-                    // console.log(activity)
                     return {...activity, groupId: group.groupId, groupName: group.GroupName}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
@@ -136,7 +132,6 @@ class User extends Component {
                     activities: filteredActivities
                 });
             })
-            .catch(err => console.error(err));           
         })
     }
 
