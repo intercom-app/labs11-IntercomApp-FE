@@ -88,12 +88,55 @@ class AccountSettings extends Component {
         //     .catch(err => console.log(err))
     }
 
-    handleDelete = (id) => {
-        this.deleteAccount(id); // First updates activities for all groups user belonged to
-        // Second updates activities for all groups user was invited to
-        // Third deletes all groups user was owner of
-        // Last deletes user and logs out
+    handleDelete = () => {
+        // First delete Groups Owned if any, then delete user
+        const userId = localStorage.getItem('userId')
+        axios
+            .get(`${host}/api/users/${userId}/groupsOwned`)
+            .then(res => {
+                if (res.data.length === 0) { this.deleteAccount() }
+                else {
+                    const originalGroups = res.data.length;
+                    let updatedGroups = 0;
+                    res.data.forEach(group => {
+                        axios
+                            .delete(`${host}/api/groups/${group.groupId}`)
+                            .then(() => {
+                                updatedGroups++
+                                if (updatedGroups === originalGroups) { this.deleteAccount() }
+                            })
+                            .catch(err => console.log(err));
+                    })
+                }
+            })
+            .catch(err => console.error(err));
     }
+
+    deleteAccount = () => {
+        const userId = localStorage.getItem('userId')
+        axios
+            .delete(`${host}/api/users/${userId}`)
+            .then(() => this.props.auth.logout())
+            .catch(err => console.log(err.response));
+    }
+
+    deleteGroupsOwnerOf = (id) => {
+        axios
+            .get(`${host}/api/users/${id}/groupsOwned`)
+            .then(res => {
+                const groupsIds = res.data.map(group => group.groupId);
+                if (groupsIds.length === 0) { this.deleteAccount(id) }
+                else {
+                    groupsIds.forEach(groupId => {
+                        axios
+                            .delete(`${host}/api/groups/${groupId}`)
+                            .then(() => this.deleteAccount(id))
+                            .catch(err => console.log(err));
+                    })
+                }
+            })
+            .catch(err => console.error(err));
+    } 
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
@@ -147,62 +190,11 @@ class AccountSettings extends Component {
         }
     }
 
-    handleDelete = () => {
-        // First delete Groups Owned if any, then delete user
-        const userId = localStorage.getItem('userId')
-        axios
-            .get(`${host}/api/users/${userId}/groupsOwned`)
-            .then(res => {
-                if (res.data.length === 0) { this.deleteAccount() }
-                else {
-                    const originalGroups = res.data.length;
-                    let updatedGroups = 0;
-                    res.data.forEach(group => {
-                        axios
-                            .delete(`${host}/api/groups/${group.groupId}`)
-                            .then(() => {
-                                updatedGroups++
-                                if (updatedGroups === originalGroups) { this.deleteAccount() }
-                            })
-                            .catch(err => console.log(err));
-                    })
-                }
-            })
-            .catch(err => console.error(err));
-    }
 
-    deleteAccount = () => {
-        const userId = localStorage.getItem('userId')
-        axios
-            .delete(`${host}/api/users/${userId}`)
-            .then(() => this.props.auth.logout())
-            .catch(err => console.log(err.response));
-    }
 
-    deleteGroupsOwnerOf = (id) => {
-        axios
-            .get(`${host}/api/users/${id}/groupsOwned`)
-            .then(res => {
-                const groupsIds = res.data.map(group => group.groupId);
-                if (groupsIds.length === 0) { this.deleteAccount(id) }
-                else {
-                    groupsIds.forEach(groupId => {
-                        axios
-                            .delete(`${host}/api/groups/${groupId}`)
-                            .then(() => this.deleteAccount(id))
-                            .catch(err => console.log(err));
-                    })
-                }
-            })
-            .catch(err => console.error(err));
-    } 
 
-    deleteAccount = (id) => {
-        axios
-            .delete(`${host}/api/users/${id}`)
-            .then(() => this.props.auth.logout())
-            .catch(err => console.log(err.response));
-}
+
+
 
     render() {
 
@@ -223,7 +215,7 @@ class AccountSettings extends Component {
                                             Profile
                                         </h3>
                                         <DeleteModal 
-                                            deleteMessage={"Confirm your email address below to delete your account"} 
+                                            deleteMessage={"Confirm your email address."} 
                                             target={this.state.user.id} 
                                             targetName={this.state.user.email} 
                                             handleTarget={this.handleDelete} 
