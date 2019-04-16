@@ -98,8 +98,8 @@ class AccountSettings extends Component {
     getGroupCharges = async(groupId) => {
         const id = this.state.user.id;
         try {
-            const groupCosts = await axios.post(`${host}/api/purchasingAndBilling/groupCosts`);        
-            console.log("groupCosts: ", groupCosts);
+            const groupTwilioCharges = await axios.post(`${host}/api/billing/groupTwilioCharges`);        
+            console.log("groupTwilioCharges: ", groupTwilioCharges);
         } catch(err) {
           console.log(err)
         }
