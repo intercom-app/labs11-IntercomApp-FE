@@ -123,10 +123,10 @@ class AccountSettings extends Component {
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
             const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
-            console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
+            // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
             const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
-            console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
+            // console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
 
             return sumOfGroupTwilioCharges
         } catch(err) {
@@ -134,25 +134,25 @@ class AccountSettings extends Component {
         }
     }
 
-    getUserTwilioCharges = async() => {
+    getSumOfUserTwilioCharges = async() => {
         const id = this.state.user.id
         try {
             const userOwnedGroupsRes = await axios.get(`${host}/api/users/${id}/groupsOwned`);
             const userOwnedGroups = userOwnedGroupsRes.data
-            console.log("userOwnedGroups: ", userOwnedGroups);
+            // console.log("userOwnedGroups: ", userOwnedGroups);
 
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
-            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+            // console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
-
-            let totalUserCharges = 0;
+            let sumOfUserTwilioCharges = 0;
 
             for (let i = 0; i < userOwnedGroupsIds.length;i++) {
-                totalUserCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
+                sumOfUserTwilioCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
             }
-            console.log("totalUserCharges: ", totalUserCharges);
+            console.log("sumOfUserTwilioCharges: ", sumOfUserTwilioCharges);
+            return sumOfUserTwilioCharges
 
         } catch(err) {
             console.log(err)
@@ -160,13 +160,23 @@ class AccountSettings extends Component {
     }
 
     
-    getUserStripeCharges = async() => {
+    getSumOfUserStripeCharges = async() => {
         const id = this.state.user.id
         try {
-            const stripeId = 'cus_Et35QY0yTwAZuD'
+            
+            const userRes= await axios.get(`${host}/api/users/${id}`);
+            const user = userRes.data;
+            const stripeId = userRes.data.stripeId;
+            console.log('stripeId: ', stripeId);
 
-            const stripeCharges = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
-            console.log('stripeCharges: ', stripeCharges.data.allCustomerCharges)
+            const userStripeChargesRes = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
+            
+            let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
+            console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
+            sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges/100); //in dollars
+            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); // in cents
+            return sumOfUserStripeCharges
+
         } catch(err) {
             console.log(err)
         }
@@ -304,8 +314,8 @@ class AccountSettings extends Component {
                                                     />
                                                     : null
                                             }
-                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>
-                                        <button onClick = {this.getUserStripeCharges}>getUserStripeCharges</button>   
+                                        <button onClick = {this.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
+                                        <button onClick = {this.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>   
                                         </div>
                                             
                                         
