@@ -14,7 +14,7 @@ export default class Navigation extends React.Component {
 						<span className="icon-bar"></span>
 						<span className="icon-bar"></span>
 					</button>
-                    <Link to={`/`} className="navbar-brand" style={{color: "white", margin: "0px", padding: "8px 0px 0px 0px"}}>
+                    <Link to={`/`} className="navbar-brand" id="navbar-logo">
                         <span className="navbar-logo-v">V</span>
                         <span className="navbar-logo-text">oice{' '}</span>
                         <i className="material-icons navbar-logo-icon">hearing</i>
