@@ -95,13 +95,42 @@ class AccountSettings extends Component {
         // Last deletes user and logs out
     }
 
-    getGroupCharges = async(groupId) => {
-        const id = this.state.user.id;
+    getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            const groupTwilioCharges = await axios.post(`${host}/api/billing/groupTwilioCharges`);        
-            console.log("groupTwilioCharges: ", groupTwilioCharges);
+            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
+            console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
+
+            const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
+            console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
+
+            return sumOfGroupTwilioCharges
         } catch(err) {
           console.log(err)
+        }
+    }
+
+    getUserTwilioCharges = async() => {
+        const id = this.state.user.id
+        try {
+            const userOwnedGroupsRes = await axios.get(`${host}/api/users/${id}/groupsOwned`);
+            const userOwnedGroups = userOwnedGroupsRes.data
+            console.log("userOwnedGroups: ", userOwnedGroups);
+
+            const userOwnedGroupsIds = userOwnedGroups.map(group => {
+                return group.groupId
+            })
+            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+
+
+            let totalUserCharges = 0;
+
+            for (let i = 0; i < userOwnedGroupsIds.length;i++) {
+                totalUserCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
+            }
+            console.log("totalUserCharges: ", totalUserCharges);
+
+        } catch(err) {
+            console.log(err)
         }
     }
 
@@ -288,7 +317,7 @@ class AccountSettings extends Component {
                                                     />
                                                     : null
                                             }
-                                        <button onClick = {this.getCharges}>getCharges</button>   
+                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>   
                                         </div>
                                             
                                         
