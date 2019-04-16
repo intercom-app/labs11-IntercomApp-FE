@@ -5,7 +5,7 @@ import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
-import ImageUploader from 'react-images-upload';
+
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -15,8 +15,33 @@ class AccountSettings extends Component {
             updateUserName: false,
             updateBilling:false, 
             last4: 1234, 
-            picture: ''
+            selectedFile: ''
         }
+    }
+
+    fileSelectedHandler = e => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        })
+    }
+
+    fileUploadHandler = async (e) => {
+        const id = localStorage.getItem('userId');
+        e.preventDefault();
+        const userData = {
+            avatar: URL.createObjectURL(this.state.selectedFile),
+        }
+        console.log(userData)
+        try {
+            const res = await axios.put(`${host}/api/users/${id}`, userData)
+            this.setState({
+                user: res.data
+            })
+        } catch (err) {
+            console.log(err);
+        };
+
+        // this.handleUpdate();
     }
 
     componentDidMount() {
@@ -45,11 +70,7 @@ class AccountSettings extends Component {
 
     }
 
-    onDrop = (picture) => {
-        this.setState({
-            picture
-        });
-    }
+    
 
     toggleChangeName = () => {
         this.setState(prevState => ({
@@ -113,7 +134,7 @@ class AccountSettings extends Component {
 
 
     render() {
-
+        console.log(this.state.user)
         const { user, updateUserName, updateBilling, last4 } = this.state
 
         return (
@@ -121,7 +142,10 @@ class AccountSettings extends Component {
                 <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
-                            <h2>Account</h2>
+                            <div className='account-header'>
+                                <img className='' style={{ width: '10%', borderRadius: '50%', height: '10%', marginRight: '15px' }} src={user.avatar || require('../../images/avatar1.png')} alt="user avatar" />                                
+                                <h2>{user.displayName}'s Account </h2>
+                            </div>
                             <hr></hr>
 
                             <div className="row">
@@ -133,11 +157,11 @@ class AccountSettings extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            {/* <div className="pull-left">
-                                                <strong>{user.displayName}</strong>
-                                            </div> */}
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeName}>
-                                                Change Display Picture
+                                            <div className="pull-right color-elements">
+                                                {/* Change Display Picture */}
+                                                <input type="file" onChange={this.fileSelectedHandler}/>
+                                                <button onClick={this.fileUploadHandler}>Upload</button>
+                                                {/* <img src={this.state.selectedFile || require('../../images/avatar1.png')} alt=""/> */}
                                             </div>
                                         </div>
                                     </div>
