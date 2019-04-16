@@ -41,7 +41,7 @@ const GroupInviteesList = (props) => {
                                     ? <>
                                         <td style={{ width: '20%', paddingTop: '2.5%' }}>
                                             <button
-                                                className="btn btn-delete rounded"
+                                                className="btn btn-cancel rounded"
                                                 type="button"
                                                 onClick={(e) => removeInvitee(e, invitee.id, invitee.displayName)}
                                             >
