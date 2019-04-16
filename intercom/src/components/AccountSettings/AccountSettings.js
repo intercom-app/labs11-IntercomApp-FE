@@ -134,6 +134,19 @@ class AccountSettings extends Component {
         }
     }
 
+    
+    getUserStripeCharges = async() => {
+        const id = this.state.user.id
+        try {
+            const stripeId = 'cus_Et35QY0yTwAZuD'
+
+            const stripeCharges = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
+            console.log('stripeCharges: ', stripeCharges.data.allCustomerCharges)
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
     handleDelete = () => {
         // First delete Groups Owned if any, then delete user
         const userId = localStorage.getItem('userId')
@@ -317,7 +330,8 @@ class AccountSettings extends Component {
                                                     />
                                                     : null
                                             }
-                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>   
+                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>
+                                        <button onClick = {this.getUserStripeCharges}>getUserStripeCharges</button>   
                                         </div>
                                             
                                         
