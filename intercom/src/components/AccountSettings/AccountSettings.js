@@ -80,7 +80,6 @@ class AccountSettings extends Component {
             .then(res => this.setState({last4:res.data.last4}))
             .catch(err => console.log(err))
     }
-
     handleAddToBalance = () => {
         const id = this.state.user.id
         // axios
@@ -106,27 +105,23 @@ class AccountSettings extends Component {
         }
     }
 
-    // getTotalUserCharges = async(userId) => {
-    //     try {
-
-    //     } catch(err) {
-    //         console.log(err)
-    //     }
-    // }
-
-
-    /* addGroupsMemberActivities = (id) => {
-        const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
+    handleDelete = () => {
+        // First delete Groups Owned if any, then delete user
+        const userId = localStorage.getItem('userId')
         axios
-            .get(`${host}/api/users/${id}/groupsBelongedTo`)
+            .get(`${host}/api/users/${userId}/groupsOwned`)
             .then(res => {
-                const groupsIds = res.data.map(group => group.groupId);
-                if (groupsIds.length === 0) { this.addGroupsInviteeActivities(id) }
+                if (res.data.length === 0) { this.deleteAccount() }
                 else {
-                    groupsIds.forEach(groupId => {
+                    const originalGroups = res.data.length;
+                    let updatedGroups = 0;
+                    res.data.forEach(group => {
                         axios
-                            .post(`${host}/api/groups/${groupId}/activities`, activity)
-                            .then(() => this.addGroupsInviteeActivities(id))
+                            .delete(`${host}/api/groups/${group.groupId}`)
+                            .then(() => {
+                                updatedGroups++
+                                if (updatedGroups === originalGroups) { this.deleteAccount() }
+                            })
                             .catch(err => console.log(err));
                     })
                 }
@@ -134,23 +129,12 @@ class AccountSettings extends Component {
             .catch(err => console.error(err));
     }
 
-    addGroupsInviteeActivities = (id) => {
-        const activity = { userId: id, activity: 'Declined invite. User left Voice Chatroom.' }
+    deleteAccount = () => {
+        const userId = localStorage.getItem('userId')
         axios
-            .get(`${host}/api/users/${id}/groupsInvitedTo`)
-            .then(res => {
-                const groupsIds = res.data.map(group => group.groupId);
-                if (groupsIds.length === 0) { this.deleteGroupsOwnerOf(id) }
-                else {
-                    groupsIds.forEach(groupId => {
-                        axios
-                            .post(`${host}/api/groups/${groupId}/activities`, activity)
-                            .then(() => this.deleteGroupsOwnerOf(id))
-                            .catch(err => console.log(err));
-                    })
-                }
-            })
-            .catch(err => console.error(err));
+            .delete(`${host}/api/users/${userId}`)
+            .then(() => this.props.auth.logout())
+            .catch(err => console.log(err.response));
     }
 
     deleteGroupsOwnerOf = (id) => {
@@ -169,7 +153,7 @@ class AccountSettings extends Component {
                 }
             })
             .catch(err => console.error(err));
-    } */
+    } 
 
     deleteAccount = (id) => {
         axios
@@ -196,15 +180,14 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteModal deleteMessage={"Confirm your email address below to delete your account"} target={this.state.user.id} targetName={this.state.user.email} handleTarget={this.handleDelete} type={'Delete Account'} />
-                                         {/* <button
-                                            style={{ padding: "3px 12px"}}
-                                            className="btn btn-primary btn-noborder-radius hvr-bounce-to-bottom"
-                                            type="button"
-                                            onClick={() => this.handleDelete(user.id)}
-                                        >
-                                            Delete Account
-                                        </button>  */}
+                                        <DeleteModal 
+                                            deleteMessage={"Confirm your email address below to delete your account"} 
+                                            target={this.state.user.id} 
+                                            targetName={this.state.user.email} 
+                                            handleTarget={this.handleDelete} 
+                                            type={'Delete Account'}
+                                         />
+
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
