@@ -188,9 +188,8 @@ select:focus {outline-color: transparent;}
 .form-control:focus{border-color:#33cc33;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}
 img.displayed{display: block;margin-left: auto;margin-right: auto;background-color:transparent;}
 .img-products{position:center;}
-.navbar-container {padding: 0px 40px 0px 20px}
-@media (max-width:980px) {.navbar-container {padding: 0px 20px 0px 20px}}
-@media (max-width:768px) {.navbar-container {padding: 0px 0px 0px 20px}}
+.navbar-container {padding: 0px 20px}
+@media (max-width:768px) {.navbar-container {padding: 0px 5px 0px 20px}}
 #navbar-logo {color: #fff; margin: 0px; padding: 8px 0px 0px 0px}
 #navbar-logo:hover {color: #eee}
 .navbar-logo-v {font-size: 36px; vertical-align: text-top}
@@ -421,6 +420,14 @@ ul.nav-pills  { text-align: center; margin: 25px auto 20px auto; width: auto; di
     margin-bottom: 10%;
 }
 }
+@media (max-width:824px){
+.cb-slideshow h3{
+    margin-bottom: -8%;
+}
+.cb-slideshow h4{
+    margin-bottom: 8%;
+}
+}
 @media (max-width:768px){
 .cb-slideshow li div h3 {
     font-size:45px;
@@ -430,6 +437,9 @@ ul.nav-pills  { text-align: center; margin: 25px auto 20px auto; width: auto; di
 }
 .cb-slideshow h3{
     margin-bottom:5%;
+}
+.cb-slideshow h4{
+    margin-bottom:15%;
 }
 header.carousel {
     max-height: 500px;
@@ -443,6 +453,9 @@ header.carousel {
 .cb-slideshow li div {
     bottom:30px;
 }	
+.cb-slideshow h3{
+    margin-bottom:10%;
+}
 }
 @media (max-width:667px){
 .cb-slideshow li div {
@@ -450,9 +463,6 @@ header.carousel {
 }	
 .cb-slideshow li div h3 {
     font-size:25px;
-}
-.cb-slideshow h4 {
-    margin-bottom: 13%;
 }
 }
 @media (max-width:640px){
@@ -462,6 +472,12 @@ header.carousel {
 .cb-slideshow li div {
     bottom:50px;
 }
+.cb-slideshow h3{
+    margin-bottom:-8%;
+}
+.cb-slideshow h4{
+    margin-bottom:10%;
+}
 }
 @media (max-width:600px){
 .cb-slideshow li div {
@@ -470,8 +486,11 @@ header.carousel {
 .cb-slideshow li div h3 {
     font-size:25px;
 }
+.cb-slideshow h3 {
+    margin-bottom: 10%;
+}
 .cb-slideshow h4 {
-    margin-bottom: 13%;
+    margin-bottom: 15%;
 }
 }
 @media (max-width:568px){
@@ -481,10 +500,6 @@ header.carousel {
 .cb-slideshow li div h3 {
     font-size:25px;
 }
-.cb-slideshow h4 {
-    margin-bottom: 13%;
-}
-
 .avatar-img-act {
     width: 85% !important;
 }
@@ -551,7 +566,8 @@ header.carousel {
 }
 ul.cb-slideshow h4{
 	font-size:15px;
-	margin:1px;
+    margin:1px;
+    margin-bottom: 20%;
 }
 .cb-slideshow h3{
     margin-bottom:5%;

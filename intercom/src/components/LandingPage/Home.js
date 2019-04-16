@@ -45,7 +45,7 @@ const Home = () => {
                                 <div className="text-center"><h3>Clear Communcation</h3></div>
                             </div>
                         </div>
-                        <h4>Communicate with your family and friends at reasonable voice levels.</h4>
+                        <h4>Communicate at reasonable voice levels.</h4>
                     </div>
                 </li>
             </ul>
