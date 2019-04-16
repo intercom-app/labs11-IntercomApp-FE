@@ -7,6 +7,7 @@ import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
 
+
 class AccountSettings extends Component {
     constructor(props) {
         super(props);
@@ -94,6 +95,25 @@ class AccountSettings extends Component {
         // Third deletes all groups user was owner of
         // Last deletes user and logs out
     }
+
+    getGroupCharges = async(groupId) => {
+        const id = this.state.user.id;
+        try {
+            const groupCosts = await axios.post(`${host}/api/purchasingAndBilling/groupCosts`);        
+            console.log("groupCosts: ", groupCosts);
+        } catch(err) {
+          console.log(err)
+        }
+    }
+
+    // getTotalUserCharges = async(userId) => {
+    //     try {
+
+    //     } catch(err) {
+    //         console.log(err)
+    //     }
+    // }
+
 
     /* addGroupsMemberActivities = (id) => {
         const activity = { userId: id, activity: 'Left group. User left Voice Chatroom.' }
@@ -285,7 +305,7 @@ class AccountSettings extends Component {
                                                     />
                                                     : null
                                             }
-                                            
+                                        <button onClick = {this.getCharges}>getCharges</button>   
                                         </div>
                                             
                                         

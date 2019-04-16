@@ -71,28 +71,12 @@ class AddToBalance extends Component {
         return (
                 // <div style = {{border:'1px solid blue', marginBottom:'100px'}}>
                 <div>
-
-                    {/* <div>
-                        <form onSubmit = {this.chargeAndAddToBalance}>
-                            <div>
-                                Amount to add: 
-                                <input
-                                    type = 'number'
-                                    name = 'amountToAdd'
-                                    value = {this.state.amountToAdd}
-                                    onChange = {this.inputChangeHandler}
-                                />
-                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeAndAddToBalance </button>
-                            </div>                            
-                        </form>
-                    </div> */}
-
                     <div>
                         <form onSubmit = {this.chargeAndAddToBalance}>
                             <div style = {{border:'1px solid blue', marginBottom:'100px'}} className="form-group">
                                 Amount to add: 
                                 <select className="form-control">
-                                    <option>2</option>
+                                    <option onClick = {e => this.setState({amountToAdd:200})}>200</option>
                                     <option>5</option>
                                     <option>10</option>
                                     <option>15</option>
