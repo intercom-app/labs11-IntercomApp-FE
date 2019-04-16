@@ -33,13 +33,13 @@ class AddToBalance extends Component {
             const userStripeId = res.data.stripeId;
             // console.log('userStripeId: ', userStripeId);
 
-            const customerStripeInfo = await axios.post(`${host}/api/purchasingAndBilling/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
+            const customerStripeInfo = await axios.post(`${host}/api/billing/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
             // console.log('customerStripeInfo: ', customerStripeInfo);
             const defaultSourceId = customerStripeInfo.data.defaultSourceId;
             // console.log('defaultSourceId: ', defaultSourceId);
 
             // TESTING - Soon to be phased out (but working) credit card charging method
-            const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+            const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
                 'userStripeId':userStripeId,
                 'sourceId': defaultSourceId,
                 'amountToAdd': this.state.amountToAdd 
@@ -138,13 +138,13 @@ export default injectStripe(AddToBalance);
 //         const res = await axios.get(`${host}/api/users/${userId}`);
 //         const userStripeId = res.data.stripeId;
 //         // console.log('userStripeId: ', userStripeId);
-//         const customerStripeInfo = await axios.post(`${host}/api/purchasingAndBilling/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
+//         const customerStripeInfo = await axios.post(`${host}/api/billing/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
 //         // console.log('customerStripeInfo: ', customerStripeInfo);
 //         const defaultSourceId = customerStripeInfo.data.defaultSourceId;
 //         // console.log('defaultSourceId: ', defaultSourceId);
 
 //         // TESTING - Soon to be phased out (but working) credit card charging method
-//         const chargeResponse = await axios.post(`${host}/api/purchasingAndBilling/createCharge`, {
+//         const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
 //             'userStripeId':userStripeId,
 //             'sourceId': defaultSourceId,
 //             'amountToAdd': this.state.amountToAdd 
