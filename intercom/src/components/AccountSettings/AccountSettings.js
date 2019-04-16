@@ -120,24 +120,6 @@ class AccountSettings extends Component {
             .catch(err => console.log(err.response));
     }
 
-    deleteGroupsOwnerOf = (id) => {
-        axios
-            .get(`${host}/api/users/${id}/groupsOwned`)
-            .then(res => {
-                const groupsIds = res.data.map(group => group.groupId);
-                if (groupsIds.length === 0) { this.deleteAccount(id) }
-                else {
-                    groupsIds.forEach(groupId => {
-                        axios
-                            .delete(`${host}/api/groups/${groupId}`)
-                            .then(() => this.deleteAccount(id))
-                            .catch(err => console.log(err));
-                    })
-                }
-            })
-            .catch(err => console.error(err));
-    } 
-
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
             const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
