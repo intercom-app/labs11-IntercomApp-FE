@@ -225,7 +225,7 @@ class GroupChatroomView extends Component {
 
     render() {
 
-        let { user, group, groupId, isOwner, participants, activities, error } = this.state
+        let { user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
 
         return (
             <>
@@ -282,9 +282,16 @@ class GroupChatroomView extends Component {
                                                 >
                                                 </input>
                                                 <span className="input-group-btn">
+                                                    {groupName === ""
+                                                    ?
+                                                    <button className="btn btn-default" type="button" disabled>
+                                                        Update
+                                                    </button>
+                                                    :
                                                     <button className="btn btn-default" type="button" onClick={this.handleGroupUpdate}>
                                                         Update
                                                     </button>
+                                                    }
                                                 </span>
                                             </div>
                                             <DeleteModal 
