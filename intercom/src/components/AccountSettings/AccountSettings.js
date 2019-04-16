@@ -5,6 +5,7 @@ import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
+import ImageUploader from 'react-images-upload';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class AccountSettings extends Component {
             user: {},
             updateUserName: false,
             updateBilling:false, 
-            last4: 1234
+            last4: 1234, 
+            picture: ''
         }
     }
 
@@ -41,6 +43,12 @@ class AccountSettings extends Component {
                 console.log(err)
             });
 
+    }
+
+    onDrop = (picture) => {
+        this.setState({
+            picture
+        });
     }
 
     toggleChangeName = () => {
@@ -122,14 +130,6 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteModal 
-                                            deleteMessage={"Confirm your email address."} 
-                                            target={this.state.user.id} 
-                                            targetName={this.state.user.email} 
-                                            handleTarget={this.handleDelete} 
-                                            type={'Delete Account'}
-                                         />
-
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
@@ -228,6 +228,33 @@ class AccountSettings extends Component {
                                                 ? 'Cancel'
                                                 : 'Update'
                                             }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>
+                                            Account
+                                        </h3>
+                                    </div>
+                                
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            {/* <div className="pull-left">
+                                                Pay as you chat
+                                            </div> */}
+                                            <div className="pull-right">
+                                                <DeleteModal
+                                                    deleteMessage={"Confirm your email address."}
+                                                    target={this.state.user.id}
+                                                    targetName={this.state.user.email}
+                                                    handleTarget={this.handleDelete}
+                                                    type={'Delete Account'}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
