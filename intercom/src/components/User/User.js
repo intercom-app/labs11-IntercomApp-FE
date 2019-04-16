@@ -80,7 +80,6 @@ class User extends Component {
 
     getGroupsInvitedTo = (id, groupsBelongedTo) => {
         const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-
         axios.get(groupsInvitedTo)
             .then(res => {
                 const groupsBelongedToIds = groupsBelongedTo.map(group => group.groupId);
@@ -115,7 +114,6 @@ class User extends Component {
                         groupsInvitedTo: filteredGroups
                     });
                 })
-                .catch(err => console.error(err));           
             })
         } else {
             this.setState({
@@ -142,7 +140,6 @@ class User extends Component {
                     activities: filteredActivities
                 });
             })
-            .catch(err => console.error(err));           
         })
     }
 

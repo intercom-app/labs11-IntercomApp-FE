@@ -44,9 +44,6 @@ class DeleteModal extends Component {
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="deleteModalLongTitle">
-                  {`${this.props.deleteMessage}`} 
-                </h5>
                 <button
                   type="button"
                   className="close"
@@ -55,10 +52,21 @@ class DeleteModal extends Component {
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
+                <h3 style={{textAlign: 'center'}}>{this.props.type}</h3>
               </div>
+
               <div className="modal-body">
-                <input type="text" name="confirmTarget" onChange={this.handleGroupInput} value={this.state.confirmTarget} />
+                <div className='modal-upper'>
+                  <input className='modal-input' type="text" name="confirmTarget" onChange={this.handleGroupInput} value={this.state.confirmTarget} 
+                    placeholder={`${this.props.deleteMessage}`}
+                  />
+                  {/* <p className="modal-title" id="deleteModalLongTitle">
+                    {`${this.props.deleteMessage}`} 
+                  </p> */}
+                </div>
+                  <p>Please note that this action can not be undone.</p>
               </div>
+
               <div className="modal-footer">
                 <button
                   type="button"
@@ -67,12 +75,14 @@ class DeleteModal extends Component {
                 >
                   Close
                 </button>
-                {this.state.confirmTarget === this.props.targetName ? <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                  onClick={() => this.props.handleTarget(this.props.target)}
-                >
+
+                {this.state.confirmTarget === this.props.targetName ? 
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-dismiss="modal"
+                    onClick={() => this.props.handleTarget(this.props.target)}
+                  >
                   Confirm
                 </button> : <button
                   type="button"
@@ -82,6 +92,7 @@ class DeleteModal extends Component {
                   Confirm
                 </button> }
               </div>
+              
             </div>
           </div>
         </div>
