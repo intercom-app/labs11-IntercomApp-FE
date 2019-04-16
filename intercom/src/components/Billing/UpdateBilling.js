@@ -39,7 +39,7 @@ class UpdateBilling extends Component {
             const userStripeId = res.data.stripeId;
             console.log('userStripeId: ', userStripeId);
 
-            const updatedSource = await axios.post(`${host}/api/purchasingAndBilling/updateDefaultSource`, {
+            const updatedSource = await axios.post(`${host}/api/billing/updateDefaultSource`, {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
             });
