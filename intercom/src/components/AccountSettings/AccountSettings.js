@@ -16,7 +16,7 @@ class AccountSettings extends Component {
             updateUserName: false,
             updateBilling:false,
             addToBalance:false,
-            balance: 0,  
+            accountBalance: '',  
             last4: 1234
         }
     }
@@ -40,6 +40,14 @@ class AccountSettings extends Component {
         axios.get(`${userEndpoint}/last4`)
             .then(res => {
                 this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => { 
+                console.log(err)
+            });
+        
+        axios.get(`${userEndpoint}/accountBalance`)
+            .then(res => {
+                this.setState({ accountBalance: res.data.accountBalance })
             })
             .catch(err => { 
                 console.log(err)
@@ -151,7 +159,9 @@ class AccountSettings extends Component {
             for (let i = 0; i < userOwnedGroupsIds.length;i++) {
                 sumOfUserTwilioCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
             }
-            console.log("sumOfUserTwilioCharges: ", sumOfUserTwilioCharges);
+            console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
+            sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
+            console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
             return sumOfUserTwilioCharges
 
         } catch(err) {
@@ -182,6 +192,25 @@ class AccountSettings extends Component {
         }
     }
 
+    updateUserAccountBalance = async() => {
+        const id = this.state.user.id
+        try{
+            const sumOfStripeCharges = await this.getSumOfUserStripeCharges();
+            console.log('sumOfStripeCharges: ', sumOfStripeCharges);
+
+            const sumOfTwilioCharges = await this.getSumOfUserTwilioCharges();
+            console.log('sumOfTwilioCharges: ', sumOfTwilioCharges);
+
+            const updatedAccountBalance = sumOfTwilioCharges + sumOfStripeCharges;
+            console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+            await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
+            this.setState({'accountBalance':updatedAccountBalance});
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
 
 
 
@@ -190,7 +219,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling,  addToBalance, balance, last4 } = this.state
+        const { user, updateUserName, updateBilling,  addToBalance, accountBalance, last4 } = this.state
 
         return (
             <>
@@ -302,7 +331,7 @@ class AccountSettings extends Component {
                                         } */}
 
                                         <div>
-                                            Account Balance: {this.state.balance}
+                                            Account Balance: {accountBalance}
                                         </div>
                                              
                                         {/* ADD TO BALANCE */}
@@ -311,11 +340,13 @@ class AccountSettings extends Component {
                                                     ? <AddToBalanceWrapper 
                                                         handleAddToBalance={this.handleAddToBalance}
                                                         toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                                        updateUserAccountBalance = {this.updateUserAccountBalance}
                                                     />
                                                     : null
-                                            }
+                                            } 
                                         <button onClick = {this.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
-                                        <button onClick = {this.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>   
+                                        <button onClick = {this.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>
+                                        <button onClick = {this.updateUserAccountBalance}>updateUserAccountBalance</button>      
                                         </div>
                                             
                                         

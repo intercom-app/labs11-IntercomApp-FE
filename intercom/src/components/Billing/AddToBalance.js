@@ -49,15 +49,18 @@ class AddToBalance extends Component {
             if (chargeResponse.data.charge.status === "succeeded") {
                 // console.log('charge suceeded!');
 
-                const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
-                let accountBalance = accountBalanceCall.data.accountBalance;
-                // console.log('accountBalance old: ', accountBalance);
-                accountBalance = accountBalance + chargeResponse.data.charge.amount;
-                // console.log('accountBalance new: ', accountBalance);
+                // // // // ORIGINAL APPROACH
+                // const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
+                // let accountBalance = accountBalanceCall.data.accountBalance;
+                // // console.log('accountBalance old: ', accountBalance);
+                // accountBalance = accountBalance + chargeResponse.data.charge.amount;
+                // // console.log('accountBalance new: ', accountBalance);
 
-                // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // console.log('addToBalanceResponse: ', addToBalanceResponse);
+                // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+                // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+                // // console.log('addToBalanceResponse: ', addToBalanceResponse);
+                
+                this.props.updateUserAccountBalance()
             }
 
         } catch(err) {
