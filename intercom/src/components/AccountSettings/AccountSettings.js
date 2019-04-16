@@ -133,6 +133,16 @@ class AccountSettings extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            {/* <div className="pull-left">
+                                                <strong>{user.displayName}</strong>
+                                            </div> */}
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeName}>
+                                                Change Display Picture
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
                                                 <strong>{user.displayName}</strong>
                                             </div>
@@ -153,7 +163,7 @@ class AccountSettings extends Component {
                                         : null
                                     }
 
-                                    <div className="col-md-8">
+                                    <div className="col-md-8 fl-r">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
                                                 {user.email}
