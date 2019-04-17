@@ -5,91 +5,79 @@ const GroupInviteesList = (props) => {
     let { isOwner, invitees, removeInvitee, getDateTime } = props
     return (
         <>
-            <h1 className="page-header sidebar-title">
+            <h2 className="page-header sidebar-title page-header-table">
                 Group Invitees
-            </h1>
+            </h2>
 
-
-            <div className="row blogu" style={{ marginRight: "0px", marginLeft: "0px" }}>
-
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">User</th>
-                            <th scope="col"></th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Invited On</th>
-                            {isOwner ? <th scope="col">Manage</th> : null}
-                        </tr>
-                    </thead>
+            <table className="table">
+                <thead>
+                    <tr>
+                    <th align="left">User</th>
+                        <th className="tc-xs-hide"></th>
+                        <th align="left" className="tc-lg-hide">Hover for Email</th>
+                        <th align="left" className="tc-xs-hide">Email</th>
+                        <th align="left" className="tc-sm-hide">Invited</th>
+                        {isOwner ? <th align="center">Manage</th> : null}
+                    </tr>
+                </thead>
+                <tbody className="act-chatroom">
                     {invitees.map( invitee =>
-                        <tbody key={invitee.id}>
-                            <tr>
-                                <td style={{ width: '15%' }}>
-                                    <img className='avatar-img-act' style={{ width: '45%', borderRadius: '50%' }} src={invitee.avatar || require('../../images/avatar1.png')} alt="user avatar" />
-                                </td>
-                                <td style={{ width: '15%', paddingTop: '2.5%' }}>
-                                    {invitee.displayName}
-                                </td>
-                                <td style={{ width: '22%', paddingTop: '2.5%' }}>
-                                    {invitee.email}
-                                </td>
-                                <td style={{ width: '20%', paddingTop: '2.5%' }}><i className="fa fa-calendar-o"></i>
-                                    {' '}{getDateTime(invitee.inviteeCreatedAt)}
-                                </td>
-                                {isOwner
-                                    ? <>
-                                        <td style={{ width: '20%', paddingTop: '2.5%' }}>
-                                            <button
-                                                className="btn btn-cancel rounded"
-                                                type="button"
-                                                onClick={(e) => removeInvitee(e, invitee.id, invitee.displayName)}
-                                            >
-                                                Cancel Invite
-                                            </button>
-                                        </td>
-                                    </>
-                                    : null
-                                }
+                        <tr key={invitee.id}>
 
-                            </tr>
-                        </tbody>
-                    )}
-                </table>
+                            {/* User's Avatar */}
+                            <td valign="middle" className="td-img">
+                                <img 
+                                    className="avatar-img-act avatar-img-mem"
+                                    src={invitee.avatar || require('../../images/avatar1.png')} 
+                                    alt="user avatar" 
+                                />
+                            </td>
 
-            </div>
-            <hr></hr>
+                            {/* User's Name = At extra small view will get email on hover */}
+                            <td valign="middle" className="tc-xs-hide">
+                                <strong>{invitee.displayName}</strong>
+                            </td>
+                            <td valign="middle" className="tc-lg-hide">
+                                <span
+                                    data-toggle="tooltip-email"
+                                    data-placement="bottom"
+                                    title={invitee.email}
+                                    onMouseEnter={() => window.$('[data-toggle="tooltip-email"]').tooltip()}
+                                >
+                                    <strong>{invitee.displayName}</strong>
+                                </span>
+                            </td>
 
-            {/* {invitees.map(invitee => (
-                <div key={invitee.userId}>
-                    <div className="row blogu" >
-                        <div className="col-sm-8 col-md-8">
-                            <h4 className="blog-title">
-                                {invitee.displayName}
-                            </h4>
-                        </div>
-                        <>
-                            {isOwner
-                                ? <>
-                                    <button
-                                        className="btn btn-primary rounded hvr-bounce-to-bottom pull-right"
-                                        type="button"
-                                        onClick={(e) => removeInvitee(e, invitee.userId, invitee.displayName)}
-                                    >
-                                        Rescind Invite
-                                        </button>
-                                </>
-                                : null
+                            {/* User's Email - Hidden at Extra Small Views */}
+                            <td valign="middle" className="tc-xs-hide">
+                                {invitee.email}
+                            </td>
+
+                            {/* Date Invited - Hidden at Smaller Views */}
+                            <td valign="middle" nowrap="true" className="tc-sm-hide">
+                                <i className="fa fa-calendar-o"></i>
+                                {' '}{getDateTime(invitee.inviteeCreatedAt)}
+                            </td>
+
+                            {/* Manage Invitees for Owners Only */}
+                            {isOwner ? 
+                            <td align="center" valign="middle">   
+                                <button
+                                    className="btn rounded btn-cancel"
+                                    type="button"
+                                    onClick={(e) => removeInvitee(e, invitee.id, invitee.displayName)}
+                                >
+                                    Cancel
+                                </button>  
+                            </td>
+                            : null
                             }
-                        </>
-                    </div>
-                    <hr></hr>
-                </div>
 
-            ))} */}
-
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         </>
-
     );
 }
 

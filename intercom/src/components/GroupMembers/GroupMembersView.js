@@ -207,23 +207,31 @@ class GroupMembersView extends Component {
     }
 
     getDateTime = (date) => {
-        const dateStr = new Date(date).toLocaleDateString(undefined, {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
         const today = new Date().toLocaleDateString(undefined, {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
         });
-        if (dateStr !== today) {
-            return dateStr
-        } else {
+        const dateStr = new Date(date).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        const todayYear = new Date().toLocaleDateString(undefined, { year: 'numeric' });
+        const dateStrYear = new Date(date).toLocaleDateString(undefined, { year: 'numeric' });
+
+        if (dateStr === today) { // if activity happened today, return time
             return new Date(date).toLocaleTimeString(undefined, {
                 hour: '2-digit',
                 minute: '2-digit',
             })
+        } else if (todayYear === dateStrYear) { // if activity happened this year, return month and day
+            return new Date(date).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'short',
+            });
+        } else { // if activity happened before this year, return month day and year
+            return dateStr
         }
     }
 
@@ -240,16 +248,14 @@ class GroupMembersView extends Component {
                         <section className="container blog page-container">
 
                             <div className="row">
-                                <div className="col-md-12"> 
-                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
-                                    <span className="pull-left">
+                                <div className="col-md-12 page-header-flex"> 
+                                    <div className="page-icon-flex">
+                                        <i className="fa fa-users fa-4x"></i>
                                         <h2>{group.name}</h2>
-                                    </span>
-                                    <span className="pull-right">                                                
-                                        <Link to={`/group/${group.id}`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                    </div>                                                                                  
+                                    <Link to={`/group/${group.id}`} className='blog-title' style={{textDecoration: 'underline' }}>
                                         <h4>Group Chatroom</h4>
-                                        </Link>
-                                    </span>
+                                    </Link>
                                 </div>
                             </div>
 
