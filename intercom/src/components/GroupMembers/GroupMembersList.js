@@ -9,70 +9,76 @@ const GroupMembersList = (props) => {
                 Group Members
             </h1>
 
-            <div className="row blogu" style={{ marginRight: "0px", marginLeft: "0px" }}>
-
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">User</th>
-                            <th scope="col"></th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Joined On</th>
-                            {isOwner ? <th scope="col">Manage</th> : null}
-                        </tr>
-                    </thead>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th align="left">User</th>
+                        <th className="tc-xs-hide"></th>
+                        <th align="left" className="tc-lg-hide">Hover for Email</th>
+                        <th align="left" className="tc-xs-hide">Email</th>
+                        <th align="left" className="tc-sm-hide">Joined</th>
+                        {isOwner ? <th align="center">Manage</th> : null}
+                    </tr>
+                </thead>
+                <tbody className="act-chatroom">
                     {members.map( member =>
-                        <tbody key={member.id}>
-                            <tr>
-                                <td style={{ width: '15%' }}>
-                                    <img className='avatar-img-act' style={{ width: '45%', borderRadius: '50%' }} src={member.avatar || require('../../images/avatar1.png')} alt="user avatar" />
-                                </td>
-                                <td style={{ width: '15%', paddingTop: '2.5%' }}>
-                                    {member.displayName}
-                                </td>
-                                <td style={{ width: '22%', paddingTop: '2.5%' }}>
-                                    {member.email}
-                                </td>
-                                <td style={{ width: '20%', paddingTop: '2.5%' }}><i className="fa fa-calendar-o"></i>
-                                    {' '}{getDateTime(member.memberCreatedAt)}
-                                </td>
-                                {isOwner
-                                    ? <>
-                                        {member.id === userId
-                                            ? <td style={{ width: '20%', paddingTop: '2.5%' }}>
-                                                <button
-                                                    className="btn btn-primary rounded"
-                                                    type="button"
-                                                    disabled
-                                                >
-                                                    Owner
-                                                </button>
-                                            </td>
-                                            : <td style={{ width: '20%', paddingTop: '2.5%' }}>
-                                                <button
-                                                    className="btn btn-primary rounded"
-                                                    type="button"
-                                                    onClick={(e) => removeUser(e, member.id, member.displayName)}
-                                                >
-                                                    Remove Member
-                                                </button>
-                                            </td>
-                                        }
-                                    </>
-                                    : null
-                                }
+                        <tr key={member.id}>
 
-                            </tr>
-                        </tbody>
+                            {/* User's Avatar */}
+                            <td valign="middle">
+                                <img 
+                                    className="avatar-img-act avatar-img-mem"
+                                    src={member.avatar || require('../../images/avatar1.png')} 
+                                    alt="user avatar" 
+                                />
+                            </td>
+
+                            {/* User's Name = At extra small view will get email on hover */}
+                            <td valign="middle" className="tc-xs-hide">
+                                <strong>{member.displayName}</strong>
+                            </td>
+                            <td valign="middle" className="tc-lg-hide">
+                                <div
+                                    data-toggle="tooltip-email"
+                                    data-placement="bottom"
+                                    title={member.email}
+                                    onMouseEnter={() => window.$('[data-toggle="tooltip-email"]').tooltip()}
+                                >
+                                    <strong>{member.displayName}</strong>
+                                </div>
+                            </td>
+
+                            {/* User's Email - Hidden at Extra Small Views */}
+                            <td valign="middle" className="tc-xs-hide">
+                                {member.email}
+                            </td>
+
+                            {/* Date Joined - Hidden at Smaller Views */}
+                            <td valign="middle" nowrap="true" className="tc-sm-hide">
+                                <i className="fa fa-calendar-o"></i>
+                                {' '}{getDateTime(member.memberCreatedAt)}
+                            </td>
+
+                            {/* Manage Members for Owners Only */}
+                            {isOwner ? 
+                            <td align="center" valign="middle">   
+                                <button
+                                    className="btn rounded btn-cancel"
+                                    type="button"
+                                    disabled={member.id === userId}
+                                    onClick={(e) => removeUser(e, member.id, member.displayName)}
+                                >
+                                    {member.id === userId ? 'Owner' : 'Remove' }
+                                </button>  
+                            </td>
+                            : null
+                            }
+
+                        </tr>
                     )}
-                </table>
-
-            </div>
-            <hr></hr>
-
-
+                </tbody>
+            </table>
         </>
-
     );
 }
 

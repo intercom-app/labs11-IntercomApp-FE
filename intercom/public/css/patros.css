@@ -5,7 +5,7 @@
 .avatar-img-lg {width: 10%; margin-right: 2%; border-radius: 50%}
 .avatar-img-act {width: 40px; height: 40px; border-radius: 50%}
 @media (max-width:568px){ .avatar-img-act {width: 30px; height: 30px} }
-@media (max-width:319px){ .avatar-img-act {display: none} }
+@media (max-width:319px){ .avatar-img-act {display: none} .avatar-img-mem {display: inline-block}}
 .icon-img-users { margin-right: 2%; }
 .col-md-8-right-padding{
     padding-right: 30px
@@ -313,8 +313,11 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .comments1 .media-heading  { color:#313131; font-size:16px; }
 .comments1 .media-object { max-width: 60px; }
 .btn-delete { margin: 20px 0px; background-color: #fff;  border:1px solid #c20500; color: #c20500}
-.btn-cancel { background-color: #fff;  border:1px solid #c20500; color: #c20500}
 .btn-delete:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
+.btn-cancel { background-color: #fff;  border:1px solid #c20500; color: #c20500; width: 78px; height: 34px}
+.btn-cancel:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
+.btn-cancel:disabled { background-color: #fff;  border:1px solid #313131; color: #000}
+@media (max-width:568px){ .btn-cancel {font-size: 12px; width: 60px; height: 26px; padding: 0px} }
 .btn-leave { margin-top: 0px;}
 .btn-join { background-color: #33cc33;  border:1px solid transparent; color: #fff}
 .btn-join:hover { background-color: #fff;  border: 1px solid #33cc33; color: #33cc33 }
@@ -496,6 +499,9 @@ header.carousel {
 .cb-slideshow h4 {
     margin-bottom: 15%;
 }
+.tc-sm-hide {
+    display: none
+}
 }
 @media (max-width:568px){
 .cb-slideshow li div {
@@ -507,6 +513,11 @@ header.carousel {
 .act-chatroom {
     font-size: 12px;
 }
+}
+@media (min-width:481px){
+    .tc-lg-hide {
+        display: none
+    }
 }
 @media (max-width:480px){
 
@@ -635,6 +646,9 @@ ul.cb-slideshow h4{
 }
 .td-sm {
     vertical-align: top;
+}
+.tc-xs-hide {
+    display: none
 }
 }
 
