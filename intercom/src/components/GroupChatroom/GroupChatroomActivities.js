@@ -34,8 +34,12 @@ class GroupChatroomActivities extends Component {
     render() {
         const { activities } = this.props
         return (
-            <div className="comments1">
-                <h3>Latest Activities</h3>
+            <>
+            <h2 className="page-header sidebar-title page-header-table">
+                Latest Activities
+            </h2>
+            
+            <div>
                 <table className="table">
                     <tbody className="act-chatroom">
                         {activities.map(activity =>
@@ -62,6 +66,7 @@ class GroupChatroomActivities extends Component {
                     </tbody>
                 </table>
             </div>
+            </>
         )
     }
 }
