@@ -16,13 +16,28 @@
     align-items: center;
     height: 40px;
 }
-.unauth { background-image: url(../images/headphones.jpg);
-            background-position: 'center';
-            background-size: contain;
-            background-repeat: no-repeat;
-            height: 100vh;
-            width: 100%;}
-
+.unauth {
+    height: 100vh;
+    padding: 80px 20px 0px;
+    text-align: center;
+}
+.unauth-header {
+    font-size: 7vh;
+    margin-top: 4vh;
+}
+.unauth-header-sub {
+    font-size: 4vh;
+    margin-top: 1vh;
+}
+.unauth-img { 
+    margin-top: 1vh;
+    background-image: url(../images/headphones.jpg);
+    background-position: center; 
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 35vh;
+    width: auto;
+}
 .fl-r {
     float: right !important;
 }
