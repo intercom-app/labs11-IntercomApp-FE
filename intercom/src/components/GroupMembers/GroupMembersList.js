@@ -5,9 +5,9 @@ const GroupMembersList = (props) => {
     let { isOwner, members, userId, removeUser, getDateTime } = props
     return (
         <>
-            <h1 className="page-header sidebar-title">
+            <h2 className="page-header sidebar-title page-header-table">
                 Group Members
-            </h1>
+            </h2>
 
             <table className="table">
                 <thead>
@@ -25,7 +25,7 @@ const GroupMembersList = (props) => {
                         <tr key={member.id}>
 
                             {/* User's Avatar */}
-                            <td valign="middle">
+                            <td valign="middle" className="td-img">
                                 <img 
                                     className="avatar-img-act avatar-img-mem"
                                     src={member.avatar || require('../../images/avatar1.png')} 
@@ -38,14 +38,14 @@ const GroupMembersList = (props) => {
                                 <strong>{member.displayName}</strong>
                             </td>
                             <td valign="middle" className="tc-lg-hide">
-                                <div
+                                <span
                                     data-toggle="tooltip-email"
                                     data-placement="bottom"
                                     title={member.email}
                                     onMouseEnter={() => window.$('[data-toggle="tooltip-email"]').tooltip()}
                                 >
                                     <strong>{member.displayName}</strong>
-                                </div>
+                                </span>
                             </td>
 
                             {/* User's Email - Hidden at Extra Small Views */}

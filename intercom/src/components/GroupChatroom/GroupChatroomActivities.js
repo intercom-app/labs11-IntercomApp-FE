@@ -35,7 +35,7 @@ class GroupChatroomActivities extends Component {
         const { activities } = this.props
         return (
             <>
-            <h2 className="page-header sidebar-title page-header-table">
+            <h2 className="page-header sidebar-title page-header-noborder page-header-table">
                 Latest Activities
             </h2>
             

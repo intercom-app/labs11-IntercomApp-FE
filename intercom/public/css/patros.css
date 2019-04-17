@@ -6,6 +6,8 @@
 .avatar-img-act {width: 40px; height: 40px; border-radius: 50%}
 @media (max-width:568px){ .avatar-img-act {width: 30px; height: 30px} }
 @media (max-width:319px){ .avatar-img-act {display: none} .avatar-img-mem {display: inline-block}}
+.td-img {width: 56px}
+@media (max-width:568px){ .td-img {width: 46px} }
 .col-md-8-right-padding{
     padding-right: 30px
 }
@@ -109,7 +111,8 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .carousel-indicators-size{width:15px;height:15px;}
 .custom-container{height:300px;}
 .page-container{padding-bottom: 80px;}
-.page-header-table { border-bottom: none; margin-bottom: 0}
+.page-header-noborder { border-bottom: none; }
+.page-header-table { margin-bottom: 0 }
 .page-header-flex {
     padding-top: 2px;
     display: flex;
@@ -168,7 +171,7 @@ span.text a:hover{
 .list-social-icons li:hover {background:#33cc33;}
 .list-social-icons li:hover .social-icons {color:#f7f7f7;}
 .list-social-icons li:active .social-icons {background:#33cc33;}
-.blog{margin-top:100px;}
+.blog{padding-top:100px;}
 .pagination {
     margin: 20px 0 50px !important;
 }    
@@ -189,7 +192,7 @@ span.text a:hover{
 .blog-thumb a:after { content: ''; display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(48, 54, 65, 0.5); z-index: 5; -webkit-border-radius: 3px; -webkit-background-clip: padding-box; -moz-border-radius: 3px; -moz-background-clip: padding;
   border-radius: 3px; background-clip: padding-box; -webkit-opacity: 0; -moz-opacity: 0; opacity: 0; filter: alpha(opacity=0);  -moz-transition: all 0.5s; -o-transition: all 0.5s; -webkit-transition: all 0.5s; transition: all 0.5s; }
 .blog-sidebar{min-height: 20px;padding: 8px 15px;}
-@media(max-width: 991px){.blog-sidebar{ margin: 0 auto;}}
+/* @media(max-width: 991px){.blog-sidebar{ margin: 0 auto;}} */
 /* .blog-sidebar h4:hover{color:#33cc33;-webkit-transition: all .3s;-moz-transition: all .3s;-ms-transition: all .3s;-o-transition: all .3s;transition: all .3s; } */
 .sidebar-list{padding-left: 0px;}
 .sidebar-list li>h5{margin-top:2px;}
@@ -660,10 +663,7 @@ ul.cb-slideshow h4{
    padding: 8px;
 }
 .blog {
-    margin-top: 80px;
-}
-.blog-sidebar {
-    padding: 10px;
+    padding-top: 80px;
 }
 .singlepost {
     margin-bottom: 20px;
