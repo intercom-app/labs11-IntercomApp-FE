@@ -16,34 +16,9 @@ class AccountSettings extends Component {
             updateUserImage: false,            
             updateBilling:false, 
             last4: 1234, 
-            selectedFile: ''
+            selectedFile: '',
+            image: null
         }
-    }
-
-    fileSelectedHandler = e => {
-        this.setState({
-            selectedFile: e.target.files[0]
-        })
-    }
-
-    fileUploadHandler = async (e) => {
-        console.log('fileUploadHandler')
-        const id = localStorage.getItem('userId');
-        e.preventDefault();
-        const userData = {
-            avatar: URL.createObjectURL(this.state.selectedFile),
-        }
-        this.toggleChangeImage();
-        // console.log(userData)
-        try {
-            const res = await axios.put(`${host}/api/users/${id}`, userData)
-            this.setState({
-                user: res.data
-            })          
-        } catch (err) {
-            console.log(err);
-        };
-
     }
 
     componentDidMount() {
@@ -60,17 +35,60 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
-        
-            
+
         axios.get(`${userEndpoint}/last4`)
             .then(res => {
                 this.setState({ last4: res.data.last4 })
             })
-            .catch(err => { 
+            .catch(err => {
                 console.log(err)
             });
 
     }
+
+    fileSelectedHandler = e => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        })
+    }
+
+    fileUploadHandler = async (e) => {
+        console.log('fileUploadHandler')
+        const id = localStorage.getItem('userId');
+        e.preventDefault();
+        const userData = {
+            avatar: URL.createObjectURL(this.state.selectedFile),
+        }
+
+        const formData = new FormData();
+        formData.append('image', this.state.selectedFile);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        this.toggleChangeImage();
+        try {
+            const res = await axios.post(`${host}/api/upload`, formData)
+            if(res.status === 200) {
+                const userData = {
+                    avatar: res.data.image
+                }
+                axios.put(`${host}/api/users/${id}`, userData)
+                .then(res =>{
+                    this.setState({ user: res.data})
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }    
+        } catch (err) {
+            console.log(err);
+        };
+
+    }
+
+    
     
     toggleChangeImage = () => {
         this.setState(prevState => ({
@@ -196,14 +214,6 @@ class AccountSettings extends Component {
                                                     : 'Update Display Image'
                                                 }
                                             </div>
-                                            {/* <div className="col-md-8">
-                                                <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                                    <div className="pull-right color-elements input-group" >
-                                                        
-
-                                                    </div>
-                                                </div>
-                                            </div> */}
                                         </div>
                                     </div>
                                             {updateUserImage
@@ -222,8 +232,9 @@ class AccountSettings extends Component {
                                                                         className="btn btn-default"
                                                                         type="button"
                                                                         onClick={(e) => this.fileUploadHandler(e)}
+                                                                        disabled={this.state.selectedFile === ''}
                                                                     >
-                                                                        Update Profile
+                                                                        Update Profile Image
                                                                         </button>
                                                                 </span>
                                                             </div>
@@ -234,8 +245,6 @@ class AccountSettings extends Component {
                                                 : null
                                             }
                                         </div>
-
-
                                     
                             </div>
                             <hr></hr>
