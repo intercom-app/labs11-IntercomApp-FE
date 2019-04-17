@@ -23,6 +23,14 @@
             height: 100vh;
             width: 100%;}
 
+.fl-r {
+    float: right !important;
+}
+
+.account-header{
+    display: flex;
+}
+
 .cb-slideshow, .cb-slideshow:after { position:absolute; width:100%; height:100%; top: 0px; left: 0px; z-index: 0; background-color:#131313;
 }
 .cb-slideshow li span { width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; color: transparent;background-size: cover;
@@ -105,7 +113,7 @@ header.carousel .fill { width: 100%; height: 100%; background-position: center; 
 .price sup { top: -20px; left: 2px; font-size: 20px; }
 .period { display: block; font-style: italic; }
 footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
-@media(max-width:991px) {.customer-img, .img-related { margin-bottom: 30px; } }
+@media(max-width:991px) {.customer-img, .img-related { margin-bottom: 30px; } .fl-r {float: none !important} }
 @media(max-width:767px) {.img-portfolio { margin-bottom: 15px;} header.carousel .carousel { height: 70%; } }
 .height-contact-element {margin:30px 0;} 
 .carousel-indicators-size{width:15px;height:15px;}
@@ -288,6 +296,8 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .blog-thumb a > img { -webkit-transition:0.5s; transition: 0.5s; }
 .blog-thumb a:hover > img {filter: brightness(70%) !important;  -webkit-filter: brightness(70%); -moz-filter: brightness(70%); -o-filter: brightness(70%); -ms-filter: brightness(70%); -webkit-transform: translate3d(10px,0,0); transform: translate3d(10px,0,0); }
 .searchbar { max-width: 270px; }
+.update-pic { max-width: 380px; }
+
 .media-object { max-width: 80px; }
 .media-body { color:#9d9d9d;font-size: 13px;line-height:1.5em;}
 .media-heading a { color:#33cc33; font-size:16px; }
@@ -360,7 +370,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 @media only screen and (min-width:768px) and (max-width: 980px) { 
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
  font-size:14px; } .navbar-inverse .navbar-nav>li>a { font-size:13px; margin-right:3px; padding-left:5px; padding-right: 5px; } }
-@media only screen and (max-width:767px) { .searchbar { max-width: 100%; } .navbar-inverse .navbar-toggle { border-color:#e6e6e6; } .portfolio-item { margin-bottom:30px; } }
+@media only screen and (max-width:767px) { .searchbar { max-width: 100%; } .update-pic { max-width: 100%; } .navbar-inverse .navbar-toggle { border-color:#e6e6e6; } .portfolio-item { margin-bottom:30px; } }
 #toTop{ position: fixed; bottom: 38px; right: 10px;	cursor: pointer; display: none; }
 .color1 { background-color: #505050; }
 .color1:hover { background-color: #353535; }
