@@ -26,7 +26,7 @@ class DeleteModal extends Component {
           {/* {console.log(this.props)} */}
         <button
           type="button"
-          className="btn btn-delete"
+          className="btn btn-cancel"
           data-toggle="modal"
           data-target="#deleteModal"
         >
