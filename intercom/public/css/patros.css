@@ -363,10 +363,10 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .comments1 .media-object { max-width: 60px; }
 .btn-delete { margin: 20px 0px; background-color: #fff;  border:1px solid #c20500; color: #c20500}
 .btn-delete:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
-.btn-cancel { background-color: #fff;  border:1px solid #c20500; color: #c20500; width: 78px; height: 34px}
-.btn-cancel:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
-.btn-cancel:disabled { background-color: #fff;  border:1px solid #313131; color: #000}
-@media (max-width:568px){ .btn-cancel {font-size: 12px; width: 60px; height: 26px; padding: 0px} }
+.btn-remove { background-color: #fff;  border:1px solid #c20500; color: #c20500; width: 78px; height: 34px}
+.btn-remove:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
+.btn-remove:disabled { background-color: #fff;  border:1px solid #313131; color: #000}
+@media (max-width:568px){ .btn-remove {font-size: 12px; width: 60px; height: 26px; padding: 0px} }
 .btn-leave { margin-top: 0px;}
 .btn-join { background-color: #33cc33;  border:1px solid transparent; color: #fff}
 .btn-join:hover { background-color: #fff;  border: 1px solid #33cc33; color: #33cc33 }

@@ -63,11 +63,11 @@ const GroupInviteesList = (props) => {
                             {isOwner ? 
                             <td align="center" valign="middle">   
                                 <button
-                                    className="btn rounded btn-cancel"
+                                    className="btn rounded btn-remove"
                                     type="button"
                                     onClick={(e) => removeInvitee(e, invitee.id, invitee.displayName)}
                                 >
-                                    Cancel
+                                    Remove
                                 </button>  
                             </td>
                             : null
