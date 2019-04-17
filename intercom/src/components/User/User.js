@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import host from '../../host';
+
+import UnAuth from '../UnAuth/UnAuth';
 import GroupForm from '../Groups/GroupForm';
-import UnAuth from './UnAuth';
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
 import GroupsOwned from '../Groups/GroupsOwned';
-import host from '../../host';
 import RecentActivity from '../RecentActivity/RecentActivity';
 import Footer from "../LandingPage/Footer";
 

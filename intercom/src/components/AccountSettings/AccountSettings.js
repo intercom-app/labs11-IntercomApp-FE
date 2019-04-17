@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import host from "../../host.js";
 import axios from 'axios';
+import host from "../../host.js";
+
+import UnAuth from '../UnAuth/UnAuth';
 import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
-import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
-
-
+import Footer from '../LandingPage/Footer';
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -91,8 +91,6 @@ class AccountSettings extends Component {
 
     }
 
-    
-    
     toggleChangeImage = () => {
         this.setState(prevState => ({
             updateUserImage: !prevState.updateUserImage
@@ -210,8 +208,7 @@ class AccountSettings extends Component {
             console.log(err)
         }
     }
-
-    
+  
     getUserStripeCharges = async() => {
         const id = this.state.user.id
         try {
@@ -224,18 +221,15 @@ class AccountSettings extends Component {
         }
     }
 
-
-
-
-
-
-
     render() {
 
         const { user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
 
         return (
             <>
+                {parseInt(localStorage.getItem('userId')) !== parseInt(this.props.match.params.id) ?
+                    <UnAuth/> : 
+                <>
                 <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
@@ -477,6 +471,7 @@ class AccountSettings extends Component {
                 </div>
 
                 <Footer/>
+                </>}
             </>
         );
     }
