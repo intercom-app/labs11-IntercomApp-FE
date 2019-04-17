@@ -13,6 +13,7 @@ class AccountSettings extends Component {
         this.state = {
             user: {},
             updateUserName: false,
+            updateUserImage: false,            
             updateBilling:false, 
             last4: 1234, 
             selectedFile: ''
@@ -26,22 +27,23 @@ class AccountSettings extends Component {
     }
 
     fileUploadHandler = async (e) => {
+        console.log('fileUploadHandler')
         const id = localStorage.getItem('userId');
         e.preventDefault();
         const userData = {
             avatar: URL.createObjectURL(this.state.selectedFile),
         }
-        console.log(userData)
+        this.toggleChangeImage();
+        // console.log(userData)
         try {
             const res = await axios.put(`${host}/api/users/${id}`, userData)
             this.setState({
                 user: res.data
-            })
+            })          
         } catch (err) {
             console.log(err);
         };
 
-        // this.handleUpdate();
     }
 
     componentDidMount() {
@@ -69,8 +71,12 @@ class AccountSettings extends Component {
             });
 
     }
-
     
+    toggleChangeImage = () => {
+        this.setState(prevState => ({
+            updateUserImage: !prevState.updateUserImage
+        }));
+    }
 
     toggleChangeName = () => {
         this.setState(prevState => ({
@@ -135,7 +141,7 @@ class AccountSettings extends Component {
 
     render() {
         console.log(this.state.user)
-        const { user, updateUserName, updateBilling, last4 } = this.state
+        const { user, updateUserName, updateBilling, last4, updateUserImage } = this.state
 
         return (
             <>
@@ -155,16 +161,7 @@ class AccountSettings extends Component {
                                             Profile
                                         </h3>
                                     </div>
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-right color-elements">
-                                                {/* Change Display Picture */}
-                                                <input type="file" onChange={this.fileSelectedHandler}/>
-                                                <button onClick={this.fileUploadHandler}>Upload</button>
-                                                {/* <img src={this.state.selectedFile || require('../../images/avatar1.png')} alt=""/> */}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
@@ -192,9 +189,54 @@ class AccountSettings extends Component {
                                             <div className="pull-left">
                                                 {user.email}
                                             </div>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeImage}>
+
+                                                {updateUserImage
+                                                    ? 'Cancel'
+                                                    : 'Update Display Image'
+                                                }
+                                            </div>
+                                            {/* <div className="col-md-8">
+                                                <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                                    <div className="pull-right color-elements input-group" >
+                                                        
+
+                                                    </div>
+                                                </div>
+                                            </div> */}
                                         </div>
                                     </div>
-                                </div>
+                                            {updateUserImage
+                                                ?
+                                                <div className="col-md-8 fl-r">
+                                                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                                        <div className="pull-left">
+                                                            <div className="input-group update-pic">
+                                                                <input
+                                                                    className="form-control"
+                                                                    type="file"
+                                                                    onChange={this.fileSelectedHandler}
+                                                                />
+                                                                <span className="input-group-btn">
+                                                                    <button
+                                                                        className="btn btn-default"
+                                                                        type="button"
+                                                                        onClick={(e) => this.fileUploadHandler(e)}
+                                                                    >
+                                                                        Update Profile
+                                                                        </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                : null
+                                            }
+                                        </div>
+
+
+                                    
                             </div>
                             <hr></hr>
 
