@@ -13,7 +13,7 @@ class AddToBalance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amountToAdd:''
+            amountToAdd:0,
         };
     }
 
@@ -42,7 +42,7 @@ class AddToBalance extends Component {
             const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
                 'userStripeId':userStripeId,
                 'sourceId': defaultSourceId,
-                'amountToAdd': this.state.amountToAdd 
+                'amountToAdd': this.state.amountToAdd
             })
             // console.log('chargeResponse: ', chargeResponse);
 
