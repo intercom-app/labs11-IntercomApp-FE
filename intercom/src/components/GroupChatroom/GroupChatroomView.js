@@ -292,13 +292,15 @@ class GroupChatroomView extends Component {
                                                     }
                                                 </span>
                                             </div>
+                                            <div className="btn-delete-margin">
                                             <DeleteModal 
                                                 deleteMessage={"Confirm your email"} 
                                                 target={this.state.groupId} 
                                                 targetName={this.state.user.email} 
                                                 handleTarget={this.deleteGroup} 
                                                 type={'Delete Group'}
-                                             />
+                                            />
+                                            </div>
 
                                         </>
                                         : 

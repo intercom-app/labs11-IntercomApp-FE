@@ -361,7 +361,8 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .comments1 { margin-top:60px; }
 .comments1 .media-heading  { color:#313131; font-size:16px; }
 .comments1 .media-object { max-width: 60px; }
-.btn-delete { margin: 20px 0px; background-color: #fff;  border:1px solid #c20500; color: #c20500}
+.btn-delete-margin {margin: 20px 0px;}
+.btn-delete { background-color: #fff;  border:1px solid #c20500; color: #c20500}
 .btn-delete:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
 .btn-remove { background-color: #fff;  border:1px solid #c20500; color: #c20500; width: 78px; height: 34px}
 .btn-remove:hover { background-color: #c20500;  border:1px solid transparent; color: #fff}
