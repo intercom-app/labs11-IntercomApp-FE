@@ -6,7 +6,6 @@
 .avatar-img-act {width: 40px; height: 40px; border-radius: 50%}
 @media (max-width:568px){ .avatar-img-act {width: 30px; height: 30px} }
 @media (max-width:319px){ .avatar-img-act {display: none} .avatar-img-mem {display: inline-block}}
-.icon-img-users { margin-right: 2%; }
 .col-md-8-right-padding{
     padding-right: 30px
 }
@@ -110,6 +109,27 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .carousel-indicators-size{width:15px;height:15px;}
 .custom-container{height:300px;}
 .page-container{padding-bottom: 80px;}
+.page-header-flex h4 { margin: 0}
+@media (max-width: 480px) {.page-header-flex h4 { font-size: 16px}}
+@media (max-width: 360px) {.page-header-flex h4 { margin-top: 10px}}
+.page-header-flex {
+    padding-top: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@media (max-width: 360px) {
+    .page-header-flex { 
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.page-icon-flex {
+    display:flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.page-icon-flex h2 { margin: 0 0 0 5px}
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
 .btn-noborder-radius{border-radius:0px;}
 .menu-border-bottom{background-color:transparent;border-bottom:2px solid white;}
@@ -637,6 +657,9 @@ ul.cb-slideshow h4{
 }
 .well {
    padding: 8px;
+}
+.blog {
+    margin-top: 80px;
 }
 .blog-sidebar {
     padding: 10px;
