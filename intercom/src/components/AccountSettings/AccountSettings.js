@@ -5,6 +5,8 @@ import AccountUpdateForm from './AccountUpdateForm';
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
+import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
+
 
 
 class AccountSettings extends Component {
@@ -17,7 +19,8 @@ class AccountSettings extends Component {
             updateBilling:false, 
             last4: 1234, 
             selectedFile: '',
-            image: null
+            addToBalance:false,
+            balance: 0,  
         }
     }
 
@@ -108,6 +111,12 @@ class AccountSettings extends Component {
         }));
     }
 
+    toggleChangeAddToBalance = () => {
+        this.setState(prevState => ({
+            addToBalance: !prevState.addToBalance
+        }));
+    }
+
     handleUpdate = () => {
         const id = this.state.user.id
         axios
@@ -122,6 +131,13 @@ class AccountSettings extends Component {
             .get(`${host}/api/users/${id}/last4`)
             .then(res => this.setState({last4:res.data.last4}))
             .catch(err => console.log(err))
+    }
+    handleAddToBalance = () => {
+        const id = this.state.user.id
+        // axios
+        //     .get(`${host}/api/users/${id}/last4`)
+        //     .then(res => this.setState({last4:res.data.last4}))
+        //     .catch(err => console.log(err))
     }
 
     handleDelete = () => {
@@ -156,10 +172,67 @@ class AccountSettings extends Component {
             .catch(err => console.log(err.response));
     }
 
+    getSumOfGroupTwilioCharges = async(groupId) => {
+        try {
+            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
+            console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
+
+            const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
+            console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
+
+            return sumOfGroupTwilioCharges
+        } catch(err) {
+          console.log(err)
+        }
+    }
+
+    getUserTwilioCharges = async() => {
+        const id = this.state.user.id
+        try {
+            const userOwnedGroupsRes = await axios.get(`${host}/api/users/${id}/groupsOwned`);
+            const userOwnedGroups = userOwnedGroupsRes.data
+            console.log("userOwnedGroups: ", userOwnedGroups);
+
+            const userOwnedGroupsIds = userOwnedGroups.map(group => {
+                return group.groupId
+            })
+            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+
+
+            let totalUserCharges = 0;
+
+            for (let i = 0; i < userOwnedGroupsIds.length;i++) {
+                totalUserCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
+            }
+            console.log("totalUserCharges: ", totalUserCharges);
+
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    
+    getUserStripeCharges = async() => {
+        const id = this.state.user.id
+        try {
+            const stripeId = 'cus_Et35QY0yTwAZuD'
+
+            const stripeCharges = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
+            console.log('stripeCharges: ', stripeCharges.data.allCustomerCharges)
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+
+
+
+
+
 
     render() {
-        console.log(this.state.user)
-        const { user, updateUserName, updateBilling, last4, updateUserImage } = this.state
+
+        const { user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
 
         return (
             <>
@@ -211,7 +284,7 @@ class AccountSettings extends Component {
 
                                                 {updateUserImage
                                                     ? 'Cancel'
-                                                    : 'Update Display Image'
+                                                    : 'Update Image'
                                                 }
                                             </div>
                                         </div>
@@ -234,7 +307,7 @@ class AccountSettings extends Component {
                                                                         onClick={(e) => this.fileUploadHandler(e)}
                                                                         disabled={this.state.selectedFile === ''}
                                                                     >
-                                                                        Update Profile Image
+                                                                        Update Image
                                                                         </button>
                                                                 </span>
                                                             </div>
@@ -282,39 +355,88 @@ class AccountSettings extends Component {
 
                             <div className="row">
                                 <div className="col-md-12">
+
                                     <div className="col-md-4">
                                         <h3 style={{ marginTop: "0px" }}>
                                             Billing
                                         </h3>
                                     </div>
+                                    
+                                    
                                     <div className="col-md-6">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                        { updateBilling 
-                                                ? <UpdateBillingWrapper 
-                                                    handleBillingUpdate={this.handleBillingUpdate}
-                                                    toggleChangeBilling={this.toggleChangeBilling}
-                                                />
-                                                : null
-                                        }
-                                        {updateBilling
-                                                ? <CurrentBilling1
-                                                    last4 = {last4}
-                                                 /> 
-                                                
-                                                : <CurrentBilling2 
-                                                    last4 = {last4}
-                                                /> 
-                                        }
+
+                                        {/* { addToBalance
+                                            ? <CurrentBalance2
+                                                balance = {balance}
+                                            /> 
+                                            
+                                            : <CurrentBalance2 
+                                                balance = {balance}
+                                            /> 
+                                        } */}
+
+                                        <div>
+                                            Account Balance: {this.state.balance}
                                         </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                             
+                                        {/* ADD TO BALANCE */}
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            { addToBalance 
+                                                    ? <AddToBalanceWrapper 
+                                                        handleAddToBalance={this.handleAddToBalance}
+                                                        toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                                    />
+                                                    : null
+                                            }
+                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>
+                                        <button onClick = {this.getUserStripeCharges}>getUserStripeCharges</button>   
+                                        </div>
+                                            
+                                        
+
+                                        {/* UPDATING PAYMENT INFO */}
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             { updateBilling 
-                                                ? 'Cancel'
-                                                : 'Update'
+                                                    ? <UpdateBillingWrapper 
+                                                        handleBillingUpdate={this.handleBillingUpdate}
+                                                        toggleChangeBilling={this.toggleChangeBilling}
+                                                    />
+                                                    : null
+                                            }
+                                            {updateBilling
+                                                    ? <CurrentBilling1
+                                                        last4 = {last4}
+                                                    /> 
+                                                    
+                                                    : <CurrentBilling2 
+                                                        last4 = {last4}
+                                                    /> 
                                             }
                                         </div>
                                     </div>
+
+
+                                    <div className="col-md-2">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeAddToBalance}>
+                                                { addToBalance 
+                                                    ? 'Cancel'
+                                                    : 'Add Money'
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
+                                                { updateBilling 
+                                                    ? 'Cancel'
+                                                    : 'Update'
+                                                }
+                                            </div>
+                                        </ div>
+
+                                    </div>
+
                                 </div>
                             </div>
                             <hr></hr>
@@ -346,6 +468,10 @@ class AccountSettings extends Component {
                             </div>
                             <hr></hr>
 
+                           
+
+                            
+
                         </div>
                     </div>
                 </div>
@@ -366,19 +492,27 @@ const CurrentBilling1 = (props) => {
 
 const CurrentBilling2 = (props) => {
     return(
-        // <div className="pull-left">
-        //     •••• •••• •••• 4242
-        // </div>
-
-        // <div className="pull-left" >
-        //     •••• •••• •••• 4242
-        // </div>
-
         <div className="pull-left" >
             {`•••• •••• •••• ${props.last4}`}
         </div>
     )
 }
+
+// const CurrentBalance1 = (props) => {
+//     return(
+//         <div className="pull-left" style={{ display: "none"}} >
+//             Account Balance: ${props.balance}
+//         </div>
+//     )
+// }
+
+// const CurrentBalance2 = (props) => {
+//     return(
+//         <div className="pull-left" >
+//             Account Balance: ${props.balance}
+//         </div>
+//     )
+// }
 
 export default AccountSettings;
 
