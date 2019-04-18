@@ -262,8 +262,7 @@ class GroupMembersView extends Component {
 
         return (
             <>
-                { unAuth ?
-                    <UnAuth/> : 
+                { unAuth ? <UnAuth/> : 
                 <>
                 {error
                     ? <p>Error retrieving members!</p>

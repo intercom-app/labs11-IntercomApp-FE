@@ -17,12 +17,27 @@ class User extends Component {
         groupsInvitedTo: [],
         groupsOwned: [],
         activities: [],
+        unAuth: false
     }
 
     componentDidMount() {
         const id = localStorage.getItem('userId')
-        const userEndpoint = `${host}/api/users/${id}`;
+        this.checkIfUnAuth(id)
+        this.getUser(id);
+        this.getGroupsOwned(id);
+        // Groups belonged to is called after groups owned
+        // Groups invited to is called after groups belonged to
 
+    }
+
+    checkIfUnAuth = (id) => {
+        if (id !== this.props.match.params.id) {
+            this.setState({ unAuth: true })
+        }
+    }
+
+    getUser = (id) => {
+        const userEndpoint = `${host}/api/users/${id}`;
         axios.get(userEndpoint)
             .then(res => {
                 this.setState({ user: res.data })
@@ -33,13 +48,7 @@ class User extends Component {
                     user: {},
                 });
             });
-        this.getGroupsOwned(id);
-        // Groups belonged to is called after groups owned
-        // Groups invited to is called after groups belonged to
-
     }
-
-    compo
 
     getGroupsOwned = (id) => {
         const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
@@ -152,13 +161,12 @@ class User extends Component {
     }
 
     render() {
-        let { error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
+        let { unAuth, error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
         const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
         return (
             <>
-                {parseInt(localStorage.getItem('userId')) !== parseInt(this.props.match.params.id) ?
-                    <UnAuth/> : 
+                { unAuth ? <UnAuth/> : 
                 <>
                 {error
                     ? <h1>Error retrieving user!</h1>
