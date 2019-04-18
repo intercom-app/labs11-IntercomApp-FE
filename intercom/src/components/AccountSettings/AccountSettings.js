@@ -4,9 +4,9 @@ import axios from 'axios';
 import AccountProfile from './AccountProfile';
 import Account from './Account';
 import AccountPlanDetails from './AccountPlanDetails';
+import AccountBilling from './AccountBilling';
 import Footer from '../LandingPage/Footer';
-import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
-import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
+
 
 
 
@@ -253,12 +253,6 @@ class AccountSettings extends Component {
         }
     }
 
-
-
-
-
-
-
     render() {
 
         const { user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
@@ -287,119 +281,22 @@ class AccountSettings extends Component {
                             <hr></hr>
                             <AccountPlanDetails user={user}/>
                             <hr></hr>
-                            <div className="row">
-                                <div className="col-md-12">
-
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Billing
-                                        </h3>
-                                    </div>
-                                    
-                                    
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                Account Balance: {accountBalance}
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeAddToBalance}>
-                                                {addToBalance
-                                                    ? 'Cancel'
-                                                    : 'Add Money'
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {addToBalance
-                                        ? 
-                                        <div className="col-md-8">
-                                            <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                                <div className="pull-left">
-                                                    <AddToBalanceWrapper
-                                                        handleAddToBalance={this.handleAddToBalance}
-                                                        toggleChangeAddToBalance={this.toggleChangeAddToBalance}
-                                                        updateUserAccountBalance={this.updateUserAccountBalance}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>        
-                                        : null
-                                    } 
-         
-                                    {/* ADD TO BALANCE */}
-                                    <div className="col-md-8">                                    
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                {updateBilling
-                                                    ? <CurrentBilling1 last4={last4} />
-                                                    : <CurrentBilling2 last4={last4}/>
-                                                }   
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
-                                                {updateBilling
-                                                    ? 'Cancel'
-                                                    : 'Update'
-                                                }
-                                            </div>
-                                        
-                                        </div>
-                                    </div>
-
-                                    {/* UPDATING PAYMENT INFO */}
-                                    { updateBilling 
-                                            ? 
-                                            <div className="col-md-8">
-                                                <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                                    <div className="pull-left">
-                                                        <UpdateBillingWrapper 
-                                                            handleBillingUpdate={this.handleBillingUpdate}
-                                                            toggleChangeBilling={this.toggleChangeBilling}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                            : null
-                                    }
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <button onClick={this.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
-                                                    <button onClick={this.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>
-                                                    <button onClick={this.updateUserAccountBalance}>updateUserAccountBalance</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                            <AccountBilling 
+                                accountBalance={accountBalance}
+                                addToBalance={addToBalance}
+                                updateBilling={updateBilling}
+                                last4={last4}
+                                toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                toggleChangeBilling={this.toggleChangeBilling}
+                                handleAddToBalance={this.handleAddToBalance}
+                                handleBillingUpdate={this.handleBillingUpdate}
+                                updateUserAccountBalance={this.updateUserAccountBalance}
+                                getSumOfUserTwilioCharges={this.getSumOfUserTwilioCharges}
+                                getSumOfUserStripeCharges={this.getSumOfUserStripeCharges}
+                            />
+                            
                             <hr></hr>
                             <Account user={user} handleTarget={this.handleDelete}/>
-                            <hr></hr>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Billing Utility Functions
-                                        </h3>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                      
-                                            </div>
-                                            <div className="pull-right">
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            
                             <hr></hr>
                         </div>
                     </div>
@@ -410,38 +307,6 @@ class AccountSettings extends Component {
         );
     }
 }
-
-const CurrentBilling1 = (props) => {
-    return(
-        <div className="pull-left" style={{ display: "none"}} >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
-const CurrentBilling2 = (props) => {
-    return(
-        <div className="pull-left" >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
-// const CurrentBalance1 = (props) => {
-//     return(
-//         <div className="pull-left" style={{ display: "none"}} >
-//             Account Balance: ${props.balance}
-//         </div>
-//     )
-// }
-
-// const CurrentBalance2 = (props) => {
-//     return(
-//         <div className="pull-left" >
-//             Account Balance: ${props.balance}
-//         </div>
-//     )
-// }
 
 export default AccountSettings;
 
