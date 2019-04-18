@@ -103,7 +103,12 @@ class User extends Component {
                 .then(res => {
                     const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
                     const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
-                    this.setState({ groupsInvitedTo: groupsWithOwner });
+
+                    const filteredGroups = groupsWithOwner.filter((group, index, self) =>
+                        index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                    )
+
+                    this.setState({ groupsInvitedTo: filteredGroups });
                 })
                 .catch(() => this.setState({ groupsInvitedTo: [] }));
             })
