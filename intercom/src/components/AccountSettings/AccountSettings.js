@@ -130,11 +130,12 @@ class AccountSettings extends Component {
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
+            console.log("groupId: ", groupId);
+            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
             // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
             const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
-            // console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
+            console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
 
             return sumOfGroupTwilioCharges
         } catch(err) {
@@ -152,14 +153,14 @@ class AccountSettings extends Component {
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
-            // console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
             let sumOfUserTwilioCharges = 0;
 
             for (let i = 0; i < userOwnedGroupsIds.length;i++) {
                 sumOfUserTwilioCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
             }
-            console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
+            // console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
             sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
             console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
             return sumOfUserTwilioCharges
