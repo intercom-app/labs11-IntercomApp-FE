@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from "axios";
 import Fuse from 'fuse.js';
+import axios from "axios";
 import host from "../../host.js";
-import SearchBar from '../Search/SearchBar';
-import RecentActivity from '../RecentActivity/RecentActivity';
-import SearchResults from '../Search/SearchResults';
+
+import UnAuth from '../UnAuth/UnAuth';
 import GroupMembersList from './GroupMembersList.js';
 import GroupInviteesList from './GroupInviteesList.js';
+import RecentActivity from '../RecentActivity/RecentActivity';
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
 import Footer from '../LandingPage/Footer';
 
 class GroupMembersView extends Component {
@@ -23,21 +25,39 @@ class GroupMembersView extends Component {
             users: [],
             search: '',
             isOwner: false,
+            unAuth: false,
             error: null
         };
     }
 
     componentDidMount() {
-        // Get Group
+        this.checkIfUnAuth()
+        this.getGroup()
+        this.getGroupMembers()
+        this.getGroupInvitees()
+        this.getGroupActivities()
+        this.checkIfOwner();
+    }
+
+    checkIfUnAuth = () => {
+        const groupId = parseInt(this.state.id) 
+        const userId = localStorage.getItem('userId')
+        axios
+            .get(`${host}/api/users/${userId}/groupsBelongedTo`)
+            .then(res => {
+                const groupIds = res.data.map(group => group.groupId)
+                if (!groupIds.includes(groupId)){
+                    this.setState({ unAuth: true })
+                }
+            })
+            .catch(err => this.setState({ error: err }));        
+    }
+
+    getGroup = () => {
         axios
             .get(`${host}/api/groups/${this.state.id}`)
             .then(res => this.setState({ group: res.data }) )
             .catch(err => this.setState({ error: err }));
-        
-        this.getGroupMembers()
-        this.getGroupInvitees()
-        this.getGroupActivities()
-        this.checkIfOwner(this.state.id);
     }
 
     getGroupMembers = () => {
@@ -74,8 +94,8 @@ class GroupMembersView extends Component {
             })
     }
 
-    checkIfOwner = async (id) => {
-        const groupOwners = `${host}/api/groups/${id}/groupOwners`;
+    checkIfOwner = async () => {
+        const groupOwners = `${host}/api/groups/${this.state.id}/groupOwners`;
         const userId = parseInt(localStorage.getItem('userId'));
         try {
             const res = await axios.get(groupOwners)
@@ -236,12 +256,15 @@ class GroupMembersView extends Component {
     }
 
     render() {
-        let { error, group, search, users, members, invitees, isOwner, activities } = this.state
+        let { unAuth, error, group, search, users, members, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
         const recentActivities = activities.slice(0, 5);
 
         return (
             <>
+                { unAuth ?
+                    <UnAuth/> : 
+                <>
                 {error
                     ? <p>Error retrieving members!</p>
                     : <>
@@ -319,7 +342,7 @@ class GroupMembersView extends Component {
                 }
                 
                 <Footer/>
-
+                </>}
             </>
         )
     }
