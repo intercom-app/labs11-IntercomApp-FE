@@ -42,7 +42,9 @@ class AccountSettings extends Component {
     }
 
     checkIfUnAuth = (id) => {
-        if (id !== this.props.match.params.id) {
+        const userId = parseInt(id);
+        const paramsId = parseInt(this.props.match.params.id)
+        if (userId !== paramsId) {
             this.setState({ unAuth: true })
         }
     }
