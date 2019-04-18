@@ -92,27 +92,26 @@ class GroupForm extends Component {
 
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Invited ${user.displayName} to the group` }
+        // Add user - If error in posting, don't want to post to activities and want to throw error
         axios
-            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-            .then(() => {
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupInvitees`, { userId: id })
-                    .then(res => {
-                        this.setState({
-                            users: users,
-                            invitees: res.data
-                        })
-                    })
-                    .catch(err => {
-                        this.clearSearch()
-                        this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
-                    });
+        .post(`${host}/api/groups/${this.state.group.id}/groupInvitees`, { userId: id })
+        .then(res => {
+            // Update state with updated group invitees 
+            this.setState({
+                users: users,
+                invitees: res.data
             })
-            .catch(err => {
-                this.clearSearch()
-                this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
-            });
-        }
+            // Add to group activities - whether or not posted still want to update groups with activities
+            axios
+                .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+                .then(() => this.props.updateGroups())
+                .catch(() => this.props.updateGroups())
+        })
+        .catch(err => {
+            this.clearSearch()
+            this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+        });
+    }
 
     clearSearch = () => {
         this.setState({ 
@@ -143,20 +142,20 @@ class GroupForm extends Component {
 
         try {
             // First Creat New Group
-            const group = await axios.post(`${host}/api/groups`, groupData)
-            if (group) {
-                await this.setState({ group: group.data })
+            const res = await axios.post(`${host}/api/groups`, groupData)
+            if (res) {
+                this.setState({ group: res.data })
                 // Then add user as group owner
                 axios
-                .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
+                .post(`${host}/api/groups/${res.data.id}/groupOwners`, userId)
                 .then(() => {
                     // Then add user as group member
                     axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
+                    .post(`${host}/api/groups/${res.data.id}/groupMembers`, userId)
                     .then(() => {   
                         // Then add to group activities and update groups
                         axios
-                        .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+                        .post(`${host}/api/groups/${res.data.id}/activities`, activity)
                         .then(() => this.props.updateGroups())
                     })
                 })
