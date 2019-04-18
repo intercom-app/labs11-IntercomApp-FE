@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-
 import CallParticipants from './CallParticipants';
 import CallStatus from './CallStatus';
 
 
 class GroupsBelonged extends Component {
     state = {
-        display: true,
+        display: true
     }
 
     toggleDisplay = () => {
@@ -17,8 +16,9 @@ class GroupsBelonged extends Component {
     }
 
     render() {
+
         return (
-            <>
+            <>  
                 <h1 className="page-header sidebar-title groups-title">
                     Groups Belonged To
                     <span data-toggle="collapse" data-target="#groups-belonged" >

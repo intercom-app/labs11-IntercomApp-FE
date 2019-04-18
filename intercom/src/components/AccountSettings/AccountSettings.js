@@ -8,16 +8,19 @@ import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
 
 
+
 class AccountSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: {},
             updateUserName: false,
-            updateBilling:false,
+            updateUserImage: false,            
+            updateBilling:false, 
+            last4: 1234, 
+            selectedFile: '',
             addToBalance:false,
             accountBalance: '',  
-            last4: 1234
         }
     }
 
@@ -35,13 +38,12 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
-        
-            
+
         axios.get(`${userEndpoint}/last4`)
             .then(res => {
                 this.setState({ last4: res.data.last4 })
             })
-            .catch(err => { 
+            .catch(err => {
                 console.log(err)
             });
         
@@ -53,6 +55,56 @@ class AccountSettings extends Component {
                 console.log(err)
             });
 
+    }
+
+    fileSelectedHandler = e => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        })
+    }
+
+    fileUploadHandler = async (e) => {
+        console.log('fileUploadHandler')
+        const id = localStorage.getItem('userId');
+        e.preventDefault();
+        const userData = {
+            avatar: URL.createObjectURL(this.state.selectedFile),
+        }
+
+        const formData = new FormData();
+        formData.append('image', this.state.selectedFile);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        this.toggleChangeImage();
+        try {
+            const res = await axios.post(`${host}/api/upload`, formData)
+            if(res.status === 200) {
+                const userData = {
+                    avatar: res.data.image
+                }
+                axios.put(`${host}/api/users/${id}`, userData)
+                .then(res =>{
+                    this.setState({ user: res.data})
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }    
+        } catch (err) {
+            console.log(err);
+        };
+
+    }
+
+    
+    
+    toggleChangeImage = () => {
+        this.setState(prevState => ({
+            updateUserImage: !prevState.updateUserImage
+        }));
     }
 
     toggleChangeName = () => {
@@ -219,14 +271,17 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling,  addToBalance, accountBalance, last4 } = this.state
+        const { user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
 
         return (
             <>
                 <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
-                            <h2>Account</h2>
+                            <div className='account-header'>
+                                <img className='' style={{ width: '10%', borderRadius: '50%', height: '10%', marginRight: '15px' }} src={user.avatar || require('../../images/avatar1.png')} alt="user avatar" />                                
+                                <h2>{user.displayName}'s Account </h2>
+                            </div>
                             <hr></hr>
 
                             <div className="row">
@@ -235,15 +290,8 @@ class AccountSettings extends Component {
                                         <h3 style={{ marginTop: "0px"}}>
                                             Profile
                                         </h3>
-                                        <DeleteModal 
-                                            deleteMessage={"Confirm your email address."} 
-                                            target={this.state.user.id} 
-                                            targetName={this.state.user.email} 
-                                            handleTarget={this.handleDelete} 
-                                            type={'Delete Account'}
-                                         />
-
                                     </div>
+                                    
                                     <div className="col-md-8">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
@@ -266,14 +314,50 @@ class AccountSettings extends Component {
                                         : null
                                     }
 
-                                    <div className="col-md-8">
+                                    <div className="col-md-8 fl-r">
                                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                             <div className="pull-left">
                                                 {user.email}
                                             </div>
+                                            <div className="pull-right color-elements" onClick={this.toggleChangeImage}>
+
+                                                {updateUserImage
+                                                    ? 'Cancel'
+                                                    : 'Update Image'
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                            {updateUserImage
+                                                ?
+                                                <div className="col-md-8 fl-r">
+                                                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                                        <div className="pull-left">
+                                                            <div className="input-group update-pic">
+                                                                <input
+                                                                    className="form-control"
+                                                                    type="file"
+                                                                    onChange={this.fileSelectedHandler}
+                                                                />
+                                                                <span className="input-group-btn">
+                                                                    <button
+                                                                        className="btn btn-default"
+                                                                        type="button"
+                                                                        onClick={(e) => this.fileUploadHandler(e)}
+                                                                        disabled={this.state.selectedFile === ''}
+                                                                    >
+                                                                        Update Image
+                                                                        </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                : null
+                                            }
+                                        </div>
+                                    
                             </div>
                             <hr></hr>
 
@@ -392,6 +476,33 @@ class AccountSettings extends Component {
 
                                     </div>
 
+                                </div>
+                            </div>
+                            <hr></hr>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>
+                                            Account
+                                        </h3>
+                                    </div>
+                                
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            {/* <div className="pull-left">
+                                                Pay as you chat
+                                            </div> */}
+                                            <div className="pull-right">
+                                                <DeleteModal
+                                                    deleteMessage={"Confirm your email address."}
+                                                    target={this.state.user.id}
+                                                    targetName={this.state.user.email}
+                                                    handleTarget={this.handleDelete}
+                                                    type={'Delete Account'}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr></hr>

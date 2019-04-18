@@ -65,6 +65,7 @@ class AccountUpdateForm extends Component {
                                     className="btn btn-default" 
                                     type="button"
                                     onClick={this.updateUser}
+                                    disabled={this.state.displayName === ""}
                                 >
                                     Update
                                 </button>

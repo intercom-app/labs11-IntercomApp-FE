@@ -235,16 +235,14 @@ class GroupChatroomView extends Component {
                         <section className="container blog page-container">
                                                                
                             <div className="row">
-                                <div className="col-md-12"> 
-                                    <span className="pull-left icon-img-users"><i className="fa fa-users fa-4x"></i></span>
-                                    <span className="pull-left">
+                                <div className="col-md-12 page-header-flex"> 
+                                    <div className="page-icon-flex">
+                                        <i className="fa fa-users fa-4x"></i>
                                         <h2>{group.name}</h2>
-                                    </span>
-                                    <span className="pull-right">                                                
-                                        <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
+                                    </div>
+                                    <Link to={`/group/${groupId}/members`} className='blog-title' style={{textDecoration: 'underline' }}>
                                         <h4>{isOwner ? 'Manage Members' : 'View Members'}</h4>
-                                        </Link>
-                                    </span>
+                                    </Link>
                                 </div>
                             </div>
 
