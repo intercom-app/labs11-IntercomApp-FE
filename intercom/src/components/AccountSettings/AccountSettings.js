@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from 'axios';
-import AccountUpdateForm from './AccountUpdateForm';
 import AccountProfile from './AccountProfile';
+import Account from './Account';
 import AccountPlanDetails from './AccountPlanDetails';
-
-import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
@@ -236,7 +234,6 @@ class AccountSettings extends Component {
                                 <h2>{user.displayName}'s Account </h2>
                             </div>
                             <hr></hr>
-
                             <AccountProfile 
                                 user={user} 
                                 updateUserName={updateUserName} 
@@ -249,10 +246,8 @@ class AccountSettings extends Component {
                                 selectedFile={this.state.selectedFile}
                             />
                             <hr></hr>
-
                             <AccountPlanDetails user={user}/>
                             <hr></hr>
-
                             <div className="row">
                                 <div className="col-md-12">
 
@@ -340,38 +335,8 @@ class AccountSettings extends Component {
                                 </div>
                             </div>
                             <hr></hr>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Account
-                                        </h3>
-                                    </div>
-                                
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            {/* <div className="pull-left">
-                                                Pay as you chat
-                                            </div> */}
-                                            <div className="pull-right">
-                                                <DeleteModal
-                                                    deleteMessage={"Confirm your email address."}
-                                                    target={this.state.user.id}
-                                                    targetName={this.state.user.email}
-                                                    handleTarget={this.handleDelete}
-                                                    type={'Delete Account'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <Account user={user} handleTarget={this.handleDelete}/>
                             <hr></hr>
-
-                           
-
-                            
-
                         </div>
                     </div>
                 </div>
