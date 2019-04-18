@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Fuse from 'fuse.js';
 import host from "../../host.js";
 import axios from 'axios';
+
+import Error from '../Error/Error';
 import SearchBar from '../Search/SearchBar';
 import SearchResults from '../Search/SearchResults';
 
@@ -18,7 +20,7 @@ class GroupForm extends Component {
             group: {
                 name: ''
             },
-            error: null,
+            error: false,
         };
 
     }
@@ -101,18 +103,25 @@ class GroupForm extends Component {
                             invitees: res.data
                         })
                     })
-                    .catch(() => this.setState({ users: [], invitees: [] }));
+                    .catch(err => {
+                        this.clearSearch()
+                        this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+                    });
             })
-            .catch(() => this.setState({ users: [], invitees: [] }));
-    }
+            .catch(err => {
+                this.clearSearch()
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+            });
+        }
 
     clearSearch = () => {
         this.setState({ 
+            invite: false,
             search: '',
+            members: [],
             users: [],
             invitees: [],
             group: { name: '' },
-            invite: false
         })
         document.getElementById("groupNameInput").value = '';
     }
@@ -149,13 +158,13 @@ class GroupForm extends Component {
                         axios
                         .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
                         .then(() => this.props.updateGroups())
-                        .catch(err => this.setState({ error: err }));
                     })
-                    .catch(err => this.setState({ error: err }));
                 })
-                .catch(err => this.setState({ error: err }));
             }
-        } catch (err) { this.setState({ error: err }) };
+        } catch (err) { 
+            this.clearSearch();
+            this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+        };
 
         this.toggleInvite()
 
@@ -163,9 +172,11 @@ class GroupForm extends Component {
 
     render() {
 
-        let { group, invite, search, users } = this.state
+        let { error, group, invite, search, users } = this.state
 
         return (
+            <> { error ? <Error error={error}/> : 
+
             <div className="blog-sidebar">
                 <h3 className="sidebar-title">Create New Group</h3>
                 <hr></hr>
@@ -240,6 +251,8 @@ class GroupForm extends Component {
                     : null
                 }
             </div>
+
+            }</>
         );
     }
 }
