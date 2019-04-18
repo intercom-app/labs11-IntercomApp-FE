@@ -27,7 +27,8 @@ class UpdateBilling extends Component {
             return source;
         } catch(err) {
             console.log('err: ', err);
-            return err
+            alert(err)
+            // return err
         }
     }
 
@@ -52,6 +53,7 @@ class UpdateBilling extends Component {
             return updatedSource;
         } catch(err) {
             console.log('err: ', err);
+            Window.alert(err)
             return err
         }
     }

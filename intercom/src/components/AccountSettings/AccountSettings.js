@@ -177,7 +177,7 @@ class AccountSettings extends Component {
             // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
             const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
-            console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
+            // console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
 
             return sumOfGroupTwilioCharges
         } catch(err) {
@@ -231,6 +231,16 @@ class AccountSettings extends Component {
 
         } catch(err) {
             console.log(err)
+        }
+    }
+
+    getAllTwilioCharges = async() => {
+        try {
+            const allTwilioChargesRes = await axios.get(`${host}/api/billing/allTwilioCharges`);
+            let allTwilioCharges = allTwilioChargesRes.data.allTwilioCharges;
+            console.log('allTwilioCharges: ', allTwilioChargesRes);
+        } catch(err) {
+            console.log('err: ', err)
         }
     }
 
@@ -293,6 +303,7 @@ class AccountSettings extends Component {
                                 updateUserAccountBalance={this.updateUserAccountBalance}
                                 getSumOfUserTwilioCharges={this.getSumOfUserTwilioCharges}
                                 getSumOfUserStripeCharges={this.getSumOfUserStripeCharges}
+                                getAllTwilioCharges= {this.getAllTwilioCharges}
                             />
                             
                             <hr></hr>
