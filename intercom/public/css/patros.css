@@ -16,20 +16,20 @@
     align-items: center;
     height: 40px;
 }
-.unauth {
+.unauth, .error {
     height: 100vh;
     padding: 80px 20px 0px;
     text-align: center;
 }
-.unauth-header {
+.unauth-header, .error-header {
     font-size: 7vh;
     margin-top: 4vh;
 }
-.unauth-header-sub {
+.unauth-header-sub, .error-header-sub {
     font-size: 4vh;
     margin-top: 1vh;
 }
-.unauth-img { 
+.unauth-img, .error-img { 
     margin-top: 1vh;
     background-image: url(../images/headphones.jpg);
     background-position: center; 
