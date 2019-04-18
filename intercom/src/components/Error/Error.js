@@ -15,7 +15,8 @@ const Error = props => {
                     {error.message ? error.message: 'Unexpected error occured. Feel free to contact us if the problem persists.'}
                 </h2>
                 <h2 className='error-header-sub'>
-                    <Link to={`/user/${id}/`}>Go back to your profile</Link>
+                    Try <Link to={``} onClick={()=> window.location.reload()}>refreshing</Link> or 
+                    go <Link to={`/user/${id}/`}>back to your profile</Link>.
                 </h2>
             </div>
             <div className='error-img'></div>
