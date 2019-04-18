@@ -326,7 +326,10 @@ class GroupMembersView extends Component {
                                         </>
                                         : 
                                         <div className="blog-sidebar">
-                                            <RecentActivity recentActivities={recentActivities} />
+                                            <RecentActivity 
+                                                recentActivities={recentActivities} 
+                                                getDateTime={this.getDateTime}
+                                            />
                                         </div>
                                         
                                     }
