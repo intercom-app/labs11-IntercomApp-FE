@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import host from "../../host.js";
-import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
 
 
