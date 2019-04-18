@@ -180,8 +180,7 @@ class GroupForm extends Component {
                 <h3 className="sidebar-title">Create New Group</h3>
                 <hr></hr>
                 <h4 className="sidebar-title">New Group Name: </h4>
-                {!invite
-                ? 
+
                 <div className="input-group">
                     <input
                         autoComplete="off"
@@ -190,42 +189,22 @@ class GroupForm extends Component {
                         name="name"
                         id="groupNameInput"
                         placeholder="Group Name..."
-                        onChange={this.handleGroupInput}
                         value={group.name}
+                        onChange={this.handleGroupInput}
+                        disabled={invite} // If group created and invite toggle open, disable group input field
                     />
                     <span className="input-group-btn">
                         <button
                             className="btn btn-default"
                             type="button"
                             onClick={this.createGroup}
-                            disabled={group.name === ""}
+                            disabled={group.name === "" || invite} // If no group name or invite open, button disabled
                         >
-                            Create
+                            {/* Create if not yet done, if created and invite toggle open then displays Created */}
+                            {!invite ? `Create` : `Created`} 
                         </button>
                     </span>
                 </div>
-                :
-                <div className="input-group">
-                    <input
-                        autoComplete="off"
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        id="groupNameInput"
-                        value={group.name}
-                        disabled
-                    />
-                    <span className="input-group-btn">
-                        <button
-                            className="btn btn-default"
-                            type="button"
-                            disabled
-                        >
-                            Created
-                        </button>
-                    </span>
-                </div>
-                }
 
                 {invite && group.name
                     ? <>
