@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import host from '../../host';
+
+import UnAuth from '../UnAuth/UnAuth';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
 import DeleteModal from '../Modal/DeleteModal';
@@ -18,10 +20,12 @@ class GroupChatroomView extends Component {
         activities: [],
         participants: [],
         isOwner: false,
+        unAuth: false,
         error: null,
     }
 
     componentDidMount = () => {
+        this.checkIfUnAuth()
         this.getUser(this.state.userId);
 
         const id = this.state.groupId;
@@ -29,6 +33,20 @@ class GroupChatroomView extends Component {
         this.getActivities(id);
         this.getParticipants(id);
         this.checkIfOwner(id);
+    }
+
+    checkIfUnAuth = () => {
+        const groupId = parseInt(this.state.groupId) 
+        const userId = localStorage.getItem('userId')
+        axios
+            .get(`${host}/api/users/${userId}/groupsBelongedTo`)
+            .then(res => {
+                const groupIds = res.data.map(group => group.groupId)
+                if (!groupIds.includes(groupId)){
+                    this.setState({ unAuth: true })
+                }
+            })
+            .catch(err => this.setState({ error: err }));        
     }
 
     getUser = id => {
@@ -225,10 +243,12 @@ class GroupChatroomView extends Component {
 
     render() {
 
-        let { user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
+        let { unAuth, user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
 
         return (
             <>
+                { unAuth ? <UnAuth/> : 
+                <>
                 {error
                     ? <h1>Error retrieving group!</h1>
                     : <>
@@ -326,6 +346,7 @@ class GroupChatroomView extends Component {
 
                     </>
                 }
+                </>}
             </>
         );
     }
