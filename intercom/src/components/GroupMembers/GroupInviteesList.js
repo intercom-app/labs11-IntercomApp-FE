@@ -9,6 +9,8 @@ const GroupInviteesList = (props) => {
                 Group Invitees
             </h2>
 
+            { invitees.length === 0 ? <p className="no-groups">No group invitees at this time.</p> : <>
+
             <table className="table">
                 <thead>
                     <tr>
@@ -77,6 +79,7 @@ const GroupInviteesList = (props) => {
                     )}
                 </tbody>
             </table>
+            </>}
         </>
     );
 }
