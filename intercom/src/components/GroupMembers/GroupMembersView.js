@@ -105,17 +105,16 @@ class GroupMembersView extends Component {
             .catch(() => this.setState({ activities: [] }));
     }
 
-    checkIfOwner = async () => {
-        const groupOwners = `${host}/api/groups/${this.state.id}/groupOwners`;
+    checkIfOwner = () => {
         const userId = parseInt(localStorage.getItem('userId'));
-        try {
-            const res = await axios.get(groupOwners)
-            res.data[0].userId === userId
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupOwners`)
+            .then(res => {
+                res.data[0].userId === userId 
                 ? this.setState({ isOwner: true })
-                : this.setState({ isOwner: false })
-        } catch (err) {
-            this.setState({ isOwner: false })
-        }
+                : this.setState({ isOwner: false })               
+            })
+            .catch(() => this.setState({ isOwner: false }))
     }
 
     handleSearch = async (e) => {
