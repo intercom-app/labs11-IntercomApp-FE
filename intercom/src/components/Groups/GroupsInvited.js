@@ -60,6 +60,7 @@ class GroupsInvited extends Component {
     }
 
     render() {
+        // console.log(this.props.groupsInvited)
         return (
             <>
                 <h1 className="page-header sidebar-title groups-title">
@@ -88,19 +89,19 @@ class GroupsInvited extends Component {
                 : <>
                     {this.props.groupsInvited.map(group => (
                         <div key={group.groupId} className="groups-row">
-                            <div className="row blogu">
+                            <div className="row">
                                 <div>
-                                    <div className="col-xs-6 col-sm-8 col-md-8">
+                                    <div className="col-xs-6 col-sm-8 col-md-8 col-lg-8">
                                         <h3 className="blog-title">
                                             {group.GroupName}
                                         </h3>
                                     </div>
-                                    <div className="col-xs-3 col-sm-2 col-md-2">
+                                    <div className="col-xs-3 col-sm-2 col-md-2 col-lg-2">
                                         <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
                                             Join Group
                                         </button>
                                     </div>
-                                    <div className="col-xs-3 col-sm-2 col-md-2">                                        
+                                    <div className="col-xs-3 col-sm-2 col-md-2 col-lg-2">                                        
                                         <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
                                             Decline
                                         </button>

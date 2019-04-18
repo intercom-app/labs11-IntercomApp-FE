@@ -90,7 +90,6 @@ class User extends Component {
                 const groupsNotBelongedTo = res.data.filter(group => 
                     !groupsBelongedToIds.includes(group.groupId)
                 )
-                this.setState({ groupsInvitedTo: groupsNotBelongedTo })
                 this.getOwners(groupsNotBelongedTo);
                 this.getRecentActivity(groupsNotBelongedTo);
             })
@@ -104,12 +103,7 @@ class User extends Component {
                 .then(res => {
                     const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
                     const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
-
-                    const filteredGroups = groupsWithOwner.filter((group, index, self) =>
-                        index === self.findIndex((i) => ( i.groupId === group.groupId ))
-                    )
-
-                    this.setState({ groupsInvitedTo: filteredGroups });
+                    this.setState({ groupsInvitedTo: groupsWithOwner });
                 })
                 .catch(() => this.setState({ groupsInvitedTo: [] }));
             })
@@ -196,7 +190,7 @@ class User extends Component {
                             </div>
 
                             <div className="row">
-                                <div className="col-md-8 col-md-8-right-padding">
+                                <div className="col-md-8">
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited 
