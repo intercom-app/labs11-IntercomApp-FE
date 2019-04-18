@@ -174,7 +174,7 @@ class User extends Component {
         const recentActivities = activities.slice(0, 5)
         return (
             <>
-                { unAuth ? <UnAuth/> : 
+                { unAuth ? <UnAuth auth={this.props.auth}/> : 
                 <>
                 { error ? <Error error={error}/> : 
                     <>
