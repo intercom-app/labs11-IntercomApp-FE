@@ -4,6 +4,7 @@ import axios from 'axios';
 import host from '../../host';
 
 import UnAuth from '../UnAuth/UnAuth';
+import Error from '../Error/Error';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
 import DeleteModal from '../Modal/DeleteModal';
@@ -21,7 +22,7 @@ class GroupChatroomView extends Component {
         participants: [],
         isOwner: false,
         unAuth: false,
-        error: null,
+        error: false,
     }
 
     componentDidMount = () => {
@@ -46,7 +47,9 @@ class GroupChatroomView extends Component {
                     this.setState({ unAuth: true })
                 }
             })
-            .catch(err => this.setState({ error: err }));        
+            .catch(err => {
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} })
+            });         
     }
 
     getUser = id => {
@@ -54,21 +57,28 @@ class GroupChatroomView extends Component {
         this.axiosGet(userById, 'user');
     }
 
-    updateUser = changes => {
-        const id = this.state.userId;
-        const userById = `${host}/api/users/${id}`;
-        this.axiosPut(userById, 'user', changes);
-    }
+    // updateUser = changes => {
+    //     const id = this.state.userId;
+    //     const userById = `${host}/api/users/${id}`;
+    //     this.axiosPut(userById, 'user', changes);
+    // }
 
     getGroup = id => {
         const groupById = `${host}/api/groups/${id}`;
         this.axiosGet(groupById, 'group');
     }
 
-    updateGroup = changes => {
+    updateGroup = async changes => {
         const id = this.state.groupId;
+        const originalGroupName = this.state.group.name;
         const groupById = `${host}/api/groups/${id}`;
-        this.axiosPut(groupById, 'group', changes);
+        axios.put(groupById, changes)
+            .then(res => {
+                this.setState({ group: res.data })
+                // const addedActivity = await this.addActivity(`Updated group name from ${originalGroupName} to ${res.data.name}.`);
+            })
+            // If error updating still want to try and get original group information
+            .catch(() => this.getGroup(id))
     }
 
     deleteGroup = () => {
@@ -135,18 +145,18 @@ class GroupChatroomView extends Component {
         this.axiosGet(participants, 'participants');
     }
 
-    addParticipant = () => {
-        const id = this.state.groupId;
-        const participants = `${host}/api/groups/${id}/callParticipants`;
-        const userId = { userId: this.state.userId }
-        this.axiosPost(participants, 'participants', userId);
-    }
+    // addParticipant = () => {
+    //     const id = this.state.groupId;
+    //     const participants = `${host}/api/groups/${id}/callParticipants`;
+    //     const userId = { userId: this.state.userId }
+    //     this.axiosPost(participants, 'participants', userId);
+    // }
 
-    deleteParticipant = (userId) => {
-        const id = this.state.groupId;
-        const participants = `${host}/api/groups/${id}/callParticipants/${userId}`;
-        this.axiosDel(participants, 'participants')
-    }
+    // deleteParticipant = (userId) => {
+    //     const id = this.state.groupId;
+    //     const participants = `${host}/api/groups/${id}/callParticipants/${userId}`;
+    //     this.axiosDel(participants, 'participants')
+    // }
 
     checkIfOwner = async (id) => {
         const groupOwners = `${host}/api/groups/${id}/groupOwners`;
@@ -157,7 +167,7 @@ class GroupChatroomView extends Component {
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {
-            this.setState({ error: err })
+            this.setState({ isOwner: false })
         }
 
     }
@@ -167,7 +177,14 @@ class GroupChatroomView extends Component {
             const res = await axios.get(call)
             this.setState({ [key]: res.data })
         } catch (err) {
-            this.setState({ error: err.response.data.message })
+            // Only want to throw error if cannot get user or group
+            if (key === 'group' || 'user') {
+                this.setState({
+                    error: {code: err.response.status, message: err.response.statusText},
+                    [key]: {},
+                });
+            } // All other actions can return empty array so view page still loads
+            else {this.setState({ [key]: [] })}
         }
     }
 
@@ -181,14 +198,14 @@ class GroupChatroomView extends Component {
         }
     }
 
-    axiosPut = async (call, key, changes) => {
-        try {
-            const res = await axios.put(call, changes)
-            this.setState({ [key]: res.data })
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-    }
+    // axiosPut = async (call, key, changes) => {
+    //     try {
+    //         const res = await axios.put(call, changes)
+    //         this.setState({ [key]: res.data })
+    //     } catch (err) {
+    //         this.setState({ error: err.response.data.message })
+    //     }
+    // }
 
     axiosDel = async (call, key) => {
         try {
@@ -249,9 +266,8 @@ class GroupChatroomView extends Component {
             <>
                 { unAuth ? <UnAuth/> : 
                 <>
-                {error
-                    ? <h1>Error retrieving group!</h1>
-                    : <>
+                { error ? <Error error={error}/> : 
+                    <>
                         <section className="container blog page-container">
                                                                
                             <div className="row">
@@ -269,15 +285,14 @@ class GroupChatroomView extends Component {
                             <div className="row">
                                 <div className="col-md-8">     
                                     <GroupChatroomCall
-                                        user={user}
                                         group={group}
                                         participants={participants}
+                                        // user={user}
                                         // handleCallButton={this.handleCallButton}
                                     />
 
                                     <GroupChatroomActivities
                                         activities={activities}
-                                        avatar={user.avatar}
                                     />
                                 </div>
 
@@ -315,8 +330,8 @@ class GroupChatroomView extends Component {
                                             <div className="btn-delete-margin">
                                             <DeleteModal 
                                                 deleteMessage={"Confirm your email"} 
-                                                target={this.state.groupId} 
-                                                targetName={this.state.user.email} 
+                                                target={groupId} 
+                                                targetName={user.email} 
                                                 handleTarget={this.deleteGroup} 
                                                 type={'Delete Group'}
                                             />
@@ -327,8 +342,8 @@ class GroupChatroomView extends Component {
                                         <>
                                             <DeleteModal 
                                                 deleteMessage={"Confirm the email"} 
-                                                target={this.state.groupId} 
-                                                targetName={this.state.user.email} 
+                                                target={groupId} 
+                                                targetName={user.email} 
                                                 handleTarget={this.leaveGroup} 
                                                 type={'Leave Group'}
                                              />
