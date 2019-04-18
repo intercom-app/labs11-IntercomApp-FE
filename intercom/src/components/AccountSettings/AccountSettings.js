@@ -21,13 +21,34 @@ class AccountSettings extends Component {
             selectedFile: '',
             addToBalance:false,
             balance: 0,  
+            unAuth: false
         }
     }
 
     componentDidMount() {
         const id = localStorage.getItem('userId')
-        const userEndpoint = `${host}/api/users/${id}`;
+        this.checkIfUnAuth(id)
+        this.getUser(id);
 
+        const userEndpoint = `${host}/api/users/${id}`;
+        axios.get(`${userEndpoint}/last4`)
+            .then(res => {
+                this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => {
+                console.log(err)
+            });
+
+    }
+
+    checkIfUnAuth = (id) => {
+        if (id !== this.props.match.params.id) {
+            this.setState({ unAuth: true })
+        }
+    }
+
+    getUser = (id) => {
+        const userEndpoint = `${host}/api/users/${id}`;
         axios.get(userEndpoint)
             .then(res => {
                 this.setState({ user: res.data })
@@ -38,15 +59,6 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
-
-        axios.get(`${userEndpoint}/last4`)
-            .then(res => {
-                this.setState({ last4: res.data.last4 })
-            })
-            .catch(err => {
-                console.log(err)
-            });
-
     }
 
     fileSelectedHandler = e => {
@@ -223,12 +235,11 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
+        const { unAuth, user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
 
         return (
             <>
-                {parseInt(localStorage.getItem('userId')) !== parseInt(this.props.match.params.id) ?
-                    <UnAuth/> : 
+                { unAuth ? <UnAuth/> : 
                 <>
                 <div className="container blog page-container">
                     <div className="row">
