@@ -132,30 +132,30 @@ class GroupForm extends Component {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
-        const groupData = {
-            name: this.state.group.name
-        }
+        const groupData = { name: this.state.group.name}
 
         try {
+            // First Creat New Group
             const group = await axios.post(`${host}/api/groups`, groupData)
             if (group) {
                 await this.setState({ group: group.data })
+                // Then add user as group owner
                 axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
-                    .then(() => { this.props.updateGroups() })
-                    .catch(err => this.setState({ error: err }));
-
-                axios
+                .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
+                .then(() => {
+                    // Then add user as group member
+                    axios
                     .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
-                    .then(() => { this.props.updateGroups() })
+                    .then(() => {   
+                        // Then add to group activities and update groups
+                        axios
+                        .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+                        .then(() => this.props.updateGroups())
+                        .catch(err => this.setState({ error: err }));
+                    })
                     .catch(err => this.setState({ error: err }));
-
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-                    .then()
-                    .catch(err => this.setState({ error: err }));
-
-
+                })
+                .catch(err => this.setState({ error: err }));
             }
         } catch (err) { this.setState({ error: err }) };
 

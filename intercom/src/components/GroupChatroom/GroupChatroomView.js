@@ -157,7 +157,7 @@ class GroupChatroomView extends Component {
                 ? this.setState({ isOwner: true })
                 : this.setState({ isOwner: false })
         } catch (err) {
-            this.setState({ error: err.response.data.message })
+            this.setState({ error: err })
         }
 
     }
