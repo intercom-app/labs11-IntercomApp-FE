@@ -52,7 +52,7 @@ class GroupsOwned extends Component {
                                     </Link>
                                 </div>
 
-                                <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                                <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9" style={{paddingBottom: "8px"}}>
                                     <CallStatus groupId={group.groupId} />
                                     <span className="comments-padding"></span>
                                     <CallParticipants groupId={group.groupId} />
