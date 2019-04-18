@@ -13,7 +13,7 @@ class AddToBalance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amountToAdd:''
+            amountToAdd:0,
         };
     }
 
@@ -42,22 +42,25 @@ class AddToBalance extends Component {
             const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
                 'userStripeId':userStripeId,
                 'sourceId': defaultSourceId,
-                'amountToAdd': this.state.amountToAdd 
+                'amountToAdd': this.state.amountToAdd
             })
             // console.log('chargeResponse: ', chargeResponse);
 
             if (chargeResponse.data.charge.status === "succeeded") {
                 // console.log('charge suceeded!');
 
-                const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
-                let accountBalance = accountBalanceCall.data.accountBalance;
-                // console.log('accountBalance old: ', accountBalance);
-                accountBalance = accountBalance + chargeResponse.data.charge.amount;
-                // console.log('accountBalance new: ', accountBalance);
+                // // // // ORIGINAL APPROACH
+                // const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
+                // let accountBalance = accountBalanceCall.data.accountBalance;
+                // // console.log('accountBalance old: ', accountBalance);
+                // accountBalance = accountBalance + chargeResponse.data.charge.amount;
+                // // console.log('accountBalance new: ', accountBalance);
 
-                // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // console.log('addToBalanceResponse: ', addToBalanceResponse);
+                // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+                // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+                // // console.log('addToBalanceResponse: ', addToBalanceResponse);
+                
+                this.props.updateUserAccountBalance()
             }
 
         } catch(err) {

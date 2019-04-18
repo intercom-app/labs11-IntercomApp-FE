@@ -3,6 +3,10 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import AddToBalance from './AddToBalance';
 
 class AddToBalanceWrapper extends Component {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {}
+    // }
     render() { 
         return (
             // StripeProvider initializes Stripe and passes in your publishable key. It’s equivalent to creating a Stripe instance with Stripe.js.
@@ -10,7 +14,9 @@ class AddToBalanceWrapper extends Component {
                 {/* <div style = {{border:'1px solid black'}}> */}
                 <div>
                     <Elements>
-                        <AddToBalance />
+                        <AddToBalance 
+                            updateUserAccountBalance = {this.props.updateUserAccountBalance}
+                        />
                     </Elements>
 
                 </div>               

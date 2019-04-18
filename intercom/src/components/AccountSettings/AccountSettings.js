@@ -20,7 +20,7 @@ class AccountSettings extends Component {
             last4: 1234, 
             selectedFile: '',
             addToBalance:false,
-            balance: 0,  
+            accountBalance: '',  
         }
     }
 
@@ -44,6 +44,14 @@ class AccountSettings extends Component {
                 this.setState({ last4: res.data.last4 })
             })
             .catch(err => {
+                console.log(err)
+            });
+        
+        axios.get(`${userEndpoint}/accountBalance`)
+            .then(res => {
+                this.setState({ accountBalance: res.data.accountBalance })
+            })
+            .catch(err => { 
                 console.log(err)
             });
 
@@ -174,8 +182,9 @@ class AccountSettings extends Component {
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
-            console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
+            console.log("groupId: ", groupId);
+            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
+            // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
             const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
             console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
@@ -186,25 +195,27 @@ class AccountSettings extends Component {
         }
     }
 
-    getUserTwilioCharges = async() => {
+    getSumOfUserTwilioCharges = async() => {
         const id = this.state.user.id
         try {
             const userOwnedGroupsRes = await axios.get(`${host}/api/users/${id}/groupsOwned`);
             const userOwnedGroups = userOwnedGroupsRes.data
-            console.log("userOwnedGroups: ", userOwnedGroups);
+            // console.log("userOwnedGroups: ", userOwnedGroups);
 
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
             console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
-
-            let totalUserCharges = 0;
+            let sumOfUserTwilioCharges = 0;
 
             for (let i = 0; i < userOwnedGroupsIds.length;i++) {
-                totalUserCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
+                sumOfUserTwilioCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
             }
-            console.log("totalUserCharges: ", totalUserCharges);
+            // console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
+            sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
+            console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
+            return sumOfUserTwilioCharges
 
         } catch(err) {
             console.log(err)
@@ -212,13 +223,41 @@ class AccountSettings extends Component {
     }
 
     
-    getUserStripeCharges = async() => {
+    getSumOfUserStripeCharges = async() => {
         const id = this.state.user.id
         try {
-            const stripeId = 'cus_Et35QY0yTwAZuD'
+            const userRes= await axios.get(`${host}/api/users/${id}`);
+            const user = userRes.data;
+            const stripeId = userRes.data.stripeId;
+            // console.log('stripeId: ', stripeId);
 
-            const stripeCharges = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
-            console.log('stripeCharges: ', stripeCharges.data.allCustomerCharges)
+            const userStripeChargesRes = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
+            
+            let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
+            // console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
+            sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges*100)/10000; //in dollars
+            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
+            return sumOfUserStripeCharges
+
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    updateUserAccountBalance = async() => {
+        const id = this.state.user.id
+        try{
+            const sumOfUserStripeCharges = await this.getSumOfUserStripeCharges();
+            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
+
+            const sumOfUserTwilioCharges = await this.getSumOfUserTwilioCharges();
+            console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
+
+            const updatedAccountBalance = sumOfUserTwilioCharges + sumOfUserStripeCharges;
+            console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+            await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
+            this.setState({'accountBalance':updatedAccountBalance});
         } catch(err) {
             console.log(err)
         }
@@ -232,7 +271,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
+        const { user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
 
         return (
             <>
@@ -376,7 +415,7 @@ class AccountSettings extends Component {
                                         } */}
 
                                         <div>
-                                            Account Balance: {this.state.balance}
+                                            Account Balance: {accountBalance}
                                         </div>
                                              
                                         {/* ADD TO BALANCE */}
@@ -385,11 +424,11 @@ class AccountSettings extends Component {
                                                     ? <AddToBalanceWrapper 
                                                         handleAddToBalance={this.handleAddToBalance}
                                                         toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                                        updateUserAccountBalance = {this.updateUserAccountBalance}
                                                     />
                                                     : null
-                                            }
-                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>
-                                        <button onClick = {this.getUserStripeCharges}>getUserStripeCharges</button>   
+                                            } 
+                                        
                                         </div>
                                             
                                         
@@ -461,6 +500,42 @@ class AccountSettings extends Component {
                                                     handleTarget={this.handleDelete}
                                                     type={'Delete Account'}
                                                 />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="col-md-4">
+                                        <h3 style={{ marginTop: "0px" }}>
+                                            Billing Utility Functions
+                                        </h3>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">
+                                                      
+                                            </div>
+                                            <div className="pull-right">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                                            <div className="pull-left">
+                                                Billing Utility Functions
+                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                    <button onClick = {this.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
+                                                    <button onClick = {this.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>
+                                                    <button onClick = {this.updateUserAccountBalance}>updateUserAccountBalance</button>
+                                                </div>
+                                            </div>
+                                            <div className="pull-right">
+                                                ...
                                             </div>
                                         </div>
                                     </div>
