@@ -188,9 +188,10 @@ class User extends Component {
 
                             <div className="row">
                                 <div className="col-md-12"> 
-                                    <img className="media-object pull-left avatar-img-users" src={avatar} alt="user avatar" />  
-                                    <span className="comments-padding"></span>                                                                              
-                                    <h2>Welcome {user.displayName}!</h2>
+                                    <div className="page-icon-flex">
+                                        <img className="avatar-img-users" src={avatar} alt="user avatar" />  
+                                        <h2>Welcome {user.displayName}!</h2>
+                                    </div>
                                 </div>
                             </div>
 
