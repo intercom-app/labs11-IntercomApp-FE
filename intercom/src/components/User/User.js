@@ -101,14 +101,15 @@ class User extends Component {
             groups.forEach(group => {
                 axios.get(`${host}/api/groups/${group.groupId}/groupOwners`)
                 .then(res => {
+                    let groupsInvitedTo = [];
                     const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
-                    const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
+                    const groupsWithOwner = groupsInvitedTo.concat(groupWithOwner)
 
-                    const filteredGroups = groupsWithOwner.filter((group, index, self) =>
-                        index === self.findIndex((i) => ( i.groupId === group.groupId ))
-                    )
+                    // const filteredGroups = groupsWithOwner.filter((group, index, self) =>
+                    //     index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                    // )
 
-                    this.setState({ groupsInvitedTo: filteredGroups });
+                    this.setState({ groupsInvitedTo: groupsWithOwner });
                 })
                 .catch(() => this.setState({ groupsInvitedTo: [] }));
             })

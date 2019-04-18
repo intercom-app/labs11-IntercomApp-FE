@@ -36,7 +36,6 @@ class GroupMembersView extends Component {
         this.getGroup()
         this.getGroupMembers()
         this.getGroupInvitees()
-        this.getGroupActivities()
         this.checkIfOwner();
     }
 
@@ -59,7 +58,10 @@ class GroupMembersView extends Component {
     getGroup = () => {
         axios
             .get(`${host}/api/groups/${this.state.id}`)
-            .then(res => this.setState({ group: res.data }) )
+            .then(res => { 
+                this.setState({ group: res.data }) 
+                this.getGroupActivities(res.data)
+            })
             .catch(err => {
                 this.setState({
                     error: {code: err.response.status, message: err.response.statusText},
@@ -82,12 +84,12 @@ class GroupMembersView extends Component {
             .catch(() => this.setState({ invitees: [] }));
     }
 
-    getGroupActivities = () => {
+    getGroupActivities = (group) => {
         axios
-            .get(`${host}/api/groups/${this.state.id}/activities`)
+            .get(`${host}/api/groups/${group.id}/activities`)
             .then(res => {
                 const activities = res.data.map(activity => {
-                    return { ...activity, groupId: activity.groupId, groupName: activity.GroupName}
+                    return { ...activity, groupId: group.id, groupName: group.name}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
 
@@ -339,12 +341,11 @@ class GroupMembersView extends Component {
 
                                         </>
                                         : 
-                                        <div className="blog-sidebar">
-                                            <RecentActivity 
-                                                recentActivities={recentActivities} 
-                                                getDateTime={this.getDateTime}
-                                            />
-                                        </div>
+                                        <RecentActivity 
+                                            recentActivities={recentActivities} 
+                                            getDateTime={this.getDateTime}
+                                        />
+                                        
                                         
                                     }
 

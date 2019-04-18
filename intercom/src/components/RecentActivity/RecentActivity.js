@@ -16,7 +16,7 @@ const RecentActivity = (props) => {
                         <div className="media-body">
                             
                             <h4 className="media-heading">
-                                <Link to={`/group/${activity.groupId}`} >{activity.groupName}</Link>
+                                <Link to={`/group/${activity.groupId}`}>{activity.groupName}</Link>
                                 <span className="pull-right" style={{color:"#9d9d9d", fontSize: "13px", paddingTop: "3px"}}>
                                     <i className="fa fa-calendar-o"></i>
                                     {' '}{getDateTime(activity.createdAt)}
