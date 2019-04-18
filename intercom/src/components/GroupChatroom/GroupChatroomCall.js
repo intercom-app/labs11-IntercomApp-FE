@@ -17,9 +17,9 @@ class GroupChatroomCall extends Component {
 
         return (
             <>
-                <h1 className="page-header sidebar-title">
+                <h2 className="page-header sidebar-title">
                     Call Status
-                </h1>
+                </h2>
 
                 <div className="row blogu" >
                     <div className="col-sm-12 col-md-12">
