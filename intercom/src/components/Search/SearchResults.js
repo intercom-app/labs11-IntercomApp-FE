@@ -3,6 +3,8 @@ import React from 'react';
 const SearchResults = (props) => {
     return (
         <>
+            {props.users.length === 0 ? <p className="no-groups media">No users matched your search.</p> : 
+            <>
             {props.users.map(user => (
                 <div className="media" key={user.id}>
                     <div className="media-body">
@@ -27,6 +29,7 @@ const SearchResults = (props) => {
                     </div>
                 </div>
             ))}
+            </>}
         </>
     );
 }

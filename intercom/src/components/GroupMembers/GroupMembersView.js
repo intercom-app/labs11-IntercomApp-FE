@@ -321,6 +321,7 @@ class GroupMembersView extends Component {
                                                     />
                                                     : null
                                                 }
+                                                <p>Search for users by name or email to invite.</p>
                                             </div>
 
                                         </>

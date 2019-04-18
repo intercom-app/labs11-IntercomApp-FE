@@ -30,17 +30,15 @@ class GroupForm extends Component {
     }
 
     handleSearch = async (e) => {
-        this.setState({
-            search: e.target.value
-        });
+        this.setState({ search: e.target.value });
 
         let users;
         await axios
             .get(`${host}/api/users`)
             .then(res => users = res.data)
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ users: [] }));
 
-        if (users) {
+        if (users.length > 0) {
             const options = {
                 shouldSort: true,
                 findAllMatches: true,
@@ -75,9 +73,9 @@ class GroupForm extends Component {
                 return { ...user, buttonInvite }
             })
 
-            this.setState({
-                users: usersUpdated,
-            });
+            this.setState({ users: usersUpdated });
+        } else {
+            this.setState({ users: [] });           
         }
     }
 
@@ -103,9 +101,9 @@ class GroupForm extends Component {
                             invitees: res.data
                         })
                     })
-                    .catch(err => this.setState({ error: err }));
+                    .catch(() => this.setState({ users: [], invitees: [] }));
             })
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ users: [], invitees: [] }));
     }
 
     clearSearch = () => {
