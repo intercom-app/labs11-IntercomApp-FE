@@ -145,9 +145,38 @@ class User extends Component {
         // Groups invited to is called after groups belonged to
     }
 
+    getDateTime = (date) => {
+        const today = new Date().toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        const dateStr = new Date(date).toLocaleDateString(undefined, {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        const todayYear = new Date().toLocaleDateString(undefined, { year: 'numeric' });
+        const dateStrYear = new Date(date).toLocaleDateString(undefined, { year: 'numeric' });
+
+        if (dateStr === today) { // if activity happened today, return time
+            return new Date(date).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+            })
+        } else if (todayYear === dateStrYear) { // if activity happened this year, return month and day
+            return new Date(date).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'short',
+            });
+        } else { // if activity happened before this year, return month day and year
+            return dateStr
+        }
+    }
+
     render() {
         let { unAuth, error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
-        const avatar = this.state.user.avatar || require('../../images/avatar1.png');    
+        const avatar = user.avatar || require('../../images/avatar1.png');    
         const recentActivities = activities.slice(0, 5)
         return (
             <>
@@ -159,7 +188,7 @@ class User extends Component {
 
                             <div className="row">
                                 <div className="col-md-12"> 
-                                    <img className="media-object pull-left avatar-img-users" src={avatar} alt="" />  
+                                    <img className="media-object pull-left avatar-img-users" src={avatar} alt="user avatar" />  
                                     <span className="comments-padding"></span>                                                                              
                                     <h2>Welcome {user.displayName}!</h2>
                                 </div>
@@ -177,7 +206,10 @@ class User extends Component {
 
                                 <aside className="col-md-4 sidebar-padding">
                                     <GroupForm updateGroups={this.updateGroups} />
-                                    <RecentActivity recentActivities={recentActivities} user={user}/>
+                                    <RecentActivity 
+                                        recentActivities={recentActivities} 
+                                        getDateTime={this.getDateTime}
+                                    />
                                 </aside>
                             </div>
                         </section>
