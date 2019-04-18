@@ -3,11 +3,12 @@ import axios from 'axios';
 import host from "../../host.js";
 
 import UnAuth from '../UnAuth/UnAuth';
-import AccountUpdateForm from './AccountUpdateForm';
-import DeleteModal from '../Modal/DeleteModal';
-import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
-import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
+import AccountProfile from './AccountProfile';
+import Account from './Account';
+import AccountPlanDetails from './AccountPlanDetails';
+import AccountBilling from './AccountBilling';
 import Footer from '../LandingPage/Footer';
+
 
 class AccountSettings extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class AccountSettings extends Component {
             last4: 1234, 
             selectedFile: '',
             addToBalance:false,
-            balance: 0,  
+            accountBalance: '',  
             unAuth: false
         }
     }
@@ -61,6 +62,23 @@ class AccountSettings extends Component {
                     user: {},
                 });
             });
+
+        axios.get(`${userEndpoint}/last4`)
+            .then(res => {
+                this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => {
+                console.log(err)
+            });
+        
+        axios.get(`${userEndpoint}/accountBalance`)
+            .then(res => {
+                this.setState({ accountBalance: res.data.accountBalance })
+            })
+            .catch(err => { 
+                console.log(err)
+            });
+
     }
 
     fileSelectedHandler = e => {
@@ -70,20 +88,10 @@ class AccountSettings extends Component {
     }
 
     fileUploadHandler = async (e) => {
-        console.log('fileUploadHandler')
         const id = localStorage.getItem('userId');
         e.preventDefault();
-        // const userData = {
-        //     avatar: URL.createObjectURL(this.state.selectedFile),
-        // }
-
         const formData = new FormData();
         formData.append('image', this.state.selectedFile);
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data'
-        //     }
-        // };
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
@@ -186,8 +194,9 @@ class AccountSettings extends Component {
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, groupId);        
-            console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
+            console.log("groupId: ", groupId);
+            const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
+            // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
             const sumOfGroupTwilioCharges = groupTwilioChargesRes.data.sumOfGroupTwilioCharges;
             console.log("sumOfGroupTwilioCharges: ", sumOfGroupTwilioCharges);
@@ -198,38 +207,68 @@ class AccountSettings extends Component {
         }
     }
 
-    getUserTwilioCharges = async() => {
+    getSumOfUserTwilioCharges = async() => {
         const id = this.state.user.id
         try {
             const userOwnedGroupsRes = await axios.get(`${host}/api/users/${id}/groupsOwned`);
             const userOwnedGroups = userOwnedGroupsRes.data
-            console.log("userOwnedGroups: ", userOwnedGroups);
+            // console.log("userOwnedGroups: ", userOwnedGroups);
 
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
             console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
-
-            let totalUserCharges = 0;
+            let sumOfUserTwilioCharges = 0;
 
             for (let i = 0; i < userOwnedGroupsIds.length;i++) {
-                totalUserCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
+                sumOfUserTwilioCharges += await this.getSumOfGroupTwilioCharges(userOwnedGroupsIds[i]);
             }
-            console.log("totalUserCharges: ", totalUserCharges);
+            // console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
+            sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
+            console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
+            return sumOfUserTwilioCharges
 
         } catch(err) {
             console.log(err)
         }
     }
-  
-    getUserStripeCharges = async() => {
-        // const id = this.state.user.id
+    
+    getSumOfUserStripeCharges = async() => {
+        const id = this.state.user.id
         try {
-            const stripeId = 'cus_Et35QY0yTwAZuD'
+            const userRes= await axios.get(`${host}/api/users/${id}`);
+            // const user = userRes.data;
+            const stripeId = userRes.data.stripeId;
+            // console.log('stripeId: ', stripeId);
 
-            const stripeCharges = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
-            console.log('stripeCharges: ', stripeCharges.data.allCustomerCharges)
+            const userStripeChargesRes = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
+            
+            let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
+            // console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
+            sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges*100)/10000; //in dollars
+            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
+            return sumOfUserStripeCharges
+
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    updateUserAccountBalance = async() => {
+        const id = this.state.user.id
+        try{
+            const sumOfUserStripeCharges = await this.getSumOfUserStripeCharges();
+            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
+
+            const sumOfUserTwilioCharges = await this.getSumOfUserTwilioCharges();
+            console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
+
+            const updatedAccountBalance = sumOfUserTwilioCharges + sumOfUserStripeCharges;
+            console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+            await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
+            this.setState({'accountBalance':updatedAccountBalance});
         } catch(err) {
             console.log(err)
         }
@@ -237,8 +276,7 @@ class AccountSettings extends Component {
 
     render() {
 
-        // const { unAuth, user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
-        const { unAuth, user, updateUserName, updateBilling, addToBalance, last4, updateUserImage } = this.state
+        const { unAuth, user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
 
         return (
             <>
@@ -252,234 +290,37 @@ class AccountSettings extends Component {
                                 <h2>{user.displayName}'s Account </h2>
                             </div>
                             <hr></hr>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px"}}>
-                                            Profile
-                                        </h3>
-                                    </div>
-                                    
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                <strong>{user.displayName}</strong>
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeName}>
-                                            { updateUserName 
-                                                ? 'Cancel'
-                                                : 'Change Name'
-                                            }
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    { updateUserName 
-                                        ? <AccountUpdateForm 
-                                            updateUser={this.handleUpdate}
-                                            toggleChangeName={this.toggleChangeName}
-                                        />
-                                        : null
-                                    }
-
-                                    <div className="col-md-8 fl-r">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                {user.email}
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeImage}>
-
-                                                {updateUserImage
-                                                    ? 'Cancel'
-                                                    : 'Update Image'
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                            {updateUserImage
-                                                ?
-                                                <div className="col-md-8 fl-r">
-                                                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                                        <div className="pull-left">
-                                                            <div className="input-group update-pic">
-                                                                <input
-                                                                    className="form-control"
-                                                                    type="file"
-                                                                    onChange={this.fileSelectedHandler}
-                                                                />
-                                                                <span className="input-group-btn">
-                                                                    <button
-                                                                        className="btn btn-default"
-                                                                        type="button"
-                                                                        onClick={(e) => this.fileUploadHandler(e)}
-                                                                        disabled={this.state.selectedFile === ''}
-                                                                    >
-                                                                        Update Image
-                                                                        </button>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                : null
-                                            }
-                                        </div>
-                                    
-                            </div>
+                            <AccountProfile 
+                                user={user} 
+                                updateUserName={updateUserName} 
+                                toggleChangeName={this.toggleChangeName}
+                                toggleChangeImage={this.toggleChangeImage}
+                                handleUpdate={this.handleUpdate}
+                                updateUserImage={updateUserImage}
+                                fileSelectedHandler={this.fileSelectedHandler}
+                                fileUploadHandler={this.fileUploadHandler}
+                                selectedFile={this.state.selectedFile}
+                            />
                             <hr></hr>
-
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Plan Details
-                                        </h3>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                {`${user.billingSubcription}`.toUpperCase()} Membership
-                                            </div>
-                                            <div className="pull-right">
-                                                Upgrade
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                Pay as you chat
-                                            </div>
-                                            <div className="pull-right">
-                                                Details
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <AccountPlanDetails user={user}/>
                             <hr></hr>
-
-                            <div className="row">
-                                <div className="col-md-12">
-
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Billing
-                                        </h3>
-                                    </div>
-                                    
-                                    
-                                    <div className="col-md-6">
-
-                                        {/* { addToBalance
-                                            ? <CurrentBalance2
-                                                balance = {balance}
-                                            /> 
-                                            
-                                            : <CurrentBalance2 
-                                                balance = {balance}
-                                            /> 
-                                        } */}
-
-                                        <div>
-                                            Account Balance: {this.state.balance}
-                                        </div>
-                                             
-                                        {/* ADD TO BALANCE */}
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            { addToBalance 
-                                                    ? <AddToBalanceWrapper 
-                                                        handleAddToBalance={this.handleAddToBalance}
-                                                        toggleChangeAddToBalance={this.toggleChangeAddToBalance}
-                                                    />
-                                                    : null
-                                            }
-                                        <button onClick = {this.getUserTwilioCharges}>getUserTwilioCharges</button>
-                                        <button onClick = {this.getUserStripeCharges}>getUserStripeCharges</button>   
-                                        </div>
-                                            
-                                        
-
-                                        {/* UPDATING PAYMENT INFO */}
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            { updateBilling 
-                                                    ? <UpdateBillingWrapper 
-                                                        handleBillingUpdate={this.handleBillingUpdate}
-                                                        toggleChangeBilling={this.toggleChangeBilling}
-                                                    />
-                                                    : null
-                                            }
-                                            {updateBilling
-                                                    ? <CurrentBilling1
-                                                        last4 = {last4}
-                                                    /> 
-                                                    
-                                                    : <CurrentBilling2 
-                                                        last4 = {last4}
-                                                    /> 
-                                            }
-                                        </div>
-                                    </div>
-
-
-                                    <div className="col-md-2">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeAddToBalance}>
-                                                { addToBalance 
-                                                    ? 'Cancel'
-                                                    : 'Add Money'
-                                                }
-                                            </div>
-                                        </div>
-
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeBilling}>
-                                                { updateBilling 
-                                                    ? 'Cancel'
-                                                    : 'Update'
-                                                }
-                                            </div>
-                                        </ div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                            <hr></hr>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px" }}>
-                                            Account
-                                        </h3>
-                                    </div>
-                                
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            {/* <div className="pull-left">
-                                                Pay as you chat
-                                            </div> */}
-                                            <div className="pull-right">
-                                                <DeleteModal
-                                                    deleteMessage={"Confirm your email address."}
-                                                    target={this.state.user.id}
-                                                    targetName={this.state.user.email}
-                                                    handleTarget={this.handleDelete}
-                                                    type={'Delete Account'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr></hr>
-
-                           
-
+                            <AccountBilling 
+                                accountBalance={accountBalance}
+                                addToBalance={addToBalance}
+                                updateBilling={updateBilling}
+                                last4={last4}
+                                toggleChangeAddToBalance={this.toggleChangeAddToBalance}
+                                toggleChangeBilling={this.toggleChangeBilling}
+                                handleAddToBalance={this.handleAddToBalance}
+                                handleBillingUpdate={this.handleBillingUpdate}
+                                updateUserAccountBalance={this.updateUserAccountBalance}
+                                getSumOfUserTwilioCharges={this.getSumOfUserTwilioCharges}
+                                getSumOfUserStripeCharges={this.getSumOfUserStripeCharges}
+                            />
                             
-
+                            <hr></hr>
+                            <Account user={user} handleTarget={this.handleDelete}/>
+                            <hr></hr>
                         </div>
                     </div>
                 </div>
@@ -490,38 +331,6 @@ class AccountSettings extends Component {
         );
     }
 }
-
-const CurrentBilling1 = (props) => {
-    return(
-        <div className="pull-left" style={{ display: "none"}} >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
-const CurrentBilling2 = (props) => {
-    return(
-        <div className="pull-left" >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
-// const CurrentBalance1 = (props) => {
-//     return(
-//         <div className="pull-left" style={{ display: "none"}} >
-//             Account Balance: ${props.balance}
-//         </div>
-//     )
-// }
-
-// const CurrentBalance2 = (props) => {
-//     return(
-//         <div className="pull-left" >
-//             Account Balance: ${props.balance}
-//         </div>
-//     )
-// }
 
 export default AccountSettings;
 
