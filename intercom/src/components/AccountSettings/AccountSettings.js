@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import host from "../../host.js";
 import axios from 'axios';
 import AccountUpdateForm from './AccountUpdateForm';
+import AccountProfile from './AccountProfile';
+
 import DeleteModal from '../Modal/DeleteModal';
 import Footer from '../LandingPage/Footer';
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
@@ -56,20 +58,10 @@ class AccountSettings extends Component {
     }
 
     fileUploadHandler = async (e) => {
-        console.log('fileUploadHandler')
         const id = localStorage.getItem('userId');
         e.preventDefault();
-        const userData = {
-            avatar: URL.createObjectURL(this.state.selectedFile),
-        }
-
         const formData = new FormData();
         formData.append('image', this.state.selectedFile);
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
@@ -91,7 +83,6 @@ class AccountSettings extends Component {
 
     }
 
-    
     
     toggleChangeImage = () => {
         this.setState(prevState => ({
@@ -245,81 +236,17 @@ class AccountSettings extends Component {
                             </div>
                             <hr></hr>
 
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="col-md-4">
-                                        <h3 style={{ marginTop: "0px"}}>
-                                            Profile
-                                        </h3>
-                                    </div>
-                                    
-                                    <div className="col-md-8">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                <strong>{user.displayName}</strong>
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeName}>
-                                            { updateUserName 
-                                                ? 'Cancel'
-                                                : 'Change Name'
-                                            }
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    { updateUserName 
-                                        ? <AccountUpdateForm 
-                                            updateUser={this.handleUpdate}
-                                            toggleChangeName={this.toggleChangeName}
-                                        />
-                                        : null
-                                    }
-
-                                    <div className="col-md-8 fl-r">
-                                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                            <div className="pull-left">
-                                                {user.email}
-                                            </div>
-                                            <div className="pull-right color-elements" onClick={this.toggleChangeImage}>
-
-                                                {updateUserImage
-                                                    ? 'Cancel'
-                                                    : 'Update Image'
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                            {updateUserImage
-                                                ?
-                                                <div className="col-md-8 fl-r">
-                                                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                                                        <div className="pull-left">
-                                                            <div className="input-group update-pic">
-                                                                <input
-                                                                    className="form-control"
-                                                                    type="file"
-                                                                    onChange={this.fileSelectedHandler}
-                                                                />
-                                                                <span className="input-group-btn">
-                                                                    <button
-                                                                        className="btn btn-default"
-                                                                        type="button"
-                                                                        onClick={(e) => this.fileUploadHandler(e)}
-                                                                        disabled={this.state.selectedFile === ''}
-                                                                    >
-                                                                        Update Image
-                                                                        </button>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                : null
-                                            }
-                                        </div>
-                                    
-                            </div>
+                            <AccountProfile 
+                                user={user} 
+                                updateUserName={updateUserName} 
+                                toggleChangeName={this.toggleChangeName}
+                                toggleChangeImage={this.toggleChangeImage}
+                                handleUpdate={this.handleUpdate}
+                                updateUserImage={updateUserImage}
+                                fileSelectedHandler={this.fileSelectedHandler}
+                                fileUploadHandler={this.fileUploadHandler}
+                                selectedFile={this.state.selectedFile}
+                            />
                             <hr></hr>
 
                             <div className="row">
