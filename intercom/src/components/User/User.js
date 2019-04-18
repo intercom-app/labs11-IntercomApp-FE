@@ -3,6 +3,7 @@ import axios from 'axios';
 import host from '../../host';
 
 import UnAuth from '../UnAuth/UnAuth';
+import Error from '../Error/Error';
 import GroupForm from '../Groups/GroupForm';
 import GroupsBelonged from '../Groups/GroupsBelonged';
 import GroupsInvited from '../Groups/GroupsInvited';
@@ -17,7 +18,8 @@ class User extends Component {
         groupsInvitedTo: [],
         groupsOwned: [],
         activities: [],
-        unAuth: false
+        unAuth: false,
+        error: false,
     }
 
     componentDidMount() {
@@ -46,7 +48,7 @@ class User extends Component {
             })
             .catch(err => {
                 this.setState({
-                    error: err.response.data.message,
+                    error: {code: err.response.status, message: err.response.statusText},
                     user: {},
                 });
             });
@@ -61,12 +63,7 @@ class User extends Component {
                 this.getGroupsBelongedTo(id, res.data);
                 this.getRecentActivity(res.data);
             })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    groupsOwned: []
-                });
-            });
+            .catch(() => this.setState({ groupsOwned: [] }));
     }
 
     getGroupsBelongedTo = (id, groupsOwned) => {
@@ -82,12 +79,7 @@ class User extends Component {
                 this.getGroupsInvitedTo(id, groupsNotOwned);
                 this.getRecentActivity(groupsNotOwned);
             })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    groupsBelongedTo: []
-                });
-            });
+            .catch(() => this.setState({ groupsBelongedTo: [] }));
     }
 
     getGroupsInvitedTo = (id, groupsBelongedTo) => {
@@ -102,12 +94,7 @@ class User extends Component {
                 this.getOwners(groupsNotBelongedTo);
                 this.getRecentActivity(groupsNotBelongedTo);
             })
-            .catch(err => {
-                this.setState({
-                    error: err,
-                    groupsInvitedTo: []
-                });
-            });
+            .catch(() => this.setState({ groupsInvitedTo: [] }));
     }
 
     getOwners = (groups) => {
@@ -119,18 +106,15 @@ class User extends Component {
                     const groupsWithOwner = this.state.groupsInvitedTo.concat(groupWithOwner)
 
                     const filteredGroups = groupsWithOwner.filter((group, index, self) =>
-                    index === self.findIndex((i) => ( i.groupId === group.groupId ))
+                        index === self.findIndex((i) => ( i.groupId === group.groupId ))
                     )
 
-                    this.setState({
-                        groupsInvitedTo: filteredGroups
-                    });
+                    this.setState({ groupsInvitedTo: filteredGroups });
                 })
+                .catch(() => this.setState({ groupsInvitedTo: [] }));
             })
         } else {
-            this.setState({
-                groupsInvitedTo: []
-            });           
+            this.setState({ groupsInvitedTo: [] });           
         }
     }
 
@@ -148,10 +132,9 @@ class User extends Component {
                 )
 
                 filteredActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt) )
-                this.setState({
-                    activities: filteredActivities
-                });
+                this.setState({ activities: filteredActivities });
             })
+            .catch(() => this.setState({ activities: [] }));
         })
     }
 
@@ -170,9 +153,8 @@ class User extends Component {
             <>
                 { unAuth ? <UnAuth/> : 
                 <>
-                {error
-                    ? <h1>Error retrieving user!</h1>
-                    : <>
+                { error ? <Error error={error}/> : 
+                    <>
                         <section className="container blog page-container">
 
                             <div className="row">
@@ -184,14 +166,12 @@ class User extends Component {
                             </div>
 
                             <div className="row">
-                                        <div className="col-md-8 col-md-8-right-padding">
+                                <div className="col-md-8 col-md-8-right-padding">
                                     <GroupsOwned groupsOwned={groupsOwned} />
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited 
                                         groupsInvited={groupsInvitedTo} 
                                         updateGroups={this.updateGroups}
-                                        // acceptInvite={this.acceptInvite}
-                                        // declineInvite={this.declineInvite}
                                     />
                                 </div>
 
@@ -205,8 +185,7 @@ class User extends Component {
                         <Footer/>
                     </>
                 }</>
-            }
-            </>
+            }</>
         );
     }
 }
