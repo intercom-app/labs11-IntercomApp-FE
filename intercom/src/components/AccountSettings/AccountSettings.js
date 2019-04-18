@@ -73,17 +73,17 @@ class AccountSettings extends Component {
         console.log('fileUploadHandler')
         const id = localStorage.getItem('userId');
         e.preventDefault();
-        const userData = {
-            avatar: URL.createObjectURL(this.state.selectedFile),
-        }
+        // const userData = {
+        //     avatar: URL.createObjectURL(this.state.selectedFile),
+        // }
 
         const formData = new FormData();
         formData.append('image', this.state.selectedFile);
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        };
+        // const config = {
+        //     headers: {
+        //         'content-type': 'multipart/form-data'
+        //     }
+        // };
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
@@ -145,7 +145,7 @@ class AccountSettings extends Component {
             .catch(err => console.log(err))
     }
     handleAddToBalance = () => {
-        const id = this.state.user.id
+        // const id = this.state.user.id
         // axios
         //     .get(`${host}/api/users/${id}/last4`)
         //     .then(res => this.setState({last4:res.data.last4}))
@@ -224,7 +224,7 @@ class AccountSettings extends Component {
     }
   
     getUserStripeCharges = async() => {
-        const id = this.state.user.id
+        // const id = this.state.user.id
         try {
             const stripeId = 'cus_Et35QY0yTwAZuD'
 
@@ -237,7 +237,8 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { unAuth, user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
+        // const { unAuth, user, updateUserName, updateBilling, addToBalance, balance, last4, updateUserImage } = this.state
+        const { unAuth, user, updateUserName, updateBilling, addToBalance, last4, updateUserImage } = this.state
 
         return (
             <>
