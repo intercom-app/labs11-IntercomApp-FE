@@ -3,12 +3,11 @@ import host from "../../host.js";
 import axios from 'axios';
 
 class CallStatus extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            callStatus: false,
-        }
+    state = {
+        callStatus: false,
     }
+
+    interval = 0
 
     componentDidMount() {
         // Get Call Status every 3 seconds in case call happens while on page
@@ -22,9 +21,7 @@ class CallStatus extends Component {
     getCallStatus = () => {
         const callStatus = `${host}/api/groups/${this.props.groupId}/callStatus`;
         axios.get(callStatus)
-            .then(res => {
-                this.setState({ callStatus: res.data.callStatus })
-            })
+            .then(res => this.setState({ callStatus: res.data.callStatus }))
             .catch(() => this.setState({ callStatus: false })); // if error default to false
     }
 
