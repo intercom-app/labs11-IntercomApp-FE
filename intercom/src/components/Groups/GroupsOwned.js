@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import CallParticipants from './CallParticipants';
-import CallStatus from './CallStatus';
 
 class GroupsOwned extends Component {
     state = {
@@ -47,15 +45,17 @@ class GroupsOwned extends Component {
                                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <Link to={`/group/${group.groupId}`} >
                                         <h3 className="blog-title">
-                                            {group.GroupName}
+                                            {group.groupName}
                                         </h3>
                                     </Link>
                                 </div>
 
                                 <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9" style={{paddingBottom: "8px"}}>
-                                    <CallStatus groupId={group.groupId} />
+                                    <>Call Status:  {group.callStatus === true ? 'Active' : 'Inactive'}</>
                                     <span className="comments-padding"></span>
-                                    <CallParticipants groupId={group.groupId} />
+                                    {group.callParticipants.length === 0 ? null :
+                                    <>On Call:  {group.callParticipants.length}</>
+                                    }
                                 </div>
                                 <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                     <Link to={`/group/${group.groupId}/members`}>
