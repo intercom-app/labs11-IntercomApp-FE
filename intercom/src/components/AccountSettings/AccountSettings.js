@@ -95,6 +95,7 @@ class AccountSettings extends Component {
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
+            console.log(res)
             if(res.status === 200) {
                 const userData = {
                     avatar: res.data.image
@@ -194,7 +195,7 @@ class AccountSettings extends Component {
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            console.log("groupId: ", groupId);
+            // console.log("groupId: ", groupId);
             const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
             // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
@@ -217,7 +218,7 @@ class AccountSettings extends Component {
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
-            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+            // console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
             let sumOfUserTwilioCharges = 0;
 
@@ -226,7 +227,7 @@ class AccountSettings extends Component {
             }
             // console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
             sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
-            console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
+            // console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
             return sumOfUserTwilioCharges
 
         } catch(err) {
@@ -247,7 +248,7 @@ class AccountSettings extends Component {
             let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
             // console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
             sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges*100)/10000; //in dollars
-            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
+            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
             return sumOfUserStripeCharges
 
         } catch(err) {
@@ -269,13 +270,13 @@ class AccountSettings extends Component {
         const id = this.state.user.id
         try{
             const sumOfUserStripeCharges = await this.getSumOfUserStripeCharges();
-            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
+            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
 
             const sumOfUserTwilioCharges = await this.getSumOfUserTwilioCharges();
-            console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
+            // console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
 
             const updatedAccountBalance = sumOfUserTwilioCharges + sumOfUserStripeCharges;
-            console.log('updatedAccountBalance: ', updatedAccountBalance);
+            // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
             await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
             this.setState({'accountBalance':updatedAccountBalance});

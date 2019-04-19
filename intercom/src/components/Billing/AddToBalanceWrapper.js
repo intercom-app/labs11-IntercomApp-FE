@@ -19,7 +19,6 @@ class AddToBalanceWrapper extends Component {
                             toggleChangeAddToBalance = {this.props.toggleChangeAddToBalance}
                         />
                     </Elements>
-
                 </div>               
             </StripeProvider>
         )

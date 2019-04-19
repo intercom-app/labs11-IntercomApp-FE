@@ -26,9 +26,9 @@ class UpdateBilling extends Component {
             if (createSourceResponse.error) {
                 this.setState({errorMessage:createSourceResponse.error.message})
             }
-            console.log('createSourceResponse: ', createSourceResponse);
+            // console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
-            console.log('source: ', source);
+            // console.log('source: ', source);
             return source;
         } catch(err) {
             console.log('err: ', err);
@@ -42,7 +42,7 @@ class UpdateBilling extends Component {
         try{
             const res = await axios.get(`${host}/api/users/${userId}`);
             const userStripeId = res.data.stripeId;
-            console.log('userStripeId: ', userStripeId);
+            // console.log('userStripeId: ', userStripeId);
 
             const updatedSource = await axios.post(`${host}/api/billing/updateDefaultSource`, {
                 'userStripeId':userStripeId,
@@ -51,12 +51,11 @@ class UpdateBilling extends Component {
             if (updatedSource.error) {
                 this.setState({errorMessage:updatedSource.error.message})
             }
-            console.log('updatedSource: ', updatedSource);
+            // console.log('updatedSource: ', updatedSource);
 
             const last4 = updatedSource.data.sources.data[0].card.last4;
             await axios.put(`${host}/api/users/${userId}/last4`, {last4:last4})
             this.props.handleBillingUpdate();
-
             return updatedSource;
         } catch(err) {
             console.log('err: ', err);
@@ -83,16 +82,21 @@ class UpdateBilling extends Component {
 
     render() {
         return (
-                <div>
-                    {/* <div style = {{border:'1px solid black', marginBottom:'5px'}}> */}
-                    <div style = {{marginBottom:'10px'}}>
-                        <CardElement />
-                    </div>
-                    <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
-                    <div style = {{marginBottom:'10px'}}>
-                        {this.state.errorMessage}
-                    </div>
+            <div className='input-group creditcard-div'>
+                <CardElement style={{ padding: "9px !important"}}/>       
+                <span className="input-group-btn">
+                    <button 
+                        className="btn btn-default" 
+                        type="button" 
+                        onClick = {this.updateBilling}
+                        disabled={this.state.last4 === null}>
+                        Update
+                    </button>
+                </span>
+                <div style = {{marginBottom:'10px'}}>
+                    {this.state.errorMessage}
                 </div>
+            </div>
         )
     }
 }
