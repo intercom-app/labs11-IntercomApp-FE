@@ -22,9 +22,17 @@ class User extends Component {
         error: false,
     }
 
+    interval = 0
+
     componentDidMount() {
         this.checkIfUnAuth()
         this.getUserDetailed();
+        // Get User Data when component mounts and every 30 seconds while on page
+        this.interval = setInterval(() => this.getUserDetailed(), 30000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     checkIfUnAuth = () => {
