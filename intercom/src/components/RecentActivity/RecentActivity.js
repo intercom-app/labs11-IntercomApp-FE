@@ -12,7 +12,7 @@ const RecentActivity = (props) => {
             ? <p>No recent activity.</p>
             : <>
                 {recentActivities.map( activity =>
-                    <div className="media" key={activity.id}>
+                    <div className="media" key={activity.activityId ? activity.activityId : activity.id}>
                         <div className="media-body">
                             
                             <h4 className="media-heading">
