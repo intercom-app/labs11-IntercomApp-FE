@@ -8,7 +8,7 @@ class UpdateBillingWrapper extends Component {
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
             <StripeProvider apiKey = {process.env.REACT_APP_PK_TEST} betas = {["payment_intent_beta_3"]}>
-                <div style = {{border:'1px solid black', width:'600px'}}>
+                <div>
                 {/* <div> */}
                     {/* The Elements component, which encloses the UpdateBilling component,
                       creates an Elements group. When you use multiple Elements components
@@ -18,14 +18,12 @@ class UpdateBillingWrapper extends Component {
                       all in the same Elements group. Note that Elements must contain the
                       component that you wrapped with injectStripe, you cannot put Elements
                       inside of the component that you wrap with injectStripe. */}
-
                     <Elements>
                         <UpdateBilling 
                             handleBillingUpdate = {this.props.handleBillingUpdate}
                             toggleChangeBilling = {this.props.toggleChangeBilling}
                         />
                     </Elements>
-
                 </div>               
             </StripeProvider>
         )
