@@ -19,7 +19,7 @@ class GroupChatroomView extends Component {
         group: {},
         groupName: '',
         activities: [],
-        participants: [],
+        // participants: [],
         isOwner: false,
         unAuth: false,
         error: false,
@@ -32,7 +32,7 @@ class GroupChatroomView extends Component {
         const id = this.state.groupId;
         this.getGroup(id);
         this.getActivities(id);
-        this.getParticipants(id);
+        // this.getParticipants(id);
         this.checkIfOwner(id);
     }
 
@@ -124,7 +124,7 @@ class GroupChatroomView extends Component {
                 })
             }
         })
-        .catch(() => this.setState({ participants: [] }))
+        .catch(() => this.getGroup())
     }
 
     leaveGroup = () => {
@@ -160,12 +160,12 @@ class GroupChatroomView extends Component {
     //         .catch(() => this.getActivities()) // If error posting get origin activities
     // }
 
-    getParticipants = id => {
-        axios
-            .get(`${host}/api/groups/${id}/callParticipants`)
-            .then(res => this.setState({ participants: res.data }))
-            .catch(() => this.setState({ participants: [] }))
-    }
+    // getParticipants = id => {
+    //     axios
+    //         .get(`${host}/api/groups/${id}/callParticipants`)
+    //         .then(res => this.setState({ participants: res.data }))
+    //         .catch(() => this.setState({ participants: [] }))
+    // }
 
     // addParticipant = () => {
     //     const id = this.state.groupId;
@@ -273,7 +273,7 @@ class GroupChatroomView extends Component {
 
     render() {
 
-        let { unAuth, user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
+        let { unAuth, user, group, groupId, groupName, isOwner, activities, error } = this.state
 
         return (
             <>
@@ -297,16 +297,14 @@ class GroupChatroomView extends Component {
 
                             <div className="row">
                                 <div className="col-md-8">     
-                                    <GroupChatroomCall
-                                        group={group}
-                                        participants={participants}
+                                    <GroupChatroomCall groupId={group.id} />
+                                        {/* // group={group}
+                                        // participants={participants}
                                         // user={user}
                                         // handleCallButton={this.handleCallButton}
-                                    />
+                                    // /> */}
 
-                                    <GroupChatroomActivities
-                                        activities={activities}
-                                    />
+                                    <GroupChatroomActivities activities={activities} />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">

@@ -19,8 +19,7 @@ class CallStatus extends Component {
     }
 
     getCallStatus = () => {
-        const callStatus = `${host}/api/groups/${this.props.groupId}/callStatus`;
-        axios.get(callStatus)
+        axios.get(`${host}/api/groups/${this.props.groupId}/callStatus`)
             .then(res => this.setState({ callStatus: res.data.callStatus }))
             .catch(() => this.setState({ callStatus: false })); // if error default to false
     }

@@ -19,8 +19,7 @@ class CallParticipants extends Component {
     }
 
     getParticipants = () => {
-        const callParticipants = `${host}/api/groups/${this.props.groupId}/callParticipants`;
-        axios.get(callParticipants)
+        axios.get(`${host}/api/groups/${this.props.groupId}/callParticipants`)
             .then(res =>  this.setState({ callParticipants: res.data }))
             .catch(() => this.setState({ callParticipants: [] })); // if error default to none
     }
