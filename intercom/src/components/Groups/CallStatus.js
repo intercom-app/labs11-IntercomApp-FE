@@ -6,13 +6,17 @@ class CallStatus extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            callStatus: '',
-            error: ''
+            callStatus: false,
         }
     }
 
     componentDidMount() {
-        this.getCallStatus();
+        // Get Call Status every 3 seconds in case call happens while on page
+        this.interval = setInterval(() => this.getCallStatus(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     getCallStatus = () => {
@@ -21,12 +25,7 @@ class CallStatus extends Component {
             .then(res => {
                 this.setState({ callStatus: res.data.callStatus })
             })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    callStatus: ''
-                });
-            });
+            .catch(() => this.setState({ callStatus: false })); // if error default to false
     }
 
     render() {

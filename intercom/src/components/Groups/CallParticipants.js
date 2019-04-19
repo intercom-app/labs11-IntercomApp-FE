@@ -11,7 +11,12 @@ class CallParticipants extends Component {
     }
 
     componentDidMount() {
-        this.getParticipants();
+        // Get Call Participants every 3 seconds in case call happens while on page
+        this.interval = setInterval(() => this.getParticipants(), 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     getParticipants = () => {
@@ -20,20 +25,14 @@ class CallParticipants extends Component {
             .then(res => {
                 this.setState({ callParticipants: res.data })
             })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    callParticipants: []
-                });
-            });
+            .catch(() => this.setState({ callParticipants: [] })); // if error default to none
     }
 
     render() { 
         return ( 
             <>
-                {this.state.callParticipants.length === 0
-                ? null
-                : <>On Call:  {this.state.callParticipants.length}</>
+                {this.state.callParticipants.length === 0 ? null : 
+                <>On Call:  {this.state.callParticipants.length}</>
                 }
             </>
         );
