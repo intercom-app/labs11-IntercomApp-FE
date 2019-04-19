@@ -83,16 +83,17 @@ class UpdateBilling extends Component {
 
     render() {
         return (
-                <div>
-                    {/* <div style = {{border:'1px solid black', marginBottom:'5px'}}> */}
-                    <div style = {{marginBottom:'10px'}}>
-                        <CardElement />
-                    </div>
+            <div className='input-group creditcard-input'>
+                {/* <div style = {{marginBottom:'10px'}}> */}
+                    <CardElement />       
+                {/* </div> */}
+                <span className="input-group-btn">
                     <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
-                    <div style = {{marginBottom:'10px'}}>
-                        {this.state.errorMessage}
-                    </div>
+                </span>
+                <div style = {{marginBottom:'10px'}}>
+                    {this.state.errorMessage}
                 </div>
+            </div>
         )
     }
 }

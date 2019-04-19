@@ -8,7 +8,7 @@ class UpdateBillingWrapper extends Component {
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
             <StripeProvider apiKey = {process.env.REACT_APP_PK_TEST} betas = {["payment_intent_beta_3"]}>
-                <div className='input-group creditcard-input'>
+                <div>
                 {/* <div> */}
                     {/* The Elements component, which encloses the UpdateBilling component,
                       creates an Elements group. When you use multiple Elements components
