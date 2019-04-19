@@ -297,7 +297,7 @@ class GroupChatroomView extends Component {
 
                             <div className="row">
                                 <div className="col-md-8">     
-                                    <GroupChatroomCall groupId={group.id} />
+                                    <GroupChatroomCall groupId={this.props.match.params.id} />
                                         {/* // group={group}
                                         // participants={participants}
                                         // user={user}

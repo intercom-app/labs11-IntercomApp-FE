@@ -12,7 +12,7 @@ class GroupChatroomCall extends Component {
 
     componentDidMount() {
         // Get Call Status every second in case call happens while on page
-        this.interval = setInterval(() => this.getCallInfo(), 1000);
+        // this.interval = setInterval(() => this.getCallInfo(), 1000);
 
         window.$('[data-toggle="tooltip"]').tooltip();
     }
@@ -22,8 +22,7 @@ class GroupChatroomCall extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.interval);
-        this.setState({ callStatus: false, callParticipants: [] })
+        // clearInterval(this.interval);
     }
 
     getCallInfo = () => {
