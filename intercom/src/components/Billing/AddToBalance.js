@@ -89,21 +89,28 @@ class AddToBalance extends Component {
 
     render() {
         return (
-                <form onSubmit = {this.chargeAndAddToBalance}>
-                    <div>
-                        Amount to add: $
-                        <input
-                            type = 'number'
-                            name = 'amountToAdd'
-                            value = {this.state.amountToAdd}
-                            onChange = {this.inputChangeHandler}
-                        />
-                        <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeCard </button>
-                    </div>
-                    <div style = {{marginBottom:'10px'}}>
-                        {this.state.errorMessage}
-                    </div>                            
-                </form>
+            <div className="input-group add-balance-div">
+                <input
+                    placeholder='Amount to add: $'
+                    type = 'number'
+                    name = 'amountToAdd'
+                    value = {this.state.amountToAdd}
+                    onChange = {this.inputChangeHandler}
+                    className='form-control add-balance-input'
+                />
+                <span className="input-group-btn">
+                    <button 
+                        className="btn btn-default" 
+                        onClick = {this.chargeAndAddToBalance} 
+                        type = 'submit'
+                        disabled={this.state.amountToAdd === 0}
+                    > Add 
+                    </button>
+                </span>
+                <div style = {{marginBottom:'10px'}}>
+                    {this.state.errorMessage}
+                </div>                            
+            </div>
         )
     }
 }

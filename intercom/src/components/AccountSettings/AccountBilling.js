@@ -46,11 +46,9 @@ const AccountBilling = (props) => {
 
                     <div className="col-md-8 fl-r">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                            <div className="pull-left">
-                                <div className="pull-left" >
-                                    {props.last4 === null ?
-                                        `No credit card on file` : `•••• •••• •••• ${props.last4}`}
-                                </div>
+                            <div className="pull-left" >
+                                {props.last4 === null ?
+                                    `No credit card on file` : `•••• •••• •••• ${props.last4}`}
                             </div>
                             <div className="pull-right color-elements" onClick={props.toggleChangeBilling}>
                                 {props.updateBilling

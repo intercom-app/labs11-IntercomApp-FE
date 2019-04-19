@@ -56,7 +56,6 @@ class UpdateBilling extends Component {
             const last4 = updatedSource.data.sources.data[0].card.last4;
             await axios.put(`${host}/api/users/${userId}/last4`, {last4:last4})
             this.props.handleBillingUpdate();
-
             return updatedSource;
         } catch(err) {
             console.log('err: ', err);
@@ -83,10 +82,16 @@ class UpdateBilling extends Component {
 
     render() {
         return (
-            <div className='input-group creditcard-input'>
-                    <CardElement />       
+            <div className='input-group creditcard-div'>
+                <CardElement style={{ padding: "9px !important"}}/>       
                 <span className="input-group-btn">
-                    <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
+                    <button 
+                        className="btn btn-default" 
+                        type="button" 
+                        onClick = {this.updateBilling}
+                        disabled={this.state.last4 === null}>
+                        Update
+                    </button>
                 </span>
                 <div style = {{marginBottom:'10px'}}>
                     {this.state.errorMessage}
