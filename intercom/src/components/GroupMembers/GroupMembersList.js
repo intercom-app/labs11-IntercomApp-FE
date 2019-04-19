@@ -63,7 +63,7 @@ const GroupMembersList = (props) => {
                             {isOwner ? 
                             <td align="center" valign="middle">   
                                 <button
-                                    className="btn rounded btn-cancel"
+                                    className="btn rounded btn-remove"
                                     type="button"
                                     disabled={member.id === userId}
                                     onClick={(e) => removeUser(e, member.id, member.displayName)}

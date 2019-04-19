@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from "axios";
 import Fuse from 'fuse.js';
+import axios from "axios";
 import host from "../../host.js";
-import SearchBar from '../Search/SearchBar';
-import RecentActivity from '../RecentActivity/RecentActivity';
-import SearchResults from '../Search/SearchResults';
+
+import UnAuth from '../UnAuth/UnAuth';
+import Error from '../Error/Error';
 import GroupMembersList from './GroupMembersList.js';
 import GroupInviteesList from './GroupInviteesList.js';
+import RecentActivity from '../RecentActivity/RecentActivity';
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
 import Footer from '../LandingPage/Footer';
 
 class GroupMembersView extends Component {
@@ -15,7 +18,7 @@ class GroupMembersView extends Component {
         super(props);
         this.state = {
             id: this.props.match.params.id,
-            group: '',
+            group: {},
             members: [],
             membersDetails: [],
             activities: [],
@@ -23,43 +26,70 @@ class GroupMembersView extends Component {
             users: [],
             search: '',
             isOwner: false,
-            error: null
+            unAuth: false,
+            error: false,
         };
     }
 
     componentDidMount() {
-        // Get Group
-        axios
-            .get(`${host}/api/groups/${this.state.id}`)
-            .then(res => this.setState({ group: res.data }) )
-            .catch(err => this.setState({ error: err }));
-        
+        this.checkIfUnAuth()
+        this.getGroup()
         this.getGroupMembers()
         this.getGroupInvitees()
-        this.getGroupActivities()
-        this.checkIfOwner(this.state.id);
+        this.checkIfOwner();
+    }
+
+    checkIfUnAuth = () => {
+        const groupId = parseInt(this.state.id) 
+        const userId = localStorage.getItem('userId')
+        axios
+            .get(`${host}/api/users/${userId}/groupsBelongedTo`)
+            .then(res => {
+                const groupIds = res.data.map(group => group.groupId)
+                if (!groupIds.includes(groupId)){
+                    this.setState({ unAuth: true })
+                }
+            })
+            .catch(err => {
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} })
+            });        
+    }
+
+    getGroup = () => {
+        axios
+            .get(`${host}/api/groups/${this.state.id}`)
+            .then(res => { 
+                this.setState({ group: res.data }) 
+                this.getGroupActivities(res.data)
+            })
+            .catch(err => {
+                this.setState({
+                    error: {code: err.response.status, message: err.response.statusText},
+                    group: {},
+                });
+            });
     }
 
     getGroupMembers = () => {
         axios
             .get(`${host}/api/groups/${this.state.id}/groupMembers/detailed`)
             .then(res => this.setState({ members: res.data }) )
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ members: [] }));
     }
 
     getGroupInvitees = () => {
         axios
             .get(`${host}/api/groups/${this.state.id}/groupInvitees/detailed`)
             .then(res => this.setState({ invitees: res.data }) )
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ invitees: [] }));
     }
 
-    getGroupActivities = () => {
+    getGroupActivities = (group) => {
         axios
-            .get(`${host}/api/groups/${this.state.id}/activities`)
+            .get(`${host}/api/groups/${group.id}/activities`)
             .then(res => {
                 const activities = res.data.map(activity => {
-                    return { ...activity, groupId: activity.groupId, groupName: activity.GroupName}
+                    return { ...activity, groupId: group.id, groupName: group.name}
                 })
                 const updatedActivities = this.state.activities.concat(activities)
 
@@ -72,34 +102,31 @@ class GroupMembersView extends Component {
                     activities: filteredActivities
                 });
             })
+            .catch(() => this.setState({ activities: [] }));
     }
 
-    checkIfOwner = async (id) => {
-        const groupOwners = `${host}/api/groups/${id}/groupOwners`;
+    checkIfOwner = () => {
         const userId = parseInt(localStorage.getItem('userId'));
-        try {
-            const res = await axios.get(groupOwners)
-            res.data[0].userId === userId
+        axios
+            .get(`${host}/api/groups/${this.state.id}/groupOwners`)
+            .then(res => {
+                res.data[0].userId === userId 
                 ? this.setState({ isOwner: true })
-                : this.setState({ isOwner: false })
-        } catch (err) {
-            this.setState({ error: err })
-        }
-
+                : this.setState({ isOwner: false })               
+            })
+            .catch(() => this.setState({ isOwner: false }))
     }
 
     handleSearch = async (e) => {
-        this.setState({
-            search: e.target.value
-        });
+        this.setState({ search: e.target.value });
 
         let users;
         await axios
             .get(`${host}/api/users`)
             .then(res => users = res.data)
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ users: [] }));
 
-        if (users) {
+        if (users.length > 0) {
             const options = {
                 shouldSort: true,
                 findAllMatches: true,
@@ -131,9 +158,9 @@ class GroupMembersView extends Component {
                 return { ...user, buttonInvite }
             })
 
-            this.setState({
-                users: usersUpdated,
-            });
+            this.setState({ users: usersUpdated });
+        } else {
+            this.setState({ users: [] });           
         }
     }
 
@@ -148,18 +175,23 @@ class GroupMembersView extends Component {
 
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Invited ${user.displayName} to the group` }
+        // Add user - If error in posting, don't want to post to activities and want to throw error
         axios
-            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
             .then(() => {
+                // Update state with updated group invitees 
+                this.setState({ users: users })
+                this.getGroupInvitees()
+                // Add to group activities - whether or not posted still want to get activities and not render error
                 axios
-                    .post(`${host}/api/groups/${this.state.id}/groupInvitees`, { userId: id })
-                    .then(() => {
-                        this.setState({ users: users })
-                        this.getGroupInvitees()
-                    })
-                    .catch(err => this.setState({ error: err }));
+                    .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+                    .then(() => this.getGroupActivities())
+                    .catch(() => this.getGroupActivities());
             })
-            .catch(err => this.setState({ error: err }));
+            .catch(err => {
+                this.clearSearch()
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+            });
     }
 
     clearSearch = () => {
@@ -170,40 +202,43 @@ class GroupMembersView extends Component {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Removed ${userDisplayName} from the group` }
-        // Add to group activities
+        // Delete member - If error in deleting, don't want to post to activities and want to throw error
         axios
-            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
             .then(() => {
-                // Delete member
+                // Update state with updated group members
+                this.getGroupMembers()
+                // Add to group activities - whether or not posted still want to get activities and not render error
                 axios
-                    .delete(`${host}/api/groups/${this.state.id}/groupMembers/${id}`)
-                    .then(() => {
-                        // Update state with updated group members
-                        this.getGroupMembers()
-                    })
-                    .catch(err => this.setState({ error: err }));
+                    .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+                    .then(() => this.getGroupActivities())
+                    .catch(() => this.getGroupActivities());
             })
-            .catch(err => this.setState({ error: err }));
+            .catch(err => { 
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} })
+            });
     }
+
 
     removeInvitee = (e, id, userDisplayName) => {
         e.preventDefault();
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Cancelled ${userDisplayName}'s invitation.` }
-        // Add to group activities
+        // Delete Invitee - If error in deleting, don't want to post to activities and want to throw error
         axios
-            .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+            .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
             .then(() => {
-                // Delete Invitee
+                // Update state with updated group invitees
+                this.getGroupInvitees()
+                // Add to group activities - whether or not posted still want to get activities and not render error
                 axios
-                    .delete(`${host}/api/groups/${this.state.id}/groupInvitees/${id}`)
-                    .then(() => {
-                        // Update state with updated group invitees
-                        this.getGroupInvitees()
-                    })
-                    .catch(err => this.setState({ error: err }));
+                    .post(`${host}/api/groups/${this.state.id}/activities`, activity)
+                    .then(() => this.getGroupActivities())
+                    .catch(() => this.getGroupActivities());
             })
-            .catch(err => this.setState({ error: err }));
+            .catch(err => { 
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} })
+            });
     }
 
     getDateTime = (date) => {
@@ -236,15 +271,16 @@ class GroupMembersView extends Component {
     }
 
     render() {
-        let { error, group, search, users, members, invitees, isOwner, activities } = this.state
+        let { unAuth, error, group, search, users, members, invitees, isOwner, activities } = this.state
         const userId = parseInt(localStorage.getItem('userId'));
         const recentActivities = activities.slice(0, 5);
 
         return (
             <>
-                {error
-                    ? <p>Error retrieving members!</p>
-                    : <>
+                { unAuth ? <UnAuth/> : 
+                <>
+                {error ? <Error error={error}/> : 
+                    <>
                         <section className="container blog page-container">
 
                             <div className="row">
@@ -299,13 +335,16 @@ class GroupMembersView extends Component {
                                                     />
                                                     : null
                                                 }
+                                                <p>Search for users by name or email to invite.</p>
                                             </div>
 
                                         </>
                                         : 
-                                        <div className="blog-sidebar">
-                                            <RecentActivity recentActivities={recentActivities} />
-                                        </div>
+                                        <RecentActivity 
+                                            recentActivities={recentActivities} 
+                                            getDateTime={this.getDateTime}
+                                        />
+                                        
                                         
                                     }
 
@@ -319,7 +358,7 @@ class GroupMembersView extends Component {
                 }
                 
                 <Footer/>
-
+                </>}
             </>
         )
     }

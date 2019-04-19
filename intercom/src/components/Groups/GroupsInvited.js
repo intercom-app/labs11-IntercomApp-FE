@@ -60,6 +60,7 @@ class GroupsInvited extends Component {
     }
 
     render() {
+        // console.log(this.props.groupsInvited)
         return (
             <>
                 <h1 className="page-header sidebar-title groups-title">
@@ -88,26 +89,24 @@ class GroupsInvited extends Component {
                 : <>
                     {this.props.groupsInvited.map(group => (
                         <div key={group.groupId} className="groups-row">
-                            <div className="row blogu">
-                                <div>
-                                    <div className="col-xs-6 col-sm-8 col-md-8">
-                                        <h3 className="blog-title">
-                                            {group.GroupName}
-                                        </h3>
-                                    </div>
-                                    <div className="col-xs-3 col-sm-2 col-md-2">
-                                        <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
-                                            Join Group
-                                        </button>
-                                    </div>
-                                    <div className="col-xs-3 col-sm-2 col-md-2">                                        
-                                        <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
-                                            Decline
-                                        </button>
-                                    </div>
+                            <div className="row">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <h3 className="blog-title" style={{marginBottom: "0px"}}>
+                                        {group.GroupName}
+                                    </h3>
                                 </div>
-                                <div className="col-xs-12 col-sm-12 col-md-12">
+
+                                <div className="col-xs-12 col-sm-7 col-md-7 col-lg-7" style={{padding: "8px 15px"}}>
                                     Invited by: {group.groupOwner}
+                                </div>
+                                <div className="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                                    <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>
+                                        Join Group
+                                    </button>
+                                    <span className="comments-padding"></span>
+                                    <button className="btn btn-decline" type="button" onClick={(e) => this.declineInvite(e, group.groupId)}>
+                                        Decline
+                                    </button>
                                 </div>
                             </div>
                             <hr style={{marginBottom:"0px"}}></hr>

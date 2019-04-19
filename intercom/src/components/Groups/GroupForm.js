@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Fuse from 'fuse.js';
 import host from "../../host.js";
 import axios from 'axios';
+
+import Error from '../Error/Error';
 import SearchBar from '../Search/SearchBar';
 import SearchResults from '../Search/SearchResults';
 
@@ -18,7 +20,7 @@ class GroupForm extends Component {
             group: {
                 name: ''
             },
-            error: null,
+            error: false,
         };
 
     }
@@ -30,17 +32,15 @@ class GroupForm extends Component {
     }
 
     handleSearch = async (e) => {
-        this.setState({
-            search: e.target.value
-        });
+        this.setState({ search: e.target.value });
 
         let users;
         await axios
             .get(`${host}/api/users`)
             .then(res => users = res.data)
-            .catch(err => this.setState({ error: err }));
+            .catch(() => this.setState({ users: [] }));
 
-        if (users) {
+        if (users.length > 0) {
             const options = {
                 shouldSort: true,
                 findAllMatches: true,
@@ -75,9 +75,9 @@ class GroupForm extends Component {
                 return { ...user, buttonInvite }
             })
 
-            this.setState({
-                users: usersUpdated,
-            });
+            this.setState({ users: usersUpdated });
+        } else {
+            this.setState({ users: [] });           
         }
     }
 
@@ -92,29 +92,35 @@ class GroupForm extends Component {
 
         const userId = localStorage.getItem('userId')
         const activity = { userId, activity: `Invited ${user.displayName} to the group` }
+        // Add user - If error in posting, don't want to post to activities and want to throw error
         axios
-            .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-            .then(() => {
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupInvitees`, { userId: id })
-                    .then(res => {
-                        this.setState({
-                            users: users,
-                            invitees: res.data
-                        })
-                    })
-                    .catch(err => this.setState({ error: err }));
+        .post(`${host}/api/groups/${this.state.group.id}/groupInvitees`, { userId: id })
+        .then(res => {
+            // Update state with updated group invitees 
+            this.setState({
+                users: users,
+                invitees: res.data
             })
-            .catch(err => this.setState({ error: err }));
+            // Add to group activities - whether or not posted still want to update groups with activities
+            axios
+                .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
+                .then(() => this.props.updateGroups())
+                .catch(() => this.props.updateGroups())
+        })
+        .catch(err => {
+            this.clearSearch()
+            this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+        });
     }
 
     clearSearch = () => {
         this.setState({ 
+            invite: false,
             search: '',
+            members: [],
             users: [],
             invitees: [],
             group: { name: '' },
-            invite: false
         })
         document.getElementById("groupNameInput").value = '';
     }
@@ -132,32 +138,32 @@ class GroupForm extends Component {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Created group.' }
-        const groupData = {
-            name: this.state.group.name
-        }
+        const groupData = { name: this.state.group.name}
 
         try {
-            const group = await axios.post(`${host}/api/groups`, groupData)
-            if (group) {
-                await this.setState({ group: group.data })
+            // First Creat New Group
+            const res = await axios.post(`${host}/api/groups`, groupData)
+            if (res) {
+                this.setState({ group: res.data })
+                // Then add user as group owner
                 axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupOwners`, userId)
-                    .then(() => { this.props.updateGroups() })
-                    .catch(err => this.setState({ error: err }));
-
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/groupMembers`, userId)
-                    .then(() => { this.props.updateGroups() })
-                    .catch(err => this.setState({ error: err }));
-
-                axios
-                    .post(`${host}/api/groups/${this.state.group.id}/activities`, activity)
-                    .then()
-                    .catch(err => this.setState({ error: err }));
-
-
+                .post(`${host}/api/groups/${res.data.id}/groupOwners`, userId)
+                .then(() => {
+                    // Then add user as group member
+                    axios
+                    .post(`${host}/api/groups/${res.data.id}/groupMembers`, userId)
+                    .then(() => {   
+                        // Then add to group activities and update groups
+                        axios
+                        .post(`${host}/api/groups/${res.data.id}/activities`, activity)
+                        .then(() => this.props.updateGroups())
+                    })
+                })
             }
-        } catch (err) { this.setState({ error: err }) };
+        } catch (err) { 
+            this.clearSearch();
+            this.setState({ error: {code: err.response.status, message: err.response.statusText} }); 
+        };
 
         this.toggleInvite()
 
@@ -165,15 +171,16 @@ class GroupForm extends Component {
 
     render() {
 
-        let { group, invite, search, users } = this.state
+        let { error, group, invite, search, users } = this.state
 
         return (
+            <> { error ? <Error error={error}/> : 
+
             <div className="blog-sidebar">
                 <h3 className="sidebar-title">Create New Group</h3>
                 <hr></hr>
                 <h4 className="sidebar-title">New Group Name: </h4>
-                {!invite
-                ? 
+
                 <div className="input-group">
                     <input
                         autoComplete="off"
@@ -182,42 +189,22 @@ class GroupForm extends Component {
                         name="name"
                         id="groupNameInput"
                         placeholder="Group Name..."
-                        onChange={this.handleGroupInput}
                         value={group.name}
+                        onChange={this.handleGroupInput}
+                        disabled={invite} // If group created and invite toggle open, disable group input field
                     />
                     <span className="input-group-btn">
                         <button
                             className="btn btn-default"
                             type="button"
                             onClick={this.createGroup}
-                            disabled={group.name === ""}
+                            disabled={group.name === "" || invite} // If no group name or invite open, button disabled
                         >
-                            Create
+                            {/* Create if not yet done, if created and invite toggle open then displays Created */}
+                            {!invite ? `Create` : `Created`} 
                         </button>
                     </span>
                 </div>
-                :
-                <div className="input-group">
-                    <input
-                        autoComplete="off"
-                        className="form-control"
-                        type="text"
-                        name="name"
-                        id="groupNameInput"
-                        value={group.name}
-                        disabled
-                    />
-                    <span className="input-group-btn">
-                        <button
-                            className="btn btn-default"
-                            type="button"
-                            disabled
-                        >
-                            Created
-                        </button>
-                    </span>
-                </div>
-                }
 
                 {invite && group.name
                     ? <>
@@ -242,6 +229,8 @@ class GroupForm extends Component {
                     : null
                 }
             </div>
+
+            }</>
         );
     }
 }
