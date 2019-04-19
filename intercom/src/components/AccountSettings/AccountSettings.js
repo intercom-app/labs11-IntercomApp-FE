@@ -258,7 +258,7 @@ class AccountSettings extends Component {
     getAllTwilioCharges = async() => {
         try {
             const allTwilioChargesRes = await axios.get(`${host}/api/billing/allTwilioCharges`);
-            let allTwilioCharges = allTwilioChargesRes.data.allTwilioCharges;
+            // let allTwilioCharges = allTwilioChargesRes.data.allTwilioCharges;
             console.log('allTwilioCharges: ', allTwilioChargesRes);
         } catch(err) {
             console.log('err: ', err)
