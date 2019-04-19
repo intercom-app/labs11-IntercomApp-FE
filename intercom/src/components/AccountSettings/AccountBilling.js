@@ -44,7 +44,7 @@ const AccountBilling = (props) => {
                         : null
                     }
 
-                    <div className="col-md-8">
+                    <div className="col-md-8 fl-r">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                             <div className="pull-left">
                                 <div className="pull-left" >

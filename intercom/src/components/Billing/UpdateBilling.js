@@ -84,9 +84,7 @@ class UpdateBilling extends Component {
     render() {
         return (
             <div className='input-group creditcard-input'>
-                {/* <div style = {{marginBottom:'10px'}}> */}
                     <CardElement />       
-                {/* </div> */}
                 <span className="input-group-btn">
                     <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
                 </span>

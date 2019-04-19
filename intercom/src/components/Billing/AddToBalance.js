@@ -48,8 +48,8 @@ class AddToBalance extends Component {
             // if (chargeResponse.error) {
             //     this.setState({errorMessage:chargeResponse.error.message})
             // }
-            console.log('chargeResponse: ', chargeResponse);
-            console.log('chargeResponse: ', chargeResponse.data);
+            // console.log('chargeResponse: ', chargeResponse);
+            // console.log('chargeResponse: ', chargeResponse.data);
 
             if (chargeResponse.data.type === "StripeInvalidRequestError") {
                 console.log('errorMessage: ',chargeResponse.data.message)
@@ -89,27 +89,21 @@ class AddToBalance extends Component {
 
     render() {
         return (
-                // <div style = {{border:'1px solid blue', marginBottom:'100px'}}>
-                <div>
-                    <div>   
-                        <form onSubmit = {this.chargeAndAddToBalance}>
-                            <div style = {{border:'1px solid blue', marginBottom:'100px'}} className="form-group">
-                                Amount to add: $
-                                <input
-                                    type = 'number'
-                                    name = 'amountToAdd'
-                                    value = {this.state.amountToAdd}
-                                    onChange = {this.inputChangeHandler}
-                                />
-                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeCard </button>
-                            </div>
-                            <div style = {{marginBottom:'10px'}}>
-                                {this.state.errorMessage}
-                            </div>                            
-                        </form>
+                <form onSubmit = {this.chargeAndAddToBalance}>
+                    <div>
+                        Amount to add: $
+                        <input
+                            type = 'number'
+                            name = 'amountToAdd'
+                            value = {this.state.amountToAdd}
+                            onChange = {this.inputChangeHandler}
+                        />
+                        <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeCard </button>
                     </div>
-
-                </div>
+                    <div style = {{marginBottom:'10px'}}>
+                        {this.state.errorMessage}
+                    </div>                            
+                </form>
         )
     }
 }
