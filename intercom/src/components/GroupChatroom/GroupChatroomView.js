@@ -18,7 +18,7 @@ class GroupChatroomView extends Component {
         groupId: this.props.match.params.id,
         group: {},
         groupName: '',
-        activities: [],
+        // activities: [],
         // participants: [],
         isOwner: false,
         unAuth: false,
@@ -28,12 +28,10 @@ class GroupChatroomView extends Component {
     componentDidMount = () => {
         this.checkIfUnAuth()
         this.getUser(this.state.userId);
-
-        const id = this.state.groupId;
-        this.getGroup(id);
-        this.getActivities(id);
+        this.getGroup(this.state.groupId);
+        // this.getActivities(id);
         // this.getParticipants(id);
-        this.checkIfOwner(id);
+        this.checkIfOwner(this.state.groupId);
     }
 
     checkIfUnAuth = () => {
@@ -144,12 +142,12 @@ class GroupChatroomView extends Component {
         .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
 
-    getActivities = id => {
-        axios
-            .get(`${host}/api/groups/${id}/activities`)
-            .then(res => this.setState({ activities: res.data }))
-            .catch(() => this.setState({ activities: [] }))
-    }
+    // getActivities = id => {
+    //     axios
+    //         .get(`${host}/api/groups/${id}/activities`)
+    //         .then(res => this.setState({ activities: res.data }))
+    //         .catch(() => this.setState({ activities: [] }))
+    // }
 
     // addActivity = activityComment => {
     //     const id = this.state.groupId;
@@ -273,7 +271,7 @@ class GroupChatroomView extends Component {
 
     render() {
 
-        let { unAuth, user, group, groupId, groupName, isOwner, activities, error } = this.state
+        let { unAuth, user, group, groupId, groupName, isOwner, error } = this.state
 
         return (
             <>
@@ -304,7 +302,7 @@ class GroupChatroomView extends Component {
                                         // handleCallButton={this.handleCallButton}
                                     // /> */}
 
-                                    <GroupChatroomActivities activities={activities} />
+                                    <GroupChatroomActivities groupId={this.props.match.params.id} />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
