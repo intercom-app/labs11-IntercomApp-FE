@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import host from '../../host';
+
+import UnAuth from '../UnAuth/UnAuth';
+import Error from '../Error/Error';
 import GroupChatroomActivities from './GroupChatroomActivities';
 import GroupChatroomCall from './GroupChatroomCall';
 import DeleteModal from '../Modal/DeleteModal';
@@ -18,10 +21,12 @@ class GroupChatroomView extends Component {
         activities: [],
         participants: [],
         isOwner: false,
-        error: null,
+        unAuth: false,
+        error: false,
     }
 
     componentDidMount = () => {
+        this.checkIfUnAuth()
         this.getUser(this.state.userId);
 
         const id = this.state.groupId;
@@ -31,156 +36,199 @@ class GroupChatroomView extends Component {
         this.checkIfOwner(id);
     }
 
-    getUser = id => {
-        const userById = `${host}/api/users/${id}`;
-        this.axiosGet(userById, 'user');
+    checkIfUnAuth = () => {
+        const groupId = parseInt(this.state.groupId) 
+        const userId = localStorage.getItem('userId')
+        axios
+            .get(`${host}/api/users/${userId}/groupsBelongedTo`)
+            .then(res => {
+                const groupIds = res.data.map(group => group.groupId)
+                if (!groupIds.includes(groupId)){
+                    this.setState({ unAuth: true })
+                }
+            })
+            .catch(err => {
+                this.setState({ error: {code: err.response.status, message: err.response.statusText} })
+            });         
     }
 
-    updateUser = changes => {
-        const id = this.state.userId;
-        const userById = `${host}/api/users/${id}`;
-        this.axiosPut(userById, 'user', changes);
+    getUser = id => {
+        axios
+            .get(`${host}/api/users/${id}`)
+            .then(res => this.setState({ user: res.data }))
+            .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
+
+    // updateUser = changes => {
+    //     const id = this.state.userId;
+    //     const userById = `${host}/api/users/${id}`;
+    //     this.axiosPut(userById, 'user', changes);
+    // }
 
     getGroup = id => {
-        const groupById = `${host}/api/groups/${id}`;
-        this.axiosGet(groupById, 'group');
+        axios
+            .get(`${host}/api/groups/${id}`)
+            .then(res => this.setState({ group: res.data }))
+            .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
 
     updateGroup = changes => {
         const id = this.state.groupId;
-        const groupById = `${host}/api/groups/${id}`;
-        this.axiosPut(groupById, 'group', changes);
+        const originalGroupName = this.state.group.name;
+        // First Update Group
+        axios
+            .put(`${host}/api/groups/${id}`, changes)
+            .then(res => {
+                // Update Group state and Add to activities
+                this.setState({ group: res.data })
+                const activity = { userId: this.state.userId, activity: `Updated group name from ${originalGroupName} to ${res.data.name}.` }
+                axios
+                    .post(`${host}/api/groups/${id}/activities`, activity)
+                    .then(res => this.setState({ activities: res.data }))
+                    .catch(() => this.getActivities()) // If error posting get original activities
+            })
+            // If error updating still want to try and get original group information
+            .catch(() => this.getGroup(id))
     }
 
     deleteGroup = () => {
-        const id = this.state.groupId;
-        const userId = localStorage.getItem('userId')
-        axios.get(`${host}/api/groups/${id}/callParticipants`)
-            .then(res => {
-                // If call participants, update call status to false for all participants then delete group
+        const groupId = this.state.groupId;
+        const userId = this.state.userId;
+        // First get any active call participants
+        axios
+        .get(`${host}/api/groups/${groupId}/callParticipants`)
+        .then(res => {
+            // If no active participants go right to delete
+            if (res.data.length === 0) {
+                axios
+                .delete(`${host}/api/groups/${groupId}`)
+                .then(() => this.props.history.push(`/user/${userId}`) ) // Go back to user main view
+                .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
+            } else {
+                // If call participants, update user's call status to false
                 let updatedCallParticipants = 0;
                 res.data.forEach( user => {
-                    axios.put(`${host}/api/users/${user.userId}`, { callStatus: false })
-                        .then(() => {
-                            updatedCallParticipants++
-                            if (updatedCallParticipants === res.data.length) {
-                                // Delete Group
-                                axios.delete(`${host}/api/groups/${id}`)
-                                    // Go back to user main view
-                                    .then(() => this.props.history.push(`/user/${userId}`) )
-                                    .catch(err => console.log(err))
-                            } 
-                        })
-                        .catch(err => console.log(err))
+                    axios
+                    .put(`${host}/api/users/${user.userId}`, { callStatus: false })
+                    .then(() => {
+                        updatedCallParticipants++
+                        // Once all participants updated, then delete group
+                        if (updatedCallParticipants === res.data.length) { 
+                            axios
+                            .delete(`${host}/api/groups/${groupId}`)
+                            .then(() => this.props.history.push(`/user/${userId}`) ) // Go back to user main view
+                            .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
+                        } 
+                    })
+                    .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
                 })
-                // If no participants go right to delete
-                if (updatedCallParticipants === res.data.length) {
-                    // Delete Group
-                    axios.delete(`${host}/api/groups/${id}`)
-                        // Go back to user main view
-                        .then(() => this.props.history.push(`/user/${userId}`) )
-                        .catch(err => console.log(err))
-                } 
-            })
-            .catch(err => console.log(err))
+            }
+        })
+        .catch(() => this.setState({ participants: [] }))
     }
 
-    leaveGroup = async () => {
-        const addedActivity = await this.addActivity(`Left Group`);
-        if(addedActivity) {
-            const id = this.state.groupId;
-            const member = `${host}/api/groups/${id}/groupMembers/${this.state.userId}`;
-            const res = await this.axiosDel(member, 'user')
-            if (res) {
-                const userId = localStorage.getItem('userId')
-                this.props.history.push(`/user/${userId}`)
-            }  
-        }
+    leaveGroup = () => {
+        const groupId = this.state.groupId;
+        const userId = this.state.userId;
+        // First delete member and throw error if not able
+        axios
+        .delete(`${host}/api/groups/${groupId}/groupMembers/${userId}`)
+        // If deleted update group activities in db
+        .then(() => {
+            const activity = { userId: userId, activity: `Left group.` }
+            axios
+            .post(`${host}/api/groups/${groupId}/activities`, activity)
+            .then(() => this.props.history.push(`/user/${userId}`)) // once activity db updated send user back to main page
+            .catch(() => this.getActivities()) // If error posting get origin activities
+        })
+        .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
 
     getActivities = id => {
-        const activities = `${host}/api/groups/${id}/activities`;
-        this.axiosGet(activities, 'activities');
+        axios
+            .get(`${host}/api/groups/${id}/activities`)
+            .then(res => this.setState({ activities: res.data }))
+            .catch(() => this.setState({ activities: [] }))
     }
 
-    addActivity = async (activityComment) => {
-        const id = this.state.groupId;
-        const activities = `${host}/api/groups/${id}/activities`;
-        const activity = { userId: this.state.userId, activity: activityComment }
-        const posted = await this.axiosPost(activities, 'activities', activity)
-        if(posted) {return true}
-    }
+    // addActivity = activityComment => {
+    //     const id = this.state.groupId;
+    //     const activity = { userId: this.state.userId, activity: activityComment }
+    //     axios
+    //         .post(`${host}/api/groups/${id}/activities`, activity)
+    //         .then(res => this.setState({ activities: res.data }))
+    //         .catch(() => this.getActivities()) // If error posting get origin activities
+    // }
 
     getParticipants = id => {
-        const participants = `${host}/api/groups/${id}/callParticipants`;
-        this.axiosGet(participants, 'participants');
+        axios
+            .get(`${host}/api/groups/${id}/callParticipants`)
+            .then(res => this.setState({ participants: res.data }))
+            .catch(() => this.setState({ participants: [] }))
     }
 
-    addParticipant = () => {
-        const id = this.state.groupId;
-        const participants = `${host}/api/groups/${id}/callParticipants`;
-        const userId = { userId: this.state.userId }
-        this.axiosPost(participants, 'participants', userId);
-    }
+    // addParticipant = () => {
+    //     const id = this.state.groupId;
+    //     const participants = `${host}/api/groups/${id}/callParticipants`;
+    //     const userId = { userId: this.state.userId }
+    //     this.axiosPost(participants, 'participants', userId);
+    // }
 
-    deleteParticipant = (userId) => {
-        const id = this.state.groupId;
-        const participants = `${host}/api/groups/${id}/callParticipants/${userId}`;
-        this.axiosDel(participants, 'participants')
-    }
+    // deleteParticipant = (userId) => {
+    //     const id = this.state.groupId;
+    //     const participants = `${host}/api/groups/${id}/callParticipants/${userId}`;
+    //     this.axiosDel(participants, 'participants')
+    // }
 
-    checkIfOwner = async (id) => {
-        const groupOwners = `${host}/api/groups/${id}/groupOwners`;
+    checkIfOwner = id => {
         const userId = parseInt(localStorage.getItem('userId'));
-        try {
-            const res = await axios.get(groupOwners)
-            res.data[0].userId === userId 
+        axios
+            .get(`${host}/api/groups/${id}/groupOwners`)
+            .then(res => {
+                res.data[0].userId === userId 
                 ? this.setState({ isOwner: true })
-                : this.setState({ isOwner: false })
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-
+                : this.setState({ isOwner: false })               
+            })
+            .catch(() => this.setState({ isOwner: false }))
     }
 
-    axiosGet = async (call, key) => {
-        try {
-            const res = await axios.get(call)
-            this.setState({ [key]: res.data })
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-    }
+    // axiosGet = async (call, key) => {
+    //     try {
+    //         const res = await axios.get(call)
+    //         this.setState({ [key]: res.data })
+    //     } catch (err) {
+    //         this.setState({ error: err.response.data.message })
+    //     }
+    // }
 
-    axiosPost = async (call, key, post) => {
-        try {
-            const res = await axios.post(call, post)
-            this.setState({ [key]: res.data })
-            if (res.data.length > 0) {return true}
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-    }
+    // axiosPost = async (call, key, post) => {
+    //     try {
+    //         const res = await axios.post(call, post)
+    //         this.setState({ [key]: res.data })
+    //         if (res.data.length > 0) {return true}
+    //     } catch (err) {
+    //         this.setState({ error: err.response.data.message })
+    //     }
+    // }
 
-    axiosPut = async (call, key, changes) => {
-        try {
-            const res = await axios.put(call, changes)
-            this.setState({ [key]: res.data })
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-    }
+    // axiosPut = async (call, key, changes) => {
+    //     try {
+    //         const res = await axios.put(call, changes)
+    //         this.setState({ [key]: res.data })
+    //     } catch (err) {
+    //         this.setState({ error: err.response.data.message })
+    //     }
+    // }
 
-    axiosDel = async (call, key) => {
-        try {
-            const res = await axios.delete(call)
-            this.setState({ [key]: res.data })
-            return res.data
-        } catch (err) {
-            this.setState({ error: err.response.data.message })
-        }
-    }
+    // axiosDel = async (call, key) => {
+    //     try {
+    //         const res = await axios.delete(call)
+    //         this.setState({ [key]: res.data })
+    //         return res.data
+    //     } catch (err) {
+    //         this.setState({ error: err.response.data.message })
+    //     }
+    // }
 
     handleInputChange = e => {
         e.preventDefault()
@@ -225,13 +273,14 @@ class GroupChatroomView extends Component {
 
     render() {
 
-        let { user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
+        let { unAuth, user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
 
         return (
             <>
-                {error
-                    ? <h1>Error retrieving group!</h1>
-                    : <>
+                { unAuth ? <UnAuth/> : 
+                <>
+                { error ? <Error error={error}/> : 
+                    <>
                         <section className="container blog page-container">
                                                                
                             <div className="row">
@@ -249,15 +298,14 @@ class GroupChatroomView extends Component {
                             <div className="row">
                                 <div className="col-md-8">     
                                     <GroupChatroomCall
-                                        user={user}
                                         group={group}
                                         participants={participants}
+                                        // user={user}
                                         // handleCallButton={this.handleCallButton}
                                     />
 
                                     <GroupChatroomActivities
                                         activities={activities}
-                                        avatar={user.avatar}
                                     />
                                 </div>
 
@@ -292,21 +340,23 @@ class GroupChatroomView extends Component {
                                                     }
                                                 </span>
                                             </div>
+                                            <div className="btn-delete-margin">
                                             <DeleteModal 
                                                 deleteMessage={"Confirm your email"} 
-                                                target={this.state.groupId} 
-                                                targetName={this.state.user.email} 
+                                                target={groupId} 
+                                                targetName={user.email} 
                                                 handleTarget={this.deleteGroup} 
                                                 type={'Delete Group'}
-                                             />
+                                            />
+                                            </div>
 
                                         </>
                                         : 
                                         <>
                                             <DeleteModal 
                                                 deleteMessage={"Confirm the email"} 
-                                                target={this.state.groupId} 
-                                                targetName={this.state.user.email} 
+                                                target={groupId} 
+                                                targetName={user.email} 
                                                 handleTarget={this.leaveGroup} 
                                                 type={'Leave Group'}
                                              />
@@ -324,6 +374,7 @@ class GroupChatroomView extends Component {
 
                     </>
                 }
+                </>}
             </>
         );
     }

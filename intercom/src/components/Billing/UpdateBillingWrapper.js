@@ -8,8 +8,8 @@ class UpdateBillingWrapper extends Component {
             // StripeProvider initializes Stripe and passes in your publishable key. It’s 
             // equivalent to creating a Stripe instance with Stripe.js.
             <StripeProvider apiKey = {process.env.REACT_APP_PK_TEST} betas = {["payment_intent_beta_3"]}>
-                {/* <div style = {{border:'1px solid black'}}> */}
-                <div>
+                <div style = {{border:'1px solid black', width:'600px'}}>
+                {/* <div> */}
                     {/* The Elements component, which encloses the UpdateBilling component,
                       creates an Elements group. When you use multiple Elements components
                       instead of the combined CardElement, the Elements group indicates 
@@ -22,6 +22,7 @@ class UpdateBillingWrapper extends Component {
                     <Elements>
                         <UpdateBilling 
                             handleBillingUpdate = {this.props.handleBillingUpdate}
+                            toggleChangeBilling = {this.props.toggleChangeBilling}
                         />
                     </Elements>
 

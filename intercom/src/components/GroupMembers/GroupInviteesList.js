@@ -9,6 +9,8 @@ const GroupInviteesList = (props) => {
                 Group Invitees
             </h2>
 
+            { invitees.length === 0 ? <p className="no-groups">No group invitees at this time.</p> : <>
+
             <table className="table">
                 <thead>
                     <tr>
@@ -63,11 +65,11 @@ const GroupInviteesList = (props) => {
                             {isOwner ? 
                             <td align="center" valign="middle">   
                                 <button
-                                    className="btn rounded btn-cancel"
+                                    className="btn rounded btn-remove"
                                     type="button"
                                     onClick={(e) => removeInvitee(e, invitee.id, invitee.displayName)}
                                 >
-                                    Cancel
+                                    Remove
                                 </button>  
                             </td>
                             : null
@@ -77,6 +79,7 @@ const GroupInviteesList = (props) => {
                     )}
                 </tbody>
             </table>
+            </>}
         </>
     );
 }

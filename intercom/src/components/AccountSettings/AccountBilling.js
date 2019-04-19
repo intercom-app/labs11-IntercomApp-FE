@@ -33,14 +33,17 @@ const AccountBilling = (props) => {
 
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                            
                             <div className="pull-left">
-                                Account Balance: {props.accountBalance}
+                                {`Account Balance: $${props.accountBalance}`}
                             </div>
+                            
                             <div className="pull-right color-elements" onClick={props.toggleChangeAddToBalance}>
                                 {props.addToBalance
                                     ? 'Cancel'
                                     : 'Add Money'
                                 }
+                                
                             </div>
                         </div>
                     </div>
@@ -61,7 +64,7 @@ const AccountBilling = (props) => {
                         : null
                     }
 
-                    {/* ADD TO BALANCE */}
+
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                             <div className="pull-left">
@@ -73,12 +76,13 @@ const AccountBilling = (props) => {
                             <div className="pull-right color-elements" onClick={props.toggleChangeBilling}>
                                 {props.updateBilling
                                     ? 'Cancel'
-                                    : 'Update'
+                                    : 'Update Credit Card'
                                 }
                             </div>
 
                         </div>
                     </div>
+
 
                     {/* UPDATING PAYMENT INFO */}
                     {props.updateBilling
@@ -95,13 +99,17 @@ const AccountBilling = (props) => {
                         </div>
                         : null
                     }
+
+
+
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                             <div className="pull-left">
                                 <div style={{ display: "flex", flexDirection: "column" }}>
-                                    <button onClick={props.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
+                                    {/* <button onClick={props.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
                                     <button onClick={props.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>
                                     <button onClick={props.updateUserAccountBalance}>updateUserAccountBalance</button>
+                                    <button onClick={props.getAllTwilioCharges}>getAllTwilioCharges</button> */}
                                 </div>
                             </div>
                         </div>
