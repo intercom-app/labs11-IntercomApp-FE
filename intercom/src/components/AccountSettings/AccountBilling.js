@@ -35,7 +35,7 @@ const AccountBilling = (props) => {
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                             
                             <div className="pull-left">
-                                {`Account Balance: ${props.accountBalance}`}
+                                {`Account Balance: $${props.accountBalance}`}
                             </div>
                             
                             <div className="pull-right color-elements" onClick={props.toggleChangeAddToBalance}>
@@ -67,7 +67,7 @@ const AccountBilling = (props) => {
 
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                            <div >
+                            <div className="pull-left">
                                 {props.updateBilling
                                     ? <CurrentBilling1 last4={props.last4} />
                                     : <CurrentBilling2 last4={props.last4} />
@@ -76,7 +76,7 @@ const AccountBilling = (props) => {
                             <div className="pull-right color-elements" onClick={props.toggleChangeBilling}>
                                 {props.updateBilling
                                     ? 'Cancel'
-                                    : 'Update'
+                                    : 'Update Credit Card'
                                 }
                             </div>
 

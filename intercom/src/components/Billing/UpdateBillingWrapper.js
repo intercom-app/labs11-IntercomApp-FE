@@ -22,6 +22,7 @@ class UpdateBillingWrapper extends Component {
                     <Elements>
                         <UpdateBilling 
                             handleBillingUpdate = {this.props.handleBillingUpdate}
+                            toggleChangeBilling = {this.props.toggleChangeBilling}
                         />
                     </Elements>
 

@@ -8,7 +8,8 @@ class UpdateBilling extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            last4: ''
+            last4: '', 
+            errorMessage: ''
         }
     }
 
@@ -21,14 +22,17 @@ class UpdateBilling extends Component {
         
         try{
             const createSourceResponse = await this.props.stripe.createSource(sourceInfo);
+
+            if (createSourceResponse.error) {
+                this.setState({errorMessage:createSourceResponse.error.message})
+            }
             console.log('createSourceResponse: ', createSourceResponse);
             const source = createSourceResponse.source;
             console.log('source: ', source);
             return source;
         } catch(err) {
             console.log('err: ', err);
-            alert(err)
-            // return err
+            return err
         }
     }
 
@@ -44,6 +48,9 @@ class UpdateBilling extends Component {
                 'userStripeId':userStripeId,
                 'sourceId': source.id
             });
+            if (updatedSource.error) {
+                this.setState({errorMessage:updatedSource.error.message})
+            }
             console.log('updatedSource: ', updatedSource);
 
             const last4 = updatedSource.data.sources.data[0].card.last4;
@@ -53,7 +60,6 @@ class UpdateBilling extends Component {
             return updatedSource;
         } catch(err) {
             console.log('err: ', err);
-            Window.alert(err)
             return err
         }
     }
@@ -66,6 +72,8 @@ class UpdateBilling extends Component {
             // Step 2, update the customer's default source. 
             // const newDefaultSource = await this.updateDefaultSource(source);
             await this.updateDefaultSource(source);
+
+            this.props.toggleChangeBilling()
 
         } catch(err) {
             console.log('err: ', err)
@@ -81,6 +89,9 @@ class UpdateBilling extends Component {
                         <CardElement />
                     </div>
                     <button className="btn btn-default" type="button" onClick = {this.updateBilling}>Update</button>
+                    <div style = {{marginBottom:'10px'}}>
+                        {this.state.errorMessage}
+                    </div>
                 </div>
         )
     }
