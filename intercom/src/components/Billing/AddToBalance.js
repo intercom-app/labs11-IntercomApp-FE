@@ -72,27 +72,28 @@ class AddToBalance extends Component {
 
     render() {
         return (
-                // <div style = {{border:'1px solid blue', marginBottom:'100px'}}>
-                <div>
-                    <div>   
-                        <form onSubmit = {this.chargeAndAddToBalance}>
-                            <div style = {{border:'1px solid blue', marginBottom:'100px'}} className="form-group">
-                                Amount to add: $
-                                <input
-                                    type = 'number'
-                                    name = 'amountToAdd'
-                                    value = {this.state.amountToAdd}
-                                    onChange = {this.inputChangeHandler}
-                                />
-                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeCard </button>
-                            </div>
-                            <div style = {{marginBottom:'10px'}}>
-                                {this.state.errorMessage}
-                            </div>                            
-                        </form>
-                    </div>
-
-                </div>
+            <div className="input-group add-balance-div">
+                <input
+                    placeholder='Amount to add: $'
+                    type = 'number'
+                    name = 'amountToAdd'
+                    value = {this.state.amountToAdd}
+                    onChange = {this.inputChangeHandler}
+                    className='form-control add-balance-input'
+                />
+                <span className="input-group-btn">
+                    <button 
+                        className="btn btn-default" 
+                        onClick = {this.chargeAndAddToBalance} 
+                        type = 'submit'
+                        disabled={this.state.amountToAdd === 0}
+                    > Add 
+                    </button>
+                </span>
+                <div style = {{marginBottom:'10px'}}>
+                    {this.state.errorMessage}
+                </div>                            
+            </div>
         )
     }
 }

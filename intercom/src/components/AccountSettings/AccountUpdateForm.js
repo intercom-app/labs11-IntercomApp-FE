@@ -61,14 +61,14 @@ class AccountUpdateForm extends Component {
                                     value={this.state.displayName}
                                 />
                                 <span className="input-group-btn">
-                                <button 
-                                    className="btn btn-default" 
-                                    type="button"
-                                    onClick={this.updateUser}
-                                    disabled={this.state.displayName === ""}
-                                >
-                                    Update
-                                </button>
+                                    <button 
+                                        className="btn btn-default" 
+                                        type="button"
+                                        onClick={this.updateUser}
+                                        disabled={this.state.displayName === ""}
+                                    >
+                                        Update
+                                    </button>
                                 </span>
                             </div>
                         </div>

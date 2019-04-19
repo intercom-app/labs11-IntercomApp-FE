@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import host from "../../host.js";
 import axios from 'axios';
+import host from "../../host.js";
+
+import UnAuth from '../UnAuth/UnAuth';
 import AccountProfile from './AccountProfile';
 import Account from './Account';
 import AccountPlanDetails from './AccountPlanDetails';
 import AccountBilling from './AccountBilling';
 import Footer from '../LandingPage/Footer';
-
-
 
 
 class AccountSettings extends Component {
@@ -22,13 +22,36 @@ class AccountSettings extends Component {
             selectedFile: '',
             addToBalance:false,
             accountBalance: '',  
+            unAuth: false
         }
     }
 
     componentDidMount() {
         const id = localStorage.getItem('userId')
-        const userEndpoint = `${host}/api/users/${id}`;
+        this.checkIfUnAuth(id)
+        this.getUser(id);
 
+        const userEndpoint = `${host}/api/users/${id}`;
+        axios.get(`${userEndpoint}/last4`)
+            .then(res => {
+                this.setState({ last4: res.data.last4 })
+            })
+            .catch(err => {
+                console.log(err)
+            });
+
+    }
+
+    checkIfUnAuth = (id) => {
+        const userId = parseInt(id);
+        const paramsId = parseInt(this.props.match.params.id)
+        if (userId !== paramsId) {
+            this.setState({ unAuth: true })
+        }
+    }
+
+    getUser = (id) => {
+        const userEndpoint = `${host}/api/users/${id}`;
         axios.get(userEndpoint)
             .then(res => {
                 this.setState({ user: res.data })
@@ -72,6 +95,7 @@ class AccountSettings extends Component {
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
+            console.log(res)
             if(res.status === 200) {
                 const userData = {
                     avatar: res.data.image
@@ -90,7 +114,6 @@ class AccountSettings extends Component {
 
     }
 
-    
     toggleChangeImage = () => {
         this.setState(prevState => ({
             updateUserImage: !prevState.updateUserImage
@@ -131,7 +154,7 @@ class AccountSettings extends Component {
             .catch(err => console.log(err))
     }
     handleAddToBalance = () => {
-        const id = this.state.user.id
+        // const id = this.state.user.id
         // axios
         //     .get(`${host}/api/users/${id}/last4`)
         //     .then(res => this.setState({last4:res.data.last4}))
@@ -172,7 +195,7 @@ class AccountSettings extends Component {
 
     getSumOfGroupTwilioCharges = async(groupId) => {
         try {
-            console.log("groupId: ", groupId);
+            // console.log("groupId: ", groupId);
             const groupTwilioChargesRes = await axios.post(`${host}/api/billing/groupTwilioCharges`, {'groupId':groupId});        
             // console.log("groupTwilioChargesRes: ", groupTwilioChargesRes);
 
@@ -195,7 +218,7 @@ class AccountSettings extends Component {
             const userOwnedGroupsIds = userOwnedGroups.map(group => {
                 return group.groupId
             })
-            console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
+            // console.log("userOwnedGroupsIds: ", userOwnedGroupsIds);
 
             let sumOfUserTwilioCharges = 0;
 
@@ -204,20 +227,19 @@ class AccountSettings extends Component {
             }
             // console.log("sumOfUserTwilioCharges (exact): ", sumOfUserTwilioCharges);
             sumOfUserTwilioCharges = Math.round(sumOfUserTwilioCharges*100)/100;
-            console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
+            // console.log("sumOfUserTwilioCharges (rounded): ", sumOfUserTwilioCharges);
             return sumOfUserTwilioCharges
 
         } catch(err) {
             console.log(err)
         }
     }
-
     
     getSumOfUserStripeCharges = async() => {
         const id = this.state.user.id
         try {
             const userRes= await axios.get(`${host}/api/users/${id}`);
-            const user = userRes.data;
+            // const user = userRes.data;
             const stripeId = userRes.data.stripeId;
             // console.log('stripeId: ', stripeId);
 
@@ -226,7 +248,7 @@ class AccountSettings extends Component {
             let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
             // console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
             sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges*100)/10000; //in dollars
-            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
+            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
             return sumOfUserStripeCharges
 
         } catch(err) {
@@ -248,13 +270,13 @@ class AccountSettings extends Component {
         const id = this.state.user.id
         try{
             const sumOfUserStripeCharges = await this.getSumOfUserStripeCharges();
-            console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
+            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
 
             const sumOfUserTwilioCharges = await this.getSumOfUserTwilioCharges();
-            console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
+            // console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
 
             const updatedAccountBalance = sumOfUserTwilioCharges + sumOfUserStripeCharges;
-            console.log('updatedAccountBalance: ', updatedAccountBalance);
+            // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
             await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
             this.setState({'accountBalance':updatedAccountBalance});
@@ -265,10 +287,12 @@ class AccountSettings extends Component {
 
     render() {
 
-        const { user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
+        const { unAuth, user, updateUserName, updateBilling, addToBalance, accountBalance, last4, updateUserImage } = this.state
 
         return (
             <>
+                { unAuth ? <UnAuth/> : 
+                <>
                 <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
@@ -314,6 +338,7 @@ class AccountSettings extends Component {
                 </div>
 
                 <Footer/>
+                </>}
             </>
         );
     }
