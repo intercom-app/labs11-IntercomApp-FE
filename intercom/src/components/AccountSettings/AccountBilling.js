@@ -2,22 +2,6 @@ import React from "react";
 import UpdateBillingWrapper from '../Billing/UpdateBillingWrapper.js';
 import AddToBalanceWrapper from '../Billing/AddToBalanceWrapper.js';
 
-const CurrentBilling1 = (props) => {
-    return (
-        <div className="pull-left" style={{ display: "none" }} >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
-const CurrentBilling2 = (props) => {
-    return (
-        <div className="pull-left" >
-            {`•••• •••• •••• ${props.last4}`}
-        </div>
-    )
-}
-
 const AccountBilling = (props) => {
 
         return(
@@ -30,20 +14,16 @@ const AccountBilling = (props) => {
                         </h3>
                     </div>
 
-
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                            
                             <div className="pull-left">
                                 {`Account Balance: $${props.accountBalance}`}
                             </div>
-                            
                             <div className="pull-right color-elements" onClick={props.toggleChangeAddToBalance}>
                                 {props.addToBalance
                                     ? 'Cancel'
                                     : 'Add Money'
                                 }
-                                
                             </div>
                         </div>
                     </div>
@@ -64,14 +44,13 @@ const AccountBilling = (props) => {
                         : null
                     }
 
-
                     <div className="col-md-8">
                         <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                             <div className="pull-left">
-                                {props.updateBilling
-                                    ? <CurrentBilling1 last4={props.last4} />
-                                    : <CurrentBilling2 last4={props.last4} />
-                                }
+                                <div className="pull-left" style={props.updateBilling ? { display: "none" } : null} >
+                                    {props.last4 === null ?
+                                        `No credit card on file` : `•••• •••• •••• ${props.last4}`}
+                                </div> 
                             </div>
                             <div className="pull-right color-elements" onClick={props.toggleChangeBilling}>
                                 {props.updateBilling
@@ -79,17 +58,16 @@ const AccountBilling = (props) => {
                                     : 'Update Credit Card'
                                 }
                             </div>
-
                         </div>
                     </div>
-
 
                     {/* UPDATING PAYMENT INFO */}
                     {props.updateBilling
                         ?
-                        <div className="col-md-8">
+                        <div className="col-md-8 fl-r">
                             <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
                                 <div className="pull-left">
+                                    {`•••• •••• •••• ${props.last4}`}
                                     <UpdateBillingWrapper
                                         handleBillingUpdate={props.handleBillingUpdate}
                                         toggleChangeBilling={props.toggleChangeBilling}
@@ -99,22 +77,6 @@ const AccountBilling = (props) => {
                         </div>
                         : null
                     }
-
-
-
-                    <div className="col-md-8">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                            <div className="pull-left">
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    {/* <button onClick={props.getSumOfUserTwilioCharges}>getSumOfUserTwilioCharges</button>
-                                    <button onClick={props.getSumOfUserStripeCharges}>getSumOfUserStripeCharges</button>
-                                    <button onClick={props.updateUserAccountBalance}>updateUserAccountBalance</button>
-                                    <button onClick={props.getAllTwilioCharges}>getAllTwilioCharges</button> */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         )
