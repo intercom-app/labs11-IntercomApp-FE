@@ -10,8 +10,8 @@ class CallParticipants extends Component {
     interval = 0
 
     componentDidMount() {
-        // Get Call Participants every 3 seconds in case call happens while on page
-        this.interval = setInterval(() => this.getParticipants(), 3000);
+        // Get Call Participants every second in case call happens while on page
+        this.interval = setInterval(() => this.getParticipants(), 1000);
     }
 
     componentWillUnmount() {

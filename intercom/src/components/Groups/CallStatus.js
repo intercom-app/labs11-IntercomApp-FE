@@ -10,8 +10,8 @@ class CallStatus extends Component {
     interval = 0
 
     componentDidMount() {
-        // Get Call Status every 3 seconds in case call happens while on page
-        this.interval = setInterval(() => this.getCallStatus(), 3000);
+        // Get Call Status every second in case call happens while on page
+        this.interval = setInterval(() => this.getCallStatus(), 1000);
     }
 
     componentWillUnmount() {
