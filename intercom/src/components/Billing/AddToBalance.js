@@ -53,7 +53,6 @@ class AddToBalance extends Component {
                 console.log('errorMessage: ',chargeResponse.data.message)
                 this.setState({errorMessage:chargeResponse.data.message})
             } 
-
             
             if (chargeResponse.data.charge.status === "succeeded") {
                 // console.log('charge suceeded!');
@@ -65,14 +64,11 @@ class AddToBalance extends Component {
                 console.log('else')
                 this.setState({errorMessage:chargeResponse.data.message})
             }
-
-
         } catch(err) {
             console.log('err: ', err);
             return err
         }
     }
-
 
     render() {
         return (
