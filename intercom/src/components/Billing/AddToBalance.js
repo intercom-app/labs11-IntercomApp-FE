@@ -45,9 +45,7 @@ class AddToBalance extends Component {
                 'sourceId': defaultSourceId,
                 'amountToAdd': this.state.amountToAdd*100
             })
-            // if (chargeResponse.error) {
-            //     this.setState({errorMessage:chargeResponse.error.message})
-            // }
+
             console.log('chargeResponse: ', chargeResponse);
             console.log('chargeResponse: ', chargeResponse.data);
 
@@ -59,17 +57,6 @@ class AddToBalance extends Component {
             
             if (chargeResponse.data.charge.status === "succeeded") {
                 // console.log('charge suceeded!');
-
-                // // // // ORIGINAL APPROACH
-                // const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
-                // let accountBalance = accountBalanceCall.data.accountBalance;
-                // // console.log('accountBalance old: ', accountBalance);
-                // accountBalance = accountBalance + chargeResponse.data.charge.amount;
-                // // console.log('accountBalance new: ', accountBalance);  
-
-                // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // // console.log('addToBalanceResponse: ', addToBalanceResponse);
                 
                 this.props.updateUserAccountBalance()
                 this.setState({amountToAdd:0})
