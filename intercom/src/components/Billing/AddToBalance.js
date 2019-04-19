@@ -14,6 +14,7 @@ class AddToBalance extends Component {
         super(props);
         this.state = {
             amountToAdd:0,
+            errorMessage: ''
         };
     }
 
@@ -42,10 +43,20 @@ class AddToBalance extends Component {
             const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
                 'userStripeId':userStripeId,
                 'sourceId': defaultSourceId,
-                'amountToAdd': this.state.amountToAdd
+                'amountToAdd': this.state.amountToAdd*100
             })
-            // console.log('chargeResponse: ', chargeResponse);
+            // if (chargeResponse.error) {
+            //     this.setState({errorMessage:chargeResponse.error.message})
+            // }
+            console.log('chargeResponse: ', chargeResponse);
+            console.log('chargeResponse: ', chargeResponse.data);
 
+            if (chargeResponse.data.type === "StripeInvalidRequestError") {
+                console.log('errorMessage: ',chargeResponse.data.message)
+                this.setState({errorMessage:chargeResponse.data.message})
+            } 
+
+            
             if (chargeResponse.data.charge.status === "succeeded") {
                 // console.log('charge suceeded!');
 
@@ -54,17 +65,23 @@ class AddToBalance extends Component {
                 // let accountBalance = accountBalanceCall.data.accountBalance;
                 // // console.log('accountBalance old: ', accountBalance);
                 // accountBalance = accountBalance + chargeResponse.data.charge.amount;
-                // // console.log('accountBalance new: ', accountBalance);
+                // // console.log('accountBalance new: ', accountBalance);  
 
                 // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
                 // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
                 // // console.log('addToBalanceResponse: ', addToBalanceResponse);
                 
                 this.props.updateUserAccountBalance()
+                this.setState({amountToAdd:0})
+                this.props.toggleChangeAddToBalance()
+            } else {
+                console.log('else')
+                this.setState({errorMessage:chargeResponse.data.message})
             }
 
+
         } catch(err) {
-            // console.log('err: ', err);
+            console.log('err: ', err);
             return err
         }
     }
@@ -74,28 +91,20 @@ class AddToBalance extends Component {
         return (
                 // <div style = {{border:'1px solid blue', marginBottom:'100px'}}>
                 <div>
-                    <div>
+                    <div>   
                         <form onSubmit = {this.chargeAndAddToBalance}>
                             <div style = {{border:'1px solid blue', marginBottom:'100px'}} className="form-group">
-                                Amount to add: 
-                                <select className="form-control">
-                                    <option onClick = {e => this.setState({amountToAdd:200})}>200</option>
-                                    <option>5</option>
-                                    <option>10</option>
-                                    <option>15</option>
-                                    <option>20</option>
-                                    <option>25</option>
-                                    <option>30</option>
-                                    <option>35</option>
-                                    <option>40</option>
-                                </select>
+                                Amount to add: $
                                 <input
                                     type = 'number'
                                     name = 'amountToAdd'
                                     value = {this.state.amountToAdd}
                                     onChange = {this.inputChangeHandler}
                                 />
-                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeAndAddToBalance </button>
+                                <button onClick = {this.chargeAndAddToBalance} type = 'submit'> chargeCard </button>
+                            </div>
+                            <div style = {{marginBottom:'10px'}}>
+                                {this.state.errorMessage}
                             </div>                            
                         </form>
                     </div>
