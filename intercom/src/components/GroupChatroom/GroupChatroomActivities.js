@@ -1,6 +1,30 @@
 import React, { Component } from 'react';
+import host from "../../host.js";
+import axios from 'axios';
 
 class GroupChatroomActivities extends Component {
+    state = {
+        activities: [],
+    }
+
+    interval = 0
+
+    componentDidMount() {
+        this.getActivities()
+        // Get Activities when component mounts and every 5 seconds while on page
+        this.interval = setInterval(() => this.getActivities(), 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    getActivities = () => {
+        axios
+            .get(`${host}/api/groups/${this.props.groupId}/activities`)
+            .then(res => this.setState({ activities: res.data }))
+            .catch(() => this.setState({ activities: [] }))
+    }
 
     getDateTime = (date) => {
         const today = new Date().toLocaleDateString(undefined, {
@@ -32,7 +56,6 @@ class GroupChatroomActivities extends Component {
     }
 
     render() {
-        const { activities } = this.props
         return (
             <>
             <h2 className="page-header sidebar-title page-header-noborder page-header-table">
@@ -42,7 +65,7 @@ class GroupChatroomActivities extends Component {
             <div>
                 <table className="table">
                     <tbody className="act-chatroom">
-                        {activities.map(activity =>
+                        {this.state.activities.map(activity =>
                             <tr key={activity.id}>
                                 <td align="center">
                                     <img 

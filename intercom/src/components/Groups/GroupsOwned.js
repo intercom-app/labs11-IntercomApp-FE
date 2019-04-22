@@ -47,7 +47,7 @@ class GroupsOwned extends Component {
                                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <Link to={`/group/${group.groupId}`} >
                                         <h3 className="blog-title">
-                                            {group.GroupName}
+                                            {group.groupName}
                                         </h3>
                                     </Link>
                                 </div>

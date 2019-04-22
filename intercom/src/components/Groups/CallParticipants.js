@@ -3,37 +3,32 @@ import host from "../../host.js";
 import axios from 'axios';
 
 class CallParticipants extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            callParticipants: []
-         }
+    state = { 
+        callParticipants: []
     }
 
+    interval = 0
+
     componentDidMount() {
-        this.getParticipants();
+        // Get Call Participants every second in case call happens while on page
+        this.interval = setInterval(() => this.getParticipants(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     getParticipants = () => {
-        const callParticipants = `${host}/api/groups/${this.props.groupId}/callParticipants`;
-        axios.get(callParticipants)
-            .then(res => {
-                this.setState({ callParticipants: res.data })
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.response.data.message,
-                    callParticipants: []
-                });
-            });
+        axios.get(`${host}/api/groups/${this.props.groupId}/callParticipants`)
+            .then(res =>  this.setState({ callParticipants: res.data }))
+            .catch(() => this.setState({ callParticipants: [] })); // if error default to none
     }
 
     render() { 
         return ( 
             <>
-                {this.state.callParticipants.length === 0
-                ? null
-                : <>On Call:  {this.state.callParticipants.length}</>
+                {this.state.callParticipants.length === 0 ? null : 
+                <>On Call:  {this.state.callParticipants.length}</>
                 }
             </>
         );
