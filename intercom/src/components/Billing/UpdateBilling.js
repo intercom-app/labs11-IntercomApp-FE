@@ -80,13 +80,13 @@ class UpdateBilling extends Component {
     //     }
     // }
 
-    updateCreditCardIOS = async() => {
+    updateCreditCard = async() => {
         const userId = localStorage.getItem('userId');
         try{
             const source = await this.createSource();
             // console.log('source: ', source);
             
-            const updateCreditCardRes = await axios.post(`http://localhost:3300/api/billing/updateCreditCardIOS`, {'userId': userId, 'source':source});
+            const updateCreditCardRes = await axios.post(`http://localhost:3300/api/billing/updateCreditCard`, {'userId': userId, 'source':source});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
 
             this.props.handleBillingUpdate();
@@ -115,7 +115,7 @@ class UpdateBilling extends Component {
                     <button 
                         className="btn btn-default" 
                         type="button" 
-                        onClick = {this.updateCreditCardIOS}
+                        onClick = {this.updateCreditCard}
                         disabled={this.state.last4 === null}>
                         Update
                     </button>

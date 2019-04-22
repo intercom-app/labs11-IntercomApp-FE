@@ -91,13 +91,13 @@ class AddToBalance extends Component {
     //     }
     // }
 
-    chargeCreditCardAndUpdateAccountBalanceIOS = async(req,res) => {
+    chargeCreditCardAndUpdateAccountBalance = async(req,res) => {
         const userId = localStorage.getItem('userId');
         console.log('userId: ', userId);
         try{
             // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
             const amountToAdd = this.state.amountToAdd // in dollars
-            const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoneyIOS`,{'userId':userId, 'amountToAdd':amountToAdd});
+            const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
             // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
 
             if (addMoneyIOSRes.data.errorMessage) {
@@ -143,7 +143,7 @@ class AddToBalance extends Component {
                 <span className="input-group-btn">
                     <button 
                         className="btn btn-default" 
-                        onClick = {this.chargeCreditCardAndUpdateAccountBalanceIOS} 
+                        onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
                         type = 'submit'
                         disabled={this.state.amountToAdd === 0}
                     > Add 
