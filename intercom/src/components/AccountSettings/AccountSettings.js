@@ -242,7 +242,6 @@ class AccountSettings extends Component {
     //     }
     // }
     
-<<<<<<< HEAD
     // getSumOfUserStripeCharges = async() => {
     //     const id = this.state.user.id
     //     try {
@@ -290,57 +289,6 @@ class AccountSettings extends Component {
     //         console.log(err)
     //     }
     // }
-=======
-    getSumOfUserStripeCharges = async() => {
-        const id = this.state.user.id
-        try {
-            const userRes= await axios.get(`${host}/api/users/${id}`);
-            // const user = userRes.data;
-            const stripeId = userRes.data.stripeId;
-            // console.log('stripeId: ', stripeId);
-
-            const userStripeChargesRes = await axios.post(`${host}/api/billing/userStripeCharges`, {'stripeId': stripeId});
-            
-            let sumOfUserStripeCharges = userStripeChargesRes.data.sumOfUserStripeCharges; // in cents
-            // console.log('sumOfUserStripeCharges [cents]: ', userStripeChargesRes.data.sumOfUserStripeCharges); // in cents
-            sumOfUserStripeCharges = Math.round(sumOfUserStripeCharges*100)/10000; //in dollars
-            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges); //in dollars
-            return sumOfUserStripeCharges
-
-        } catch(err) {
-            console.log(err)
-        }
-    }
-
-    getAllTwilioCharges = async() => {
-        try {
-            const allTwilioChargesRes = await axios.get(`${host}/api/billing/allTwilioCharges`);
-            // let allTwilioCharges = allTwilioChargesRes.data.allTwilioCharges;
-            console.log('allTwilioCharges: ', allTwilioChargesRes);
-        } catch(err) {
-            console.log('err: ', err)
-        }
-    }
-
-    updateUserAccountBalance = async() => {
-        const id = this.state.user.id
-        try{
-            const sumOfUserStripeCharges = await this.getSumOfUserStripeCharges();
-            // console.log('sumOfUserStripeCharges [dollars]: ', sumOfUserStripeCharges);
-
-            const sumOfUserTwilioCharges = await this.getSumOfUserTwilioCharges();
-            // console.log('sumOfUserTwilioCharges: ', sumOfUserTwilioCharges);
-
-            const updatedAccountBalance = sumOfUserTwilioCharges + sumOfUserStripeCharges;
-            // console.log('updatedAccountBalance: ', updatedAccountBalance);
-
-            await axios.put(`${host}/api/users/${id}/accountBalance`,{accountBalance:updatedAccountBalance});
-            this.setState({'accountBalance':updatedAccountBalance});
-        } catch(err) {
-            console.log(err)
-        }
-    }
->>>>>>> 91413a37673191645c297e7ec93339fde437a0ba
 
     render() {
 
