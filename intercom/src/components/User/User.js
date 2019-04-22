@@ -14,135 +14,113 @@ import Footer from "../LandingPage/Footer";
 class User extends Component {
     state = {
         user: {},
+        groupsOwned: [],
         groupsBelongedTo: [],
         groupsInvitedTo: [],
-        groupsOwned: [],
-        activities: [],
+        recentActivities: [],
         unAuth: false,
         error: false,
     }
 
-    componentDidMount() {
-        const id = localStorage.getItem('userId')
-        this.checkIfUnAuth(id)
-        this.getUser(id);
-        this.getGroupsOwned(id);
-        // Groups belonged to is called after groups owned
-        // Groups invited to is called after groups belonged to
+    interval = 0
 
+    componentDidMount() {
+        this.checkIfUnAuth()
+        this.getUserDetailed();
+        // Get User Data when component mounts and every 30 seconds while on page
+        this.interval = setInterval(() => this.getUserDetailed(), 30000);
     }
 
-    checkIfUnAuth = (id) => {
-        const userId = parseInt(id);
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    checkIfUnAuth = () => {
+        const userId = parseInt(localStorage.getItem('userId'));
         const paramsId = parseInt(this.props.match.params.id)
         if (userId !== paramsId) {
             this.setState({ unAuth: true })
         }
     }
 
-    getUser = (id) => {
-        const userEndpoint = `${host}/api/users/${id}`;
+    getUserDetailed = () => {
+        const id = localStorage.getItem('userId')
+        const userEndpoint = `${host}/api/users/${id}/detailed`;
         axios.get(userEndpoint)
             .then(res => {
-                this.setState({ user: res.data })
+                this.setState({ user: res.data });
+                this.getGroupsOwned(res.data);
+                this.getGroupsBelongedTo(res.data);
+                this.getGroupsInvitedTo(res.data);
+                this.getRecentActivity(res.data);
             })
             .catch(err => {
                 this.setState({
                     error: {code: err.response.status, message: err.response.statusText},
                     user: {},
+                    groupsOwned: [],
+                    groupsBelongedTo: [],
+                    groupsInvitedTo: [],
+                    recentActivities: [],
+                    unAuth: false,
                 });
             });
     }
 
-    getGroupsOwned = (id) => {
-        const groupsOwned = `${host}/api/users/${id}/groupsOwned`;
-
-        axios.get(groupsOwned)
-            .then(res => {
-                this.setState({ groupsOwned: res.data })
-                this.getGroupsBelongedTo(id, res.data);
-                this.getRecentActivity(res.data);
-            })
-            .catch(() => this.setState({ groupsOwned: [] }));
+    getGroupsOwned = (user) => {
+        // Sort groups owned by when the ownership was created 
+        let groupsOwned = [...user.groupsOwned].sort((a, b) => new Date(a.ownershipCreatedAt) - new Date(b.ownershipCreatedAt))
+        this.setState({ groupsOwned })
     }
 
-    getGroupsBelongedTo = (id, groupsOwned) => {
-        const groupsBelongedTo = `${host}/api/users/${id}/groupsBelongedTo`;
+    getGroupsBelongedTo = (user) => {
+        // Filter out groups owned
+        const groupsOwnedIds = user.groupsOwned.map(group => group.groupId);
+        const groupsNotOwned = user.groupsBelongedTo.filter(group => 
+            !groupsOwnedIds.includes(group.groupId)
+        )
 
-        axios.get(groupsBelongedTo)
-            .then(res => {
-                const groupsOwnedIds = groupsOwned.map(group => group.groupId);
-                const groupsNotOwned = res.data.filter(group => 
-                    !groupsOwnedIds.includes(group.groupId)
-                )
-                this.setState({ groupsBelongedTo: groupsNotOwned })
-                this.getGroupsInvitedTo(id, groupsNotOwned);
-                this.getRecentActivity(groupsNotOwned);
-            })
-            .catch(() => this.setState({ groupsBelongedTo: [] }));
+        // Sort groups belonged to by when the membership was created 
+        const groupsBelongedTo = [...groupsNotOwned].sort((a, b) => new Date(a.membershipCreatedAt) - new Date(b.membershipCreatedAt))
+        this.setState({ groupsBelongedTo })
     }
 
-    getGroupsInvitedTo = (id, groupsBelongedTo) => {
-        const groupsInvitedTo = `${host}/api/users/${id}/groupsInvitedTo`;
-        axios.get(groupsInvitedTo)
-            .then(res => {
-                const groupsBelongedToIds = groupsBelongedTo.map(group => group.groupId);
-                const groupsNotBelongedTo = res.data.filter(group => 
-                    !groupsBelongedToIds.includes(group.groupId)
-                )
-                this.getOwners(groupsNotBelongedTo);
-                this.getRecentActivity(groupsNotBelongedTo);
-            })
-            .catch(() => this.setState({ groupsInvitedTo: [] }));
+    getGroupsInvitedTo = (user) => {
+        // Filter out groups belonged to 
+        const groupsBelongedToIds = user.groupsBelongedTo.map(group => group.groupId);
+        const groupsNotBelongedTo = user.groupsInvitedTo.filter(group => 
+            !groupsBelongedToIds.includes(group.groupId)
+        )
+
+        // Sort groups belonged to by when the invitation was created 
+        const groupsInvitedTo = [...groupsNotBelongedTo].sort((a, b) => new Date(a.inviteCreatedAt) - new Date(b.inviteCreatedAt))
+        this.setState({ groupsInvitedTo })
     }
 
-    getOwners = (groups) => {
-        if (groups.length > 0) {
-            groups.forEach(group => {
-                axios.get(`${host}/api/groups/${group.groupId}/groupOwners`)
-                .then(res => {
-                    let groupsInvitedTo = [];
-                    const groupWithOwner = {...group, groupOwner: res.data[0].displayName}
-                    const groupsWithOwner = groupsInvitedTo.concat(groupWithOwner)
+    getRecentActivity = (user) => {
+        let activities = [];
+        // Collect every activity from each group and add group info to activities 
+        user.groupsOwned.forEach(group => group.activities.forEach(activity => 
+            activities.push({...activity, groupId: group.groupId, groupName: group.groupName})
+        ));
+        user.groupsBelongedTo.forEach(group => group.activities.forEach(activity => 
+            activities.push({...activity, groupId: group.groupId, groupName: group.groupName})
+        ));
+        user.groupsInvitedTo.forEach(group => group.activities.forEach(activity => 
+            activities.push({...activity, groupId: group.groupId, groupName: group.groupName})
+        )); 
 
-                    // const filteredGroups = groupsWithOwner.filter((group, index, self) =>
-                    //     index === self.findIndex((i) => ( i.groupId === group.groupId ))
-                    // )
+        // Filter out duplicates
+        const filteredActivities = activities.filter((activity, index, self) =>
+            index === self.findIndex((i) => ( i.activityId === activity.activityId ))
+        )
 
-                    this.setState({ groupsInvitedTo: groupsWithOwner });
-                })
-                .catch(() => this.setState({ groupsInvitedTo: [] }));
-            })
-        } else {
-            this.setState({ groupsInvitedTo: [] });           
-        }
-    }
+        // Sort Activities by latest activity first
+        filteredActivities.sort((a, b) => new Date(b.activityCreatedAt) - new Date(a.activityCreatedAt) )
 
-    getRecentActivity = (groups) => {
-        groups.forEach(group => {
-            axios.get(`${host}/api/groups/${group.groupId}/activities`)
-            .then(res => {
-                const activities = res.data.map( activity => {
-                    return {...activity, groupId: group.groupId, groupName: group.GroupName}
-                })
-                const updatedActivities = this.state.activities.concat(activities)
-
-                const filteredActivities = updatedActivities.filter((activity, index, self) =>
-                    index === self.findIndex((i) => ( i.id === activity.id ))
-                )
-
-                filteredActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt) )
-                this.setState({ activities: filteredActivities });
-            })
-            .catch(() => this.setState({ activities: [] }));
-        })
-    }
-
-    updateGroups = () => {
-        const id = localStorage.getItem('userId')
-        this.getGroupsOwned(id);
-        // Groups belonged to is called after groups owned
-        // Groups invited to is called after groups belonged to
+        // Take latest 5 actvities
+        const recentActivities = filteredActivities.slice(0, 5)
+        this.setState({ recentActivities })
     }
 
     getDateTime = (date) => {
@@ -175,9 +153,8 @@ class User extends Component {
     }
 
     render() {
-        let { unAuth, error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, activities } = this.state
+        let { unAuth, error, user, groupsOwned, groupsBelongedTo, groupsInvitedTo, recentActivities } = this.state
         const avatar = user.avatar || require('../../images/avatar1.png');    
-        const recentActivities = activities.slice(0, 5)
         return (
             <>
                 { unAuth ? <UnAuth auth={this.props.auth}/> : 
@@ -201,12 +178,12 @@ class User extends Component {
                                     <GroupsBelonged groupsBelonged={groupsBelongedTo} />
                                     <GroupsInvited 
                                         groupsInvited={groupsInvitedTo} 
-                                        updateGroups={this.updateGroups}
+                                        getUserDetailed={this.getUserDetailed}
                                     />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
-                                    <GroupForm updateGroups={this.updateGroups} />
+                                    <GroupForm updateGroups={this.getUserDetailed} />
                                     <RecentActivity 
                                         recentActivities={recentActivities} 
                                         getDateTime={this.getDateTime}
