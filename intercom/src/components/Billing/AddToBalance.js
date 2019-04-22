@@ -24,67 +24,100 @@ class AddToBalance extends Component {
         this.setState({[name]: value});
     }
 
-    chargeAndAddToBalance = async(e) => {
-        e.preventDefault();
+    // chargeAndAddToBalance = async(e) => {
+    //     e.preventDefault();
 
-        const userId = localStorage.getItem('userId');
-        // console.log('userId: ', userId);
-        try {
-            const res = await axios.get(`${host}/api/users/${userId}`);
-            const userStripeId = res.data.stripeId;
-            // console.log('userStripeId: ', userStripeId);
+    //     const userId = localStorage.getItem('userId');
+    //     // console.log('userId: ', userId);
+    //     try {
+    //         const res = await axios.get(`${host}/api/users/${userId}`);
+    //         const userStripeId = res.data.stripeId;
+    //         // console.log('userStripeId: ', userStripeId);
 
-            const customerStripeInfo = await axios.post(`${host}/api/billing/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
-            // console.log('customerStripeInfo: ', customerStripeInfo);
-            const defaultSourceId = customerStripeInfo.data.defaultSourceId;
-            // console.log('defaultSourceId: ', defaultSourceId);
+    //         const customerStripeInfo = await axios.post(`${host}/api/billing/retrieveCustomerDefaultSource`,{'userStripeId':userStripeId});
+    //         // console.log('customerStripeInfo: ', customerStripeInfo);
+    //         const defaultSourceId = customerStripeInfo.data.defaultSourceId;
+    //         // console.log('defaultSourceId: ', defaultSourceId);
 
-            // TESTING - Soon to be phased out (but working) credit card charging method
-            const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
-                'userStripeId':userStripeId,
-                'sourceId': defaultSourceId,
-                'amountToAdd': this.state.amountToAdd*100
-            })
-            // if (chargeResponse.error) {
-            //     this.setState({errorMessage:chargeResponse.error.message})
-            // }
-            // console.log('chargeResponse: ', chargeResponse);
-            // console.log('chargeResponse: ', chargeResponse.data);
+    //         // TESTING - Soon to be phased out (but working) credit card charging method
+    //         const chargeResponse = await axios.post(`${host}/api/billing/createCharge`, {
+    //             'userStripeId':userStripeId,
+    //             'sourceId': defaultSourceId,
+    //             'amountToAdd': this.state.amountToAdd*100
+    //         })
+    //         // if (chargeResponse.error) {
+    //         //     this.setState({errorMessage:chargeResponse.error.message})
+    //         // }
+    //         // console.log('chargeResponse: ', chargeResponse);
+    //         // console.log('chargeResponse: ', chargeResponse.data);
 
-            if (chargeResponse.data.type === "StripeInvalidRequestError") {
-                console.log('errorMessage: ',chargeResponse.data.message)
-                this.setState({errorMessage:chargeResponse.data.message})
-            } 
+    //         if (chargeResponse.data.type === "StripeInvalidRequestError") {
+    //             console.log('errorMessage: ',chargeResponse.data.message)
+    //             this.setState({errorMessage:chargeResponse.data.message})
+    //         } 
 
+    //         // if (chargeResponse.data.errorMessage) {
+    //         //     console.log('errorMessage: ',chargeResponse.data.message)
+    //         //     this.setState({errorMessage:chargeResponse.data.message})
+    //         // }
             
-            if (chargeResponse.data.charge.status === "succeeded") {
-                // console.log('charge suceeded!');
+    //         if (chargeResponse.data.charge.status === "succeeded") {
+    //             // console.log('charge succeeded!');
 
-                // // // // ORIGINAL APPROACH
-                // const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
-                // let accountBalance = accountBalanceCall.data.accountBalance;
-                // // console.log('accountBalance old: ', accountBalance);
-                // accountBalance = accountBalance + chargeResponse.data.charge.amount;
-                // // console.log('accountBalance new: ', accountBalance);  
+    //             // // // // ORIGINAL APPROACH
+    //             // const accountBalanceCall = await axios.get(`${host}/api/users/${userId}/accountBalance`);
+    //             // let accountBalance = accountBalanceCall.data.accountBalance;
+    //             // // console.log('accountBalance old: ', accountBalance);
+    //             // accountBalance = accountBalance + chargeResponse.data.charge.amount;
+    //             // // console.log('accountBalance new: ', accountBalance);  
 
-                // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
-                // // console.log('addToBalanceResponse: ', addToBalanceResponse);
+    //             // // const addToBalanceResponse = await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+    //             // await axios.put(`${host}/api/users/${userId}/accountBalance`, {accountBalance:accountBalance});
+    //             // // console.log('addToBalanceResponse: ', addToBalanceResponse);
                 
-                this.props.updateUserAccountBalance()
-                this.setState({amountToAdd:0})
-                this.props.toggleChangeAddToBalance()
-            } else {
-                console.log('else')
-                this.setState({errorMessage:chargeResponse.data.message})
-            }
+    //             this.props.updateUserAccountBalance()
+    //             this.setState({amountToAdd:0})
+    //             this.props.toggleChangeAddToBalance()
+    //             this.props.handleAddToBalance();
+    //         } else {
+    //             console.log('else')
+    //             this.setState({errorMessage:chargeResponse.data.message})
+    //         }
 
+
+    //     } catch(err) {
+    //         console.log('err: ', err);
+    //         return err
+    //     }
+    // }
+
+    chargeCreditCardAndUpdateAccountBalanceIOS = async(req,res) => {
+        const userId = localStorage.getItem('userId');
+        console.log('userId: ', userId);
+        try{
+            // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
+            const amountToAdd = this.state.amountToAdd // in dollars
+            const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoneyIOS`,{'userId':userId, 'amountToAdd':amountToAdd});
+            // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
+
+            if (addMoneyIOSRes.data.errorMessage) {
+                // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
+                this.setState({errorMessage:addMoneyIOSRes.data.errorMessage});
+                console.log('this.state.errorMessage: ',this.state.errorMessage )
+            };
+
+            const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
+            // console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+            this.setState({amountToAdd:0});
+            this.props.toggleChangeAddToBalance();
+            this.props.handleAddToBalance();
 
         } catch(err) {
             console.log('err: ', err);
             return err
         }
-    }
+    }   
 
 
     render() {
@@ -98,10 +131,19 @@ class AddToBalance extends Component {
                     onChange = {this.inputChangeHandler}
                     className='form-control add-balance-input'
                 />
-                <span className="input-group-btn">
+                {/* <span className="input-group-btn">
                     <button 
                         className="btn btn-default" 
                         onClick = {this.chargeAndAddToBalance} 
+                        type = 'submit'
+                        disabled={this.state.amountToAdd === 0}
+                    > Add 
+                    </button>
+                </span> */}
+                <span className="input-group-btn">
+                    <button 
+                        className="btn btn-default" 
+                        onClick = {this.chargeCreditCardAndUpdateAccountBalanceIOS} 
                         type = 'submit'
                         disabled={this.state.amountToAdd === 0}
                     > Add 
