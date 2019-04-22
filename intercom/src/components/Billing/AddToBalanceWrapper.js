@@ -15,8 +15,9 @@ class AddToBalanceWrapper extends Component {
                 <div>
                     <Elements>
                         <AddToBalance 
-                            updateUserAccountBalance = {this.props.updateUserAccountBalance}
+                            // updateUserAccountBalance = {this.props.updateUserAccountBalance}
                             toggleChangeAddToBalance = {this.props.toggleChangeAddToBalance}
+                            handleAddToBalance= {this.props.handleAddToBalance}
                         />
                     </Elements>
                 </div>               
