@@ -9,7 +9,9 @@ class UpdateBilling extends Component {
         super(props);
         this.state = {
             last4: '', 
-            errorMessage: ''
+            errorMessage: '',
+            processing: false,
+            buttonText:'Update'
         }
     }
 
@@ -83,11 +85,13 @@ class UpdateBilling extends Component {
     updateCreditCard = async() => {
         const userId = localStorage.getItem('userId');
         try{
+            this.setState({processing: true, buttonText:'Processing...'})
             const source = await this.createSource();
             // console.log('source: ', source);
             
             const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'source':source});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
+            this.setState({processing: false, buttonText:'Update'});
 
             this.props.handleBillingUpdate();
             this.props.toggleChangeBilling();
@@ -102,22 +106,14 @@ class UpdateBilling extends Component {
         return (
             <div className='input-group creditcard-div'>
                 <CardElement style={{ padding: "9px !important"}}/>       
-                {/* <span className="input-group-btn">
-                    <button 
-                        className="btn btn-default" 
-                        type="button" 
-                        onClick = {this.updateBilling}
-                        disabled={this.state.last4 === null}>
-                        Update
-                    </button>
-                </span> */}
                 <span className="input-group-btn">
                     <button 
                         className="btn btn-default" 
                         type="button" 
                         onClick = {this.updateCreditCard}
-                        disabled={this.state.last4 === null}>
-                        Update
+                        disabled={this.state.last4 === null || this.state.processing === true}
+                    >
+                        {this.state.buttonText} 
                     </button>
                 </span>
                 <div style = {{marginBottom:'10px'}}>
