@@ -175,7 +175,8 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
 .page-icon-flex h2 { margin: 0 0 0 5px}
 .acct-header-profile { margin-bottom: 40px}
 @media (max-width: 991px) {.acct-header-profile { margin-bottom: 0px}}
-.acct-row { padding-left: 30px; padding-right: 15px }
+.acct-row { padding-left: 30px; padding-right: 15px; }
+@media (max-width: 480px) {.acct-row { margin-left: -30px}}
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
 .btn-noborder-radius{border-radius:0px;}
 .menu-border-bottom{background-color:transparent;border-bottom:2px solid white;}

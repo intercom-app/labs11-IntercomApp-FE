@@ -54,7 +54,6 @@ class AccountProfile extends Component {
                                 <div
                                     data-toggle="tooltipEmail"
                                     data-placement="left"
-                                    data-html="true"
                                     title="Email address cannot be updated for verficiation and authentication purposes."
                                 >
                                     <i className="fa fa-question-circle"></i>
@@ -110,7 +109,7 @@ class AccountProfile extends Component {
                 </div>
 
             </div>
-         );
+        );
     }
 }
  
