@@ -37,7 +37,6 @@ class GroupChatroomCall extends Component {
 
     render() {
 
-        // let { user, group, participants, handleCallButton } = this.props
         return (
             <>
                 <h2 className="page-header sidebar-title">
@@ -88,52 +87,10 @@ class GroupChatroomCall extends Component {
 
                 </div>
                 <hr></hr>
-
-                {/* <aside className="col-md-8 sidebar-padding">
-                    <div className="">
-                        {this.renderButton(user.callStatus, group.callStatus, handleCallButton)}
-                        <hr></hr>
-                    </div>
-                </aside> */}
             </>
 
         )
     }
-
-    // renderButton = (userCallStatus, groupCallStatus, handleCallButton) => {
-    //     const userOnCall = (userCallStatus === true)
-    //     const groupOnCall = (groupCallStatus === true)
-    //     switch (true) {
-    //         case (!userOnCall && !groupOnCall):
-    //             return (
-    //                 <button
-    //                     className="btn btn-success"
-    //                     type="button"
-    //                     onClick={handleCallButton}>Start Call</button>
-    //             )
-    //         case (!userOnCall && groupOnCall):
-    //             return (
-    //                 <button
-    //                     className="btn btn-success"
-    //                     type="button"
-    //                     onClick={handleCallButton}>Join Call</button>
-    //             )
-    //         case (userOnCall && groupOnCall):
-    //             return (
-    //                 <button
-    //                     className="btn btn-danger"
-    //                     type="button"
-    //                     onClick={handleCallButton}>Leave Call</button>
-    //             )
-    //         default:
-    //             return (
-    //                 <button
-    //                     className="btn btn-secondary"
-    //                     type="button">In Call</button>
-    //             )
-    //     }
-
-    // }
 
 }
 
