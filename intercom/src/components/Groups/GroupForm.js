@@ -189,6 +189,7 @@ class GroupForm extends Component {
                         name="name"
                         id="groupNameInput"
                         placeholder="Group Name..."
+                        maxLength="20"
                         value={group.name}
                         onChange={this.handleGroupInput}
                         disabled={invite} // If group created and invite toggle open, disable group input field
