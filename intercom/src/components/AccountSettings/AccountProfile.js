@@ -80,7 +80,7 @@ class AccountProfile extends Component {
                     {this.props.updateUserImage
                         ?
                         <div className="col-md-8 fl-r">
-                            <div className="row acct-row">
+                            <div className="row acct-row update-row">
                                 <div className="pull-left">
                                     <div className="input-group update-pic">
                                         <input

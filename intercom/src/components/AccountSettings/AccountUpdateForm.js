@@ -39,7 +39,7 @@ class AccountUpdateForm extends Component {
         return (
             <>
                 <div className="col-md-8">
-                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                    <div className="row acct-row update-row">
                         <div className="pull-left">
                             <div className="input-group searchbar">
                                 <input
