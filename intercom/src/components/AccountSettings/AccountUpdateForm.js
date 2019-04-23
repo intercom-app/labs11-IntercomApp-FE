@@ -13,7 +13,7 @@ class AccountUpdateForm extends Component {
         };
     }
 
-    handleGroupInput = e => {
+    handleNameInput = e => {
         e.preventDefault();
         this.setState({ [e.target.name]: e.target.value })
     }
@@ -57,7 +57,8 @@ class AccountUpdateForm extends Component {
                                     type="text"
                                     name="displayName"
                                     placeholder="Enter new display name..."
-                                    onChange={this.handleGroupInput}
+                                    maxLength="20"
+                                    onChange={this.handleNameInput}
                                     value={this.state.displayName}
                                 />
                                 <span className="input-group-btn">
