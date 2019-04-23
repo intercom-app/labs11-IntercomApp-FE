@@ -41,11 +41,6 @@
 .fl-r {
     float: right !important;
 }
-
-.account-header{
-    display: flex;
-}
-
 .creditcard-div {
     width: 400px;
     margin: 10px 0;
@@ -53,7 +48,6 @@
     border-radius: 5px;
     padding-left: 8px;
 }
-
 .add-balance-div {
     width: 300px;
     margin: 10px 0;
