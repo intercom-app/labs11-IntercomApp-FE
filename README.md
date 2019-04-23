@@ -1,5 +1,6 @@
 # Voice Chatroom (Front-End)
-Front-End repo for labs11-intercomApp-FE a/k/a Voice Chatroom.
+Front-End repo for labs11-intercomApp-FE a/k/a Voice Chatroom.<br><br>
+![Voice Chatroom](https://i.imgur.com/OlTQ8Dh.png)
 
 ## Table of Contents
 -   [Overview](#overview)
@@ -22,10 +23,12 @@ Front-End repo for labs11-intercomApp-FE a/k/a Voice Chatroom.
     -   [Main JavaScript Files](#main-javascript-files)
     -   [Authorization Components](#authorization-components)
     -   [App Components](#app-components)
+-   [Color Palette](#color-palette)
+-   [License](#license)
 
 # Overview
 Front-end React application powered by a back-end Node and Express server.<br>
-Demo application is deployed to Netlify at [https://intercom.netlify.com/](https://intercom.netlify.com/).
+Demo application is deployed to Netlify at <a href="https://intercom.netlify.com/" target="_blank" rel="noopener">https://intercom.netlify.com</a>.
 
 ## Introduction
 Using your phone and headphones, you will have the ability to create voice chatrooms groups, talk directly into your group’s ears, and hear others talk into your ears. You can manage the group, see who is in the group and start up a voice call.
@@ -59,14 +62,14 @@ Launches the test runner in the interactive watch mode.
 ```yarn start```  
   
 Runs the app in the development mode.
-- Open [http://localhost:3000](http://localhost:3000){:target="_blank" rel="noopener"} to view it in the browser.
+- Open `http://localhost:3000` to view it in the browser.
 - The page will reload if you make edits.
 
 ### Production App
 ```yarn build```  
   
 Builds the app for production.
-- Our production application is deployed to Netlify at [https://intercom.netlify.com/](https://intercom.netlify.com/){:target="_blank" rel="noopener"}.
+- Our production application is deployed to Netlify at <a href="https://intercom.netlify.com/" target="_blank" rel="noopener">https://intercom.netlify.com</a>.
 
 ## Environment Variables
 Environments variables set within local .env file for testing and development. For production variables are set within the Netlify's application `Environment Variables` settings.
@@ -118,7 +121,7 @@ Located within the `src` folder:
 
 ## Authorization Components
 All authorization components are located within the `src/Auth` directory.<br>
-Authorization powered by [Auth0](https://auth0.com/){:target="_blank" rel="noopener"}.
+Authorization powered by <a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a>.
 - When a user logs in or signs up that user's email and password is first verfied by Auth0
 - Once verified Auth0 provides a user with an authorization token and provides the App with that user's Auth0 account information
 - The account information is then passed to our back-end server to verify or create a user
@@ -131,3 +134,10 @@ All other routes and sub-components are located within the `src/components` dire
 - All App Page Views and components
 - All Error and Unauthorized Page Views and components
 - All Modal components
+
+# Color Palette
+![Color Palette](https://i.imgur.com/Kq60M74.png)
+
+# License 
+[View License Details](LICENSE)<br>
+MIT © [Intercom App](https://github.com/intercom-app/labs11-IntercomApp-FE)
