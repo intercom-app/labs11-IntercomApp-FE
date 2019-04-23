@@ -156,6 +156,7 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 @media (max-width: 360px) {
     .page-header-flex { 
@@ -163,13 +164,13 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
         align-items: flex-start;
     }
 }
-.page-header-flex h4 { margin: 0}
-@media (max-width: 480px) {.page-header-flex h4 { font-size: 16px}}
-@media (max-width: 360px) {.page-header-flex h4 { margin-top: 10px}}
+.page-header-flex h4 { margin: 10px 0 0 0 }
+@media (max-width: 480px) {.page-header-flex h4 { font-size: 16px; margin-top: 5px}}
 .page-icon-flex {
     display:flex;
     flex-wrap: nowrap;
     align-items: center;
+    margin-right: 15px
 }
 .page-icon-flex h2 { margin: 0 0 0 5px}
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
