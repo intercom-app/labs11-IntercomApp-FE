@@ -17,21 +17,21 @@ class AccountProfile extends Component {
         return ( 
             <div className="row">
                 <div className="col-md-12">
-                    <div className="col-md-4" style={{ marginBottom: "40px" }}>
+                    <div className="col-md-4 acct-header-profile">
                         <h3 style={{ marginTop: "0px" }}>
                             Profile
                         </h3>
                     </div>
 
                     <div className="col-md-8">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="row acct-row">
                             <div className="pull-left">
                                 <strong>{this.props.user.displayName}</strong>
                             </div>
                             <div className="pull-right color-elements update-link" onClick={this.props.toggleChangeName}>
                                 {this.props.updateUserName
                                     ? 'Cancel'
-                                    : 'Change Name'
+                                    : 'Change'
                                 }
                             </div>
                         </div>
@@ -46,7 +46,7 @@ class AccountProfile extends Component {
                     }
 
                     <div className="col-md-8">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="row acct-row">
                             <div className="pull-left">
                                 {this.props.user.email}
                             </div>
@@ -65,14 +65,14 @@ class AccountProfile extends Component {
                     </div>
 
                     <div className="col-md-8">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="row acct-row">
                             <div className="pull-left">
-                                {' '}
+                                Profile Image
                             </div>
                             <div className="pull-right color-elements update-link" onClick={this.props.toggleChangeImage}>
                                 {this.props.updateUserImage
                                     ? 'Cancel'
-                                    : 'Update Profile Image'
+                                    : 'Change'
                                 }
                             </div>
                         </div>
@@ -81,12 +81,13 @@ class AccountProfile extends Component {
                     {this.props.updateUserImage
                         ?
                         <div className="col-md-8 fl-r">
-                            <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                            <div className="row acct-row">
                                 <div className="pull-left">
                                     <div className="input-group update-pic">
                                         <input
-                                            className="form-control"
+                                            className="form-control form-control-sm"
                                             type="file"
+                                            style={{verticalAlign: "middle"}}
                                             onChange={this.props.fileSelectedHandler}
                                         />
                                         <span className="input-group-btn">
@@ -96,7 +97,7 @@ class AccountProfile extends Component {
                                                 onClick={(e) => this.props.fileUploadHandler(e)}
                                                 disabled={this.props.selectedFile === ''}
                                             >
-                                                Update Image
+                                                Update
                                             </button>
                                         </span>
                                     </div>

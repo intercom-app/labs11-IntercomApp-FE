@@ -44,10 +44,10 @@ class AccountUpdateForm extends Component {
                             <div className="input-group searchbar">
                                 <input
                                     autoComplete="off"
-                                    className="form-control searchbar"
+                                    className="form-control searchbar form-control-sm"
                                     type="text"
                                     name="displayName"
-                                    placeholder="Enter new display name..."
+                                    placeholder=" New display name..."
                                     maxLength="20"
                                     onChange={this.handleNameInput}
                                     value={this.state.displayName}

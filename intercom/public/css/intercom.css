@@ -173,6 +173,9 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
     margin-right: 15px
 }
 .page-icon-flex h2 { margin: 0 0 0 5px}
+.acct-header-profile { margin-bottom: 40px}
+@media (max-width: 991px) {.acct-header-profile { margin-bottom: 0px}}
+.acct-row { padding-left: 30px; padding-right: 15px }
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
 .btn-noborder-radius{border-radius:0px;}
 .menu-border-bottom{background-color:transparent;border-bottom:2px solid white;}
@@ -632,6 +635,10 @@ div#map-canvas-holder {
 .form-control {
    font-size: 15px !important;
 }  
+.form-control-sm {
+    font-size: 11px !important;
+    padding: 8px 0px;
+}
 #contact .fa {
     padding-right: 15px;
 }  
