@@ -19,7 +19,9 @@ Front-End repo for labs11-intercomApp-FE a/k/a Voice Chatroom.
         -   [Project Stylesheets Links](#project-stylesheets-links)
         -   [Project Scripts](#project-scripts)
 -   [SRC Directory](#src-directory)
-
+    -   [Main JavaScript Files](#main-javascript-files)
+    -   [Authorization Components](#authorization-components)
+    -   [App Components](#app-components)
 
 # Overview
 Front-end React application powered by a back-end Node and Express server.<br>
@@ -104,7 +106,7 @@ Located within the `src` folder:
 - Custom Components directory
 - Default Images directory
 
-## Main JavaScript files
+## Main JavaScript Files
 
 | File Name    | Purpose                                                                                                   |
 | -------------|-----------------------------------------------------------------------------------------------------------|
@@ -115,3 +117,17 @@ Located within the `src` folder:
 | `host.js`    | Exports the process environment's host variable.                                                          |
 
 ## Authorization Components
+All authorization components are located within the `src/Auth` directory.<br>
+Authorization powered by [Auth0](https://auth0.com/){:target="_blank" rel="noopener"}.
+- When a user logs in or signs up that user's email and password is first verfied by Auth0
+- Once verified Auth0 provides a user with an authorization token and provides the App with that user's Auth0 account information
+- The account information is then passed to our back-end server to verify or create a user
+- Once the user is verified or created a logged in session is set and the user can begin using the App
+
+## App Components
+All other routes and sub-components are located within the `src/components` directory which include:
+- Navigation Component
+- Landing Page View and components
+- All App Page Views and components
+- All Error and Unauthorized Page Views and components
+- All Modal components
