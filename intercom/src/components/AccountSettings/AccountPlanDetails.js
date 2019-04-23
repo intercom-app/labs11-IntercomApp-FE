@@ -15,10 +15,8 @@ class AccountPlanDetails extends React.Component {
         return(
             <div className="row">
                 <div className="col-md-12">
-                    <div className="col-md-4">
-                        <h3 style={{ marginTop: "0px" }}>
-                            Plan Details
-                        </h3>
+                    <div className="col-md-4 acct-header">
+                        <h3>Plan Details</h3>
                     </div>
                     <div className="col-md-8">
                         <div className="row acct-row">

@@ -6,10 +6,8 @@ const Account = (props) => {
     return (
         <div className="row">
             <div className="col-xs-12 col-sm-12 col-md-12">
-                <div className="col-xs-4 col-sm-4 col-md-4">
-                    <h3 style={{ marginTop: "0px" }}>
-                        Account
-                    </h3>
+                <div className="col-xs-4 col-sm-4 col-md-4 acct-header">
+                    <h3>Account</h3>
                 </div>
                 <div className="col-xs-8 col-sm-8 col-md-8">
                     <div className="row acct-row">

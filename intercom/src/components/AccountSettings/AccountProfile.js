@@ -17,10 +17,8 @@ class AccountProfile extends Component {
         return ( 
             <div className="row">
                 <div className="col-md-12">
-                    <div className="col-md-4 acct-header-profile">
-                        <h3 style={{ marginTop: "0px" }}>
-                            Profile
-                        </h3>
+                    <div className="col-md-4 acct-header acct-header-profile">
+                        <h3>Profile</h3>
                     </div>
 
                     <div className="col-md-8">

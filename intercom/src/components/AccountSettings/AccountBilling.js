@@ -8,10 +8,8 @@ const AccountBilling = (props) => {
             <div className="row">
                 <div className="col-md-12">
 
-                    <div className="col-md-4">
-                        <h3 style={{ marginTop: "0px" }}>
-                            Billing
-                        </h3>
+                    <div className="col-md-4 acct-header">
+                        <h3>Billing</h3>
                     </div>
 
                     <div className="col-md-8">
