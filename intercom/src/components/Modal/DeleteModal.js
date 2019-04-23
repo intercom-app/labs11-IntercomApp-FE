@@ -15,7 +15,7 @@ class DeleteModal extends Component {
     };
   }
 
-  handleGroupInput = e => {
+  handleInput = e => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value })
 }
@@ -57,7 +57,7 @@ class DeleteModal extends Component {
 
               <div className="modal-body">
                 <div className='modal-upper'>
-                  <input className='modal-input' type="text" name="confirmTarget" onChange={this.handleGroupInput} value={this.state.confirmTarget} 
+                  <input className='modal-input' type="text" name="confirmTarget" onChange={this.handleInput} value={this.state.confirmTarget} 
                     placeholder={`${this.props.deleteMessage}`}
                   />
                   {/* <p className="modal-title" id="deleteModalLongTitle">
