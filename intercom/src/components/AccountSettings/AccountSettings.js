@@ -301,9 +301,13 @@ class AccountSettings extends Component {
                 <div className="container blog page-container">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-10">
-                            <div className='account-header'>
-                                <img className='' style={{ width: '10%', borderRadius: '50%', height: '10%', marginRight: '15px' }} src={user.avatar || require('../../images/avatar1.png')} alt="user avatar" />                                
-                                <h2>{user.displayName}'s Account </h2>
+                            <div className="row">
+                                <div className="col-md-12"> 
+                                    <div className="page-icon-flex">
+                                        <img className="avatar-img-users" src={user.avatar || require('../../images/avatar1.png')} alt="user avatar" />  
+                                        <h2>Account</h2>
+                                    </div>
+                                </div>
                             </div>
                             <hr></hr>
                             <AccountProfile 

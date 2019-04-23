@@ -200,6 +200,7 @@ class GroupChatroomView extends Component {
                                                     type='text'
                                                     id='groupName'
                                                     name='groupName'
+                                                    maxLength="20"
                                                     value={this.state.groupName}
                                                     placeholder='New Name...'
                                                 >

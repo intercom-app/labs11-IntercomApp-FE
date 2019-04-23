@@ -42,7 +42,7 @@ const Home = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <div className="text-center"><h3>Clear Communcation</h3></div>
+                                <div className="text-center"><h3>Clear Communication</h3></div>
                             </div>
                         </div>
                         <h4>Communicate at reasonable voice levels.</h4>
