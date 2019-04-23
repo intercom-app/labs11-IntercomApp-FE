@@ -86,7 +86,7 @@ class UpdateBilling extends Component {
             const source = await this.createSource();
             // console.log('source: ', source);
             
-            const updateCreditCardRes = await axios.post(`http://localhost:3300/api/billing/updateCreditCard`, {'userId': userId, 'source':source});
+            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'source':source});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
 
             this.props.handleBillingUpdate();
