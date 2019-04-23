@@ -14,7 +14,9 @@ class AddToBalance extends Component {
         super(props);
         this.state = {
             amountToAdd:0,
-            errorMessage: ''
+            errorMessage: '',
+            processing: false,
+            buttonText:'Add'
         };
     }
 
@@ -95,6 +97,7 @@ class AddToBalance extends Component {
         const userId = localStorage.getItem('userId');
         console.log('userId: ', userId);
         try{
+            this.setState({processing: true, buttonText:'Processing...'})
             // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
             const amountToAdd = this.state.amountToAdd // in dollars
             const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
@@ -107,9 +110,9 @@ class AddToBalance extends Component {
             };
 
             const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
-            // console.log('updatedAccountBalance: ', updatedAccountBalance);
+            console.log('updatedAccountBalance: ', updatedAccountBalance);
 
-            this.setState({amountToAdd:0});
+            this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
             this.props.toggleChangeAddToBalance();
             this.props.handleAddToBalance();
 
@@ -131,24 +134,16 @@ class AddToBalance extends Component {
                     onChange = {this.inputChangeHandler}
                     className='form-control add-balance-input'
                 />
-                {/* <span className="input-group-btn">
-                    <button 
-                        className="btn btn-default" 
-                        onClick = {this.chargeAndAddToBalance} 
-                        type = 'submit'
-                        disabled={this.state.amountToAdd === 0}
-                    > Add 
-                    </button>
-                </span> */}
                 <span className="input-group-btn">
                     <button 
                         className="btn btn-default" 
                         onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
                         type = 'submit'
-                        disabled={this.state.amountToAdd === 0}
-                    > Add 
+                        disabled={this.state.amountToAdd === 0 || this.state.processing === true}
+                    > 
+                        {this.state.buttonText} 
                     </button>
-                </span>
+                </span>                
                 <div style = {{marginBottom:'10px'}}>
                     {this.state.errorMessage}
                 </div>                            
