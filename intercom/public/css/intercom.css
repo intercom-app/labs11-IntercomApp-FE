@@ -173,12 +173,20 @@ footer { background-color: #1E1E1E; width:100%; display:block; color:#f7f7f7; }
     margin-right: 15px
 }
 .page-icon-flex h2 { margin: 0 0 0 5px}
+.acct-header h3 {margin-top: 0px; font-size: 25px; color: #555555; text-transform: uppercase}
+@media (max-width: 480px) {.acct-header h3 {font-size: 18px}}
+.acct-header-profile { margin-bottom: 46px}
+@media (max-width: 991px) {.acct-header-profile { margin-bottom: 0px}}
+.acct-row { padding-left: 30px; padding-right: 15px; }
+@media (max-width: 480px) {.acct-row { margin-left: -30px}}
+.update-row {margin-top: 3px; margin-bottom: 5px}
 .custom-labels{background-color:transparent;border-radius:0px; border:0px; border-bottom: 1px solid white}
 .btn-noborder-radius{border-radius:0px;}
 .menu-border-bottom{background-color:transparent;border-bottom:2px solid white;}
 .color-elements{color:#33cc33;}
 .custom-menu li{font-size: 12px;padding:0px 0px;}
 .info-link:hover { color:#33cc33; cursor: pointer; }
+.update-link:hover { cursor: pointer; }
 .btn-custom, .btn-custom:active,.btn-custom:focus, .btn-custom:hover{background-color:#33cc33;border-color:#33cc33}
 .btn-signup { margin-bottom: 15px; font-size: 20px; color: #313131; background-color:  #33cc33; box-shadow: 0px 5px 3px rgba(0, 0, 0, .2);}
 .btn-signup:active,.btn-signup:focus, .btn-signup:hover{ color: #33cc33; background-color: white; border-color: #33cc33}
@@ -631,6 +639,10 @@ div#map-canvas-holder {
 .form-control {
    font-size: 15px !important;
 }  
+.form-control-sm {
+    font-size: 11px !important;
+    padding: 8px 0px;
+}
 #contact .fa {
     padding-right: 15px;
 }  

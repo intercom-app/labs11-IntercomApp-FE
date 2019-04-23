@@ -109,7 +109,7 @@ class AccountSettings extends Component {
                 }
                 axios.put(`${host}/api/users/${id}`, userData)
                 .then(res =>{
-                    this.setState({ user: res.data})
+                    this.setState({ user: res.data, selectedFile: ''})
                 })
                 .catch(err => {
                     console.log(err);

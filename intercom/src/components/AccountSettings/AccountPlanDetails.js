@@ -1,39 +1,45 @@
 import React from "react";
 
 
-const AccountPlanDetails = (props) => {
+class AccountPlanDetails extends React.Component {
 
-    return(
-        <div className="row">
-            <div className="col-md-12">
-                <div className="col-md-4">
-                    <h3 style={{ marginTop: "0px" }}>
-                        Plan Details
-                    </h3>
-                </div>
-                <div className="col-md-8">
-                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                        <div className="pull-left">
-                            {`${props.user.billingSubcription}`.toUpperCase()} Membership
-                                            </div>
-                        <div className="pull-right">
-                            Upgrade
-                        </div>
+    componentDidMount() {
+        window.$('[data-toggle="tooltipDetails"]').tooltip();
+    }
+
+    componentDidUpdate() {
+        window.$('[data-toggle="tooltipDetails"]').tooltip();
+    }
+    
+    render() { 
+        return(
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="col-md-4 acct-header">
+                        <h3>Plan Details</h3>
                     </div>
-                </div>
-                <div className="col-md-8">
-                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
-                        <div className="pull-left">
-                            Pay as you chat
-                        </div>
-                        <div className="pull-right">
-                            Details
+                    <div className="col-md-8">
+                        <div className="row acct-row">
+                            <div className="pull-left">
+                                Pre-Pay Chat
+                            </div>
+                            <div className="pull-right info-link">
+                                <div
+                                    data-toggle="tooltipEmail"
+                                    data-placement="left"
+                                    data-html="true"
+                                    title="Add money to your account as needed. Call charges are then deducted from your balance after each Chat has ended. <br> No monthly bills -- No hassles!"
+                                >
+                                    <i className="fa fa-question-circle"></i>
+                                    {' '}Details
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
-}
-
+            );
+        }
+    }
+     
 export default AccountPlanDetails;
