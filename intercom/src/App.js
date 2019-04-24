@@ -5,12 +5,6 @@ import Navigation from './components/Navigation/Navigation';
 class App extends Component {
 
   componentDidMount = () => {
-    const { renewSession } = this.props.auth;
-
-    // if (localStorage.getItem('isLoggedIn') === 'true') {
-    //   renewSession();
-    // }
-
     this.scrollToTop();
     this.scrollSmooth();
   }
