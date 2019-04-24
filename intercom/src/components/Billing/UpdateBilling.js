@@ -9,7 +9,7 @@ class UpdateBilling extends Component {
         super(props);
         this.state = {
             last4: '', 
-            errorMessage: '',
+            errorMessage: null,
             processing: false,
             buttonText:'Update'
         }
@@ -24,14 +24,20 @@ class UpdateBilling extends Component {
         
         try{
             const createSourceResponse = await this.props.stripe.createSource(sourceInfo);
+            // console.log('createSourceResponse: ', createSourceResponse);
 
             if (createSourceResponse.error) {
-                this.setState({errorMessage:createSourceResponse.error.message})
+                this.setState({errorMessage:createSourceResponse.error.message, processing:false, buttonText:'Update'})
+            } 
+            else{
+                this.setState({errorMessage:null})
+                const source = createSourceResponse.source;
+                // console.log('source: ', source);
+                return source;
             }
-            // console.log('createSourceResponse: ', createSourceResponse);
-            const source = createSourceResponse.source;
-            // console.log('source: ', source);
-            return source;
+
+            
+            
         } catch(err) {
             console.log('err: ', err);
             return err
@@ -88,10 +94,10 @@ class UpdateBilling extends Component {
             this.setState({processing: true, buttonText:'Processing...'})
             const source = await this.createSource();
             // console.log('source: ', source);
-
             const sourceId = source.id;
             
-            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
+            // const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
+            await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
             this.setState({processing: false, buttonText:'Update'});
 
@@ -121,6 +127,13 @@ class UpdateBilling extends Component {
                 <div style = {{marginBottom:'10px'}}>
                     {this.state.errorMessage}
                 </div>
+                {this.state.errorMessage
+                    ?
+                    <div style = {{color:'red', height:'20px'}}>
+                        {this.state.errorMessage}
+                    </div>
+                    :null
+                }            
             </div>
         )
     }

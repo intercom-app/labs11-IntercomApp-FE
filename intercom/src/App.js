@@ -5,19 +5,15 @@ import Navigation from './components/Navigation/Navigation';
 class App extends Component {
 
   componentDidMount = () => {
-    const { renewSession } = this.props.auth;
-
-    // if (localStorage.getItem('isLoggedIn') === 'true') {
-    //   renewSession();
-    // }
-
     this.scrollToTop();
     this.scrollSmooth();
+    this.navLinkActive();
   }
 
   componentDidUpdate = () => {
     this.scrollToTop();
     this.scrollSmooth();
+    this.navLinkActive();
   }
   
   scrollToTop = () => {
@@ -70,6 +66,12 @@ class App extends Component {
 
     });
 
+  }
+
+  navLinkActive = () => {
+    if (this.props.auth.isAuthenticated()) {
+        window.$(".nav a.active").parent().addClass("active");
+    }
   }
 
   login = () => {

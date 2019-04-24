@@ -27,8 +27,8 @@ class User extends Component {
     componentDidMount() {
         this.checkIfUnAuth()
         this.getUserDetailed();
-        // Get User Data when component mounts and every 30 seconds while on page
-        this.interval = setInterval(() => this.getUserDetailed(), 30000);
+        // Get User Data when component mounts and every 5 seconds while on page
+        this.interval = setInterval(() => this.getUserDetailed(), 5000);
     }
 
     componentWillUnmount() {
