@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import host from "../../host.js";
 import axios from 'axios';
 
@@ -8,21 +7,14 @@ class AccountUpdateForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // modal: false,
             displayName: ''
         };
     }
 
-    handleGroupInput = e => {
+    handleNameInput = e => {
         e.preventDefault();
         this.setState({ [e.target.name]: e.target.value })
     }
-
-    // toggle = () => {
-    //     this.setState(prevState => ({
-    //         modal: !prevState.modal
-    //     }));
-    // }
 
     updateUser = async (e) => {
         const id = localStorage.getItem('userId');
@@ -44,20 +36,20 @@ class AccountUpdateForm extends Component {
     };
 
     render() {
-        // const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
         return (
             <>
                 <div className="col-md-8">
-                    <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                    <div className="row acct-row update-row">
                         <div className="pull-left">
                             <div className="input-group searchbar">
                                 <input
                                     autoComplete="off"
-                                    className="form-control searchbar"
+                                    className="form-control searchbar form-control-sm"
                                     type="text"
                                     name="displayName"
-                                    placeholder="Enter new display name..."
-                                    onChange={this.handleGroupInput}
+                                    placeholder=" New display name..."
+                                    maxLength="20"
+                                    onChange={this.handleNameInput}
                                     value={this.state.displayName}
                                 />
                                 <span className="input-group-btn">
@@ -74,32 +66,6 @@ class AccountUpdateForm extends Component {
                         </div>
                     </div>
                 </div>
-
-                {/* <div>
-                <Button color="info" onClick={this.toggle} className='float-sm-right mr-sm-3'>Update Account</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} external={externalCloseBtn}>
-                    <ModalHeader>Update Account</ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Label>Display Name</Label>
-                                <Input 
-                                    onChange={this.handleGroupInput} 
-                                    type="text" 
-                                    name="displayName" 
-                                    id="displayName" 
-                                    value={this.state.displayName} 
-                                    placeholder="Enter new display name..."
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.updateUser}>Update</Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-            </div> */}
             </>
         );
     }

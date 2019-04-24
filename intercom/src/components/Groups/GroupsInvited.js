@@ -18,26 +18,27 @@ class GroupsInvited extends Component {
     acceptInvite = (event, groupId) => {
         event.preventDefault();
         const userId = { userId: localStorage.getItem('userId') }
-        const activity = { userId: localStorage.getItem('userId'), activity: 'Joined group.' }
-
-        //add the activity to the group's log
+        const activity = { userId: localStorage.getItem('userId'), activity: 'Joined group.' }        
+        
+        // add the user to the groupMembers table first
         axios
-        .post(`${host}/api/groups/${groupId}/activities`, activity)
+        .post(`${host}/api/groups/${groupId}/groupMembers`, userId)
         .then(() => {
-            //delete the user from groupInvitees table
+            // if user added, delete the user from groupInvitees table
             axios
             .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
             .then(() => {
-                //add the user to the groupMembers table
+            // add the activity to the group's log;
                 axios
-                .post(`${host}/api/groups/${groupId}/groupMembers`, userId)
-                .then(() =>  this.props.updateGroups() )
-                .catch(err => console.log(err) );
+                .post(`${host}/api/groups/${groupId}/activities`, activity)
+                .then(() => this.props.getUserDetailed())
+                .catch(() => this.props.getUserDetailed());
             })
-            .catch(err => console.log(err) );
+            .catch(() => this.props.getUserDetailed());
         })
-        .catch(err => console.log(err) );
+        .catch(() => this.props.getUserDetailed());
 
+        // Any error will prompt parent view to try to re-update user if error there it will throw error
     }
 
     declineInvite = (event, groupId) => {
@@ -45,22 +46,23 @@ class GroupsInvited extends Component {
         const userId = { userId: localStorage.getItem('userId') }
         const activity = { userId: localStorage.getItem('userId'), activity: 'Declined to join to group.' }
 
-        //add the declining activity to the group's log
+        // delete the user from groupInvitees first
         axios
-        .post(`${host}/api/groups/${groupId}/activities`, activity)
+        .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
         .then(() => {
-            //delete the user from groupInvitees table due to decline
+             // if delete worked then post to group's activities and update groups even if error in posting
             axios
-            .delete(`${host}/api/groups/${groupId}/groupInvitees/${userId.userId}`)
-            .then(() => this.props.updateGroups() )
-            .catch(err => console.log(err) );
+            .post(`${host}/api/groups/${groupId}/activities`, activity)                
+            .then(() => this.props.getUserDetailed())
+            .catch(() => this.props.getUserDetailed());
+ 
         })
-        .catch(err => console.log(err) );
+        .catch(() => this.props.getUserDetailed());
 
+        // Any error will prompt parent view to try to re-update user if error there it will throw error
     }
 
     render() {
-        // console.log(this.props.groupsInvited)
         return (
             <>
                 <h1 className="page-header sidebar-title groups-title">
@@ -92,12 +94,12 @@ class GroupsInvited extends Component {
                             <div className="row">
                                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <h3 className="blog-title" style={{marginBottom: "0px"}}>
-                                        {group.GroupName}
+                                        {group.groupName}
                                     </h3>
                                 </div>
 
                                 <div className="col-xs-12 col-sm-7 col-md-7 col-lg-7" style={{padding: "8px 15px"}}>
-                                    Invited by: {group.groupOwner}
+                                    Invited by: {group.owners[0].displayName}
                                 </div>
                                 <div className="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                     <button className="btn btn-join" type="button" onClick={(e) => this.acceptInvite(e, group.groupId)}>

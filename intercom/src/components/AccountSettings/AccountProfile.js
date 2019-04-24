@@ -3,27 +3,33 @@ import AccountUpdateForm from './AccountUpdateForm';
 
 
 class AccountProfile extends Component {
+
+    componentDidMount() {
+        window.$('[data-toggle="tooltipEmail"]').tooltip();
+    }
+
+    componentDidUpdate() {
+        window.$('[data-toggle="tooltipEmail"]').tooltip();
+    }
     
     render() { 
         
         return ( 
             <div className="row">
                 <div className="col-md-12">
-                    <div className="col-md-4">
-                        <h3 style={{ marginTop: "0px" }}>
-                            Profile
-                        </h3>
+                    <div className="col-md-4 acct-header acct-header-profile">
+                        <h3>Profile</h3>
                     </div>
 
                     <div className="col-md-8">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                        <div className="row acct-row">
                             <div className="pull-left">
                                 <strong>{this.props.user.displayName}</strong>
                             </div>
-                            <div className="pull-right color-elements" onClick={this.props.toggleChangeName}>
+                            <div className="pull-right color-elements update-link" onClick={this.props.toggleChangeName}>
                                 {this.props.updateUserName
                                     ? 'Cancel'
-                                    : 'Change Name'
+                                    : 'Change'
                                 }
                             </div>
                         </div>
@@ -37,16 +43,33 @@ class AccountProfile extends Component {
                         : null
                     }
 
-                    <div className="col-md-8 fl-r">
-                        <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                    <div className="col-md-8">
+                        <div className="row acct-row">
                             <div className="pull-left">
                                 {this.props.user.email}
                             </div>
-                            <div className="pull-right color-elements" onClick={this.props.toggleChangeImage}>
+                            <div className="pull-right info-link">
+                                <div
+                                    data-toggle="tooltipEmail"
+                                    data-placement="left"
+                                    title="Email address cannot be updated for verficiation and authentication purposes."
+                                >
+                                    <i className="fa fa-question-circle"></i>
+                                    {' '}Email
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div className="col-md-8">
+                        <div className="row acct-row">
+                            <div className="pull-left">
+                                Profile Image
+                            </div>
+                            <div className="pull-right color-elements update-link" onClick={this.props.toggleChangeImage}>
                                 {this.props.updateUserImage
                                     ? 'Cancel'
-                                    : 'Update Image'
+                                    : 'Change'
                                 }
                             </div>
                         </div>
@@ -55,12 +78,13 @@ class AccountProfile extends Component {
                     {this.props.updateUserImage
                         ?
                         <div className="col-md-8 fl-r">
-                            <div className="row" style={{ paddingLeft: "30px", paddingRight: "15px" }}>
+                            <div className="row acct-row update-row">
                                 <div className="pull-left">
                                     <div className="input-group update-pic">
                                         <input
-                                            className="form-control"
+                                            className="form-control form-control-sm"
                                             type="file"
+                                            style={{verticalAlign: "middle"}}
                                             onChange={this.props.fileSelectedHandler}
                                         />
                                         <span className="input-group-btn">
@@ -70,7 +94,7 @@ class AccountProfile extends Component {
                                                 onClick={(e) => this.props.fileUploadHandler(e)}
                                                 disabled={this.props.selectedFile === ''}
                                             >
-                                                Update Profile Image
+                                                Update
                                             </button>
                                         </span>
                                     </div>
@@ -83,7 +107,7 @@ class AccountProfile extends Component {
                 </div>
 
             </div>
-         );
+        );
     }
 }
  

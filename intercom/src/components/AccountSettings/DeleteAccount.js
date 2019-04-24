@@ -8,7 +8,7 @@ class DeleteAccount extends Component {
     };
   }
 
-  handleGroupInput = e => {
+  handleNameInput = e => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value })
 }
@@ -49,7 +49,7 @@ class DeleteAccount extends Component {
                 </button>
               </div>
               <div class="modal-body">
-                <input type="text" name="confirmUserName" onChange={this.handleGroupInput} value={this.state.confirmUserName} />
+                <input type="text" name="confirmUserName" onChange={this.handleNameInput} value={this.state.confirmUserName} />
               </div>
               <div class="modal-footer">
                 {/* {console.log("props", this.props)} */}

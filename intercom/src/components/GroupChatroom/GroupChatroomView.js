@@ -18,8 +18,6 @@ class GroupChatroomView extends Component {
         groupId: this.props.match.params.id,
         group: {},
         groupName: '',
-        activities: [],
-        participants: [],
         isOwner: false,
         unAuth: false,
         error: false,
@@ -28,12 +26,8 @@ class GroupChatroomView extends Component {
     componentDidMount = () => {
         this.checkIfUnAuth()
         this.getUser(this.state.userId);
-
-        const id = this.state.groupId;
-        this.getGroup(id);
-        this.getActivities(id);
-        this.getParticipants(id);
-        this.checkIfOwner(id);
+        this.getGroup(this.state.groupId);
+        this.checkIfOwner(this.state.groupId);
     }
 
     checkIfUnAuth = () => {
@@ -59,11 +53,6 @@ class GroupChatroomView extends Component {
             .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
 
-    // updateUser = changes => {
-    //     const id = this.state.userId;
-    //     const userById = `${host}/api/users/${id}`;
-    //     this.axiosPut(userById, 'user', changes);
-    // }
 
     getGroup = id => {
         axios
@@ -124,7 +113,7 @@ class GroupChatroomView extends Component {
                 })
             }
         })
-        .catch(() => this.setState({ participants: [] }))
+        .catch(() => this.getGroup())
     }
 
     leaveGroup = () => {
@@ -144,42 +133,6 @@ class GroupChatroomView extends Component {
         .catch(err => this.setState({ error: {code: err.response.status, message: err.response.statusText} }))
     }
 
-    getActivities = id => {
-        axios
-            .get(`${host}/api/groups/${id}/activities`)
-            .then(res => this.setState({ activities: res.data }))
-            .catch(() => this.setState({ activities: [] }))
-    }
-
-    // addActivity = activityComment => {
-    //     const id = this.state.groupId;
-    //     const activity = { userId: this.state.userId, activity: activityComment }
-    //     axios
-    //         .post(`${host}/api/groups/${id}/activities`, activity)
-    //         .then(res => this.setState({ activities: res.data }))
-    //         .catch(() => this.getActivities()) // If error posting get origin activities
-    // }
-
-    getParticipants = id => {
-        axios
-            .get(`${host}/api/groups/${id}/callParticipants`)
-            .then(res => this.setState({ participants: res.data }))
-            .catch(() => this.setState({ participants: [] }))
-    }
-
-    // addParticipant = () => {
-    //     const id = this.state.groupId;
-    //     const participants = `${host}/api/groups/${id}/callParticipants`;
-    //     const userId = { userId: this.state.userId }
-    //     this.axiosPost(participants, 'participants', userId);
-    // }
-
-    // deleteParticipant = (userId) => {
-    //     const id = this.state.groupId;
-    //     const participants = `${host}/api/groups/${id}/callParticipants/${userId}`;
-    //     this.axiosDel(participants, 'participants')
-    // }
-
     checkIfOwner = id => {
         const userId = parseInt(localStorage.getItem('userId'));
         axios
@@ -192,44 +145,6 @@ class GroupChatroomView extends Component {
             .catch(() => this.setState({ isOwner: false }))
     }
 
-    // axiosGet = async (call, key) => {
-    //     try {
-    //         const res = await axios.get(call)
-    //         this.setState({ [key]: res.data })
-    //     } catch (err) {
-    //         this.setState({ error: err.response.data.message })
-    //     }
-    // }
-
-    // axiosPost = async (call, key, post) => {
-    //     try {
-    //         const res = await axios.post(call, post)
-    //         this.setState({ [key]: res.data })
-    //         if (res.data.length > 0) {return true}
-    //     } catch (err) {
-    //         this.setState({ error: err.response.data.message })
-    //     }
-    // }
-
-    // axiosPut = async (call, key, changes) => {
-    //     try {
-    //         const res = await axios.put(call, changes)
-    //         this.setState({ [key]: res.data })
-    //     } catch (err) {
-    //         this.setState({ error: err.response.data.message })
-    //     }
-    // }
-
-    // axiosDel = async (call, key) => {
-    //     try {
-    //         const res = await axios.delete(call)
-    //         this.setState({ [key]: res.data })
-    //         return res.data
-    //     } catch (err) {
-    //         this.setState({ error: err.response.data.message })
-    //     }
-    // }
-
     handleInputChange = e => {
         e.preventDefault()
         this.setState({ [e.target.name]: e.target.value })
@@ -241,39 +156,9 @@ class GroupChatroomView extends Component {
         this.setState({ groupName: '' })
     }
 
-    // handleCallButton = async () => {
-    //     const userOnCall = (this.state.user.callStatus === true)
-    //     const groupOnCall = (this.state.group.callStatus === true)
-    //     // TWILIO CODE HERE FOR PHONE NUMBER
-    //     const phoneNumber = '+15555555555'
-
-    //     switch (true) {
-    //         case (!userOnCall && !groupOnCall): // Start Call
-    //             this.updateUser({ callStatus: true });
-    //             this.updateGroup({ callStatus: true, phoneNumber });
-    //             this.addParticipant();
-    //             this.addActivity(`Started Call on ${phoneNumber}`);
-    //             break;
-    //         case (!userOnCall && groupOnCall): // Join Call
-    //             this.updateUser({ callStatus: true });
-    //             this.addParticipant();
-    //             break;
-    //         case (userOnCall && groupOnCall): // Leave Call
-    //             this.updateUser({ callStatus: false });
-    //             const participants = await this.deleteParticipant(this.state.userId);
-    //             if (participants === undefined) { // Terminate Call: if no more particates
-    //                 this.addActivity('Ended Call');
-    //                 this.updateGroup({ callStatus: false, phoneNumber: null });
-    //             }
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
     render() {
 
-        let { unAuth, user, group, groupId, groupName, isOwner, participants, activities, error } = this.state
+        let { unAuth, user, group, groupId, groupName, isOwner, error } = this.state
 
         return (
             <>
@@ -297,16 +182,8 @@ class GroupChatroomView extends Component {
 
                             <div className="row">
                                 <div className="col-md-8">     
-                                    <GroupChatroomCall
-                                        group={group}
-                                        participants={participants}
-                                        // user={user}
-                                        // handleCallButton={this.handleCallButton}
-                                    />
-
-                                    <GroupChatroomActivities
-                                        activities={activities}
-                                    />
+                                    <GroupChatroomCall groupId={this.props.match.params.id} />
+                                    <GroupChatroomActivities groupId={this.props.match.params.id} />
                                 </div>
 
                                 <aside className="col-md-4 sidebar-padding">
@@ -323,6 +200,7 @@ class GroupChatroomView extends Component {
                                                     type='text'
                                                     id='groupName'
                                                     name='groupName'
+                                                    maxLength="20"
                                                     value={this.state.groupName}
                                                     placeholder='New Name...'
                                                 >

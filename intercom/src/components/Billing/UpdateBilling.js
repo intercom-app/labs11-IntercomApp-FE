@@ -9,7 +9,9 @@ class UpdateBilling extends Component {
         super(props);
         this.state = {
             last4: '', 
-            errorMessage: ''
+            errorMessage: '',
+            processing: false,
+            buttonText:'Update'
         }
     }
 
@@ -36,43 +38,65 @@ class UpdateBilling extends Component {
         }
     }
 
-    updateDefaultSource = async(source) => {
-        const userId = localStorage.getItem('userId');
+    // updateDefaultSource = async(source) => {
+    //     const userId = localStorage.getItem('userId');
 
-        try{
-            const res = await axios.get(`${host}/api/users/${userId}`);
-            const userStripeId = res.data.stripeId;
-            // console.log('userStripeId: ', userStripeId);
+    //     try{
+    //         const res = await axios.get(`${host}/api/users/${userId}`);
+    //         const userStripeId = res.data.stripeId;
+    //         // console.log('userStripeId: ', userStripeId);
 
-            const updatedSource = await axios.post(`${host}/api/billing/updateDefaultSource`, {
-                'userStripeId':userStripeId,
-                'sourceId': source.id
-            });
-            if (updatedSource.error) {
-                this.setState({errorMessage:updatedSource.error.message})
-            }
-            // console.log('updatedSource: ', updatedSource);
+    //         const updatedSource = await axios.post(`${host}/api/billing/updateDefaultSource`, {
+    //             'userStripeId':userStripeId,
+    //             'sourceId': source.id
+    //         });
+    //         if (updatedSource.error) {
+    //             this.setState({errorMessage:updatedSource.error.message})
+    //         }
+    //         // console.log('updatedSource: ', updatedSource);
 
-            const last4 = updatedSource.data.sources.data[0].card.last4;
-            await axios.put(`${host}/api/users/${userId}/last4`, {last4:last4})
-            this.props.handleBillingUpdate();
-            return updatedSource;
-        } catch(err) {
-            console.log('err: ', err);
-            return err
-        }
-    }
+    //         const last4 = updatedSource.data.sources.data[0].card.last4;
+    //         await axios.put(`${host}/api/users/${userId}/last4`, {last4:last4})
+    //         this.props.handleBillingUpdate();
+    //         return updatedSource;
+    //     } catch(err) {
+    //         console.log('err: ', err);
+    //         return err
+    //     }
+    // }
 
-    updateBilling = async() => {
-        try{
-            // Step 1, create a source from the entered credit card information. 
-            const source = await this.createSource();
+    // updateBilling = async() => {
+    //     try{
+    //         // Step 1, create a source from the entered credit card information. 
+    //         const source = await this.createSource();
             
-            // Step 2, update the customer's default source. 
-            // const newDefaultSource = await this.updateDefaultSource(source);
-            await this.updateDefaultSource(source);
+    //         // Step 2, update the customer's default source. 
+    //         // const newDefaultSource = await this.updateDefaultSource(source);
+    //         await this.updateDefaultSource(source);
 
-            this.props.toggleChangeBilling()
+    //         this.props.toggleChangeBilling();
+
+    //     } catch(err) {
+    //         console.log('err: ', err)
+    //         return err
+    //     }
+    // }
+
+    updateCreditCard = async() => {
+        const userId = localStorage.getItem('userId');
+        try{
+            this.setState({processing: true, buttonText:'Processing...'})
+            const source = await this.createSource();
+            // console.log('source: ', source);
+
+            const sourceId = source.id;
+            
+            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
+            // console.log('updateCreditCardRes: ', updateCreditCardRes);
+            this.setState({processing: false, buttonText:'Update'});
+
+            this.props.handleBillingUpdate();
+            this.props.toggleChangeBilling();
 
         } catch(err) {
             console.log('err: ', err)
@@ -88,9 +112,10 @@ class UpdateBilling extends Component {
                     <button 
                         className="btn btn-default" 
                         type="button" 
-                        onClick = {this.updateBilling}
-                        disabled={this.state.last4 === null}>
-                        Update
+                        onClick = {this.updateCreditCard}
+                        disabled={this.state.last4 === null || this.state.processing === true}
+                    >
+                        {this.state.buttonText} 
                     </button>
                 </span>
                 <div style = {{marginBottom:'10px'}}>
