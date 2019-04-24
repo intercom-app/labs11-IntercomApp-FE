@@ -2,6 +2,22 @@ import React, { Component } from "react";
 import host from "../../host.js";
 import axios from 'axios';
 
+/* .currency:before {
+    z-index: 100;
+    position: absolute;
+     top: 10px;
+    content: '$';
+    content:"\f155";
+    font-family: FontAwesome;
+} */
+
+/* .currency .fa-rocket {
+    z-index: 100;
+    color: #666;
+    top: 10px;
+    left: 5px;
+    position: absolute;
+} */
 
 class AccountUpdateForm extends Component {
     constructor(props) {

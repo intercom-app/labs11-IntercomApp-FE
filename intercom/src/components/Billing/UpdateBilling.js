@@ -112,19 +112,20 @@ class UpdateBilling extends Component {
 
     render() {
         return (
-            <div>
-                <div className='input-group creditcard-div' style = {{marginBottom:'10px'}}>
-                    <CardElement style={{ padding: "9px !important"}}/>       
-                    <span className="input-group-btn">
-                        <button 
-                            className="btn btn-default" 
-                            type="button" 
-                            onClick = {this.updateCreditCard}
-                            disabled={this.state.last4 === null || this.state.processing === true}
-                        >
-                            {this.state.buttonText} 
-                        </button>
-                    </span>                   
+            <div className='input-group searchbar'>
+                <CardElement className='form-control form-control-sm'/>       
+                <span className="input-group-btn">
+                    <button 
+                        className="btn btn-default input-but" 
+                        type="button" 
+                        onClick = {this.updateCreditCard}
+                        disabled={this.state.last4 === null || this.state.processing === true}
+                    >
+                        {this.state.buttonText} 
+                    </button>
+                </span>
+                <div style = {{marginBottom:'10px'}}>
+                    {this.state.errorMessage}
                 </div>
                 {this.state.errorMessage
                     ?

@@ -13,7 +13,7 @@ class AddToBalance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amountToAdd:0,
+            amountToAdd:'',
             errorMessage: null,
             processing: false,
             buttonText:'Add'
@@ -154,37 +154,35 @@ class AddToBalance extends Component {
 
     render() {
         return (
-            <div>
-
-                <div className="input-group add-balance-div">
+            <div className="input-group add-balance-div">
+                <label className='currency'>
                     <input
-                        placeholder='Amount to add: $'
+                        placeholder='Amount to add'
                         type = 'number'
+                        min='1'
                         name = 'amountToAdd'
                         value = {this.state.amountToAdd}
                         onChange = {this.inputChangeHandler}
-                        className='form-control add-balance-input'
+                        className='form-control add-balance-input dollar-input'
                     />
                     <span className="input-group-btn">
                         <button 
-                            className="btn btn-default" 
+                            className="btn btn-default input-but" 
                             onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
                             type = 'submit'
                             disabled={this.state.amountToAdd === 0 || this.state.processing === true}
                         > 
                             {this.state.buttonText} 
                         </button>
-                    </span>                                                              
-                </div>
+                    </span>    
+                </label>            
                 {this.state.errorMessage
                     ?
-                    <div style = {{marginBottom:'20px', color:'red', height:'20px'}}>
+                    <div style={{ marginBottom: '20px', color: 'red', height: '20px' }}>
                         {this.state.errorMessage}
                     </div>
-                    :null
-                }
-                 
-                
+                    : null
+                }                           
             </div>
         )
     }
