@@ -14,7 +14,7 @@ class AddToBalance extends Component {
         super(props);
         this.state = {
             amountToAdd:0,
-            errorMessage: '',
+            errorMessage: null,
             processing: false,
             buttonText:'Add'
         };
@@ -115,24 +115,25 @@ class AddToBalance extends Component {
             // this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
             // this.props.toggleChangeAddToBalance();
             // this.props.handleAddToBalance();
-
+            
             this.setState({processing: true, buttonText:'Processing...'})
             // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
             const amountToAdd = this.state.amountToAdd // in dollars
-            const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
+            const addMoneyRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
             // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
 
-            if (addMoneyIOSRes.data.errorMessage) {
+            if (addMoneyRes.data.errorMessage) {
                 // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
-                this.setState({errorMessage:addMoneyIOSRes.data.errorMessage});
+                this.setState({errorMessage:addMoneyRes.data.errorMessage, processing: false, buttonText:'Add'});
                 // console.log('this.state.errorMessage: ',this.state.errorMessage )
             } else{
-                const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
+                const updatedAccountBalance = addMoneyRes.data.updatedAccountBalance;
                 // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
-                this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
+                this.setState({amountToAdd:0, processing: false, buttonText:'Add', errorMessage:null});
                 this.props.toggleChangeAddToBalance();
                 this.props.handleAddToBalance();
+
             };
 
             
@@ -168,10 +169,14 @@ class AddToBalance extends Component {
                         </button>
                     </span>                                                              
                 </div>
-
-                <div style = {{marginBottom:'10px', border:'1px solid black', height:'200px'}}>
-                    {this.state.errorMessage}
-                </div> 
+                {this.state.errorMessage
+                    ?
+                    <div style = {{marginBottom:'20px', color:'red', height:'20px'}}>
+                        {this.state.errorMessage}
+                    </div>
+                    :null
+                }
+                 
                 
             </div>
         )
