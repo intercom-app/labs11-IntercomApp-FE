@@ -1,5 +1,6 @@
 import React from 'react';
 import DeleteModal from '../Modal/DeleteModal';
+import MessageModal from '../Modal/MessageModal';
 
 const Account = (props) => {
 
@@ -12,13 +13,18 @@ const Account = (props) => {
                 <div className="col-xs-8 col-sm-8 col-md-8">
                     <div className="row acct-row">
                         <div className="pull-right">
-                            <DeleteModal
+                        {props.user.accountBalance > 0 
+                        ?    <DeleteModal
                                 deleteMessage={"Confirm your email address."}
                                 target={props.user.id}
                                 targetName={props.user.email}
                                 handleTarget={props.handleTarget}
                                 type={'Delete Account'}
                             />
+                        :    <MessageModal
+                                type={'Delete Account'}
+                            />
+                        }
                         </div>
                     </div>
                 </div>
