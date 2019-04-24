@@ -126,13 +126,15 @@ class AddToBalance extends Component {
     render() {
         return (
             <div className="input-group add-balance-div">
+                <label className='currency'>
                 <input
-                    placeholder='Amount to add: $'
+                    placeholder='Amount to add'
                     type = 'number'
+                    min='1'
                     name = 'amountToAdd'
                     value = {this.state.amountToAdd}
                     onChange = {this.inputChangeHandler}
-                    className='form-control add-balance-input'
+                    className='form-control add-balance-input dollar-input'
                 />
                 <span className="input-group-btn">
                     <button 
@@ -143,7 +145,8 @@ class AddToBalance extends Component {
                     > 
                         {this.state.buttonText} 
                     </button>
-                </span>                
+                </span>    
+                </label>            
                 <div style = {{marginBottom:'10px'}}>
                     {this.state.errorMessage}
                 </div>                            

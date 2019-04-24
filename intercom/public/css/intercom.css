@@ -60,6 +60,42 @@
     border-bottom-left-radius: 0;
 }
 
+.dollar-input {
+    padding-left: 15px
+}
+
+.currency{
+    position: relative;
+    display: table;
+}
+
+.currency:before {
+    z-index: 100;
+    position: absolute;
+     top: 8px;
+     left: 5px;
+    content: '$';
+    content:"\f155";
+    font-family: FontAwesome;
+    font-size: 13px
+}
+
+
+.currency.left input {
+     padding-left:18px;
+ }
+
+ .currency.left:before {
+     left: 5px;
+ }
+
+.currency-input {
+    border: 1px inset #ccc;
+}
+.currency-input input {
+    border: 0;
+}
+
 .add-balance-group {
     padding: 3px
 }
