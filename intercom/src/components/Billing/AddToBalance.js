@@ -98,18 +98,18 @@ class AddToBalance extends Component {
         console.log('userId: ', userId);
         try{
             // this.setState({processing: true, buttonText:'Processing...'})
-            // // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
+            // // the body sent to the /api/billing/addMoney endpoint should contain entries for userId and amountToAdd
             // const amountToAdd = this.state.amountToAdd // in dollars
-            // const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
-            // // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
+            // const addMoneyRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
+            // // console.log('addMoneyRes: ', addMoneyRes);
 
-            // if (addMoneyIOSRes.data.errorMessage) {
-            //     // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
-            //     this.setState({errorMessage:addMoneyIOSRes.data.errorMessage});
+            // if (addMoneyRes.data.errorMessage) {
+            //     // console.log('errorMessage: ',addMoneyRes.data.errorMessage);
+            //     this.setState({errorMessage:addMoneyRes.data.errorMessage});
             //     console.log('this.state.errorMessage: ',this.state.errorMessage )
             // };
 
-            // const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
+            // const updatedAccountBalance = addMoneyRes.data.updatedAccountBalance;
             // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
             // this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
