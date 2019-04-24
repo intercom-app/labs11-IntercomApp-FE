@@ -117,15 +117,22 @@ class AddToBalance extends Component {
             // this.props.handleAddToBalance();
             
             this.setState({processing: true, buttonText:'Processing...'})
-            // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
+            // the body sent to the /api/billing/addMoney endpoint should contain entries for userId and amountToAdd
             const amountToAdd = this.state.amountToAdd // in dollars
             const addMoneyRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
-            // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
+            // console.log('addMoneyRes: ', addMoneyRes);
 
             if (addMoneyRes.data.errorMessage) {
-                // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
-                this.setState({errorMessage:addMoneyRes.data.errorMessage, processing: false, buttonText:'Add'});
-                // console.log('this.state.errorMessage: ',this.state.errorMessage )
+                if (addMoneyRes.data.errorMessage ===  "Invalid source object: must be a dictionary or a non-empty string. See API docs at https://stripe.com/docs'") {
+                    console.log('gottem')
+                    this.setState({errorMessage:"User must have credit card on file to add money.", processing: false, buttonText:'Add'});
+                }
+                else{
+                    console.log('errorMessage: ',addMoneyRes.data.errorMessage);
+                    this.setState({errorMessage:addMoneyRes.data.errorMessage, processing: false, buttonText:'Add'});
+                    // console.log('this.state.errorMessage: ',this.state.errorMessage )
+                }
+                
             } else{
                 const updatedAccountBalance = addMoneyRes.data.updatedAccountBalance;
                 // console.log('updatedAccountBalance: ', updatedAccountBalance);
