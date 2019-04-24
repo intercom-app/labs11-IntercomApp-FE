@@ -88,8 +88,10 @@ class UpdateBilling extends Component {
             this.setState({processing: true, buttonText:'Processing...'})
             const source = await this.createSource();
             // console.log('source: ', source);
+
+            const sourceId = source.id;
             
-            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'source':source});
+            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
             this.setState({processing: false, buttonText:'Update'});
 
