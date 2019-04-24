@@ -96,7 +96,8 @@ class UpdateBilling extends Component {
             // console.log('source: ', source);
             const sourceId = source.id;
             
-            const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
+            // const updateCreditCardRes = await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
+            await axios.post(`${host}/api/billing/updateCreditCard`, {'userId': userId, 'sourceId':sourceId});
             // console.log('updateCreditCardRes: ', updateCreditCardRes);
             this.setState({processing: false, buttonText:'Update'});
 

@@ -95,7 +95,7 @@ class AddToBalance extends Component {
 
     chargeCreditCardAndUpdateAccountBalance = async(req,res) => {
         const userId = localStorage.getItem('userId');
-        console.log('userId: ', userId);
+        // console.log('userId: ', userId);
         try{
             // this.setState({processing: true, buttonText:'Processing...'})
             // // the body sent to the /api/billing/addMoney endpoint should contain entries for userId and amountToAdd

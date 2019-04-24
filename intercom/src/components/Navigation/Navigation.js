@@ -24,7 +24,7 @@ export default class Navigation extends React.Component {
                     {this.props.isAuthenticated()
                         ?
                         <ul className="nav navbar-nav navbar-right custom-menu" >
-                            <li className="active"><NavLink exact to={`/user/${this.props.id}`}>My Groups</NavLink></li>
+                            <li><NavLink exact to={`/user/${this.props.id}`}>My Groups</NavLink></li>
                             <li><NavLink exact to={`/user/${this.props.id}/account`}>Account</NavLink></li>
                             <li><Link to={`/`} onClick={this.props.logout}>Logout</Link></li>
                         </ul>
