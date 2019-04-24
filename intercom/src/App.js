@@ -7,11 +7,13 @@ class App extends Component {
   componentDidMount = () => {
     this.scrollToTop();
     this.scrollSmooth();
+    this.navLinkActive();
   }
 
   componentDidUpdate = () => {
     this.scrollToTop();
     this.scrollSmooth();
+    this.navLinkActive();
   }
   
   scrollToTop = () => {
@@ -64,6 +66,12 @@ class App extends Component {
 
     });
 
+  }
+
+  navLinkActive = () => {
+    if (this.props.auth.isAuthenticated()) {
+        window.$(".nav a.active").parent().addClass("active");
+    }
   }
 
   login = () => {
