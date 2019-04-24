@@ -13,7 +13,7 @@ class AddToBalance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amountToAdd:0,
+            amountToAdd:'',
             errorMessage: null,
             processing: false,
             buttonText:'Add'
