@@ -109,7 +109,7 @@ class AddToBalance extends Component {
                 // console.log('this.state.errorMessage: ',this.state.errorMessage )
             };
 
-            const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
+            // const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
             // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
             this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
