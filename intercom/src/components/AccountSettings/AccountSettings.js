@@ -102,7 +102,6 @@ class AccountSettings extends Component {
         this.toggleChangeImage();
         try {
             const res = await axios.post(`${host}/api/upload`, formData)
-            console.log(res)
             if(res.status === 200) {
                 const userData = {
                     avatar: res.data.image
