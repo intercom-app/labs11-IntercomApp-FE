@@ -95,7 +95,7 @@ class AddToBalance extends Component {
 
     chargeCreditCardAndUpdateAccountBalance = async(req,res) => {
         const userId = localStorage.getItem('userId');
-        console.log('userId: ', userId);
+        // console.log('userId: ', userId);
         try{
             this.setState({processing: true, buttonText:'Processing...'})
             // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
@@ -106,11 +106,11 @@ class AddToBalance extends Component {
             if (addMoneyIOSRes.data.errorMessage) {
                 // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
                 this.setState({errorMessage:addMoneyIOSRes.data.errorMessage});
-                console.log('this.state.errorMessage: ',this.state.errorMessage )
+                // console.log('this.state.errorMessage: ',this.state.errorMessage )
             };
 
             const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
-            console.log('updatedAccountBalance: ', updatedAccountBalance);
+            // console.log('updatedAccountBalance: ', updatedAccountBalance);
 
             this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
             this.props.toggleChangeAddToBalance();
