@@ -136,7 +136,7 @@ class AddToBalance extends Component {
                 />
                 <span className="input-group-btn">
                     <button 
-                        className="btn btn-default" 
+                        className="btn btn-default input-but" 
                         onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
                         type = 'submit'
                         disabled={this.state.amountToAdd === 0 || this.state.processing === true}

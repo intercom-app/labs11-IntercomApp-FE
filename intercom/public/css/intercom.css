@@ -55,6 +55,11 @@
     border-radius: 5px;
 }
 
+.input-but{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .add-balance-group {
     padding: 3px
 }
