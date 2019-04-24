@@ -29,6 +29,7 @@ class User extends Component {
         this.getGroupsOwned(id);
         // Groups belonged to is called after groups owned
         // Groups invited to is called after groups belonged to
+        document.cookie = 'color: blue; expires= Thu, 30 Aug 2019 19:00:00 UTC'
 
     }
 
