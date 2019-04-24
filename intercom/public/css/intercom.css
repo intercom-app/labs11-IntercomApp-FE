@@ -81,21 +81,6 @@
 }
 
 
-.currency.left input {
-     padding-left:18px;
- }
-
- .currency.left:before {
-     left: 5px;
- }
-
-.currency-input {
-    border: 1px inset #ccc;
-}
-.currency-input input {
-    border: 0;
-}
-
 .add-balance-group {
     padding: 3px
 }
