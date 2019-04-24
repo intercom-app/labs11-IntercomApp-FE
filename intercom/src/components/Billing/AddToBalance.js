@@ -14,7 +14,7 @@ class AddToBalance extends Component {
         super(props);
         this.state = {
             amountToAdd:0,
-            errorMessage: '',
+            errorMessage: null,
             processing: false,
             buttonText:'Add'
         };
@@ -97,24 +97,53 @@ class AddToBalance extends Component {
         const userId = localStorage.getItem('userId');
         console.log('userId: ', userId);
         try{
-            this.setState({processing: true, buttonText:'Processing...'})
-            // the body sent to the /api/billing/addMoneyIOS endpoint should contain entries for userId and amountToAdd
-            const amountToAdd = this.state.amountToAdd // in dollars
-            const addMoneyIOSRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
-            // console.log('addMoneyIOSRes: ', addMoneyIOSRes);
+            // this.setState({processing: true, buttonText:'Processing...'})
+            // // the body sent to the /api/billing/addMoney endpoint should contain entries for userId and amountToAdd
+            // const amountToAdd = this.state.amountToAdd // in dollars
+            // const addMoneyRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
+            // // console.log('addMoneyRes: ', addMoneyRes);
 
-            if (addMoneyIOSRes.data.errorMessage) {
-                // console.log('errorMessage: ',addMoneyIOSRes.data.errorMessage);
-                this.setState({errorMessage:addMoneyIOSRes.data.errorMessage});
-                console.log('this.state.errorMessage: ',this.state.errorMessage )
+            // if (addMoneyRes.data.errorMessage) {
+            //     // console.log('errorMessage: ',addMoneyRes.data.errorMessage);
+            //     this.setState({errorMessage:addMoneyRes.data.errorMessage});
+            //     console.log('this.state.errorMessage: ',this.state.errorMessage )
+            // };
+
+            // const updatedAccountBalance = addMoneyRes.data.updatedAccountBalance;
+            // console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+            // this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
+            // this.props.toggleChangeAddToBalance();
+            // this.props.handleAddToBalance();
+            
+            this.setState({processing: true, buttonText:'Processing...'})
+            // the body sent to the /api/billing/addMoney endpoint should contain entries for userId and amountToAdd
+            const amountToAdd = this.state.amountToAdd // in dollars
+            const addMoneyRes = await axios.post(`${host}/api/billing/addMoney`,{'userId':userId, 'amountToAdd':amountToAdd});
+            // console.log('addMoneyRes: ', addMoneyRes);
+
+            if (addMoneyRes.data.errorMessage) {
+                if (addMoneyRes.data.errorMessage ===  "Invalid source object: must be a dictionary or a non-empty string. See API docs at https://stripe.com/docs'") {
+                    console.log('gottem')
+                    this.setState({errorMessage:"User must have credit card on file to add money.", processing: false, buttonText:'Add'});
+                }
+                else{
+                    console.log('errorMessage: ',addMoneyRes.data.errorMessage);
+                    this.setState({errorMessage:addMoneyRes.data.errorMessage, processing: false, buttonText:'Add'});
+                    // console.log('this.state.errorMessage: ',this.state.errorMessage )
+                }
+                
+            } else{
+                const updatedAccountBalance = addMoneyRes.data.updatedAccountBalance;
+                // console.log('updatedAccountBalance: ', updatedAccountBalance);
+
+                this.setState({amountToAdd:0, processing: false, buttonText:'Add', errorMessage:null});
+                this.props.toggleChangeAddToBalance();
+                this.props.handleAddToBalance();
+
             };
 
-            const updatedAccountBalance = addMoneyIOSRes.data.updatedAccountBalance;
-            console.log('updatedAccountBalance: ', updatedAccountBalance);
-
-            this.setState({amountToAdd:0, processing: false, buttonText:'Add'});
-            this.props.toggleChangeAddToBalance();
-            this.props.handleAddToBalance();
+            
 
         } catch(err) {
             console.log('err: ', err);
@@ -125,28 +154,37 @@ class AddToBalance extends Component {
 
     render() {
         return (
-            <div className="input-group add-balance-div">
-                <input
-                    placeholder='Amount to add: $'
-                    type = 'number'
-                    name = 'amountToAdd'
-                    value = {this.state.amountToAdd}
-                    onChange = {this.inputChangeHandler}
-                    className='form-control add-balance-input'
-                />
-                <span className="input-group-btn">
-                    <button 
-                        className="btn btn-default" 
-                        onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
-                        type = 'submit'
-                        disabled={this.state.amountToAdd === 0 || this.state.processing === true}
-                    > 
-                        {this.state.buttonText} 
-                    </button>
-                </span>                
-                <div style = {{marginBottom:'10px'}}>
-                    {this.state.errorMessage}
-                </div>                            
+            <div>
+
+                <div className="input-group add-balance-div">
+                    <input
+                        placeholder='Amount to add: $'
+                        type = 'number'
+                        name = 'amountToAdd'
+                        value = {this.state.amountToAdd}
+                        onChange = {this.inputChangeHandler}
+                        className='form-control add-balance-input'
+                    />
+                    <span className="input-group-btn">
+                        <button 
+                            className="btn btn-default" 
+                            onClick = {this.chargeCreditCardAndUpdateAccountBalance} 
+                            type = 'submit'
+                            disabled={this.state.amountToAdd === 0 || this.state.processing === true}
+                        > 
+                            {this.state.buttonText} 
+                        </button>
+                    </span>                                                              
+                </div>
+                {this.state.errorMessage
+                    ?
+                    <div style = {{marginBottom:'20px', color:'red', height:'20px'}}>
+                        {this.state.errorMessage}
+                    </div>
+                    :null
+                }
+                 
+                
             </div>
         )
     }
