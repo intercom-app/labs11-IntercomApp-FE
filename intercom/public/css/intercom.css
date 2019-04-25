@@ -72,8 +72,8 @@
 .currency:before {
     z-index: 100;
     position: absolute;
-     top: 8px;
-     left: 5px;
+    top: 9px;
+    left: 5px;
     content: '$';
     content:"\f155";
     font-family: FontAwesome;
@@ -360,7 +360,7 @@ img.displayed{display: block;margin-left: auto;margin-right: auto;background-col
 .centerim > a:hover > i{ color:#FFF;}
 .blog-thumb a > img { -webkit-transition:0.5s; transition: 0.5s; }
 .blog-thumb a:hover > img {filter: brightness(70%) !important;  -webkit-filter: brightness(70%); -moz-filter: brightness(70%); -o-filter: brightness(70%); -ms-filter: brightness(70%); -webkit-transform: translate3d(10px,0,0); transform: translate3d(10px,0,0); }
-.searchbar { max-width: 270px; }
+.searchbar { max-width: 320px; }
 .update-pic { max-width: 380px; }
 
 .media-object { max-width: 80px; }
